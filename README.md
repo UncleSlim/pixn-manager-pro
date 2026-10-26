@@ -118,7 +118,7 @@ Drag-and-drop one-click bookmark for any modern browser (Chrome, Edge, Firefox, 
 
 #### How to Install & Use the Bookmarklet
 
-1. Open PIXN Manager Pro (`https://<your-nas-url>/pixn/index.html`).
+1. Open PIXN Manager Pro, by starting the PIXN.exe  (`http://127.0.0.1:8989/`).
 2. Click the **Sync indicator** in the top navigation bar (or open **Server Setup & Configuration**).
 3. Drag the **Manual PIXN Update** button directly onto your browser's Bookmarks bar.
 4. Log into [https://pixn-retro.dedyn.io/releases](https://pixn-retro.dedyn.io/releases) in your browser.
