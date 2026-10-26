@@ -22384,17 +22384,18 @@
                 }
             }
 
-            // UserScript via save.php?action=get_userscript endpoint so Tampermonkey / Violentmonkey detects and prompts installation automatically with pre-baked server
-            const userScriptUrl = `${serverUrl}/save.php?action=get_userscript&server=${encodeURIComponent(serverUrl)}&file=pixn_sync.user.js`;
+            // Use GitHub raw URL so Tampermonkey / Violentmonkey detects and prompts installation directly (Chrome blocks extension interception on 127.0.0.1)
+            const githubUserScriptUrl = 'https://raw.githubusercontent.com/UncleSlim/pixn-manager-pro/main/pixn_sync.user.js';
+            const localUserScriptUrl = `${serverUrl}/save.php?action=get_userscript&server=${encodeURIComponent(serverUrl)}&file=pixn_sync.user.js`;
             const btnUserScript = document.getElementById('btnInstallUserScript');
             if (btnUserScript) {
-                btnUserScript.href = userScriptUrl;
-                btnUserScript.title = isPortable ? `Install Tampermonkey script configured for Portable PIXN (${serverUrl})` : `Install Tampermonkey script for DiskStation`;
+                btnUserScript.href = githubUserScriptUrl;
+                btnUserScript.title = 'Install Tampermonkey script directly from GitHub';
             }
             const btnUserScriptSettings = document.getElementById('btnInstallUserScriptSettings');
             if (btnUserScriptSettings) {
-                btnUserScriptSettings.href = userScriptUrl;
-                btnUserScriptSettings.title = isPortable ? `Install Tampermonkey script configured for Portable PIXN (${serverUrl})` : `Install Tampermonkey script for DiskStation`;
+                btnUserScriptSettings.href = githubUserScriptUrl;
+                btnUserScriptSettings.title = 'Install Tampermonkey script directly from GitHub';
             }
             const btnCopyUserScriptSettings = document.getElementById('btnCopyUserScriptSettings');
             if (btnCopyUserScriptSettings && !btnCopyUserScriptSettings.__copyHandler) {
@@ -22403,7 +22404,7 @@
                     btnCopyUserScriptSettings.disabled = true;
                     btnCopyUserScriptSettings.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
                     try {
-                        const r = await fetch(userScriptUrl);
+                        const r = await fetch(localUserScriptUrl);
                         const scriptCode = await r.text();
                         await navigator.clipboard.writeText(scriptCode);
                         showToast('✅ Userscript copied! In Tampermonkey, click + (Add a new script) and paste.', 5000, 'success');
