@@ -1,1 +1,260 @@
-[{"id":"Castlevania - The Arcade (demul).wsquashfs","name":"Castlevania - The Arcade (multiplayers)","publisher":"Konami","releasedate":"20090201T000000","size_mb":6110.37,"developer":"Konami","genre":"Lightgun Shooter"},{"id":"Contra Anniversary Collection (pc).wsquashfs","name":"Contra Anniversary Collection","publisher":"KONAMI","releasedate":"20190611T000000","size_mb":969.76,"developer":"Konami Digital Entertainment","genre":"Action"},{"id":"Coopers\u0027 9 (demul).wsquashfs","name":"Coopers\u0027 9 (multiguns)","publisher":"Konami","releasedate":"20050101T000000","size_mb":2156.09,"developer":"Gamewax","genre":"Lightgun Shooter"},{"id":"Thrill Drive 4 Crazy streets.wsquashfs","name":"Crazy Streets: Thrill Drive 4","publisher":"Konami","releasedate":"20070101T000000","size_mb":2255.09,"developer":"Konami","genre":"Race, Driving"},{"id":"Gashaaaan.wsquashfs","name":"Gashaaaan","publisher":"Konami","releasedate":"20060101T000000","size_mb":759.87,"developer":"Konami","genre":"Lightgun Shooter"},{"id":"Gashaaaan 2.wsquashfs","name":"Gashaaaan 2 Refills","publisher":"Konami","releasedate":"20090101T000000","size_mb":1371.08,"developer":"Konami","genre":"Lightgun Shooter"},{"id":"GTI Club - Supermini Festa.wsquashfs","name":"GTI Club: Supermini Festa!","publisher":"Konami","releasedate":"20080101T000000","size_mb":4359.15,"developer":"Konami","genre":"Racing"},{"id":"Lethal Enforcers 3 (demul).wsquashfs","name":"Lethal Enforcers 3","publisher":"Konami","releasedate":"20040101T000000","size_mb":2297.9,"developer":"Polygon Magic, Konami","genre":"Shooter, Lightgun Shooter"},{"id":"Lethal Enforcers 3 (demul) (2 players).wsquashfs","name":"Lethal Enforcers 3 (2 players split screen)","publisher":"","releasedate":"20041101T000000","size_mb":2297.9,"developer":"","genre":"Lightgun Shooter"},{"id":"Road Fighters 3D.wsquashfs","name":"Road Fighters 3D","publisher":"Konami","releasedate":"20251220T000000","size_mb":1356.36,"developer":"Konami","genre":"Race, Driving"},{"id":"Silent Hill The Arcade (demul).wsquashfs","name":"Silent Hill The Arcade (multiguns)","publisher":"Konami","releasedate":"20070825T000000","size_mb":3790.17,"developer":"Konami","genre":"Lightgun Shooter"},{"id":"Wartran Troopers (demul).wsquashfs","name":"Wartran Troopers (muliguns)","publisher":"Konami","releasedate":"20040101T000000","size_mb":1642.43,"developer":"Konami","genre":"Lightgun Shooter"},{"id":"Winning Eleven 2008.wsquashfs","name":"Winning Eleven 2008 Arcade Championship","publisher":"Konami","releasedate":"20080101T000000","size_mb":3066.82,"developer":"Konami","genre":"Sports / Football"},{"id":"Yu-Gi-Oh! 5D\u0027s Duel Terminal 6.wsquashfs","name":"Yu-Gi-Oh! 5D\u0027s Duel Terminal 6","publisher":"Konami","releasedate":"20120203T000000","size_mb":5033.26,"developer":"Konami","genre":"Strategy"}]
+[
+    {
+        "id": "Action Deka.squashfs",
+        "name": "Action Deka",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20080101T000000",
+        "size_mb": 350.75
+    },
+    {
+        "id": "Bishi Bashi Channel.squashfs",
+        "name": "Bishi Bashi Channel",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20180626T000000",
+        "size_mb": 444.7
+    },
+    {
+        "id": "Castlevania - The Arcade.squashfs",
+        "name": "Castlevania - The Arcade",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20090201T000000",
+        "size_mb": 4501.57,
+        "desc": "Castlevania: The Arcade is an arcade game, part of the Castlevania franchise by Konami. The game was announced on July 23, 2008. The game was released in Japan on October 2, 2009. A European release was announced for 2009 but only appeared at test locations in 2008.\nThe gameplay is similar to light gun shooters such as The House of the Dead. Players utilize a special LED whip remote. The remote has two buttons. A top thumb button used to activate the whip, prompting players to swing the remote at the screen to damage enemies. A bottom button for the index finger is used to activate subweapons, such as knives or crosses. Subweapons are refilled by collecting hearts (up to 25) strewn about each stage in the form of destructible candles and wooden crates.\nUp to two players can play the game at once. Characters in the game include the Vampire Hunter, the Lady Gunner, and the Little Witch."
+    },
+    {
+        "id": "Chase Chase Jokers.squashfs",
+        "name": "Chase Chase Jokers",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20221221T000000",
+        "size_mb": 3729.68
+    },
+    {
+        "id": "Contra - Evolution.squashfs",
+        "name": "Contra - Evolution",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20110101T000000",
+        "size_mb": 446.57
+    },
+    {
+        "id": "Cooper's 9.squashfs",
+        "name": "Cooper's 9",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20050101T000000",
+        "size_mb": 781.27
+    },
+    {
+        "id": "Thrill Drive 4 Crazy Streets.squashfs",
+        "name": "Crazy Streets (Thrill Drive 4)",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20070101T000000",
+        "size_mb": 1542.41,
+        "desc": "Crazy Streets: Thrill Drive (also known as Thrill Drive 4) is a racing arcade game developed by Konami and released in 2007. It is the fourth entry in the Thrill Drive series, known for its high-speed traffic weaving and spectacular, often \"creepy\" crashes\nThe game is considered a \"lost\" arcade title because it was extremely rare and primarily saw limited location testing, particularly in the US."
+    },
+    {
+        "id": "Dance Dance Revolution 2013.squashfs",
+        "name": "Dance Dance Revolution (2013)",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20130314T000000",
+        "size_mb": 9336.45
+    },
+    {
+        "id": "Gashaaaan.squashfs",
+        "name": "Gashaaaan",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20060101T000000",
+        "size_mb": 249.07
+    },
+    {
+        "id": "Gashaaaan Refill.squashfs",
+        "name": "Gashaaaan Refill",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20090101T000000",
+        "size_mb": 420.07
+    },
+    {
+        "id": "GTI Club - Supermini Festa.squashfs",
+        "name": "GTI Club - Supermini Festa",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20080101T000000",
+        "size_mb": 2631.43,
+        "desc": "GTI Club Supermini Festa! twin marks the return of a classic racing arcade game machine series. Like the original, players race small cars including the Mini Cooper. There are also a range of minigames for up to 4 players.\nRather than focusing on sports cars and high speed, in GTI Club Supermini Festa! it is more about using your driving skills and handbrake to navigate through tough tracks. Like the original GTI Club, players must find shortcuts and alternative routes to get through the course as quickly as possible to beat their rivals.\nRace types include \"Battle Race\" and \"Variety Battle\". Variety battle allows up to four players to face off against one another in driving based minigames. In 'Tag' mode, one player is randomly selected at the beginning of the course to carry a bomb on top of their car. The player with the bomb must ram into other cars to 'tag' them and offload the bomb. A timer counts down during play, and when the timer reaches zero the bomb explodes and that player is eliminated.\nAnother minigame type is the Soccer mode, where players use their cars to hit a giant soccer ball into the goal. Once the timer reaches zero, the player with the highest score is the winner."
+    },
+    {
+        "id": "Hello! Pop'n Music.squashfs",
+        "name": "Hello! Pop'n Music",
+        "publisher": "Konami Digital Entertainment",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20110323T000000",
+        "size_mb": 500.36
+    },
+    {
+        "id": "HyperSports 2011 Remake.squashfs",
+        "name": "HyperSports 2011 Remake",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20110101T000000",
+        "size_mb": 95.74
+    },
+    {
+        "id": "Lethal Enforcers 3.squashfs",
+        "name": "Lethal Enforcers 3",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20040101T000000",
+        "size_mb": 533.91,
+        "desc": "Lethal Enforcers 3 is a light gun game for one or two players, and it is the final in the Lethal Enforcers series. The game uses 3D polygon graphics instead of digitised actors.\nThe players move through the stages on-rails while shooting enemies. While running through the stages players can take cover behind a shield, which also reloads. Rack up combos for bonus points by consecutively hitting targets without missing. When innocent people are shot the players are demoted in rank and news paper headlines fill the screen.\nThe game has 6 distinct stages, each with its own title logo and short introduction similar to a tv show:\nCops in the city, fight the mob in the Akihabara district\nCoast intrudes, enter a ship and fight drug smugglers in the harbor area\nRival Heat, round up gun smugglers in a subway station and tunnels\nAirport 2004, hostage situation around a grounded airplane\nJustice and Judgement, terrorists threaten to blow up a nuclear power plant\nLethal Enforcers 3, rescue the captured Prime Minister in a coup d'état"
+    },
+    {
+        "id": "Lethal Enforcers 3 (2 players).squashfs",
+        "name": "Lethal Enforcers 3 (2 players)",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20041101T000000",
+        "size_mb": 533.91
+    },
+    {
+        "id": "Metal Gear Arcade.squashfs",
+        "name": "Metal Gear Arcade",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20101220T010000",
+        "size_mb": 2933.52
+    },
+    {
+        "id": "Nobiteke! Byon Byon Daisakusen.squashfs",
+        "name": "Nobiteke! Byon Byon Daisakusen",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20081218T000000",
+        "size_mb": 443.31
+    },
+    {
+        "id": "Otomedius.squashfs",
+        "name": "Otomedius",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20071015T000000",
+        "size_mb": 429.93
+    },
+    {
+        "id": "Rainbow BomberGirl.squashfs",
+        "name": "Rainbow BomberGirl",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20220713T000000",
+        "size_mb": 5166.21
+    },
+    {
+        "id": "Road Fighters 3D.squashfs",
+        "name": "Road Fighters 3D",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20251220T000000",
+        "size_mb": 1076.41,
+        "desc": "Road Fighters is the Japan-only sequel to the original Road Fighter, released in arcades in 2010. The game features 3D-enhanced graphics, with a mounted pair of goggles used to view the effect. Tracks are set in real-life locations and are all based on race courses from previous Konami racing titles, including Enthusia Professional Racing and the GTI Club series. The game includes numerous licensed vehicles, which can be saved using Konami's e-AMUSEMENT Pass containing tuning and customization data. This game is Konami's answer to Sega's Initial D Arcade Stage 4 and Namco's Wangan Midnight Maximum Tune in terms of card-based games, or Taito's Chase H.Q. 2 in terms of rebooted sequels.\nIts opening theme \"Take Me Higher\" was composed (together with the system music) by Sota Fujimori and it was included on beatmania IIDX 18 Resort Anthem as a playable song. In addition, the game includes music from beatmania IIDX and Dance Dance Revolution series, as a form to promote another Konami arcade games."
+    },
+    {
+        "id": "Silent Hill The Arcade.squashfs",
+        "name": "Silent Hill The Arcade",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20070825T000000",
+        "size_mb": 1844.06,
+        "desc": "The game takes place in 1993, when a group of five students and members of an occult club travel to Silent Hill to solve the mystery of Toluca Lake. It is known that seventy-five years ago a boat called \"Little Baroness\" disappeared with all the crew and passengers on the lake, and the bodies have never been found. The next morning after the arrival, students Eric and Tina (the protagonists) discover that one of their club members is injured while others are missing, and that the whole town is crawling with monsters.\nSilent Hill: The Arcade is a rail shooter in the vein of The House of the Dead games, complete with off-screen reloading and weapon power-ups. The players will shoot down hordes of monsters in various familiar (and not so) locations including Brookhaven Hospital, Silent Hill Historical Society, Lakeside Amusement Park etc., on their way to the heart of the catastrophe — a little girl aboard the Little Baroness. The game features four endings, one them being a traditional \"UFO\" ending."
+    },
+    {
+        "id": "Silent Scope Bone Eater WS-Edition.squashfs",
+        "name": "Silent Scope: Bone Eater",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20141230T000000",
+        "size_mb": 3113.32
+    },
+    {
+        "id": "Steel Chronicle Victroopers.squashfs",
+        "name": "Steel Chronicle Victroopers",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20131211T000000",
+        "size_mb": 7689.32
+    },
+    {
+        "id": "The Bishi Bashi.squashfs",
+        "name": "The Bishi Bashi",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20090729T000000",
+        "size_mb": 554.52
+    },
+    {
+        "id": "Wartran Troopers.squashfs",
+        "name": "Wartran Troopers",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20040101T000000",
+        "size_mb": 321.5
+    },
+    {
+        "id": "Winning Eleven 2008.squashfs",
+        "name": "World Soccer Winning Eleven 2008 Arcade Championship",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20080101T000000",
+        "size_mb": 1797.61
+    },
+    {
+        "id": "Winning Eleven 2012.squashfs",
+        "name": "World Soccer Winning Eleven 2012 Arcade Championship",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20111230T000000",
+        "size_mb": 12434.89
+    },
+    {
+        "id": "Yu-Gi-Oh! Duel Terminal 6.squashfs",
+        "name": "Yu-Gi-Oh! Duel Terminal 6",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20120203T000000",
+        "size_mb": 3466.45
+    }
+]

@@ -1,1 +1,139 @@
-[{"id":"Chaos Code.wsquashfs","name":"Chaos Code","publisher":"Arc System Works","releasedate":"20110804T000000","size_mb":1097.17,"developer":"FK Digital","genre":"Fighting"},{"id":"Dream Raiders (demul).wsquashfs","name":"Dream Raiders (multiguns)","publisher":"Sega","releasedate":"20120101T000000","size_mb":1520.54,"developer":"Gamewax","genre":"Shooter, Lightgun Shooter"},{"id":"K.O. Drive.wsquashfs","name":"K.O. Drive","publisher":"Sega","releasedate":"20120101T000000","size_mb":2029.6,"developer":"Sega","genre":"Racing"},{"id":"Let\u0027s Go Safari.wsquashfs","name":"Let\u0027s Go Safari","publisher":"Sega","releasedate":"20120620T000000","size_mb":2722.68,"developer":"Sega","genre":"Education"},{"id":"Medaru no Gunman.wsquashfs","name":"Medaru no Gunman","publisher":"Sega","releasedate":"20100126T000000","size_mb":988.16,"developer":"Sega","genre":"Shooter, Lightgun Shooter"},{"id":"Melty Blood Actress Again - Current Code (RingWide).wsquashfs","name":"Melty Blood Actress Again - Current Code","publisher":"Sega","releasedate":"20250214T135254","size_mb":1191.55,"developer":"Type-Moon","genre":"Fighting"},{"id":"Sega Golden Gun (demul).wsquashfs","name":"Sega Golden Gun (multiguns)","publisher":"Sega","releasedate":"20100101T000000","size_mb":1658.62,"developer":"Sega AM1","genre":"Shooter, Lightgun Shooter"},{"id":"Sega Racing Classic.wsquashfs","name":"Sega Racing Classic","publisher":"Sega","releasedate":"20090101T000000","size_mb":1128.69,"developer":"Sega AM2","genre":"Racing"},{"id":"Sega Sonic All-Stars Racing Arcade.wsquashfs","name":"Sonic \u0026 Sega All-Stars Racing Arcade","publisher":"Sega","releasedate":"20110525T000000","size_mb":2590.33,"developer":"Sumo Digital","genre":"Racing"},{"id":"Super Monkey Ball Ticket Blitz.wsquashfs","name":"Super Monkey Ball: Ticket Blitz","publisher":"Sega","releasedate":"20110101T000000","size_mb":314.81,"developer":"Sega","genre":"Puzzle, Action"},{"id":"Target Bravo (demul).wsquashfs","name":"Target Bravo: Operation G.H.O.S.T. (multiguns)","publisher":"Sega Amusements International","releasedate":"20160101T000000","size_mb":1620.28,"developer":"Sega Amusements International","genre":"Lightgun Shooter, Shooter"}]
+[
+    {
+        "id": "Chaos Code.squashfs",
+        "name": "Chaos Code",
+        "publisher": "Arc System Works",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20110804T000000",
+        "size_mb": 839.15,
+        "desc": "Chaos Code (Kaosu Kōdo) is a fighting game developed by FK Digital and published by Arc System Works. \nEarly civilization of mankind has finally reached the height of its prosperity. The advancement of the universe begins at last! The ongoing development of energy involving many scientists has come to a close thanks to one person. This new energy can not be exhausted while maintaining it's power indefinitely. The energy has been named Chaotics. Heterogeneous energy was being used at the time. Within 10 years, it has taken it's place in the universe as the main energy source of all mankind. It eliminates the problem of energy shortage, which has been a concern to the universe. I was blissfully unaware at the time that this new energy would rapidly advance all of civilization to the point of an evolutionary halt. It seemed as if... we have stumbled into our own demise."
+    },
+    {
+        "id": "Dream Raiders.squashfs",
+        "name": "Dream Raiders",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20120101T000000",
+        "size_mb": 804.32,
+        "desc": "Dive into a dream world of adventures! Climb on board this beautifully modelled dream machine and be transported to a new level of excitement. Choose your dream ride and raid as many treasures as you can whilst fending off attacks by strange and incredible enemies with your Dream Blasters.\nSuccessfully complete your raid and be carried off into new realms in thrilling bonus stages. Nine unique dream experiences await you in this fantastic new deluxe game from Sega. Ride a dragon, pilot a UFO, get on horseback or put on your super suits and head for the skies! Dream Raiders features an exciting mix of exhilarating experiences that everyone will enjoy. The combination of intense motion, wind, sound and visuals combine to give players an arcade experience like none other!"
+    },
+    {
+        "id": "K.O. Drive.squashfs",
+        "name": "K.O. Drive",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20120101T000000",
+        "size_mb": 1054.66,
+        "desc": "Back in 2012, Sega unveiled a new combat driving arcade game called KO Drive at the DEAL 2012 trade show in Dubai. Afterwards, the game made an occasional appearance at other trade shows, but ultimately was cancelled.\nThis easy to pick up battle-racing game has been designed with multiplayer action in mind. Tracks include London, Vegas, Shanghai, Toronto, Cairo and Rome."
+    },
+    {
+        "id": "Lady Luck.squashfs",
+        "name": "Lady Luck",
+        "publisher": "Sega Corporation",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20110922T000000",
+        "size_mb": 197.65
+    },
+    {
+        "id": "Let's Go Island - Lost on the Island of Tropics.squashfs",
+        "name": "Let's Go Island - Lost on the Island of Tropics",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20101201T000000",
+        "size_mb": 1035.15
+    },
+    {
+        "id": "Let's Go Safari.squashfs",
+        "name": "Let's Go Safari",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20120620T000000",
+        "size_mb": 1750.82,
+        "desc": "Let's Go Safari, released in Japan as Souzou Kids: Let's Go Safari is an educational arcade game which teaches young children about wildlife. It is part of the Let's Go! series. Let's Go Safari is housed in a cabinet resembling a safari jeep. It is designed to comfortably seat either two children or a child and an adult. The game simulates driving a safari vehicle through a wildlife park. Upon starting the game, children may choose from four different types of safaris, including \"baby\", \"wild\", and \"cute\". Each safari features 7 animals, of which players may select 3 to visit via a branching path system. When each species is visited, a live-action video of that animal is played while a narrator provides facts about it. After 3 animals have been visited, the safari ends, and players are asked a simple trivia question about one of the animals they visited. Let's Go Safari includes many interactive features for children to enjoy. Players may drive the jeep left and right, operate the windshield wipers, honk the horn, and shift gears to make the jeep move faster or slower. There are also buttons which make fireworks appear or pull up facts about the animal about to be visited."
+    },
+    {
+        "id": "Medaru no Gunman.squashfs",
+        "name": "Medaru no Gunman",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20100126T000000",
+        "size_mb": 236.14,
+        "desc": "Medaru no Gunman is a medal game released by Sega Corporation. Sega Logistics Service announced it would end service on the machines on March 31, 2017"
+    },
+    {
+        "id": "Melty Blood Actress Again - Current Code.squashfs",
+        "name": "Melty Blood Actress Again - Current Code",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20250214T135254",
+        "size_mb": 718.43,
+        "desc": "Melty Blood: Actress Again: Current Code is a 2D fighter that was ported from the PlayStation 2 to the arcade. The game underwent location testing in Akihabara, Japan from December 19–20, 2009 and hit arcades on July 29, 2010. It runs on Sega's RingWide board, the successor to the NAOMI boards that Act Cadenza and the original Actress Again were developed on.\nAn upgrade for Current Code was launched on May 18, 2011, branded as Ver. 1.05, and added two new characters and made some changes to the gameplay. A final update came out on October 14, 2011 as Ver. 1.07b for the Sega RingEdge 2."
+    },
+    {
+        "id": "Operation G.H.O.S.T.squashfs",
+        "name": "Operation G.H.O.S.T",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20111001T000000",
+        "size_mb": 997.12
+    },
+    {
+        "id": "SEGA Golden Gun.squashfs",
+        "name": "SEGA Golden Gun",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20100101T000000",
+        "size_mb": 952.2,
+        "desc": "Sega Golden Gun is a light gun game released by Sega in 2010 for Sega RingWide hardware. It was developed by Sega of China, by the same team responsible for the The House of the Dead series. Many of the game's assets, including the engine itself, were ported directly from The House of the Dead 4."
+    },
+    {
+        "id": "SEGA Racing Classic.squashfs",
+        "name": "SEGA Racing Classic",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20090101T000000",
+        "size_mb": 154.55,
+        "desc": "Sega Racing Classic is an arcade racing game released for Sega RingWide hardware in 2009. Despite its fairly generic name, it is actually a remake of Daytona USA running at a resolution of 1280x720 and with all references to the Daytona International Speedway removed."
+    },
+    {
+        "id": "Sonic & Sega All-Stars Racing.squashfs",
+        "name": "Sonic & Sega All-Stars Racing",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20110525T000000",
+        "size_mb": 1596.16,
+        "desc": "Sonic & Sega All-Stars Racing is a racing game developed by Sumo Digital. It stars characters from a wide range of Sega games, similar to the previously released Sega Superstars Tennis, also by Sumo Digital. Unlike Sega Superstars Tennis, Sonic & Sega All-Stars Racing is more skewed towards the Sonic the Hedgehog franchise, with roughly half the tracks based on the series and appoximately one third of the characters.\nIts development was announced May 28, 2009, with the game being released in early 2010. It has so far been released for five home systems, including the Xbox 360, PlayStation 3, Wii, Nintendo DS, and PC. An arcade version of the game, titled Sonic & Sega All-Stars Racing Arcade and which runs on Sega's RingWide arcade hardware, was released in 2011. An iOS version was shown at E3 2011; this version is the only version of the game released in Japan."
+    },
+    {
+        "id": "Super Monkey Ball Ticket Blitz.squashfs",
+        "name": "Super Monkey Ball Ticket Blitz",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20110101T000000",
+        "size_mb": 75.52,
+        "desc": "Super Monkey Ball: Ticket Blitz is an arcade game released as part of the Super Monkey Ball series. It is a redemption game, in which progressing through levels will give the users tickets (hence \"Ticket Blitz\") which would then be traded in for prizes."
+    },
+    {
+        "id": "Target Bravo - Operation G.H.O.S.T.squashfs",
+        "name": "Target Bravo - Operation G.H.O.S.T",
+        "publisher": "Sega Amusements International",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20160101T000000",
+        "size_mb": 889.22,
+        "desc": "Target Bravo: Operation Ghost puts players in the shoes of highly trained special force agents. They must use precision shooting and quick reactions to complete the mission whilst using some of the brand new tools at their disposal in this brand new 55” LED” Upright edition of the evergreen Sega franchise! As well as new weapons, gadgets and equipment, Target Bravo: Operation Ghost allows players to start at any stage of the game, thereby encouraging them to come back and play their favourite stages again and again!\n\nThe game retains the same storyline as the original Operation G.H.O.S.T.. Taking place in 2035, the game pits the Global Humanitarian Operations & Special Tactics task force (G.H.O.S.T.) against the Blue Wolf terrorist organization."
+    }
+]

@@ -1476,12 +1476,12 @@
     {
         "id": "konamipc_batocera",
         "name": "Konami PC (Batocera)",
-        "gameCount": 14,
+        "gameCount": 28,
         "hardware": "arcade",
         "manufacturer": "Konami",
         "release": "2004",
-        "version": "v2-RGS_konamipc_batocera",
-        "gamelistDate": "31-08-2026",
+        "version": "v3-RGS_konamipc_batocera",
+        "gamelistDate": "26-10-2026",
         "torrent_available": true
     },
     {
@@ -2822,8 +2822,8 @@
         "hardware": "arcade",
         "manufacturer": "Sega",
         "release": "2009",
-        "version": "v3-RGS_segare_batocera",
-        "gamelistDate": "27-06-2026",
+        "version": "v4-RGS_segare_batocera",
+        "gamelistDate": "24-10-2026",
         "torrent_available": true
     },
     {
@@ -2840,12 +2840,12 @@
     {
         "id": "segarw_batocera",
         "name": "Sega RingWide (Batocera)",
-        "gameCount": 11,
+        "gameCount": 14,
         "hardware": "arcade",
         "manufacturer": "Sega",
         "release": "2009",
-        "version": "v3-RGS_segarw_batocera",
-        "gamelistDate": "27-06-2026",
+        "version": "v4-RGS_segarw_batocera",
+        "gamelistDate": "25-10-2026",
         "torrent_available": true
     },
     {

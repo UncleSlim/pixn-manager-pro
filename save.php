@@ -156,15 +156,38 @@ function getPixnConfig($baseDir) {
 function fetchPixnRetroApi($endpoint, $baseDir, $timeout = 10) {
     $cfg = getPixnConfig($baseDir);
     $cookie = $cfg['pixn_session_cookie'] ?? '';
+    $url = 'https://pixn-retro.dedyn.io' . $endpoint;
+
+    if (function_exists('curl_init')) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, min(4, $timeout));
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json']);
+        if (!empty($cookie)) {
+            curl_setopt($ch, CURLOPT_COOKIE, $cookie);
+        }
+        $res = curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if ($res && $code >= 200 && $code < 300) {
+            $parsed = json_decode($res, true);
+            if (is_array($parsed)) return $parsed;
+        }
+        return null;
+    }
 
     $curlBin = file_exists('/usr/bin/curl') ? '/usr/bin/curl' : (file_exists('/bin/curl') ? '/bin/curl' : 'curl');
-    $url = 'https://pixn-retro.dedyn.io' . $endpoint;
     $escapedUrl = escapeshellarg($url);
     $escapedCookie = escapeshellarg($cookie);
 
     $out = [];
     $ret = -1;
-    @exec("{$curlBin} -s -k --max-time {$timeout} -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)' -H 'Accept: application/json' --cookie {$escapedCookie} {$escapedUrl} 2>&1", $out, $ret);
+    @exec("{$curlBin} -s -k --connect-timeout 4 --max-time {$timeout} -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)\" -H \"Accept: application/json\" --cookie {$escapedCookie} {$escapedUrl} 2>&1", $out, $ret);
 
     if ($ret === 0 && !empty($out)) {
         $res = implode("\n", $out);
@@ -1744,8 +1767,9 @@ function runCatalogSyncAndRepair($baseDir, $txtDir, $gamesDir, $statusFile = nul
         $hasJson = file_exists($jsonPath) && filesize($jsonPath) > 0;
         $isTarget = !empty($targetSystemIds) && in_array($sysId, $targetSystemIds);
 
-        // If explicitly targeted (e.g. updated release) or missing, pull fresh gamelist from Pixn Retro
-        if ($isTarget || (!$hasTxt && !$hasJson)) {
+        // If explicitly targeted (e.g. updated release), missing, or corrupted, pull fresh gamelist from Pixn Retro
+        $isTinyOrCorrupted = ($hasJson && filesize($jsonPath) < 300 && ($sMeta['gameCount'] ?? 0) > 0);
+        if ($isTarget || (!$hasTxt && !$hasJson) || $isTinyOrCorrupted) {
             $syncRes = syncSystemDirectlyFromPixn($baseDir, $txtDir, $gamesDir, $sysId, $systems);
             if ($syncRes) {
                 $restored[] = basename($txtPath);
@@ -2138,6 +2162,19 @@ if ($action === 'get_sync_status' || $action === 'status') {
 
 if ($action === 'check_releases_update') {
     $clientLastVisit = trim($_GET['last_visit'] ?? '');
+    $forceRefresh = !empty($_GET['force_refresh']) || !empty($_GET['force']);
+    $autoSyncRequested = !empty($_GET['auto_sync']) || !empty($_GET['autosync']);
+
+    $checkCacheFile = $baseDir . '/data/cache_releases_check.json';
+    if (!$forceRefresh && file_exists($checkCacheFile) && (time() - filemtime($checkCacheFile) < 60)) {
+        $cachedCheck = readJsonFile($checkCacheFile);
+        if (is_array($cachedCheck) && !empty($cachedCheck['status']) && $cachedCheck['status'] === 'ok') {
+            if (!$autoSyncRequested || empty($cachedCheck['update_ready'])) {
+                echo json_encode($cachedCheck, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+        }
+    }
     
     // 1. Check remote connectivity to pixn-retro.dedyn.io
     $remoteUrl = 'https://pixn-retro.dedyn.io/releases';
@@ -2146,11 +2183,27 @@ if ($action === 'check_releases_update') {
     $remoteScript = null;
     $remoteAvailable = false;
 
-    $curlBin = file_exists('/usr/bin/curl') ? '/usr/bin/curl' : (file_exists('/bin/curl') ? '/bin/curl' : 'curl');
-    $rawOut = [];
+    $fullResp = '';
     $ret = -1;
-    @exec("{$curlBin} -s -i -k --max-time 4 'https://pixn-retro.dedyn.io/releases' 2>&1", $rawOut, $ret);
-    $fullResp = implode("\n", $rawOut);
+    if (function_exists('curl_init')) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $remoteUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 4);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
+        $fullResp = curl_exec($ch);
+        $ret = ($fullResp !== false) ? 0 : -1;
+        curl_close($ch);
+    } else {
+        $curlBin = file_exists('/usr/bin/curl') ? '/usr/bin/curl' : (file_exists('/bin/curl') ? '/bin/curl' : 'curl');
+        $rawOut = [];
+        @exec("{$curlBin} -s -i -k --connect-timeout 3 --max-time 4 \"{$remoteUrl}\" 2>&1", $rawOut, $ret);
+        $fullResp = implode("\n", $rawOut);
+    }
     
     if ($ret === 0 && !empty($fullResp)) {
         $remoteAvailable = true;
@@ -2209,7 +2262,6 @@ if ($action === 'check_releases_update') {
     }
 
     $updateReady = !empty($detectedNewSystems) || !empty($detectedUpdatedSystems);
-    $autoSyncRequested = !empty($_GET['auto_sync']) || !empty($_GET['autosync']);
     $syncResult = null;
     $autoSynced = false;
 
@@ -2275,7 +2327,7 @@ if ($action === 'check_releases_update') {
         @file_put_contents($statusFile, json_encode($curStatus, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
-    echo json_encode([
+    $outPayload = [
         'status' => 'ok',
         'update_ready' => $updateReady,
         'auto_synced' => $autoSynced,
@@ -2293,7 +2345,11 @@ if ($action === 'check_releases_update') {
         'total_systems' => $curStatus['total_systems'] ?? 0,
         'total_games' => $curStatus['total_games'] ?? 0,
         'checked_at' => date('Y-m-d H:i:s')
-    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    ];
+
+    @file_put_contents($checkCacheFile, json_encode($outPayload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+
+    echo json_encode($outPayload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     exit;
 }
 
@@ -2399,8 +2455,17 @@ if ($action === 'save_systems') {
                 }
             }
 
-            // Flag any system that has games but lacks either JSON or TXT file on DiskStation
+            // Flag any system that has games but lacks either JSON or TXT file, is updated, or has corrupted JSON
+            $needsSync = false;
             if ($gameCount > 0 && (!$hasJson || !$hasTxt)) {
+                $needsSync = true;
+            } elseif (!empty($isUpdated)) {
+                $needsSync = true;
+            } elseif ($hasJson && $gameCount > 0 && filesize($jsonPath) < 300) {
+                $needsSync = true;
+            }
+
+            if ($needsSync) {
                 $missingSystems[] = $inc;
             }
         }

@@ -15824,6 +15824,19 @@
             activeFileName.textContent = txtFileName;
             btnRawLink.style.display = 'inline-flex';
 
+            // Instant in-memory cache hit: switch without any loading shimmer or delay!
+            if (systemGamesCache.has(sysId)) {
+                currentGames = systemGamesCache.get(sysId);
+                populateDevPubDatalist();
+                updateBatoceraFilterUI();
+                renderQuickChips();
+                renderGameList();
+                statusMessage.textContent = `Loaded ${currentGames.length.toLocaleString()} games for ${activeSystem.name}`;
+                prehydrateSystemMetadata(sysId);
+                checkBatoceraForCurrentSystem(sysId);
+                return;
+            }
+
             // Modern Skeleton Shimmer Loading State
             editorContentEl.innerHTML = `
                 <div class="skeleton-loading-container">
@@ -15853,22 +15866,24 @@
                     }
                     currentGames = gamesData;
                     systemGamesCache.set(sysId, currentGames);
-                    // If system has games but developer property hasn't been cached yet, trigger background enrichment
+                    // Defer background enrichment so it doesn't block UI or server queue
                     if (currentGames.length > 0 && !('developer' in currentGames[0])) {
-                        fetch(`save.php?action=enrich_system&system=${sysId}`).then(r => r.json()).then(data => {
-                            if (data.status === 'ok' && data.enriched_count > 0 && activeSystem && activeSystem.id === sysId) {
-                                fetch(`games/${encodeURIComponent(sysId)}.json?v=${encodeURIComponent(getCatalogVersion())}`).then(r => r.json()).then(fresh => {
-                                    if (fresh && !Array.isArray(fresh)) {
-                                        fresh = (typeof fresh === 'object' && fresh !== null) ? [fresh] : [];
-                                    }
-                                    currentGames = fresh;
-                                    systemGamesCache.set(sysId, fresh);
-                                    populateDevPubDatalist();
-                                    renderQuickChips();
-                                    renderGameList();
-                                });
-                            }
-                        }).catch(() => {});
+                        setTimeout(() => {
+                            fetch(`save.php?action=enrich_system&system=${sysId}`).then(r => r.json()).then(data => {
+                                if (data.status === 'ok' && data.enriched_count > 0 && activeSystem && activeSystem.id === sysId) {
+                                    fetch(`games/${encodeURIComponent(sysId)}.json?v=${encodeURIComponent(getCatalogVersion())}`).then(r => r.json()).then(fresh => {
+                                        if (fresh && !Array.isArray(fresh)) {
+                                            fresh = (typeof fresh === 'object' && fresh !== null) ? [fresh] : [];
+                                        }
+                                        currentGames = fresh;
+                                        systemGamesCache.set(sysId, fresh);
+                                        populateDevPubDatalist();
+                                        renderQuickChips();
+                                        renderGameList();
+                                    });
+                                }
+                            }).catch(() => {});
+                        }, 600);
                     }
                 } else {
                     // Fallback to text file
@@ -23802,7 +23817,7 @@
         loadServerConfig(true);
         loadSystems();
         fetchSyncStatus();
-        checkForReleasesUpdate(true);
+        setTimeout(() => checkForReleasesUpdate(true), 1500);
         setInterval(() => checkForReleasesUpdate(false), 120000);
     </script>
 </body>
