@@ -870,36 +870,80 @@ function getBatoceraVideoList($baseDir, $uncPath, $cleanSys, $batoceraFolder) {
     ];
 
     $videos = [];
-    foreach ($videoDirs as $vDir) {
-        $lsCmd = escapeshellarg('cd "' . $vDir . '"; ls');
-        $out = [];
-        $ret = -1;
-        @exec("/usr/bin/smbclient {$escapedShare} -N -t 5 -c {$lsCmd} 2>&1", $out, $ret);
-        if ($ret !== 0 && (strpos(implode("\n", $out), 'LOGON_FAILURE') !== false || strpos(implode("\n", $out), 'ACCESS_DENIED') !== false)) {
-            $out = [];
-            @exec("/usr/bin/smbclient {$escapedShare} -U 'root%linux' -t 5 -c {$lsCmd} 2>&1", $out, $ret);
-        }
-        foreach ($out as $line) {
-            $line = trim($line);
-            if (preg_match('/^(.+?)\s+([DAHNSR_]+)\s+(\d+)\s+([A-Za-z]{3}\s+[A-Za-z]{3}.*)$/', $line, $m)) {
-                $fname = trim($m[1]);
-                $attrs = $m[2];
-                $fsize = (float)$m[3];
-                if (strpos($attrs, 'D') !== false || $fname === '.' || $fname === '..') continue;
-                $ext = strtolower(pathinfo($fname, PATHINFO_EXTENSION));
-                if (in_array($ext, ['mp4', 'webm', 'mkv', 'avi', 'mov'], true)) {
-                    $relDir = (strpos($vDir, 'media/videos') !== false ? 'media/videos/' : 'videos/');
-                    $videos[] = [
-                        'filename' => $fname,
-                        'stem' => pathinfo($fname, PATHINFO_FILENAME),
-                        'norm' => preg_replace('/[^a-z0-9]/', '', mb_strtolower(pathinfo($fname, PATHINFO_FILENAME))),
-                        'size' => $fsize,
-                        'rel' => $relDir . $fname
-                    ];
+
+    // Native Windows UNC / PHP filesystem directory reading
+    $uncRoots = [];
+    if (!empty($uncPath)) {
+        $uncRoots[] = rtrim(str_replace('/', '\\', $uncPath), '\\');
+    }
+    $uncRoots[] = '\\\\' . $targetHost . '\\' . $share . ($batoceraSubdir ? '\\' . str_replace('/', '\\', $batoceraSubdir) : '');
+    $uncRoots = array_unique(array_filter($uncRoots));
+
+    foreach ($uncRoots as $uRoot) {
+        $candDirs = [
+            $uRoot . '\\' . $batoceraFolder . '\\media\\videos',
+            $uRoot . '\\' . $batoceraFolder . '\\videos'
+        ];
+        foreach ($candDirs as $cDir) {
+            if (@is_dir($cDir)) {
+                $files = @scandir($cDir);
+                if (is_array($files)) {
+                    $relDir = (stripos($cDir, 'media\\videos') !== false ? 'media/videos/' : 'videos/');
+                    foreach ($files as $fname) {
+                        if ($fname === '.' || $fname === '..') continue;
+                        $ext = strtolower(pathinfo($fname, PATHINFO_EXTENSION));
+                        if (in_array($ext, ['mp4', 'webm', 'mkv', 'avi', 'mov'], true)) {
+                            $videos[] = [
+                                'filename' => $fname,
+                                'stem' => pathinfo($fname, PATHINFO_FILENAME),
+                                'norm' => preg_replace('/[^a-z0-9]/', '', mb_strtolower(pathinfo($fname, PATHINFO_FILENAME))),
+                                'size' => @filesize($cDir . '\\' . $fname) ?: 0,
+                                'rel' => $relDir . $fname
+                            ];
+                        }
+                    }
+                    if (!empty($videos)) {
+                        @file_put_contents($cacheFile, json_encode($videos, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+                        return $videos;
+                    }
                 }
             }
         }
-        if (!empty($videos)) break;
+    }
+
+    // smbclient for Linux / Synology DSM
+    if (DIRECTORY_SEPARATOR !== '\\' && function_exists('exec')) {
+        foreach ($videoDirs as $vDir) {
+            $lsCmd = escapeshellarg('cd "' . $vDir . '"; ls');
+            $out = [];
+            $ret = -1;
+            @exec("/usr/bin/smbclient {$escapedShare} -N -t 5 -c {$lsCmd} 2>&1", $out, $ret);
+            if ($ret !== 0 && (strpos(implode("\n", $out), 'LOGON_FAILURE') !== false || strpos(implode("\n", $out), 'ACCESS_DENIED') !== false)) {
+                $out = [];
+                @exec("/usr/bin/smbclient {$escapedShare} -U 'root%linux' -t 5 -c {$lsCmd} 2>&1", $out, $ret);
+            }
+            foreach ($out as $line) {
+                $line = trim($line);
+                if (preg_match('/^(.+?)\s+([DAHNSR_]+)\s+(\d+)\s+([A-Za-z]{3}\s+[A-Za-z]{3}.*)$/', $line, $m)) {
+                    $fname = trim($m[1]);
+                    $attrs = $m[2];
+                    $fsize = (float)$m[3];
+                    if (strpos($attrs, 'D') !== false || $fname === '.' || $fname === '..') continue;
+                    $ext = strtolower(pathinfo($fname, PATHINFO_EXTENSION));
+                    if (in_array($ext, ['mp4', 'webm', 'mkv', 'avi', 'mov'], true)) {
+                        $relDir = (strpos($vDir, 'media/videos') !== false ? 'media/videos/' : 'videos/');
+                        $videos[] = [
+                            'filename' => $fname,
+                            'stem' => pathinfo($fname, PATHINFO_FILENAME),
+                            'norm' => preg_replace('/[^a-z0-9]/', '', mb_strtolower(pathinfo($fname, PATHINFO_FILENAME))),
+                            'size' => $fsize,
+                            'rel' => $relDir . $fname
+                        ];
+                    }
+                }
+            }
+            if (!empty($videos)) break;
+        }
     }
 
     @file_put_contents($cacheFile, json_encode($videos, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
@@ -1236,30 +1280,35 @@ if ($action === 'stream_batocera_video') {
         }
     }
 
-    if (filter_var($batoIp, FILTER_VALIDATE_IP) && ($src === 'http' || $gameId || !$relMedia)) {
+    $currExt = strtolower(pathinfo($relMedia, PATHINFO_EXTENSION));
+    $videoMime = ($currExt === 'webm') ? 'video/webm' : (($currExt === 'mkv') ? 'video/x-matroska' : 'video/mp4');
+
+    if (filter_var($batoIp, FILTER_VALIDATE_IP)) {
         $candidateUrls = [];
         if ($gameId) {
             $candidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/{$gameId}/media/video";
         }
+        if ($relMedia && (stripos($relMedia, 'systems/') === 0 || stripos($relMedia, '/systems/') === 0)) {
+            $candidateUrls[] = "http://{$batoIp}:1234/" . ltrim($relMedia, '/');
+        }
+        if ($relMedia && preg_match('#games/([a-f0-9]{32})/media/video#i', $relMedia, $mId)) {
+            $candidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/{$mId[1]}/media/video";
+        }
         if ($rom) {
             $candidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . md5('/userdata/roms/' . $batoceraFolder . '/' . $rom) . "/media/video";
+            $candidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . md5('/userdata/roms/' . $batoceraFolder . '/' . basename($rom)) . "/media/video";
         }
         if ($id && $id !== $gameId) {
             $candidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . md5('/userdata/roms/' . $batoceraFolder . '/' . $id) . "/media/video";
+            $candidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . md5('/userdata/roms/' . $batoceraFolder . '/' . basename($id)) . "/media/video";
         }
-
-        $streamHeaders = [];
-        if (!empty($_SERVER['HTTP_RANGE'])) {
-            $streamHeaders[] = 'Range: ' . $_SERVER['HTTP_RANGE'];
+        if ($relMedia && stripos($relMedia, 'systems/') === false) {
+            $vidStem = pathinfo($relMedia, PATHINFO_FILENAME);
+            if ($vidStem) {
+                $candidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . md5('/userdata/roms/' . $batoceraFolder . '/' . $vidStem) . "/media/video";
+            }
         }
-        $streamCtx = stream_context_create([
-            'http' => [
-                'method' => 'GET',
-                'header' => implode("\r\n", $streamHeaders),
-                'timeout' => 5,
-                'ignore_errors' => true
-            ]
-        ]);
+        $candidateUrls = array_values(array_unique(array_filter($candidateUrls)));
 
         foreach ($candidateUrls as $batoHttpUrl) {
             // High-throughput cURL streaming (if curl extension is enabled)
@@ -1281,7 +1330,7 @@ if ($action === 'stream_batocera_video') {
                 $statusCode = 200;
                 $headersSent = false;
 
-                curl_setopt($ch, CURLOPT_HEADERFUNCTION, function($curl, $headerLine) use (&$respHeaders, &$statusCode, &$headersSent) {
+                curl_setopt($ch, CURLOPT_HEADERFUNCTION, function($curl, $headerLine) use (&$respHeaders, &$statusCode, &$headersSent, $videoMime) {
                     $len = strlen($headerLine);
                     $trimmed = trim($headerLine);
                     if (empty($trimmed)) {
@@ -1300,11 +1349,18 @@ if ($action === 'stream_batocera_video') {
 
                             $hasContentType = false;
                             foreach ($respHeaders as $hName => $hVal) {
-                                if (strtolower($hName) === 'content-type') $hasContentType = true;
+                                if (strtolower($hName) === 'content-type') {
+                                    $valTrim = trim($hVal);
+                                    if (stripos($valTrim, 'video/') === 0) {
+                                        header('Content-Type: ' . $valTrim, true);
+                                        $hasContentType = true;
+                                    }
+                                    continue;
+                                }
                                 header($hName . ': ' . $hVal, true);
                             }
                             if (!$hasContentType) {
-                                header('Content-Type: video/mp4', true);
+                                header('Content-Type: ' . $videoMime, true);
                             }
                             flush();
 
@@ -1371,12 +1427,15 @@ if ($action === 'stream_batocera_video') {
                 if (strpos($statusLine, '200') !== false || strpos($statusLine, '206') !== false) {
                     @stream_set_chunk_size($fp, 262144);
                     @stream_set_read_buffer($fp, 262144);
-                    $cType = 'video/mp4';
+                    $cType = $videoMime;
                     $cLen = null;
                     $cRange = null;
                     foreach ($respHeaders as $hdr) {
-                        if (stripos($hdr, 'Content-Type:') === 0 && stripos($hdr, 'text/plain') === false) {
-                            $cType = trim(substr($hdr, 13));
+                        if (stripos($hdr, 'Content-Type:') === 0) {
+                            $hdrVal = trim(substr($hdr, 13));
+                            if (stripos($hdrVal, 'video/') === 0) {
+                                $cType = $hdrVal;
+                            }
                         }
                         if (stripos($hdr, 'Content-Length:') === 0) $cLen = trim(substr($hdr, 15));
                         if (stripos($hdr, 'Content-Range:') === 0) $cRange = trim(substr($hdr, 14));
@@ -1407,38 +1466,115 @@ if ($action === 'stream_batocera_video') {
         }
     }
 
-    // 2. SMB Stream via pipe (smbclient get "..." -)
+    // 2. Direct SMB/UNC streaming (Native PHP on Windows or mapped UNC)
     if ($relMedia) {
-        $batoceraPath = '//' . $targetHost . '/' . $share;
-        $escapedShare = escapeshellarg($batoceraPath);
-        $remotePath = ($batoceraSubdir ? $batoceraSubdir . '/' : '') . $batoceraFolder . '/' . $relMedia;
-        $currExt = strtolower(pathinfo($relMedia, PATHINFO_EXTENSION));
-        $mime = ($currExt === 'webm') ? 'video/webm' : (($currExt === 'mkv') ? 'video/x-matroska' : 'video/mp4');
+        $cleanRel = ltrim(str_replace(['\\', '..'], ['/', ''], $relMedia), './');
+        $candUncFiles = [];
+        if (!empty($uncPath)) {
+            $candUncFiles[] = rtrim(str_replace('/', '\\', $uncPath), '\\') . '\\' . $batoceraFolder . '\\' . str_replace('/', '\\', $cleanRel);
+            $candUncFiles[] = rtrim(str_replace('/', '\\', $uncPath), '\\') . '\\' . $batoceraFolder . '\\media\\videos\\' . basename($cleanRel);
+            $candUncFiles[] = rtrim(str_replace('/', '\\', $uncPath), '\\') . '\\' . $batoceraFolder . '\\videos\\' . basename($cleanRel);
+        }
+        $batoHostRoot = '\\\\' . $targetHost . '\\' . $share . ($batoceraSubdir ? '\\' . str_replace('/', '\\', $batoceraSubdir) : '');
+        $candUncFiles[] = $batoHostRoot . '\\' . $batoceraFolder . '\\' . str_replace('/', '\\', $cleanRel);
+        $candUncFiles[] = $batoHostRoot . '\\' . $batoceraFolder . '\\media\\videos\\' . basename($cleanRel);
+        $candUncFiles[] = $batoHostRoot . '\\' . $batoceraFolder . '\\videos\\' . basename($cleanRel);
 
-        $getCmd = escapeshellarg('get "' . $remotePath . '" -');
-        $cmd = "/usr/bin/smbclient {$escapedShare} -N -t 60 -c {$getCmd} 2>/dev/null";
-        $pipe = @popen($cmd, 'r');
-        if ($pipe) {
-            $probe = fread($pipe, 8192);
-            if ($probe !== false && strlen($probe) > 0) {
-                while (ob_get_level() > 0) { @ob_end_clean(); }
-                header('X-Accel-Buffering: no');
-                header('Content-Type: ' . $mime, true);
-                header('Cache-Control: public, max-age=3600');
-                header('X-Content-Type-Options: nosniff');
-                header('X-Batocera-Source: smb-stream');
-                echo $probe;
-                flush();
-                while (!feof($pipe) && !connection_aborted()) {
-                    $chunk = fread($pipe, 262144);
-                    if ($chunk === false || $chunk === '') break;
-                    echo $chunk;
+        foreach (array_unique($candUncFiles) as $candFile) {
+            if (@is_file($candFile)) {
+                $fSize = @filesize($candFile);
+                if ($fSize !== false && $fSize > 0) {
+                    $start = 0;
+                    $end = $fSize - 1;
+                    $statusCode = 200;
+
+                    $range = $_SERVER['HTTP_RANGE'] ?? '';
+                    if (!empty($range) && preg_match('/bytes=(\d*)-(\d*)/i', $range, $mRange)) {
+                        $rStart = $mRange[1] !== '' ? floatval($mRange[1]) : 0;
+                        $rEnd = $mRange[2] !== '' ? floatval($mRange[2]) : ($fSize - 1);
+                        if ($rStart <= $rEnd && $rStart < $fSize) {
+                            $start = (int)$rStart;
+                            $end = (int)min($rEnd, $fSize - 1);
+                            $statusCode = 206;
+                        }
+                    }
+
+                    $length = $end - $start + 1;
+                    while (ob_get_level() > 0) { @ob_end_clean(); }
+
+                    http_response_code($statusCode);
+                    header_remove('Pragma');
+                    header_remove('Expires');
+                    header('X-Accel-Buffering: no');
+                    header('Content-Type: ' . $videoMime, true);
+                    header('Accept-Ranges: bytes', true);
+                    header('Content-Length: ' . $length, true);
+                    if ($statusCode === 206) {
+                        header("Content-Range: bytes {$start}-{$end}/{$fSize}", true);
+                    }
+                    header('Cache-Control: public, max-age=3600', true);
+                    header('Access-Control-Allow-Origin: *', true);
+                    header('X-Batocera-Source: native-unc-stream', true);
+                    @ob_implicit_flush(true);
                     flush();
+
+                    if (($_SERVER['REQUEST_METHOD'] ?? '') === 'HEAD') {
+                        exit;
+                    }
+
+                    $fp = @fopen($candFile, 'rb');
+                    if ($fp) {
+                        if ($start > 0) {
+                            @fseek($fp, $start);
+                        }
+                        $bytesSent = 0;
+                        $chunkSize = 262144;
+                        while (!feof($fp) && $bytesSent < $length && !connection_aborted()) {
+                            $readSize = min($chunkSize, $length - $bytesSent);
+                            $buf = @fread($fp, $readSize);
+                            if ($buf === false || $buf === '') break;
+                            echo $buf;
+                            flush();
+                            $bytesSent += strlen($buf);
+                        }
+                        @fclose($fp);
+                        exit;
+                    }
+                }
+            }
+        }
+
+        // 3. SMB Stream via pipe (smbclient get "..." -) on Linux / Synology DSM
+        if (DIRECTORY_SEPARATOR !== '\\' && function_exists('popen')) {
+            $batoceraPath = '//' . $targetHost . '/' . $share;
+            $escapedShare = escapeshellarg($batoceraPath);
+            $remotePath = ($batoceraSubdir ? $batoceraSubdir . '/' : '') . $batoceraFolder . '/' . $relMedia;
+
+            $getCmd = escapeshellarg('get "' . $remotePath . '" -');
+            $cmd = "/usr/bin/smbclient {$escapedShare} -N -t 60 -c {$getCmd} 2>/dev/null";
+            $pipe = @popen($cmd, 'r');
+            if ($pipe) {
+                $probe = fread($pipe, 8192);
+                if ($probe !== false && strlen($probe) > 0) {
+                    while (ob_get_level() > 0) { @ob_end_clean(); }
+                    header('X-Accel-Buffering: no');
+                    header('Content-Type: ' . $videoMime, true);
+                    header('Cache-Control: public, max-age=3600');
+                    header('X-Content-Type-Options: nosniff');
+                    header('X-Batocera-Source: smb-stream');
+                    echo $probe;
+                    flush();
+                    while (!feof($pipe) && !connection_aborted()) {
+                        $chunk = fread($pipe, 262144);
+                        if ($chunk === false || $chunk === '') break;
+                        echo $chunk;
+                        flush();
+                    }
+                    pclose($pipe);
+                    exit;
                 }
                 pclose($pipe);
-                exit;
             }
-            pclose($pipe);
         }
     }
 
@@ -3075,7 +3211,7 @@ function resolveLanHostname($host) {
     }
 
     // 3. NetBIOS lookup via nmblookup (essential on Synology DSM & Linux Samba for hostnames like batocera-rgs)
-    if (function_exists('exec')) {
+    if (DIRECTORY_SEPARATOR !== '\\' && function_exists('exec')) {
         $nmbOut = [];
         @exec("/usr/bin/nmblookup " . escapeshellarg($host) . " 2>&1", $nmbOut);
         if (empty($nmbOut)) {
@@ -3102,7 +3238,7 @@ function resolveLanHostname($host) {
             if ($vIpLocal && $vIpLocal !== ($variant . '.local') && filter_var($vIpLocal, FILTER_VALIDATE_IP)) {
                 return $vIpLocal;
             }
-            if (function_exists('exec')) {
+            if (DIRECTORY_SEPARATOR !== '\\' && function_exists('exec')) {
                 $vOut = [];
                 @exec("/usr/bin/nmblookup " . escapeshellarg($variant) . " 2>&1", $vOut);
                 if (empty($vOut)) @exec("nmblookup " . escapeshellarg($variant) . " 2>&1", $vOut);
@@ -5032,6 +5168,8 @@ if ($action === 'check_batocera_games') {
         if (isset($clientGamelistMeta[$k])) continue;
 
         $cm = [];
+        if (!empty($m['game_id'])) $cm['game_id'] = $m['game_id'];
+        elseif (!empty($m['id'])) $cm['game_id'] = $m['id'];
         if (!empty($m['name'])) $cm['name'] = $m['name'];
         if (!empty($m['releasedate'])) $cm['releasedate'] = $m['releasedate'];
         if (!empty($m['developer'])) $cm['developer'] = $m['developer'];

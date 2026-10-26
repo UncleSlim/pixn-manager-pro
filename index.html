@@ -12425,9 +12425,13 @@
             const baseRomName = mbLower(g.id || cleanTitle);
             const baseWithoutExt = baseRomName.replace(/\.[^.]+$/, '');
             const gm = (batoceraGamelistMeta && typeof batoceraGamelistMeta === 'object') ? (batoceraGamelistMeta[baseRomName] || batoceraGamelistMeta[baseWithoutExt] || batoceraGamelistMeta[lowerCleanTitle]) : null;
+            const romFile = g.filename || g.id || '';
+            const gameRomId = g.id || '';
+            const gName = cleanTitle || g.name || '';
+            const uncParam = (typeof batoceraUncPath === 'string' && batoceraUncPath) ? `&unc_path=${encodeURIComponent(batoceraUncPath)}` : '';
 
             if (gm && gm.video) {
-                currentBatoceraVideoUrl = `save.php?action=stream_batocera_video&src=http&system=${encodeURIComponent(cleanSysName)}&game_id=${encodeURIComponent(gm.game_id || '')}&path=${encodeURIComponent(gm.video)}`;
+                currentBatoceraVideoUrl = `save.php?action=stream_batocera_video&src=http&system=${encodeURIComponent(cleanSysName)}&game_id=${encodeURIComponent(gm.game_id || '')}&path=${encodeURIComponent(gm.video)}&rom=${encodeURIComponent(romFile)}&id=${encodeURIComponent(gameRomId)}&name=${encodeURIComponent(gName)}${uncParam}`;
                 if (btnSubPillVideo) {
                     btnSubPillVideo.style.display = 'inline-flex';
                     btnSubPillVideo.title = `Stream gameplay video from Batocera PC`;
@@ -12436,9 +12440,7 @@
                     ingameSubPills.style.display = 'flex';
                 }
             } else if (batoceraOnline && sysId) {
-                const romFile = g.filename || g.id || '';
-                const gameRomId = g.id || '';
-                const checkUrl = `save.php?action=check_batocera_video&system=${encodeURIComponent(sysId)}&rom=${encodeURIComponent(romFile)}&id=${encodeURIComponent(gameRomId)}&name=${encodeURIComponent(cleanTitle)}`;
+                const checkUrl = `save.php?action=check_batocera_video&system=${encodeURIComponent(sysId)}&rom=${encodeURIComponent(romFile)}&id=${encodeURIComponent(gameRomId)}&name=${encodeURIComponent(gName)}${uncParam}`;
                 fetch(checkUrl)
                     .then(r => r.ok ? r.json() : null)
                     .then(vData => {

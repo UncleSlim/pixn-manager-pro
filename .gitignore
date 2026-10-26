@@ -15,8 +15,10 @@ BACKUP*/
 scratch/
 portable/
 PORTABLE_DISTRIBUTION_CLEANUP_GUIDE.md
+Clean-PIXN.bat
 
 # 🧹 CACHE & SCANS (Auto-generated per user)
+data/cache_releases_check.json
 data/cache_batocera/*
 !data/cache_batocera/.gitkeep
 data/cache_gamelist/*
