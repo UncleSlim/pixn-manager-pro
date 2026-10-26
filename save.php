@@ -50,7 +50,9 @@ if ($reqAction === 'get_userscript') {
     $scriptFile = $baseDir . '/pixn_sync.user.js';
     $template = file_exists($scriptFile) ? file_get_contents($scriptFile) : '';
     $out = preg_replace('#let TARGET_SERVER = [\'"][^\'"]*[\'"];#i', "let TARGET_SERVER = '" . addslashes($server) . "';", $template);
-    $out = preg_replace('#https://cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main#i', $server, $out);
+    if (stripos($server, 'https://') === 0) {
+        $out = preg_replace('#https://cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main#i', $server, $out);
+    }
     echo $out;
     exit;
 }
@@ -2046,51 +2048,73 @@ if ($action === 'download_torrent') {
         die('System ID missing');
     }
 
-    $torrentDir = $baseDir . '/data/cache_torrents';
-    if (!is_dir($torrentDir)) {
-        @mkdir($torrentDir, 0777, true);
-    }
-    $cachedFile = $torrentDir . '/' . $sysId . '.torrent';
+    $cfg = getPixnConfig($baseDir);
+    $cookie = $cfg['pixn_session_cookie'] ?? '';
+    $targetUrl = 'https://pixn-retro.dedyn.io/api/catalog/systems/' . $sysId . '/torrent';
 
-    if (!file_exists($cachedFile) || filesize($cachedFile) < 100) {
-        $cfg = getPixnConfig($baseDir);
-        $cookie = $cfg['pixn_session_cookie'] ?? '';
-        $targetUrl = 'https://pixn-retro.dedyn.io/api/catalog/systems/' . $sysId . '/torrent';
+    $torrentContent = null;
 
-        if (!empty($cookie)) {
+    if (!empty($cookie)) {
+        // Fetch directly in memory via curl extension (no files written to data/torrents)
+        if (function_exists('curl_init')) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $targetUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 35);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
+            curl_setopt($ch, CURLOPT_COOKIE, $cookie);
+            $res = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            if ($httpCode >= 200 && $httpCode < 300 && !empty($res) && substr($res, 0, 1) === 'd') {
+                $torrentContent = $res;
+            }
+        }
+
+        // Fallback: curl CLI using OS temp directory, immediately reading into memory and deleting the temp file
+        if ($torrentContent === null) {
             $curlBin = file_exists('/usr/bin/curl') ? '/usr/bin/curl' : (file_exists('/bin/curl') ? '/bin/curl' : 'curl');
             $escapedCookie = escapeshellarg($cookie);
             $escapedUrl = escapeshellarg($targetUrl);
-            $escapedDest = escapeshellarg($cachedFile);
+
+            $tmpFile = tempnam(sys_get_temp_dir(), 'pixn_tor_');
+            $escapedDest = escapeshellarg($tmpFile);
 
             $out = [];
             $ret = -1;
             @exec("{$curlBin} -s -k --max-time 45 -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)' --cookie {$escapedCookie} {$escapedUrl} -o {$escapedDest} 2>&1", $out, $ret);
+
+            if (file_exists($tmpFile)) {
+                if (filesize($tmpFile) > 100) {
+                    $handle = @fopen($tmpFile, 'r');
+                    $firstChar = $handle ? fgetc($handle) : '';
+                    if ($handle) fclose($handle);
+                    if ($firstChar === 'd') {
+                        $torrentContent = file_get_contents($tmpFile);
+                    }
+                }
+                @unlink($tmpFile); // Clean up immediately, never stored in data/
+            }
         }
     }
 
-    if (file_exists($cachedFile) && filesize($cachedFile) > 100) {
-        // Double check it is a valid bencoded torrent file
-        $handle = @fopen($cachedFile, 'r');
-        $firstChar = $handle ? fgetc($handle) : '';
-        if ($handle) fclose($handle);
-
-        if ($firstChar === 'd') {
-            if (ob_get_level()) @ob_end_clean();
-            header('Content-Type: application/x-bittorrent');
-            header('Content-Disposition: attachment; filename="' . $sysId . '.torrent"');
-            header('Content-Length: ' . filesize($cachedFile));
-            header('Cache-Control: public, max-age=86400');
-            readfile($cachedFile);
-            exit;
-        } else {
-            // Bad file (e.g. error HTML page), clean up so retry is possible
-            @unlink($cachedFile);
-        }
+    if ($torrentContent !== null && strlen($torrentContent) > 0) {
+        if (ob_get_level()) @ob_end_clean();
+        header('Content-Type: application/x-bittorrent');
+        header('Content-Disposition: attachment; filename="' . $sysId . '.torrent"');
+        header('Content-Length: ' . strlen($torrentContent));
+        header('Cache-Control: no-cache, no-store, must-revalidate');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        echo $torrentContent;
+        exit;
     }
 
-    // Direct fallback redirect to Pix'n Retro releases API
-    header('Location: https://pixn-retro.dedyn.io/api/catalog/systems/' . $sysId . '/torrent');
+    // Direct fallback redirect to Pix'n Retro releases API so browser downloads directly
+    header('Location: ' . $targetUrl);
     exit;
 }
 
@@ -2838,7 +2862,9 @@ if ($action === 'get_userscript') {
     $scriptFile = $baseDir . '/pixn_sync.user.js';
     $template = file_exists($scriptFile) ? file_get_contents($scriptFile) : '';
     $out = preg_replace('#let TARGET_SERVER = [\'"][^\'"]*[\'"];#i', "let TARGET_SERVER = '" . addslashes($nasUrl) . "';", $template);
-    $out = preg_replace('#https://cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main#i', $nasUrl, $out);
+    if (stripos($nasUrl, 'https://') === 0) {
+        $out = preg_replace('#https://cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main#i', $nasUrl, $out);
+    }
     echo $out;
     exit;
 }
