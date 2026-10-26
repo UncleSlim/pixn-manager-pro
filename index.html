@@ -8135,11 +8135,11 @@
                                     </span>
                                 </div>
                                 <span style="font-size: 0.68rem; color: var(--text-dim); display: block; margin-bottom: 0.25rem; line-height: 1.35;">
-                                    Auto-filled on sync below. <strong style="color: var(--text-muted);"><i class="fa-solid fa-sliders"></i> Manual:</strong> Log in to <a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">Pix'n Retro</a> &rarr; press <kbd style="background: rgba(255,255,255,0.08); padding: 1px 4px; border-radius: 3px; font-size: 0.64rem;">F12</kbd> &rarr; Application &rarr; Cookies &rarr; paste <code>session</code>:
+                                    Required for full game downloads. Paste from <a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">Pix'n Retro</a> (<kbd style="background: rgba(255,255,255,0.08); padding: 1px 4px; border-radius: 3px; font-size: 0.64rem;">F12</kbd> &rarr; Application &rarr; Cookies &rarr; <code>session</code>), or use Tampermonkey below:
                                 </span>
                             </div>
                             <div style="position: relative; width: 100%;">
-                                <input type="password" id="cfgCookieInput" class="input-field" placeholder="Auto-filled on sync, or paste session=..." style="width: 100%; height: 30px; font-family: var(--font-mono); font-size: 0.78rem; padding-left: 0.65rem; padding-right: 2.2rem;">
+                                <input type="password" id="cfgCookieInput" class="input-field" placeholder="Paste session=... or token value" style="width: 100%; height: 30px; font-family: var(--font-mono); font-size: 0.78rem; padding-left: 0.65rem; padding-right: 2.2rem;">
                                 <button type="button" id="btnToggleCookieVisibility" style="position: absolute; right: 0.45rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-dim); cursor: pointer; padding: 0.15rem;" title="Show / Hide token">
                                     <i class="fa-solid fa-eye" id="iconCookieVisibility" style="font-size: 0.75rem;"></i>
                                 </button>
@@ -8156,7 +8156,7 @@
                                     <span style="font-size: 0.68rem; color: var(--text-dim);"><a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">pixn-retro.dedyn.io</a></span>
                                 </div>
                                 <span style="font-size: 0.7rem; color: var(--text-dim); display: block; margin-bottom: 0.35rem;">
-                                    Click either tool on Pixn Retro to sync systems and auto-fill your cookie:
+                                    Choose how to sync systems and games from Pixn Retro:
                                 </span>
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;">
@@ -8164,10 +8164,10 @@
                                 <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 6px; padding: 0.45rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.3rem;">
                                     <div>
                                         <strong style="font-size: 0.74rem; color: #10b981; display: flex; align-items: center; gap: 0.25rem;">
-                                            <i class="fa-solid fa-wand-magic-sparkles"></i> Userscript <span style="font-size: 0.6rem; background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 1px 4px; border-radius: 3px;">Auto-Cookie</span>
+                                            <i class="fa-solid fa-wand-magic-sparkles"></i> Tampermonkey <span style="font-size: 0.6rem; background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 1px 4px; border-radius: 3px;">Auto-Cookie</span>
                                         </strong>
                                         <span style="font-size: 0.67rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
-                                            Tampermonkey script. Auto-captures session cookie &amp; adds sync button.
+                                            Tampermonkey script. Auto-reads HttpOnly cookie &amp; syncs 1-click.
                                         </span>
                                     </div>
                                     <a id="btnInstallUserScriptSettings" href="pixn_sync.user.js" target="_blank" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.22rem 0.5rem; text-align: center; background: #059669; border-color: #10b981;" title="Install Tampermonkey / Violentmonkey Userscript for automatic cookie sync">
@@ -8179,14 +8179,14 @@
                                 <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 6px; padding: 0.45rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.3rem;">
                                     <div>
                                         <strong style="font-size: 0.74rem; color: #38bdf8; display: flex; align-items: center; gap: 0.25rem;">
-                                            <i class="fa-solid fa-bookmark"></i> Bookmarklet
+                                            <i class="fa-solid fa-bookmark"></i> PIXN Retro Sync
                                         </strong>
                                         <span style="font-size: 0.67rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
-                                            Drag to bookmarks bar, then click on Pixn Retro.
+                                            1-click catalog sync. (Prompts for cookie in sync window if missing).
                                         </span>
                                     </div>
                                     <a id="dragBookmarkletSettings" href="#" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.22rem 0.5rem; text-align: center; cursor: grab; border-color: #38bdf8; color: #38bdf8;" title="Drag to bookmarks bar for easy access, or click to open Pixn Retro.">
-                                        <i class="fa-solid fa-bookmark"></i> PIXN Retro Sync
+                                        <i class="fa-solid fa-bookmark"></i> Open &amp; Sync Catalog
                                     </a>
                                 </div>
                             </div>
@@ -22509,11 +22509,11 @@
                         cfgCookieStatusBadge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
                         cfgCookieStatusBadge.innerHTML = '<i class="fa-solid fa-check"></i> Configured (' + (cfg.masked_cookie || 'Saved') + ')';
                     } else {
-                        cfgCookieStatusBadge.style.color = '#38bdf8';
-                        cfgCookieStatusBadge.style.backgroundColor = 'rgba(56, 189, 248, 0.12)';
-                        cfgCookieStatusBadge.style.borderColor = 'rgba(56, 189, 248, 0.3)';
-                        cfgCookieStatusBadge.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Auto-fills on first sync';
-                        cfgCookieStatusBadge.title = 'Will automatically capture and save your session token on your first sync';
+                        cfgCookieStatusBadge.style.color = '#f59e0b';
+                        cfgCookieStatusBadge.style.backgroundColor = 'rgba(245, 158, 11, 0.12)';
+                        cfgCookieStatusBadge.style.borderColor = 'rgba(245, 158, 11, 0.3)';
+                        cfgCookieStatusBadge.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Not Configured';
+                        cfgCookieStatusBadge.title = 'Paste session cookie from DevTools or use Tampermonkey userscript';
                     }
                 }
 

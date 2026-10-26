@@ -2429,9 +2429,14 @@ if ($action === 'save_systems') {
         $curStatus['last_sync'] = date('Y-m-d H:i:s');
         file_put_contents($statusFile, json_encode($curStatus, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
+        $cfgFile = $baseDir . '/config.json';
+        $savedCfg = file_exists($cfgFile) ? readJsonFile($cfgFile) : [];
+        $hasCookie = !empty($savedCfg['pixn_session_cookie']);
+
         echo json_encode([
             'status' => 'ok',
             'saved' => count($incoming),
+            'has_cookie' => $hasCookie,
             'new_systems_count' => count($newSystems),
             'new_systems' => $newSystems,
             'updated_systems_count' => count($updatedSystems),

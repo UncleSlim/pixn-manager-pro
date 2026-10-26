@@ -287,7 +287,8 @@
                 } catch (e) {}
             }
         }
-        if (capturedCookie && capturedCookie.includes('session=')) {
+        let cookieIsConfigured = !!(capturedCookie && capturedCookie.includes('session='));
+        if (cookieIsConfigured) {
             log('🔑 Captured Pixn Retro session token (auto-filling PIXN config)');
         } else {
             log('ℹ️ Pixn Retro session cookie is HttpOnly.');
@@ -299,10 +300,10 @@
                 helperBox.innerHTML = `
                     <div style="font-size: 11px; font-weight: 600; color: #fbbf24; margin-bottom: 3px; display: flex; align-items: center; justify-content: space-between;">
                         <span><i class="fa-solid fa-key"></i> Auto-fill PIXN Session Cookie</span>
-                        <span style="font-size: 9px; color: #f59e0b; border: 1px solid #f59e0b; padding: 1px 4px; border-radius: 3px;">1-Time Setup</span>
+                        <span style="font-size: 9px; color: #f59e0b; border: 1px solid #f59e0b; padding: 1px 4px; border-radius: 3px;">Action Required</span>
                     </div>
                     <div style="font-size: 10px; color: #94a3b8; margin-bottom: 6px; line-height: 1.35;">
-                        Browser security blocks reading HttpOnly cookies automatically without Tampermonkey. Paste your session cookie below to save it directly into PIXN:
+                        Browser security blocks reading HttpOnly cookies automatically. Paste your session cookie below to save it directly into PIXN:
                     </div>
                     <div style="display: flex; gap: 5px; margin-bottom: 4px;">
                         <input id="sync-manual-cookie-input" placeholder="Paste session=... or token value" style="flex: 1; padding: 4px 6px; font-size: 11px; background: #0f172a; border: 1px solid #475569; color: #fff; border-radius: 4px;">
@@ -335,9 +336,20 @@
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ systems: [], cookie: val })
                             });
-                            stat.innerHTML = '<span style="color: #34d399; font-weight: 600;">✅ Saved to PIXN! Switch back to PIXN Manager Pro.</span>';
+                            cookieIsConfigured = true;
+                            stat.innerHTML = '<span style="color: #34d399; font-weight: 600;">✅ Saved to PIXN! Closing in 4 seconds...</span>';
                             saveBtn.textContent = 'Saved';
                             log('🔑 Session token saved to PIXN config');
+                            setTimeout(() => {
+                                if (hud && hud.parentNode) {
+                                    hud.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+                                    hud.style.opacity = '0';
+                                    hud.style.transform = 'translateY(20px)';
+                                    setTimeout(() => {
+                                        if (hud && hud.parentNode) hud.remove();
+                                    }, 800);
+                                }
+                            }, 4000);
                         } catch (err) {
                             stat.innerHTML = `<span style="color: #ef4444;">Failed to save: ${err.message}</span>`;
                             saveBtn.disabled = false;
@@ -357,6 +369,11 @@
             })
         });
         const saveSysData = await saveSysRes.json();
+        if (saveSysData && saveSysData.has_cookie) {
+            cookieIsConfigured = true;
+            const helperEl = document.getElementById('pixn-cookie-helper-box');
+            if (helperEl) helperEl.remove();
+        }
 
         const newSystems = saveSysData.new_systems || [];
         const updatedSystems = saveSysData.updated_systems || [];
@@ -549,20 +566,29 @@
             last_sync: new Date().toISOString()
         });
 
-        log("Done! Everything is synchronized and ready.");
-        log("Closing window in 5 seconds...");
-
-        // Auto fade out after 5 seconds after sync is done
-        setTimeout(() => {
-            if (hud && hud.parentNode) {
-                hud.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-                hud.style.opacity = '0';
-                hud.style.transform = 'translateY(20px)';
-                setTimeout(() => {
-                    if (hud && hud.parentNode) hud.remove();
-                }, 800);
+        if (cookieIsConfigured) {
+            log("Done! Everything is synchronized and ready.");
+            log("Closing HUD in 5 seconds...");
+            // Auto fade out after 5 seconds after sync is done
+            setTimeout(() => {
+                if (hud && hud.parentNode) {
+                    hud.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+                    hud.style.opacity = '0';
+                    hud.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        if (hud && hud.parentNode) hud.remove();
+                    }, 800);
+                }
+            }, 5000);
+        } else {
+            log("Catalog synced! ⚠️ Pixn Retro Session Cookie is missing.");
+            log("Please paste your session token in the box above to complete setup.");
+            statusMsg.innerHTML = '<span style="color: #f59e0b; font-weight: 600;">⚠️ Catalog synced — Session Cookie required</span>';
+            if (cancelBtn) {
+                cancelBtn.textContent = 'Close';
+                cancelBtn.style.background = '#475569';
             }
-        }, 5000);
+        }
 
     } catch (err) {
         console.error("Sync error:", err);
