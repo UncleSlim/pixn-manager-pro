@@ -154,11 +154,22 @@ function getPixnConfig($baseDir) {
 }
 
 function getPixnBatoceraUncPath($baseDir, $explicit = '') {
-    if (!empty($explicit) && is_string($explicit) && trim($explicit) !== '') {
-        return trim($explicit);
-    }
     $cfg = getPixnConfig($baseDir);
-    return trim($cfg['batocera_unc_path'] ?? '\\\\BATOCERA\\share\\roms');
+    $cfgPath = trim($cfg['batocera_unc_path'] ?? '');
+
+    if (!empty($explicit) && is_string($explicit)) {
+        $cleanExp = trim($explicit);
+        $isGenericPlaceholder = (strcasecmp(rtrim(str_replace('/', '\\', $cleanExp), '\\/'), '\\\\batocera\\share\\roms') === 0);
+        // If client passed the generic placeholder "\\\\BATOCERA\\share\\roms" but server has a specific configured path (e.g. \\batocera-rgs\share\roms), prefer server config!
+        if ($isGenericPlaceholder && $cfgPath !== '' && strcasecmp(rtrim(str_replace('/', '\\', $cfgPath), '\\/'), '\\\\batocera\\share\\roms') !== 0) {
+            return $cfgPath;
+        }
+        if ($cleanExp !== '') {
+            return $cleanExp;
+        }
+    }
+
+    return $cfgPath !== '' ? $cfgPath : '\\\\BATOCERA\\share\\roms';
 }
 
 function fetchPixnRetroApi($endpoint, $baseDir, $timeout = 10) {
@@ -3066,6 +3077,16 @@ function resolveLanHostname($host) {
             if ($vIpLocal && $vIpLocal !== ($variant . '.local') && filter_var($vIpLocal, FILTER_VALIDATE_IP)) {
                 return $vIpLocal;
             }
+            if (function_exists('exec')) {
+                $vOut = [];
+                @exec("/usr/bin/nmblookup " . escapeshellarg($variant) . " 2>&1", $vOut);
+                if (empty($vOut)) @exec("nmblookup " . escapeshellarg($variant) . " 2>&1", $vOut);
+                foreach ($vOut as $line) {
+                    if (preg_match('/^(\d+\.\d+\.\d+\.\d+)\s+/i', trim($line), $m)) {
+                        return $m[1];
+                    }
+                }
+            }
         }
     }
 
@@ -4798,22 +4819,21 @@ if ($action === 'check_batocera_games') {
                 $candidates = [];
                 // 5. Normalized game name match
                 if ($normName && isset($fileNormMap[$normName])) {
-                    $candidates = array_merge($candidates, $fileNormMap[$normName]);
+                    foreach ($fileNormMap[$normName] as $cIdx) $candidates[$cIdx] = true;
                 }
                 if ($rawNormName && isset($fileNormMap[$rawNormName])) {
-                    $candidates = array_merge($candidates, $fileNormMap[$rawNormName]);
+                    foreach ($fileNormMap[$rawNormName] as $cIdx) $candidates[$cIdx] = true;
                 }
                 // 6. Normalized ROM filename match
                 if ($normRom && isset($fileNormMap[$normRom])) {
-                    $candidates = array_merge($candidates, $fileNormMap[$normRom]);
+                    foreach ($fileNormMap[$normRom] as $cIdx) $candidates[$cIdx] = true;
                 }
                 if ($rawNormRom && isset($fileNormMap[$rawNormRom])) {
-                    $candidates = array_merge($candidates, $fileNormMap[$rawNormRom]);
+                    foreach ($fileNormMap[$rawNormRom] as $cIdx) $candidates[$cIdx] = true;
                 }
-                $candidates = array_values(array_unique($candidates));
 
                 $matchedForThisGame = [];
-                foreach ($candidates as $cIdx) {
+                foreach (array_keys($candidates) as $cIdx) {
                     if (isset($matchedFoundFileIndices[$cIdx])) continue;
                     if (!$isRegionCompatible($cIdx, $gIdx)) continue;
                     $matchedForThisGame[] = $cIdx;
@@ -4892,7 +4912,7 @@ if ($action === 'check_batocera_games') {
             }
         }
         if ($catalogUpdated && !empty($gamesList) && file_exists($jsonPath)) {
-            @file_put_contents($jsonPath, json_encode($gamesList, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+            @file_put_contents($jsonPath, json_encode($gamesList, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         }
     }
 
@@ -4941,30 +4961,35 @@ if ($action === 'check_batocera_games') {
         // Use name from gamelist.xml if present, otherwise clean filename
         $dispName = !empty($meta['name']) ? $meta['name'] : pathinfo($fname, PATHINFO_FILENAME);
 
-        $otherGames[] = [
+        $gEntry = [
             'id' => $rel,
             'filename' => $fname,
             'name' => $dispName,
-            'developer' => $meta['developer'] ?? '',
-            'publisher' => $meta['publisher'] ?? '',
-            'releasedate' => $meta['releasedate'] ?? '',
-            'genre' => $meta['genre'] ?? '',
-            'desc' => $meta['desc'] ?? '',
-            'rating' => $meta['rating'] ?? '',
-            'players' => $meta['players'] ?? '',
-            'image' => $meta['image'] ?? '',
-            'thumbnail' => (!empty($meta['thumbnail']) ? $meta['thumbnail'] : ('media/thumbnails/' . $baseWithoutExt . '.png')),
-            'boxart' => $meta['boxart'] ?? '',
-            'marquee' => $meta['marquee'] ?? (!empty($meta['wheel']) ? $meta['wheel'] : ''),
-            'wheel' => $meta['wheel'] ?? '',
-            'titleshot' => $meta['titleshot'] ?? ($meta['titlescreen'] ?? ''),
-            'titlescreen' => $meta['titlescreen'] ?? '',
-            'fanart' => $meta['fanart'] ?? '',
-            'video' => $meta['video'] ?? '',
             'size_mb' => $fItem['size_mb'],
             'is_installed' => true,
             'is_other' => true
         ];
+        if (!empty($meta['developer'])) $gEntry['developer'] = $meta['developer'];
+        if (!empty($meta['publisher'])) $gEntry['publisher'] = $meta['publisher'];
+        if (!empty($meta['releasedate'])) $gEntry['releasedate'] = $meta['releasedate'];
+        if (!empty($meta['genre'])) $gEntry['genre'] = $meta['genre'];
+        if (!empty($meta['rating'])) $gEntry['rating'] = $meta['rating'];
+        if (!empty($meta['players'])) $gEntry['players'] = $meta['players'];
+        if (!empty($meta['image'])) $gEntry['image'] = $meta['image'];
+        if (!empty($meta['thumbnail'])) {
+            $gEntry['thumbnail'] = $meta['thumbnail'];
+        } else {
+            $gEntry['thumbnail'] = 'media/thumbnails/' . $baseWithoutExt . '.png';
+        }
+        if (!empty($meta['boxart'])) $gEntry['boxart'] = $meta['boxart'];
+        if (!empty($meta['marquee'])) $gEntry['marquee'] = $meta['marquee'];
+        elseif (!empty($meta['wheel'])) $gEntry['marquee'] = $meta['wheel'];
+        if (!empty($meta['wheel'])) $gEntry['wheel'] = $meta['wheel'];
+        if (!empty($meta['titleshot'])) $gEntry['titleshot'] = $meta['titleshot'];
+        elseif (!empty($meta['titlescreen'])) $gEntry['titleshot'] = $meta['titlescreen'];
+        if (!empty($meta['video'])) $gEntry['video'] = $meta['video'];
+
+        $otherGames[] = $gEntry;
     }
 
     $mismatchedFiles = [];

@@ -8968,7 +8968,11 @@
         const labelToggleBatocera = document.getElementById('labelToggleBatocera');
 
         // Batocera State & DOM
-        let batoceraUncPath = localStorage.getItem('batocera_roms_unc_path') || '\\\\BATOCERA\\share\\roms';
+        let batoceraUncPath = localStorage.getItem('batocera_roms_unc_path') || '';
+        if (batoceraUncPath.toLowerCase() === '\\\\batocera\\share\\roms') {
+            batoceraUncPath = '';
+            localStorage.removeItem('batocera_roms_unc_path');
+        }
         let batoceraOnline = false;
         let batoceraIp = '';
         let batoceraFolderExists = false;
@@ -14778,6 +14782,9 @@
 
                 if (data.online && data.status === 'ok') {
                     batoceraOnline = true;
+                    if (data.host) {
+                        updateHeaderBatoceraStatus(true, data.host, batoceraInstalledFolders ? batoceraInstalledFolders.size : (data.matched_count || 0), batoceraIp);
+                    }
 
                     if (data.folder_exists === false) {
                         // System folder does not exist on Batocera PC
@@ -22534,10 +22541,17 @@
                     detectedNasBadge.title = `Auto-detected server: ${detectedNas}`;
                 }
 
+                // Sync Batocera UNC Path with server config
+                const serverBatoPath = (cfg.batocera_unc_path || (data && data.detected_batocera_unc) || '').trim();
+                if (serverBatoPath && (!batoceraUncPath || batoceraUncPath.toLowerCase() === '\\\\batocera\\share\\roms' || isAutoInit)) {
+                    batoceraUncPath = serverBatoPath;
+                    localStorage.setItem('batocera_roms_unc_path', batoceraUncPath);
+                    if (typeof updateBatoceraPreview === 'function') updateBatoceraPreview();
+                }
+
                 // Never overwrite Batocera UNC Path if user has typed/modified or is currently typing, or if background polling
                 if (cfgBatoceraUncInput && !isBackgroundPoll && document.activeElement !== cfgBatoceraUncInput && !cfgBatoceraUncUserModified) {
-                    const detectedBato = (data && data.detected_batocera_unc) ? data.detected_batocera_unc : '';
-                    cfgBatoceraUncInput.value = cfg.batocera_unc_path || detectedBato || localStorage.getItem('batocera_roms_unc_path') || '\\\\BATOCERA\\share\\roms';
+                    cfgBatoceraUncInput.value = batoceraUncPath || serverBatoPath || '\\\\BATOCERA\\share\\roms';
                 }
 
                 const oldCookie = cfgCookieInput ? cfgCookieInput.value.trim() : '';
