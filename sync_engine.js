@@ -7,7 +7,7 @@
     // 1. Authoritative detection from the currently executing script element:
     // The script tag src is the exact webserver that served sync_engine.js.
     let DISKSTATION_URL = '';
-    const isIgnoredHost = (host) => /jsdelivr\.net|github\.io|githubusercontent\.com|githack\.com|jimmy\.langtoft\.dk/i.test(host || '');
+    const isIgnoredHost = (host) => /jsdelivr\.net|github\.io|githubusercontent\.com|githack\.com/i.test(host || '');
 
     // 1. Authoritative detection from explicit script URL parameter ?server=...
     try {

@@ -31,10 +31,10 @@
         } catch(e) {}
     }
 
-    // Check localStorage fallback (filtering out legacy script host domain)
+    // Check localStorage fallback (filtering out public CDNs)
     try {
         const savedServer = localStorage.getItem('pixn_target_server');
-        if (savedServer && !/jimmy\.langtoft\.dk|jsdelivr\.net/i.test(savedServer)) {
+        if (savedServer && !/jsdelivr\.net|github\.io|githubusercontent\.com|githack\.com/i.test(savedServer)) {
             TARGET_SERVER = savedServer.replace(/\/+$/, '');
         }
     } catch(e) {}

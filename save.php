@@ -50,7 +50,7 @@ if ($reqAction === 'get_userscript') {
     $scriptFile = $baseDir . '/pixn_sync.user.js';
     $template = file_exists($scriptFile) ? file_get_contents($scriptFile) : '';
     $out = preg_replace('#let TARGET_SERVER = [\'"][^\'"]*[\'"];#i', "let TARGET_SERVER = '" . addslashes($server) . "';", $template);
-    $out = preg_replace('#https://(jimmy\.langtoft\.dk/pixn|cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main)#i', $server, $out);
+    $out = preg_replace('#https://cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main#i', $server, $out);
     echo $out;
     exit;
 }
@@ -2838,7 +2838,7 @@ if ($action === 'get_userscript') {
     $scriptFile = $baseDir . '/pixn_sync.user.js';
     $template = file_exists($scriptFile) ? file_get_contents($scriptFile) : '';
     $out = preg_replace('#let TARGET_SERVER = [\'"][^\'"]*[\'"];#i', "let TARGET_SERVER = '" . addslashes($nasUrl) . "';", $template);
-    $out = preg_replace('#https://(jimmy\.langtoft\.dk/pixn|cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main)#i', $nasUrl, $out);
+    $out = preg_replace('#https://cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main#i', $nasUrl, $out);
     echo $out;
     exit;
 }
