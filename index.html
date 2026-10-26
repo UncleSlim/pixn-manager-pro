@@ -14606,7 +14606,8 @@
 
             batoceraFoldersLoadingPromise = (async () => {
                 try {
-                    const res = await fetch(`save.php?action=get_batocera_folders${forceRefresh ? '&force_refresh=1' : ''}&v=${Date.now()}`);
+                    const uncParam = batoceraUncPath ? `&unc_path=${encodeURIComponent(batoceraUncPath)}` : '';
+                    const res = await fetch(`save.php?action=get_batocera_folders${forceRefresh ? '&force_refresh=1' : ''}${uncParam}&v=${Date.now()}`);
                     if (!res.ok) {
                         updateHeaderBatoceraStatus(false);
                         return null;
@@ -14650,7 +14651,6 @@
 
         async function checkBatoceraForCurrentSystem(sysId, forceRefresh = false) {
             const currentSeq = ++batoceraCheckSeq;
-            batoceraOnline = false;
             batoceraFolderExists = false;
             batoceraMatchedIds.clear();
             batoceraMatchedNames.clear();
@@ -14697,7 +14697,8 @@
                     }
                     updateBatoceraFilterUI();
                     renderGameList();
-                    fetch(`save.php?action=get_batocera_settings&system=${encodeURIComponent(sysId)}`)
+                    const uncParam = batoceraUncPath ? `&unc_path=${encodeURIComponent(batoceraUncPath)}` : '';
+                    fetch(`save.php?action=get_batocera_settings&system=${encodeURIComponent(sysId)}${uncParam}`)
                         .then(r => r.json())
                         .then(sData => {
                             if (currentSeq !== batoceraCheckSeq || !activeSystem || activeSystem.id !== sysId) return;
@@ -14752,7 +14753,8 @@
                             }
                             updateBatoceraFilterUI();
                             renderGameList();
-                            fetch(`save.php?action=get_batocera_settings&system=${encodeURIComponent(sysId)}`)
+                            const uncParam = batoceraUncPath ? `&unc_path=${encodeURIComponent(batoceraUncPath)}` : '';
+                            fetch(`save.php?action=get_batocera_settings&system=${encodeURIComponent(sysId)}${uncParam}`)
                                 .then(r => r.json())
                                 .then(sData => {
                                     if (currentSeq !== batoceraCheckSeq || !activeSystem || activeSystem.id !== sysId) return;
@@ -14765,7 +14767,8 @@
                     }
                 }
 
-                const url = `save.php?action=check_batocera_games&system=${encodeURIComponent(sysId)}&folder=${encodeURIComponent(folder)}${forceRefresh ? '&force_refresh=1' : ''}&_t=${Date.now()}`;
+                const uncParam = batoceraUncPath ? `&unc_path=${encodeURIComponent(batoceraUncPath)}` : '';
+                const url = `save.php?action=check_batocera_games&system=${encodeURIComponent(sysId)}&folder=${encodeURIComponent(folder)}${forceRefresh ? '&force_refresh=1' : ''}${uncParam}&_t=${Date.now()}`;
                 const res = await fetch(url);
                 if (!res.ok) return;
                 const data = await res.json();
@@ -21830,7 +21833,8 @@
                         </tr>
                     `;
                 }
-                const res = await fetch('save.php?action=get_batocera_overview&v=' + Date.now());
+                const uncParam = batoceraUncPath ? `&unc_path=${encodeURIComponent(batoceraUncPath)}` : '';
+                const res = await fetch(`save.php?action=get_batocera_overview${uncParam}&v=${Date.now()}`);
                 const data = await res.json();
                 if (data.status === 'ok') {
                     batoceraOverviewData = data;
@@ -22018,7 +22022,8 @@
                     rescanBtn.disabled = true;
                     rescanBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
                     try {
-                        const r = await fetch(`save.php?action=check_batocera_games&system=${encodeURIComponent(sysId)}&force_refresh=1`);
+                        const uncParam = batoceraUncPath ? `&unc_path=${encodeURIComponent(batoceraUncPath)}` : '';
+                        const r = await fetch(`save.php?action=check_batocera_games&system=${encodeURIComponent(sysId)}&force_refresh=1${uncParam}`);
                         const d = await r.json();
                         if (d.online) {
                             if (d.folder_exists === false) {
@@ -22155,7 +22160,8 @@
                         batoceraScanSubtitle.textContent = `Reading ROMs in "${cleanFolder}"... (${totalRomsFound.toLocaleString()} ROMs verified so far)`;
                     }
                     try {
-                        const scanRes = await fetch(`save.php?action=check_batocera_games&system=${encodeURIComponent(sys.id)}&force_refresh=1`);
+                        const uncParam = batoceraUncPath ? `&unc_path=${encodeURIComponent(batoceraUncPath)}` : '';
+                        const scanRes = await fetch(`save.php?action=check_batocera_games&system=${encodeURIComponent(sys.id)}&force_refresh=1${uncParam}`);
                         const scanData = await scanRes.json();
                         if (scanData.online) {
                             const matched = (scanData.matched_ids ? scanData.matched_ids.length : 0);
@@ -22815,6 +22821,16 @@
 
                     if (data && data.online) {
                         const count = (data.folders || []).length;
+                        batoceraUncPath = rawVal;
+                        localStorage.setItem('batocera_roms_unc_path', batoceraUncPath);
+                        batoceraOnline = true;
+                        if (Array.isArray(data.folders)) {
+                            batoceraInstalledFolders = new Set(data.folders.map(f => f.toLowerCase()));
+                            if (batoceraInstalledFolders.has('cave3rd')) {
+                                batoceraInstalledFolders.add('cave');
+                            }
+                        }
+                        updateBatoceraPreview();
                         updateHeaderBatoceraStatus(true, data.host, count);
                         showToast(`🟢 Batocera PC (${data.host}) is ONLINE! (${count} systems found)`);
                         if (cfgBatoceraConnNotice) {

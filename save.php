@@ -153,6 +153,14 @@ function getPixnConfig($baseDir) {
     return $config;
 }
 
+function getPixnBatoceraUncPath($baseDir, $explicit = '') {
+    if (!empty($explicit) && is_string($explicit) && trim($explicit) !== '') {
+        return trim($explicit);
+    }
+    $cfg = getPixnConfig($baseDir);
+    return trim($cfg['batocera_unc_path'] ?? '\\\\BATOCERA\\share\\roms');
+}
+
 function fetchPixnRetroApi($endpoint, $baseDir, $timeout = 10) {
     $cfg = getPixnConfig($baseDir);
     $cookie = $cfg['pixn_session_cookie'] ?? '';
@@ -459,10 +467,8 @@ if ($action === 'get_batocera_media') {
         exit('Invalid parameters');
     }
 
-    $configFile = $baseDir . '/batocera_config.json';
-    $config = file_exists($configFile) ? readJsonFile($configFile) : [];
-    $uncPath = trim($_GET['unc_path'] ?? ($data['unc_path'] ?? ($config['unc_path'] ?? '')));
-    $conn = getBatoceraHostAndShare($uncPath ?: '//batocera-rgs/share/roms');
+    $uncPath = getPixnBatoceraUncPath($baseDir, $_GET['unc_path'] ?? ($data['unc_path'] ?? ''));
+    $conn = getBatoceraHostAndShare($uncPath);
 
     $targetHost = $conn ? $conn['targetHost'] : 'batocera-rgs';
     $share = $conn ? $conn['share'] : 'share';
@@ -923,10 +929,8 @@ if ($action === 'check_batocera_video') {
         exit;
     }
 
-    $configFile = $baseDir . '/batocera_config.json';
-    $config = file_exists($configFile) ? readJsonFile($configFile) : [];
-    $uncPath = trim($_GET['unc_path'] ?? ($data['unc_path'] ?? ($config['unc_path'] ?? '')));
-    $conn = getBatoceraHostAndShare($uncPath ?: '//batocera-rgs/share/roms');
+    $uncPath = getPixnBatoceraUncPath($baseDir, $_GET['unc_path'] ?? ($data['unc_path'] ?? ''));
+    $conn = getBatoceraHostAndShare($uncPath);
 
     $targetHost = $conn ? $conn['targetHost'] : 'batocera-rgs';
     $cleanSys = preg_replace('/(_batocera|_retrobat)$/i', '', $sysId);
@@ -1169,10 +1173,8 @@ if ($action === 'stream_batocera_video') {
         exit('Invalid parameters');
     }
 
-    $configFile = $baseDir . '/batocera_config.json';
-    $config = file_exists($configFile) ? readJsonFile($configFile) : [];
-    $uncPath = trim($_GET['unc_path'] ?? ($config['unc_path'] ?? ''));
-    $conn = getBatoceraHostAndShare($uncPath ?: '//batocera-rgs/share/roms');
+    $uncPath = getPixnBatoceraUncPath($baseDir, $_GET['unc_path'] ?? ($data['unc_path'] ?? ''));
+    $conn = getBatoceraHostAndShare($uncPath);
 
     $targetHost = $conn ? $conn['targetHost'] : 'batocera-rgs';
     $share = $conn ? $conn['share'] : 'share';
@@ -2626,6 +2628,17 @@ if ($action === 'get_system_metadata') {
         exit;
     }
 
+    $cacheDir = $baseDir . '/data/cache_gamelist';
+    $cacheFile = $cacheDir . '/' . $sysId . '.json';
+    if (file_exists($cacheFile) && (time() - filemtime($cacheFile) < 86400 * 7)) {
+        header('Content-Type: application/json; charset=utf-8');
+        header('X-Pixn-Cache: HIT');
+        echo '{"status":"ok","system":' . json_encode($sysId) . ',"metadata":';
+        readfile($cacheFile);
+        echo '}';
+        exit;
+    }
+
     $metaMap = getPixnSystemGamelist($baseDir, $sysId);
     echo json_encode([
         'status' => 'ok',
@@ -3333,9 +3346,7 @@ function getBatoceraFoldersList($baseDir, $uncPath, $forceRefresh = false) {
 }
 
 if ($action === 'get_batocera_folders') {
-    $configFile = $baseDir . '/batocera_config.json';
-    $config = file_exists($configFile) ? readJsonFile($configFile) : [];
-    $uncPath = trim($_GET['unc_path'] ?? ($data['unc_path'] ?? ($config['unc_path'] ?? '')));
+    $uncPath = getPixnBatoceraUncPath($baseDir, $_GET['unc_path'] ?? ($data['unc_path'] ?? ''));
     $forceRefresh = !empty($_GET['force_refresh']) || !empty($_GET['refresh']);
 
     $res = getBatoceraFoldersList($baseDir, $uncPath, $forceRefresh);
@@ -3944,9 +3955,7 @@ function getBatoceraSystemInfoData($baseDir, $uncPath, $forceRefresh = false) {
 }
 
 if ($action === 'get_batocera_sysinfo' || $action === 'get_batocera_system_info') {
-    $configFile = $baseDir . '/batocera_config.json';
-    $config = file_exists($configFile) ? readJsonFile($configFile) : [];
-    $uncPath = trim($_GET['unc_path'] ?? ($data['unc_path'] ?? ($config['unc_path'] ?? '')));
+    $uncPath = getPixnBatoceraUncPath($baseDir, $_GET['unc_path'] ?? ($data['unc_path'] ?? ''));
     $forceRefresh = !empty($_GET['force_refresh']) || !empty($_GET['refresh']);
 
     $res = getBatoceraSystemInfoData($baseDir, $uncPath, $forceRefresh);
@@ -3955,9 +3964,7 @@ if ($action === 'get_batocera_sysinfo' || $action === 'get_batocera_system_info'
 }
 
 if ($action === 'get_batocera_settings') {
-    $configFile = $baseDir . '/batocera_config.json';
-    $config = file_exists($configFile) ? readJsonFile($configFile) : [];
-    $uncPath = trim($_GET['unc_path'] ?? ($data['unc_path'] ?? ($config['unc_path'] ?? '')));
+    $uncPath = getPixnBatoceraUncPath($baseDir, $_GET['unc_path'] ?? ($data['unc_path'] ?? ''));
     $forceRefresh = !empty($_GET['force_refresh']) || !empty($_GET['refresh']);
     $sysId = strtolower(preg_replace('/[^a-zA-Z0-9_\-]/', '', $_GET['system'] ?? ($data['system'] ?? '')));
 
@@ -4006,9 +4013,7 @@ if ($action === 'check_batocera_games') {
         exit;
     }
 
-    $configFile = $baseDir . '/batocera_config.json';
-    $config = file_exists($configFile) ? readJsonFile($configFile) : [];
-    $uncPath = trim($_GET['unc_path'] ?? ($data['unc_path'] ?? ($config['unc_path'] ?? '')));
+    $uncPath = getPixnBatoceraUncPath($baseDir, $_GET['unc_path'] ?? ($data['unc_path'] ?? ''));
     
     $conn = getBatoceraHostAndShare($uncPath);
     if (!$conn) {
@@ -4038,6 +4043,25 @@ if ($action === 'check_batocera_games') {
     // Cache parameters
     $forceRefresh = !empty($_GET['force_refresh']) || !empty($_GET['refresh']);
 
+    $cacheDir = __DIR__ . '/data/cache_batocera';
+    if (!is_dir($cacheDir)) {
+        @mkdir($cacheDir, 0777, true);
+    }
+    $cacheKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $sysId . '_' . $host . '_' . $share . '_' . $fullRemoteDir);
+    $cacheFile = $cacheDir . '/' . $cacheKey . '.json';
+    $cacheTTL = 600; // 10 minutes TTL
+
+    // Fast path: if cache file exists and is fresh (< 10 minutes), stream directly without any network probe!
+    if (!$forceRefresh && file_exists($cacheFile)) {
+        $age = time() - filemtime($cacheFile);
+        if ($age < $cacheTTL && filesize($cacheFile) > 50) {
+            header('Content-Type: application/json; charset=utf-8');
+            header('X-Pixn-Cache: HIT');
+            readfile($cacheFile);
+            exit;
+        }
+    }
+
     // Determine direct filesystem base path if accessible (e.g. Windows UNC or mounted local path)
     $directBasePath = '';
     $cleanUnc = str_replace('\\', '/', $uncPath);
@@ -4049,28 +4073,6 @@ if ($action === 'check_batocera_games') {
         $winBase = '\\\\' . $targetHost . '\\' . $share . ($subDir !== '' ? '\\' . str_replace('/', '\\', $subDir) : '');
         if (@is_dir($winBase)) {
             $directBasePath = $winBase . '\\' . $batoceraFolder;
-        }
-    }
-
-    $cacheDir = __DIR__ . '/data/cache_batocera';
-    if (!is_dir($cacheDir)) {
-        @mkdir($cacheDir, 0777, true);
-    }
-    $cacheKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $sysId . '_' . $host . '_' . $share . '_' . $fullRemoteDir);
-    $cacheFile = $cacheDir . '/' . $cacheKey . '.json';
-    $cacheTTL = 600; // 10 minutes TTL
-
-    // Fast path: if cache file exists and is fresh (< 10 minutes), return directly!
-    if (!$forceRefresh && file_exists($cacheFile)) {
-        $age = time() - filemtime($cacheFile);
-        if ($age < $cacheTTL) {
-            $cachedJson = @file_get_contents($cacheFile);
-            if ($cachedJson && strlen($cachedJson) > 50) {
-                header('Content-Type: application/json; charset=utf-8');
-                header('X-Pixn-Cache: HIT');
-                echo $cachedJson;
-                exit;
-            }
         }
     }
 
@@ -4762,11 +4764,10 @@ if ($action === 'check_batocera_games') {
                             'ext_mismatch' => $extMismatch,
                             'size_mismatch' => $sizeMismatch,
                             'is_mismatch' => ($extMismatch || $sizeMismatch),
-                            'is_fuzzy' => false,
-                            'desc' => $foundDesc
+                            'is_fuzzy' => false
                         ];
                         if ($romId) $matchedDetails[$romId] = $detailObj;
-                        if ($gameName) $matchedDetails[$gameName] = $detailObj;
+                        if ($gameName && $gameName !== $romId) $matchedDetails[$gameName] = $detailObj;
                     }
                 }
             }
@@ -4876,11 +4877,10 @@ if ($action === 'check_batocera_games') {
                             'ext_mismatch' => $extMismatch,
                             'size_mismatch' => $sizeMismatch,
                             'is_mismatch' => ($extMismatch || $sizeMismatch),
-                            'is_fuzzy' => true,
-                            'desc' => $foundDesc
+                            'is_fuzzy' => true
                         ];
                         if ($romId) $matchedDetails[$romId] = $detailObj;
-                        if ($gameName) $matchedDetails[$gameName] = $detailObj;
+                        if ($gameName && $gameName !== $romId) $matchedDetails[$gameName] = $detailObj;
 
                         foreach ($companionOf as $compIdx => $pIdx) {
                             if ($pIdx === $mIdx) {
@@ -4975,6 +4975,14 @@ if ($action === 'check_batocera_games') {
     }
     $mismatchCount = count($mismatchedFiles);
 
+    // Strip redundant descriptions and long text from gamelist_meta to save 15+ MB of transfer & memory
+    $clientGamelistMeta = [];
+    foreach ($gamelistMeta as $k => $m) {
+        $cm = $m;
+        unset($cm['desc']);
+        $clientGamelistMeta[$k] = $cm;
+    }
+
     $responseData = [
         'status' => 'ok',
         'online' => true,
@@ -4990,7 +4998,7 @@ if ($action === 'check_batocera_games') {
         'matched_sizes' => $matchedSizes,
         'matched_details' => $matchedDetails,
         'other_games' => $otherGames,
-        'gamelist_meta' => $gamelistMeta,
+        'gamelist_meta' => $clientGamelistMeta,
         'cached' => false,
         'scanned_at' => time()
     ];
@@ -5148,9 +5156,7 @@ if ($action === 'check_batocera_batch') {
     }
     $results = [];
 
-    $configFile = $baseDir . '/batocera_config.json';
-    $config = file_exists($configFile) ? readJsonFile($configFile) : [];
-    $uncPath = trim($config['unc_path'] ?? '');
+    $uncPath = getPixnBatoceraUncPath($baseDir, $_GET['unc_path'] ?? ($data['unc_path'] ?? ''));
     $foldersInfo = getBatoceraFoldersList($baseDir, $uncPath, false);
     $batoceraOnline = !empty($foldersInfo['online']);
     $installedFolders = ($batoceraOnline && !empty($foldersInfo['folders'])) ? array_flip($foldersInfo['folders']) : [];
@@ -5222,9 +5228,7 @@ if ($action === 'get_batocera_overview') {
     $totalInstalled = 0;
     $totalCatalogGames = 0;
 
-    $configFile = $baseDir . '/batocera_config.json';
-    $config = file_exists($configFile) ? readJsonFile($configFile) : [];
-    $uncPath = trim($config['unc_path'] ?? '');
+    $uncPath = getPixnBatoceraUncPath($baseDir, $_GET['unc_path'] ?? ($data['unc_path'] ?? ''));
     $foldersInfo = getBatoceraFoldersList($baseDir, $uncPath, false);
     $installedFolders = (!empty($foldersInfo['online']) && !empty($foldersInfo['folders'])) ? $foldersInfo['folders'] : null;
 
