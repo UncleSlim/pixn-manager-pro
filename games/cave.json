@@ -1,0 +1,392 @@
+[
+    {
+        "id": "agallet.zip",
+        "name": "Air Gallet",
+        "publisher": "Banpresto / Gazelle",
+        "releasedate": "19960101T000000",
+        "size_mb": 7.02,
+        "developer": "Gazelle",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "The player controls a fighter jet and shoot enemies in the air and on the ground, collects power-ups, and defeat bosses to advance levels. The player must collect four power ups to upgrade their weapon. There are four weapon types: L, a laser weapon, S, a support drone, M, a tracing missile, and F, gatling Fire, a spread-out vulcan bullet shot.\nFour levels of power-ups are available for each weapon, however each level requires four power up tokens be collected. There are also two special \"bomb\" weapons available for collection - green Energy Spark for a screen-covering swarm of lower-power bombs and blue Thunder Drive for a narrower and more focused attack. The Energy Spark clears all bullets from the screen, while the Thunder Drive only clears bullets that actually touch the blast. This blast starts momentarily atop the player, but quickly moves forward a short distance and stays stationary for a few seconds before dissipating."
+    },
+    {
+        "id": "akatana.zip",
+        "name": "Akai Katana shin",
+        "publisher": "Cave",
+        "releasedate": "20100101T000000",
+        "size_mb": 71.6,
+        "developer": "Cave",
+        "genre": "Shooter",
+        "desc": "Set in a parallel world resembling Japan's Taishō period, the people have discovered the powerful Blood Swords, the titular Akai Katana. Requiring human sacrifices to unleash their immense destructive power, these swords have been used by the empire to crush neighbouring countries. However, all the bloodshed and power gained through sacrificing close family members has made some of the swordsmen reconsider. With new fighter planes and the powered up swords at their disposal, this small band of rebels now fight back against the tyrannical empire."
+    },
+    {
+        "id": "crusherm.zip",
+        "name": "Crusher Makochan",
+        "publisher": "Takumi",
+        "releasedate": "19990101T000000",
+        "size_mb": 2.27,
+        "developer": "Takumi",
+        "genre": "Fight",
+        "desc": "Crusher Makochan is a little known project of Takumi (or Takumi Corporation, best known for shooting games like Giga Wing, Mars Matrix, etc.) The player must destroy elements of the set to win medals. These medals make it possible to buy improvements that allow you to advance in the game."
+    },
+    {
+        "id": "deathsml.zip",
+        "name": "Deathsmiles",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20070101T000000",
+        "size_mb": 63.11,
+        "developer": "Cave",
+        "genre": "Shoot'em Up, Shoot'em Up / Horizontal",
+        "desc": "Windia, a young girl living in London, mysteriously vanishes after being drawn into a flash of light.\nAwakening in the Otherworld, Windia arrives in a Western city reminiscent of the early 20th century, and is cared for by Dior, an elderly lord. Discovering there is no way home, Dior reveals to Windia that she is one of the 'lost children', those with magical powers chosen to protect the kingdom..."
+    },
+    {
+        "id": "DeathSmiles 2.wsquashfs",
+        "name": "Deathsmiles II: Makai no Merry Christmas",
+        "publisher": "Cave",
+        "releasedate": "20090101T000000",
+        "size_mb": 318.32,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Horizontal, Shoot'em Up",
+        "desc": "Deathsmiles II: Makai no Merry Christmas is a horizontal side scrolling shoot 'em up arcade game by Japanese developer Cave, released in 2009. It is the third Cave shoot 'em up to be played using a horizontally-oriented monitor (preceded by Progear and the original Deathsmiles). Deathsmiles II is also the first CAVE arcade game to use polygons instead of their traditional sprites for graphics."
+    },
+    {
+        "id": "dsmbl.zip",
+        "name": "Deathsmiles MegaBlack Label",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20080101T000000",
+        "size_mb": 78.85,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Horizontal, Shoot'em Up",
+        "desc": "Enter the world of Gilverado, a kingdom plagued by hideous monsters and tortured souls. Choose from four angels with unique demonic familiars and battle against a storm of enemies pouring out of Hell's gates! Fight your way out of tight spots as you are surrounded by enemy units and bullets from both sides of the screen."
+    },
+    {
+        "id": "ddonpachj.zip",
+        "name": "DoDonPachi",
+        "publisher": "Atlus / Cave",
+        "releasedate": "19970101T000000",
+        "size_mb": 7.51,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "The past is being altered. An android, known as Next EXY, has traveled one thousand years back in time. Your task is to stop NEXY and the other Elemental Daughters who were built in the image of the Elemental Dolls who once protected humanity. What is NEXY’s intent? Should you attack what you shouldn’t understand? Orders are orders, and Col. Godwin Longhener is not to be ignored."
+    },
+    {
+        "id": "dfkbl.zip",
+        "name": "DoDonPachi Dai-Fukkatsu Black Label",
+        "publisher": "Cave",
+        "releasedate": "20100101T000000",
+        "size_mb": 45.64,
+        "developer": "Cave",
+        "genre": "Shoot'em Up",
+        "desc": "This is an updated version of \"DoDonPachi Dai-Fukkatsu\" with the following changes:\nShip selection changed: players now select the fighter type, then the style (Bomb, Power, or Strong). The style now corresponds to easy, medium, and hard difficulty respectively. Then, player can select whether to utilize auto-bomb or not.\nShips can now fire both laser and shot simultaneously.\nScore counter's number letter sizes increase every 5th digit for easier viewing\nAdded Red Mode, a small long bar at top right (or top middle when playing with two players) which increases if you shoot both laser and shot simultaneously. When it passes a certain threshold, the bar in the meter turns red, and the game becomes much more difficult while it is in the red. The bar will reset when the player dies, or reduced after hyper ends / player does not shoot both laser and shot.\nHyper meter now increase very slowly unless you turn the \"Red Mode\" bar red. In addition, Hyper power itself runs out much faster after use.\nHypers can now be \"collected\" for the Power style. Continue to increase the Hyper meter and it will stock up like a bomb when the meter is filled.\nActivating the hyper now shows the current \"rank\" of the Hyper effectiveness with blocking bullets temporarily.\nThe bee bonus items in the stages function differently.\nHibachi (true final boss) now can appear in the first loop if certain requirements are met. In addition, the difficulty / durability of both the final boss Taisabachi, now renamed Supreme Weapon of Extreme Hellish Annihilation - Golden Disaster and the true final boss have increased dramatically.\nHit combos are now calculated differently. Namely, the hit combo does not go up as fast unless you turn the \"Red Mode\" bar red.\nAll the music has been replaced."
+    },
+    {
+        "id": "ddpdfk.zip",
+        "name": "DoDonPachi Dai-Fukkatsu Ver 1.5",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20080101T000000",
+        "size_mb": 42.17,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "After the turmoil caused by the assault on Lunapolis which sparked the \"Blissful Death Wars\" (as depicted in the previous installment), peace seems to have been restored, with the legendary DonPachi Corps retreating to its HQ in a space-time fold. Six years later, anomalies are detected in the space-time fabric, yet tests reveal nothing out of order, with the portals regularly functioning for both teleportation and time travel; also, the leader of the DonPachi squadron Colonel Godwin Longhener dismisses the matter due to the lack of actual danger.\nNevertheless, a technician delves deeper into the anomaly, discovering that something has infiltrated the HQ computer systems and is using the portals to send large quantities of materials and data to the past, spreading out like a virus and quickly evolving. In an ironic twist, the virus is discovered to be the program originally installed in the Element Dolls six years ago, now reaching beyond the DonPachi Corps programming and seeking to annihilate the human race in retaliation for their \"enslavement\" (after the war, they met a rather cruel demise at the hand of their own human creators) by waging war in the past rather than in the present: unsettled, the Colonel authorizes the last transport ship to time jump in order to fight back the invasion before future changes. However, he states: \"Start over from the past... I never thought of that\", echoing the ideas of mankind's imperfection which has always been a recurring theme in the series.\nAnd once again, the three pilots jump back in time to 2008 and enter the fray, the transport ship being targeted as soon as it exits the portal: the Element Daughters, gigantic evolutions of the Dolls, are awaiting...\nThe bee is still humming."
+    },
+    {
+        "id": "ddpdojb.zip",
+        "name": "DoDonPachi Dai-Ou-Jou",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20020101T000000",
+        "size_mb": 17.78,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "The fourth installment of the Donpachi series developed by Cave. It follows the same pattern as its predecessors: a manic-style 2D vertical shooter with millions of bullets to dodge and up to six machine/pilot combinations. Up to two players can play simultaneously."
+    },
+    {
+        "id": "ddpdojblkb.zip",
+        "name": "DoDonPachi Dai-Ou-Jou Black Label",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20020101T000000",
+        "size_mb": 18.52,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "An easier release of \"Dodonpachi Dai-Ou-Jou\" released shortly after the original version.\nIt seems this release is due to a small number of complaints from high-level arcade players regarding the difficult level of \"Dodonpachi Dai-Ou-Jou\". The major complaints were:\n\"Dodonpachi Dai-Ou-Jou\" confiscates any spare lives you had at the end of the first loop making more difficult to reach the end of the second loop.\nYou cannot continue if you lose your last life on stage 2-5.\nOn this version you select 1 Loop Mode or 2 Loop Mode at the beginning, after selecting your ship. 2 Loop Mode is the normal arcade play with both loops (and as with \"Dodonpachi Dai-Ou-Jou\", after clearing the 1-5 boss, you have the option to continue into the second loop, or call it a day). With 1 Loop Mode, after defeating the 1-5 boss, you reach the Hibachi fight, which you can also now credit-feed through. So this makes practicing Hibachi much more feasable than what would be needed in \"Dodonpachi Dai-Ou-Jou\"."
+    },
+    {
+        "id": "ddp2.zip",
+        "name": "DoDonPachi II: Bee Storm",
+        "publisher": "IGS",
+        "releasedate": "20010101T000000",
+        "size_mb": 14.38,
+        "developer": "International Games System",
+        "genre": "Shooter",
+        "desc": "Bee Storm was released in May 2001 in the Japanese arcades.\nDeveloped by IGS and published by Capcom under license from the developer.\nIt was the first shoot'em up game made on the PGM hardware.\nScitron Digital Content released a limited-edition soundtrack album for this game (Dodonpachi II / Dodonpachi Sound Trax - SCDC-00126) on 19/09/2001."
+    },
+    {
+        "id": "ddp3.zip",
+        "name": "DoDonPachi III",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20020101T000000",
+        "size_mb": 17.78,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "The fourth game in the Donpachi series and the first to be ported to the PS2, courtesy of Arika.\nA prototype export/overseas version of the DoDonPachi DaiOuJou Black Label edition named DoDonPachi III was discovered in 2016."
+    },
+    {
+        "id": "ddpsdoj.zip",
+        "name": "DoDonPachi SaiDaiOuJou",
+        "publisher": "Cave",
+        "releasedate": "20120101T000000",
+        "size_mb": 70.18,
+        "developer": "CAVE Interactive",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "Dodonpachi Sai-Dai-Ou-Jou is the final game in the DonPachi series of overhead 2D shooters and Cave's final arcade game. It follows in the footsteps of Dodonpachi Dai-Ou-Jou, featuring a variation on that game's scoring system and a traditional set of Dodonpachi ships. Players choose one of several ships to blast through five intense vertically-scrolling levels, dodging bullets and shooting down countless waves of enemies. Unlike previous Dodonpachi games, there is only a single, tightly-focused loop, and the game's true final boss is encountered at the end of this one loop by collecting every bee medallion in the game, not dying, and not using any bombs.\nThe plot picks up after the previous two games. Most of humanity was wiped out in the Blissful Death Wars; the survivors group together in cities managed by bio-mechanical element dolls."
+    },
+    {
+        "id": "donpachij.zip",
+        "name": "DonPachi",
+        "publisher": "Atlus / Cave",
+        "releasedate": "19950101T000000",
+        "size_mb": 4.63,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "DonPachi is a 1995 vertical manic shoot-'em-up originally in arcades and was the first game from the developer Cave. Settings are mainly woodland and enemies are military vehicles and robots, culminating in the final boss, a huge robotic bee. One of three weapon configurations is chosen at start and then levelled up through dropped power-ups. DonPachi was ported to the Sega Saturn and Sony Playstation in 1996."
+    },
+    {
+        "id": "esprade.zip",
+        "name": "ESP Ra.De. - A.D.2018 Tokyo",
+        "publisher": "Atlus / Cave",
+        "releasedate": "19980101T000000",
+        "size_mb": 13.75,
+        "developer": "Cave",
+        "genre": "Shoot'em Up, Shoot'em Up / Vertical",
+        "desc": "ESP Ra.De. is a 1998 arcade game developed by Cave and published by Atlus. It is the first non-DonPachi game released by Cave. ESP Ra.De. received spiritual prequels in the form of the Espgaluda series; however, ESP Ra.De. is related to the Espgaluda series only by shared name and programmer Tsuneki Ikeda.\nBy 2018, Tokyo has reached its maximum extension, therefore falling prey of common problems such as overpopulation and criminality. For this reason, an artificial island, aptly named Tokyo-2, is created just offshore, thanks to the support of the shady \"Yaksa\" corporation, led by elusive billionaire Garra Ono, whose ties with the modern incarnation of Yakuza have not been proven. Another source of instability is given by the rising number of humans exhibiting extrasensory perception, the so-called ESPers, who are constantly hunted down by the Japanese Police Force. Unknown to everyone, Garra herself is an extremely powerful ESPer, bent on using her influence over the government and military to replace every living being in the city with clones (disturbingly enough, these ESPers take the form of a 10 years old girl, named \"Alice\" and implied to originate from Garra's own DNA). Just as her plans begin to unfold, three children are forced to take action, each one for his or her own personal motives.\nThe story takes place in December, during a 24-hour arc; each character has a specific stage which initiates his or her storyline, culminating with the final encounter."
+    },
+    {
+        "id": "espgal.zip",
+        "name": "Espgaluda",
+        "publisher": "CAVE / AMI",
+        "releasedate": "20030101T000000",
+        "size_mb": 17.35,
+        "developer": "Cave",
+        "genre": "Shoot'em Up, Shoot'em Up / Vertical",
+        "desc": "A great vertically scrolling manic shooter. \nIn an otherwise peaceful world, the Shinra Empire began conquering nearby nations one by one to expand their territory gradually. Meanwhile, in the Shinra weapons lab, the Espgaluda project produced two successful prototypes: Agaha and Tateha. Fearing for their future, the project's head scientist, Hiodoshi, escaped with the two prototypes to a nearby kingdom, but time after were found by Shinra's troops and Hiodoshi was killed by the attack of the imperial army, the power of the galuda has awaken. \nYou have the option of controlling one of two siblings each with different skills, Ageha  faster but with narrower shooting capabilities or Tateha slower but with a wider attack. As you fly through the various stages various mechanical enemies attack with a high number of bullets, often nearly filling the screen. Aside from the regular shots, Ageha and Tateha also have additional abilities which help the player navigate through the numerous bullets. The first is a guard barrier; when activated the player is immune to collisions and as a bonus when the barrier button is released a more powerful laser shot is fired. A meter at the bottom of the screen indicates how much power is left in the barrier. The second ability is called the Kakusei mode; when this mode is activated your character gender is altered and is able to fire a more powerful shot. More importantly, when this mode is activated all of the enemies and their bullets slow down considerably while the players speed remains the same making it easier to navigate through a tricky pattern of bullets. Activating Kakusei mode will rapidly deplete the players supply of green gems; since the number of gems isn't limitless the player may not be able to remain in Kakusei mode for long. When not in Kakusei mode additional gems can be collected by destroying the various enemies. If the player completely runs out of gems, enemy bullets begin travelling faster than usual. Another bonus in the game is gold inguts which greatly increase the players score. These are found when in Kakusei mode; when an enemy is destroyed, all of its bullets will turn into ingots which can be collected by the player."
+    },
+    {
+        "id": "espgal2.zip",
+        "name": "Espgaluda II",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20050101T000000",
+        "size_mb": 45.19,
+        "developer": "Cave",
+        "genre": "Shoot'em Up, Shoot'em Up / Vertical",
+        "desc": "Three years after the so-called \"Great Shinra War\" comes to a close, its impact has yet to fade: the formerly-prosperous nation of Soma, one of the invasion's targets, still struggles to recover. In the midst of all this, Ageha and Tateha, along with their mother, newly freed from her self-imposed bonds, have retreated into hiding here, hoping to finally obtain some measure of peace for themselves. Little do they know that the country's researchers have been combing through the wreckage of Jakou's empire, in search of the secret behind the \"spirit engine\" - once the device's inner workings are finally deciphered, Soma's royal family quickly commences its own quest for military dominance. The children of Project Espgaluda find themselves hunted down once again, and are forced back into battle - this time around, though, they're not quite so alone."
+    },
+    {
+        "id": "feversos.zip",
+        "name": "Fever SOS",
+        "publisher": "Cave / Nihon System Inc.",
+        "releasedate": "19980101T000000",
+        "size_mb": 6.71,
+        "developer": "Cave",
+        "genre": "Shoot'em Up, Shoot'em Up / Vertical",
+        "desc": "Planet Meruto, a well known powerful military force in the Milky Way, sends out a Flagship under the command of Admiral Gratze, to attack the earth in order to gain one of it's most desired raw materials in the Galaxy: Water\nOn Planet Fever, a small planet between Meruto and the Earth a base was planned to be installed, from there the attack vessels should start the invasion of Planet Earth. But before Admiral Gratze's plan was fullfilled, a mysterious wave appeared in space and confused the instruments of Meruto's fleet, and disrupted Admiral Gratze's love chat with his wife Irene Catharine. About this he got angry to such an extent that he forced his fleet to land on the source of this wave. So the wheel of fate began to spin..."
+    },
+    {
+        "id": "gaia.zip",
+        "name": "Gaia Crusaders",
+        "publisher": "Noise Factory",
+        "releasedate": "19990101T000000",
+        "size_mb": 18.34,
+        "developer": "Noise Factory",
+        "genre": "Beat'em Up, Fight, Fight / 2.5D",
+        "desc": "Gaia Crusaders is a one or two-player side-scrolling beat-em-up in which players must battle Satan and his army of demons that have captured and taken over the world. Players select a character from a choice of five combatants known as 'Elemental Warriors'. Each of the characters possesses either Wind strength, Fire strength, or a mix of the two. \nThe game has the standard punch and kick attack moves as well as magical special moves. Combos can be strung together by switching quickly between kicking and punching. Players can also perform a 'super attack' by pressing the jump, punch and kick buttons simultaneously, this hits many enemies at once but costs the player character some health. It's also possible to raise a shield by pressing jump and kick simultaneously.\nAt regular intervals coloured spheres appear, players can pick these up to gain a magical attack. The effects of the magic attack differs depending on the player character. If the magic matches the character's elemental attribute (fire, wind or both), they will gain a special, screen-clearing attack. Otherwise, they earn a powerful special attack. \nIn addition to the elemental spheres, there are two types of bombs that also appear, both of which detonate immediately once picked up. The first is an earthquake that hits all on-screen enemies and inflicts a large amount of damage. The second is a random bomb that sends out pillars of fire, hurting any enemies they come into contact with. There are also explosive boxes that can be kicked at enemies to keep them at bay. One last notable item is the sword, which functions much like weapons that can be found on the ground in many other beat 'em ups. A boss battle awaits players at the end of each stage.\nGaia Crusaders is heavily influenced by another scrolling beat-em-up, Capcom's 1989 classic, Final Fight and also, to a lesser degree, by Sega's Golden Axe (the latter being the use of the Magical Attack acting as a smart bomb)."
+    },
+    {
+        "id": "plegends.zip",
+        "name": "Gogetsuji Legends",
+        "publisher": "Atlus",
+        "releasedate": "19950101T000000",
+        "size_mb": 16.6,
+        "developer": "Cave",
+        "genre": "Fighting",
+        "desc": "Gogetsuji Legends, alternatively known as Gogetsuji Legends, and Gōketsuji Gaiden Saikyō Densetsu (豪血寺外伝最強伝説) in Japan, and Power Instinct Legends, is the third installment in the series, though it is not exactly a proper sequel, serving more as a \"midquel\" of sorts. It was released in arcades on June 20, 1995."
+    },
+    {
+        "id": "guwange.zip",
+        "name": "Guwange",
+        "publisher": "Atlus / Cave",
+        "releasedate": "19990101T000000",
+        "size_mb": 17.89,
+        "developer": "Cave",
+        "genre": "Shoot'em Up",
+        "desc": "The story of Guwange is set during the Muromachi period of Japan. During this time, increasing numbers of people suffer possession by shikigami. Although the shikigami grant great spiritual powers, the strain inflicted on the host causes them to die exactly one year after possession. However, a legend has sprung up regarding Guwange, the malevolent god trapped in Mt. Gokumon (i.e. Hell Gate). If one possessed by a shikigami can gather talismans of the five Chinese elements?wood, fire, earth, metal, water?from five demons serving Guwange, then infiltrate Gokumon and slay Guwange, the shikigami will be destroyed and the one possessed will not suffer a premature death."
+    },
+    {
+        "id": "hotdogst.zip",
+        "name": "Hotdog Storm - The First Supersonics",
+        "publisher": "Ace International Licence",
+        "releasedate": "19960101T000000",
+        "size_mb": 1.43,
+        "developer": "Marble",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "Hot Dog Storm plays like any typical vertical scrolling shoot 'em up from the early-to-mid 90's. The player takes the role of the pilot of a futuristic space fighter, waging war against a horde of giant robots, tanks, mechs, and massive gunships. Similar to games like Strikers 1945 or Raiden, enemies often attack with extremely fast volleys of projectiles, in contrast to proto-bullet hell games such as DonPachi that started appearing the previous year.\nThe game has five stages, each ending in a boss fight. Bosses have destructible parts that can be blown apart piece by piece for more points, and each boss also has a telegraphed super weapon that fires periodically and must be avoided. \nThe game never explains its unusual title."
+    },
+    {
+        "id": "ibara.zip",
+        "name": "Ibara",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20050101T000000",
+        "size_mb": 32.3,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "The time is the 19th century, excited with the development of the steam engine. The Northern European country of Edelweiss is a land which especially excels in the mechanical industry with their precise techniques. Their growth is amazing. However, when one least desires it, dark clouds always appear.\nThat morning there was a cold, awkward feeling in the air. The once called Professor Teresa Rose gives a fearless smile. \"Let's destroy this filthy land and it's people. We must make this world beautiful. Yes... then we'll make the entire surface a lovely rose garden.\"\n\"We'll make you beautiful.\"\nTeresa began her attack along with five other women and their fortress which resembled a lump of knives. Under the Rose Garden Emblem, the nails of an eerily laughing iron man destroy buildings, and the roars of a plane which covers the sky burn the Earth. The people's cries and the rising flames illuminate the fortress, as if it were a beautiful flower blossoming from scorched earth.\nThe Rose Garden's power was horrific, but the Edelweiss forces pressed through the desperate battle. Far from being surpressed, but in a worsening situation, the Emperor, not able to handle the situation, ordered into battle his Special Imperial Attack Unit, the Negotiators. \n\"Annihilate the Rose Garden with your ships!\"\nThe \"ships\" which had been secretely readied, as if predicting they would have to stand up to a threat and had longed for this day to come, shone bright."
+    },
+    {
+        "id": "ibarablk.zip",
+        "name": "Ibara Kuro Black Label",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20060101T000000",
+        "size_mb": 40.01,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "Gameplay in Ibara Kuro: Black Label is the closer to the Arrange mode found in the PlayStation 2 port of Ibara than the original version of the game. Like Arrange mode, players are able to switch weapons by pressing a button, although the ability to change the options formation has been removed. The rank bar is also now in the center of the screen. The controls are roughly the same as the original, with the addition of a button dedicated to rapid fire of the normal shot. Holding down the A button causes the player's ship to slow down, in addition to increasing its fire rate and making the ship's hitbox visible. Ibara Kuro: Black Label adds two important changes to the player's ships.\nThe first change is that the Silister Similis (Bond's ship) and Dio Spirossi (Dyne's ship) are no longer locked to the Player 1 and Player 2 sides, with both ships being selectable at the start of the game. After selecting your ship, players then select their ship type. The different ship types are the same as the ones previously only selectable by holding down certain button combinations when selecting your ship. They are listed in the game as A Type (default version), B Type (A button held ship), C Type (B button held variant), and D Type (variant selected by holding A + B). Each ship variant also has its speed, power, and bomb information displayed for that type when highlighted. Note that while both ships are selectable for either player, the characters themselves are still locked to their respective sides. The second change, is that any time the A button is not being held down, any nearby medals, power-ups, or other collectable items are sucked into your ship. This is a game-changer, making the game quite a bit easier than the regular Ibara, but also makes the game tons more fun, as you don't have to put your life on the line when trying to keep the medal chain going. The Dio Spirossi ship (the wide shot ship) can suck in items further away than the Silister Similis can."
+    },
+    {
+        "id": "ket.zip",
+        "name": "Ketsui Kizuna Jigoku Tachi",
+        "publisher": "CAVE / AMI",
+        "releasedate": "20020101T000000",
+        "size_mb": 19.42,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "In the year 2054, chaos spreads over the globe as global warming finally exacts its toll on Earth: the ice caps quickly melt, causing a tremendous series of cataclysms and for entire nations to disappear under the sea. The near apocalyptic setting and the quickly depleting resources of the remaining dry lands force nations into constant war, eventually culminating into World War III; all efforts by the United Nations to cease hostilities are thwarted by a seemingly endless supply of technologically advanced weaponry being sold to each side of every conflict. After investigation, the source is tracked back to EVAC Industry co. ltd, an arms dealer who's been reaping tremendously high profits from the situation, at times directly intervening to fuel the hostilities with utter disregard towards human lives; any attempt to negotiate with the board of directors has utterly failed, the earnings having proven high enough for the company to build its own cities, shipyards, defensive emplacements and even a private airport, to the point of assembling its own army of extremely well equipped mercenary troops."
+    },
+    {
+        "id": "mazinger.zip",
+        "name": "Mazinger Z",
+        "publisher": "Banpresto / Dynamic Pl. Toei Animation",
+        "releasedate": "19940101T000000",
+        "size_mb": 2.78,
+        "developer": "Dynamic PL",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "Mazinger Z was produced by Banpresto in 1994.\nMazinger-Z is a 2D vertical scrolling shooter, based on manga and anime with mechas (giant Japanese robots) \"Mazinger-Z\". The player can choose one from 3 mechas from various series: Mazinger Z, Great Mazinger, and Grendizer.\nThe game has straightforward gameplay - just fly forward and shoot enemies. The player can use 3 attacks - normal shot, energy whip (for close combat), and limited special attack. At the end of each level,a large boss awaits for players. Game has standard co-op for 2 players."
+    },
+    {
+        "id": "mmmbanc.zip",
+        "name": "Medal Mahjong Moukari Bancho",
+        "publisher": "Cave",
+        "releasedate": "20070101T000000",
+        "size_mb": 11.78,
+        "developer": "Cave",
+        "genre": "Asiatic Board Game, Mahjong",
+        "desc": "Medal Mahjong Moukari Bancho is a video game trilogy in the genre of competitive game titles. It was released for the Demul platform. It was the great  game franchise created by Developers, following this game series and is set in the same fictional universe as a prequel to the game franchise.One major difference between the human and robot characters is that the robot characters can blow up (or lose all their power) if they are worked too hard during a game. That can happen if you constantly make them dive for a ball, run extra bases, or even if they get hit by a pitch. Under no stress whatsoever, some robots, especially pitchers, will naturally run out of power as the game progresses. When this happens, they will lose all their abilities and be useless, both offensively and defensively."
+    },
+    {
+        "id": "metmqstr.zip",
+        "name": "Metamoqester",
+        "publisher": "Banpresto",
+        "releasedate": "19950101T000000",
+        "size_mb": 7.76,
+        "developer": "Pandora Box",
+        "genre": "Fighting",
+        "desc": "Metamoqester is a 2D arcade fighting game, similar in concept to Red Earth or Monster Maulers. One or two players (there is a co-op mode) fight against big monsters in deadly duels. There are three different characters to choose from. The game uses four buttons - Weak Attack, Medium Attack, Strong Attack, and Shoot/Throw Weapon."
+    },
+    {
+        "id": "mmpork.zip",
+        "name": "Muchi Muchi Pork!",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20070101T000000",
+        "size_mb": 61.02,
+        "developer": "Cave",
+        "genre": "Shoot'em Up, Shoot'em Up / Vertical",
+        "desc": "Muchi Muchi Pork! is a bullet hell vertical scrolling shooter in cute-'em-up style for one or two players. The theme of the game is pork, and there are pork heads as collectible medals, the special attack is lard attack, the names of main heroines are puns on food items, and the main villain is called General Pork Fillet. The three playable heroines were transformed by the general into plump \"pig\" girls, and so they ride their flying bikes to avenge the general.\nThe game consists of 5 levels. The second loop becomes available if the player clears the game without loosing a life."
+    },
+    {
+        "id": "mushisam.zip",
+        "name": "Mushihime-Sama",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20040101T000000",
+        "size_mb": 36.67,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "In a different time than now...\nA time when deserts spread across the Earth,\nand arthropods with gigantic hard shells flourished.\nThe humans living in the shadows called these beasts\nwith shells who worshipped the god of the forest for Koujuu.\nIn a small part of that forest was the village of the humans. It was a land that was allowed go on surviving, by offering a sacrifice in the form of a 15 year old once every 200 years.\nOn the night of each sacrifice, a great number of shooting stars could be seen, which gave it the name \"Hoshifuri Village\". And living there was a bright princess. Her name was Reco."
+    },
+    {
+        "id": "futaribl.zip",
+        "name": "Mushihime-Sama Futari Black Label - Another Ver",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20070101T000000",
+        "size_mb": 48.87,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "Mushihime-sama Futari Black Label is a heavily altered version of Mushihime-sama Futari developed by Cave.\nThe placement and shot patterns of many enemies have been changed, sometimes dramatically. As a result, the stages can feel very different from the original game in some places. The player characters' shot types have changed as well; rather than offering a choice between Normal and Abnormal shot types as in the original game, each character now has a single shot type that combines certain elements from each of the previous variations. In addition, the player characters' shot power is significantly increased, allowing for bosses to be killed more quickly and some of their more dangerous patterns to be avoided entirely.\nThere are also some more minor, cosmetic changes: some of the stages have had their colors changed slightly, and the appearance of the golden score gems has been changed a bit."
+    },
+    {
+        "id": "futari15.zip",
+        "name": "Mushihime-Sama Futari Ver 1.5",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20060101T000000",
+        "size_mb": 49.35,
+        "developer": "Cave",
+        "genre": "Shoot'em Up, Shoot'em Up / Vertical",
+        "desc": "A vertically shooting game, where players get a choice of characters. Each craft has a different ratio of speed to firepower.\nThe main characters in this version are 'Hiro', 'Kiniro', 'Palm' and 'Reco'."
+    },
+    {
+        "id": "pinkswts.zip",
+        "name": "Pink Sweets Ibara Sorekara",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20060101T000000",
+        "size_mb": 41.16,
+        "developer": "Cave",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up",
+        "desc": "Pink Sweets: Ibara Sorekara (ピンクスウィーツ　～鋳薔薇それから～, Pinku Suītsu: Ibara Sorekara) is a 2006 manic shooter by Cave released for Japanese arcades. It was released for the Xbox 360 in 2011.\nPink Sweets is the sequel to Ibara, and features the stage 1-5 bosses from Ibara as playable characters.\nPlayers get to pilot the gals and use a barrier/shot system to defeat flitting enemies as well as end-level bosses of the pastel-colored type. Enemies besides bosses are named after food. During the game, the gals yelp and intonate various sayings to steel themselves for battle."
+    },
+    {
+        "id": "pwrinst2.zip",
+        "name": "Power Instinct 2",
+        "publisher": "Atlus",
+        "releasedate": "19940101T000000",
+        "size_mb": 14.43,
+        "developer": "Atlus",
+        "genre": "Fight, Fight / Versus",
+        "desc": "Oume Goketsuji, Leader of the Goketsuji clan for the last 60 years, finally was defeated by her younger sister, Otane, the day where she surpassed her older sister finally had arrived.\nOne night, Oshima Goketsuji unexpectedly appeared in front of Oume and offered her help to take revenge of Otane.\nAccording to the rules of the clan, if the leader dies or quits, one new tournament should be held immediately to find a successor.\nThat same night Oshima and Oume sent their servants to dispose of Otane, so while Otane slept, she was kidnapped and thrown to the ocean.\nNext day Kuroko found a letter supposedly written by Otane, where she declined to her right to be the leader of the clan.\nOne week later all the competitors from the previous tournament and other family members were convoked to be informed about Otane's decision and the beginning of a new tournament."
+    },
+    {
+        "id": "sailormn.zip",
+        "name": "Pretty Soldier Sailor Moon",
+        "publisher": "Banpresto / Gazelle",
+        "releasedate": "19950101T000000",
+        "size_mb": 13.56,
+        "developer": "Gazelle",
+        "genre": "Fight, Fight / 2.5D, Beat'em Up",
+        "desc": "The game is a side-scrolling \"beat-'em-up\" game, one or two players pick their desired Senshi and travel through various stages defeating enemies. Items are sometimes dropped by enemies that can range from items that restore health, give extra points, or crystals that allow the Senshi to perform special attacks. Up to five crystals can be collected per player to power up the Senshi's special attacks. During the most difficult moments in battle, Tuxedo Mask will appear and throw a rose, which is a bonus to pick up and depart."
+    },
+    {
+        "id": "uopoko.zip",
+        "name": "Puzzle Uo Poko",
+        "publisher": "Cave / Jaleco",
+        "releasedate": "19980101T000000",
+        "size_mb": 3.39,
+        "developer": "Cave",
+        "genre": "Puzzle-Game, Puzzle-Game / Fall",
+        "desc": "Puzzle Uo Poko is an arcade puzzle game developed by Cave and distributed by Jaleco.\nPuzzle Uo Poko is a visual matching game in which one player or two co-operative players (represented by cats) try to clear the screen of coloured bubbles in order to progress to the next level. All the action takes place underwater and with each completed level the cats travel deeper in their submarine."
+    },
+    {
+        "id": "mushitam.zip",
+        "name": "Puzzle! Mushihime-Tama",
+        "publisher": "Cave (AMI License)",
+        "releasedate": "20050101T000000",
+        "size_mb": 30.67,
+        "developer": "Cave",
+        "genre": "Puzzle-Game / Equalize, Puzzle-Game",
+        "desc": "Puzzle! Mushihimetama is a 2005 puzzle game developed by Cave and published by AMI. It is notable for being the only non-shooter released on the CAVE CV1000 hardware. Puzzle! Mushihimetama is the spiritual successor of the 1998 Cave game Puzzle Uo Poko. The game is also unique among Cave releases for having a song play during the attract mode, \"Reco de Singing.\"\nThe objective in Mushihimetama is to save the Kojuu trapped underneath a bed of colored stones. Reco shoots colored stones one at a time into the play field. A cluster of three or more stones of the same color will result in those stones being removed from the play field. Once there is an opening for the Kojuu to escape the level is complete.\nEvery five stages results in a boss battle in which Reco must continually fire stones of any color onto a specially marked spot on the boss to prevent it from escaping out the top of the play field.\nThere are two multiplayer modes available, cooperative multiplayer which makes its return from Uo Poko as well as a new head-to-head multiplayer."
+    },
+    {
+        "id": "theroes.zip",
+        "name": "Thunder Heroes",
+        "publisher": "Primetec Investments",
+        "releasedate": "20010101T000000",
+        "size_mb": 16.93,
+        "developer": "Primetek Investments",
+        "genre": "Beat'em Up, Fight, Fight / 2.5D",
+        "desc": "A one or two player beat 'em up game published and developed by Primetek Investments in 2001. Thunder Heroes is basically a re-skin of Gaia Crusaders."
+    }
+]

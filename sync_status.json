@@ -1,0 +1,73 @@
+{
+    "status": "completed",
+    "progress": 100,
+    "current_task": "✨ Already up to date! All 331 systems & 82,832 games verified.",
+    "last_sync": "2026-10-26T05:16:18.865Z",
+    "total_systems": 331,
+    "total_games": 82832,
+    "new_systems_count": 0,
+    "new_systems": [],
+    "updated_systems_count": 0,
+    "log": [],
+    "updated_at": "2026-10-26 06:16:18",
+    "restored_count": 0,
+    "restored_files": [],
+    "missing_systems": [],
+    "missing_systems_count": 0,
+    "deleted_files_count": 0,
+    "deleted_files": [],
+    "updated_systems": [],
+    "deleted_systems_count": 0,
+    "deleted_systems": [],
+    "latest_catalog_release_date": "22-10-2026",
+    "recent_updated_systems": [
+        {
+            "id": "typex2_batocera",
+            "name": "Taito Type X2 (Batocera)",
+            "gameCount": 25,
+            "hardware": "arcade",
+            "manufacturer": "Taito",
+            "release": "2007",
+            "version": "v4-RGS_typex2_batocera",
+            "gamelistDate": "25-10-2026",
+            "torrent_available": true,
+            "is_new": false
+        },
+        {
+            "id": "rawthrills_batocera",
+            "name": "RAW Thrills (Batocera)",
+            "gameCount": 44,
+            "hardware": "arcade",
+            "manufacturer": "Raw Thrills Inc.",
+            "release": "2001",
+            "version": "v6-RGS_rawthrills_batocera",
+            "gamelistDate": "22-10-2026",
+            "torrent_available": true,
+            "is_new": false
+        },
+        {
+            "id": "amiga_ransom",
+            "name": "Amiga (Ransom)",
+            "gameCount": 9482,
+            "hardware": "computer",
+            "manufacturer": "Commodore",
+            "release": "1987",
+            "version": "v1.1-RGS_amiga_ransom",
+            "gamelistDate": "22-10-2026",
+            "torrent_available": true,
+            "is_new": false
+        },
+        {
+            "id": "psvita",
+            "name": "PlayStation Vita",
+            "gameCount": 100,
+            "hardware": "portable",
+            "manufacturer": "Sony",
+            "release": "2012",
+            "version": "v1.1-RGS_psvita",
+            "gamelistDate": "21-10-2026",
+            "torrent_available": true,
+            "is_new": false
+        }
+    ]
+}

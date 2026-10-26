@@ -1,0 +1,5 @@
+Astro Bomber
+Block Maze
+Mahjongg
+Pocket Computer Reversi
+Sokoban (Japan)

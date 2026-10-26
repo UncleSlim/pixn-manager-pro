@@ -1,0 +1,51 @@
+# ===================================================================
+# PIXN Manager Pro — Git Ignore Rules
+# ===================================================================
+
+# ⚠️ SENSITIVE: Personal Auth & Credentials (NEVER COMMIT)
+config.json
+batocera_config.json
+data/pixn_auth.json
+portable/config.json
+portable/batocera_config.json
+portable/data/pixn_auth.json
+
+# 🗄️ LOCAL BACKUPS, PORTABLE BUNDLE & SCRATCH FOLDERS
+BACKUP*/
+scratch/
+portable/
+
+# 🧹 CACHE & SCANS (Auto-generated per user)
+data/cache_batocera/*
+!data/cache_batocera/.gitkeep
+data/cache_gamelist/*
+!data/cache_gamelist/.gitkeep
+data/cache_torrents/*
+!data/cache_torrents/.gitkeep
+data/torrents/*
+!data/torrents/.gitkeep
+
+portable/data/cache_batocera/*
+!portable/data/cache_batocera/.gitkeep
+portable/data/cache_gamelist/*
+!portable/data/cache_gamelist/.gitkeep
+portable/data/cache_torrents/*
+!portable/data/cache_torrents/.gitkeep
+portable/data/torrents/*
+!portable/data/torrents/.gitkeep
+
+# ⏱️ RUNTIME STATE & LOCK FILES
+data/active_port.txt
+data/app_heartbeat.txt
+data/tab_closed.txt
+portable/data/active_port.txt
+portable/data/app_heartbeat.txt
+portable/data/tab_closed.txt
+
+# 📦 OS & Editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+.vscode/
+.idea/

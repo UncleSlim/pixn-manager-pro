@@ -1,0 +1,38 @@
+[
+    {
+        "name": "Star Wars: Jedi Knight - Jedi Academy",
+        "developer": "Raven Software",
+        "publisher": "LucasArts",
+        "genre": "Action, Shooter / 1st person, Shooter, Shooter / 3rd person, Role playing games",
+        "desc": "Forge your weapon and follow the path of the Jedi Jedi Knight: Jedi Academy is the latest installment of the highly acclaimed Jedi Knight series. Take on the role of a new student eager to learn the ways of the Force from Jedi Master Luke Skywalker.",
+        "rating": "0.75",
+        "releasedate": "20030916T000000",
+        "players": "1",
+        "boxart": "media/box2d/Star Wars Jedi Knight - Jedi Academy.png",
+        "thumbnail": "media/thumbnails/Star Wars Jedi Knight - Jedi Academy.png",
+        "titleshot": "media/titles/Star Wars Jedi Knight - Jedi Academy.png",
+        "titlescreen": "media/titles/Star Wars Jedi Knight - Jedi Academy.png",
+        "marquee": "media/marquee/Star Wars Jedi Knight - Jedi Academy.png",
+        "image": "media/images/Star Wars Jedi Knight - Jedi Academy.jpg",
+        "screenshot": "media/images/Star Wars Jedi Knight - Jedi Academy.jpg",
+        "fanart": "media/fanarts/Star Wars Jedi Knight - Jedi Academy.jpg"
+    },
+    {
+        "name": "Star Wars Jedi Knight II: Jedi Outcast",
+        "developer": "Raven Software",
+        "publisher": "LucasArts",
+        "genre": "Action, Shooter / 1st person, Shooter, Shooter / 3rd person, Role playing games",
+        "desc": "The Legacy of Star Wars Dark Forces™ and Star Wars® Jedi Knight lives on in the intense first-person action of Jedi Outcast.",
+        "rating": "0.73",
+        "releasedate": "20030916T000000",
+        "players": "1",
+        "boxart": "media/box2d/Star Wars Jedi Knight II - Jedi Outcast.png",
+        "thumbnail": "media/thumbnails/Star Wars Jedi Knight II - Jedi Outcast.png",
+        "titleshot": "media/titles/Star Wars Jedi Knight II - Jedi Outcast.php",
+        "titlescreen": "media/titles/Star Wars Jedi Knight II - Jedi Outcast.php",
+        "marquee": "media/marquee/Star Wars Jedi Knight II - Jedi Outcast.png",
+        "image": "media/images/Star Wars Jedi Knight II - Jedi Outcast.jpg",
+        "screenshot": "media/images/Star Wars Jedi Knight II - Jedi Outcast.jpg",
+        "fanart": "media/fanarts/Star Wars Jedi Knight II - Jedi Outcast.jpg"
+    }
+]

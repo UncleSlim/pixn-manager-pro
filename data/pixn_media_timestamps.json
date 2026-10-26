@@ -1,0 +1,1811 @@
+{
+    "unis_batocera": {
+        "last_modified": "Fri, 25 Sep 2026 12:49:29 GMT",
+        "ts": 1790340569,
+        "checked_at": "2026-10-17 18:40:48"
+    },
+    "jknight": {
+        "last_modified": "Fri, 25 Sep 2026 12:49:29 GMT",
+        "etag": "\"6ab66dd9-1e3c\"",
+        "ts": 1790340569,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "adrenaline_batocera": {
+        "last_modified": "Mon, 21 Sep 2026 15:38:38 GMT",
+        "ts": 1790005118,
+        "checked_at": "2026-10-17 18:40:48"
+    },
+    "ps2": {
+        "last_modified": "Mon, 21 Sep 2026 15:38:38 GMT",
+        "etag": "\"6ab14f7e-5a7d89\"",
+        "ts": 1790005118,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "quake2": {
+        "last_modified": "Fri, 18 Sep 2026 14:53:47 GMT",
+        "etag": "\"6aad507b-2483\"",
+        "ts": 1789743227,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "gzdoom_batocera": {
+        "last_modified": "Sat, 19 Sep 2026 13:58:53 GMT",
+        "ts": 1789826333,
+        "checked_at": "2026-10-17 18:40:48"
+    },
+    "eduke32": {
+        "last_modified": "Wed, 16 Sep 2026 10:00:54 GMT",
+        "etag": "\"6aaa68d6-a508\"",
+        "ts": 1789552854,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "ecwolf_batocera": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:48 GMT",
+        "ts": 1783955568,
+        "checked_at": "2026-10-17 18:40:50"
+    },
+    "konamipc_batocera": {
+        "last_modified": "Thu, 27 Aug 2026 11:59:30 GMT",
+        "ts": 1787831970,
+        "checked_at": "2026-10-17 18:40:48"
+    },
+    "win98": {
+        "last_modified": "Thu, 27 Aug 2026 11:59:30 GMT",
+        "etag": "\"6a9026a2-ee666\"",
+        "ts": 1787831970,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "namco2x6": {
+        "last_modified": "Mon, 13 Jul 2026 15:10:38 GMT",
+        "ts": 1783955438,
+        "checked_at": "2026-10-17 18:40:48"
+    },
+    "namcoes3_batocera": {
+        "last_modified": "Sat, 18 Jul 2026 10:54:00 GMT",
+        "ts": 1784372040,
+        "checked_at": "2026-10-17 18:40:48"
+    },
+    "sonicretro": {
+        "last_modified": "Sat, 18 Jul 2026 10:54:00 GMT",
+        "etag": "\"6a5b5b48-189e\"",
+        "ts": 1784372040,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "namco3xx_batocera": {
+        "last_modified": "Mon, 13 Jul 2026 18:16:04 GMT",
+        "ts": 1783966564,
+        "checked_at": "2026-10-17 18:40:48"
+    },
+    "segachannel": {
+        "last_modified": "Mon, 13 Jul 2026 18:16:04 GMT",
+        "etag": "\"6a552b64-2f747\"",
+        "ts": 1783966564,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "supervision": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:11 GMT",
+        "etag": "\"6a55004b-23489\"",
+        "ts": 1783955531,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "cassettevision": {
+        "last_modified": "Mon, 13 Jul 2026 15:10:38 GMT",
+        "etag": "\"6a54ffee-43a6\"",
+        "ts": 1783955438,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "chihiro": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:18 GMT",
+        "ts": 1783955538,
+        "checked_at": "2026-10-17 18:40:48"
+    },
+    "wii": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:18 GMT",
+        "etag": "\"6a550052-3fd6d6\"",
+        "ts": 1783955538,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "nesicax2_batocera": {
+        "last_modified": "Mon, 24 Aug 2026 15:31:10 GMT",
+        "ts": 1787585470,
+        "checked_at": "2026-10-17 18:40:50"
+    },
+    "wswan": {
+        "last_modified": "Mon, 24 Aug 2026 15:31:10 GMT",
+        "etag": "\"6a8c63be-438cd\"",
+        "ts": 1787585470,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "segastv": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:06 GMT",
+        "etag": "\"6a550046-199fc\"",
+        "ts": 1783955526,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "gx4000": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:12 GMT",
+        "etag": "\"6a550010-1baf9e\"",
+        "ts": 1783955472,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "megadrive-jp": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:36 GMT",
+        "etag": "\"6a550028-12702d\"",
+        "ts": 1783955496,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "sonic3-air": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:10 GMT",
+        "etag": "\"6a55004a-e40\"",
+        "ts": 1783955530,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "dice": {
+        "last_modified": "Mon, 13 Jul 2026 15:10:42 GMT",
+        "etag": "\"6a54fff2-89e7\"",
+        "ts": 1783955442,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "sonic-mania": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:10 GMT",
+        "etag": "\"6a55004a-d8f\"",
+        "ts": 1783955530,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "snes-msu1": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:09 GMT",
+        "etag": "\"6a550049-95205\"",
+        "ts": 1783955529,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "mame": {
+        "last_modified": "Fri, 28 Aug 2026 09:27:26 GMT",
+        "etag": "\"6a91547e-879371\"",
+        "ts": 1787909246,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "cave": {
+        "last_modified": "Wed, 27 May 2026 10:15:13 GMT",
+        "etag": "\"6a16c431-117c4\"",
+        "ts": 1779876913,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "seganu_batocera": {
+        "last_modified": "Wed, 27 May 2026 10:16:28 GMT",
+        "ts": 1779876988,
+        "checked_at": "2026-10-17 18:40:50"
+    },
+    "daphne": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:48 GMT",
+        "etag": "\"6a550070-87fe\"",
+        "ts": 1783955568,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "snes": {
+        "last_modified": "Wed, 27 May 2026 10:16:12 GMT",
+        "etag": "\"6a16c46c-21c3db\"",
+        "ts": 1779876972,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "lynx": {
+        "last_modified": "Fri, 17 Jul 2026 12:20:46 GMT",
+        "etag": "\"6a5a1e1e-44e00\"",
+        "ts": 1784290846,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "fbneo": {
+        "last_modified": "Fri, 16 Oct 2026 13:42:32 GMT",
+        "etag": "\"6ad229c8-36c24b\"",
+        "ts": 1792158152,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "wswanc": {
+        "last_modified": "Wed, 27 May 2026 10:16:24 GMT",
+        "etag": "\"6a16c478-2ff61\"",
+        "ts": 1779876984,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "3ds": {
+        "last_modified": "Sat, 25 Jul 2026 09:10:22 GMT",
+        "etag": "\"6a647d7e-1d81ef\"",
+        "ts": 1784970622,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "raze": {
+        "last_modified": "Wed, 27 May 2026 10:16:06 GMT",
+        "etag": "\"6a16c466-1d415\"",
+        "ts": 1779876966,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "sfc": {
+        "last_modified": "Wed, 27 May 2026 10:16:11 GMT",
+        "etag": "\"6a16c46b-222cbf\"",
+        "ts": 1779876971,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "fury": {
+        "last_modified": "Wed, 27 May 2026 10:15:27 GMT",
+        "etag": "\"6a16c43f-30d1\"",
+        "ts": 1779876927,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "konamilcd": {
+        "last_modified": "Wed, 27 May 2026 10:15:40 GMT",
+        "etag": "\"6a16c44c-6d97\"",
+        "ts": 1779876940,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "quake3": {
+        "last_modified": "Fri, 09 Oct 2026 15:15:54 GMT",
+        "etag": "\"6ac9052a-11bc\"",
+        "ts": 1791558954,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "gaelco": {
+        "last_modified": "Mon, 13 Jul 2026 15:10:59 GMT",
+        "etag": "\"6a550003-e8c3\"",
+        "ts": 1783955459,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "elektronika": {
+        "last_modified": "Wed, 27 May 2026 10:15:24 GMT",
+        "etag": "\"6a16c43c-730d\"",
+        "ts": 1779876924,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "jazz2": {
+        "last_modified": "Fri, 01 May 2026 19:16:24 GMT",
+        "etag": "\"69f4fc08-6e4\"",
+        "ts": 1777662984,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "naomi": {
+        "last_modified": "Wed, 27 May 2026 10:15:50 GMT",
+        "etag": "\"6a16c456-2e1a8\"",
+        "ts": 1779876950,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "pcengine": {
+        "last_modified": "Mon, 24 Aug 2026 15:39:56 GMT",
+        "etag": "\"6a8c65cc-9639f\"",
+        "ts": 1787585996,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "nes_aladdin": {
+        "last_modified": "Wed, 27 May 2026 10:15:55 GMT",
+        "etag": "\"6a16c45b-b496\"",
+        "ts": 1779876955,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "mrboom": {
+        "last_modified": "Fri, 01 May 2026 19:16:33 GMT",
+        "etag": "\"69f4fc11-4c8\"",
+        "ts": 1777662993,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "pokemini": {
+        "last_modified": "Wed, 27 May 2026 10:15:59 GMT",
+        "etag": "\"6a16c45f-40d9\"",
+        "ts": 1779876959,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "tg16": {
+        "last_modified": "Wed, 27 May 2026 10:16:17 GMT",
+        "etag": "\"6a16c471-35a51\"",
+        "ts": 1779876977,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "actionmax_batocera": {
+        "last_modified": "Wed, 27 May 2026 10:16:14 GMT",
+        "ts": 1779876974,
+        "checked_at": "2026-10-17 18:40:52"
+    },
+    "sufami": {
+        "last_modified": "Wed, 27 May 2026 10:16:14 GMT",
+        "etag": "\"6a16c46e-6616\"",
+        "ts": 1779876974,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "sgb-msu1": {
+        "last_modified": "Wed, 27 May 2026 10:16:11 GMT",
+        "etag": "\"6a16c46b-4713\"",
+        "ts": 1779876971,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "scummvm": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:03 GMT",
+        "etag": "\"6a550043-1d4329\"",
+        "ts": 1783955523,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "neogeo": {
+        "last_modified": "Wed, 27 May 2026 10:15:53 GMT",
+        "etag": "\"6a16c459-48ff0\"",
+        "ts": 1779876953,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "gameandwatch": {
+        "last_modified": "Wed, 15 Jul 2026 21:24:51 GMT",
+        "etag": "\"6a57faa3-1c9f2\"",
+        "ts": 1784150691,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "hcl": {
+        "last_modified": "Wed, 27 May 2026 10:15:38 GMT",
+        "etag": "\"6a16c44a-91d\"",
+        "ts": 1779876938,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "segaalls_batocera": {
+        "last_modified": "Wed, 27 May 2026 10:16:18 GMT",
+        "ts": 1779876978,
+        "checked_at": "2026-10-17 18:40:52"
+    },
+    "ps4": {
+        "last_modified": "Sun, 13 Sep 2026 20:24:00 GMT",
+        "etag": "\"6aa70660-73844\"",
+        "ts": 1789331040,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "ngpc": {
+        "last_modified": "Wed, 27 May 2026 10:15:55 GMT",
+        "etag": "\"6a16c45b-231aa\"",
+        "ts": 1779876955,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "ngp": {
+        "last_modified": "Wed, 27 May 2026 10:15:55 GMT",
+        "etag": "\"6a16c45b-3ea1\"",
+        "ts": 1779876955,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "bstone": {
+        "last_modified": "Wed, 27 May 2026 10:15:09 GMT",
+        "etag": "\"6a16c42d-b50\"",
+        "ts": 1779876909,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "vsmile": {
+        "last_modified": "Wed, 27 May 2026 10:16:19 GMT",
+        "etag": "\"6a16c473-1a01c\"",
+        "ts": 1779876979,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "dos_lite": {
+        "last_modified": "Wed, 15 Jul 2026 08:15:21 GMT",
+        "etag": "\"6a574199-f5cb8\"",
+        "ts": 1784103321,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "singe": {
+        "last_modified": "Fri, 28 Nov 2025 13:28:01 GMT",
+        "etag": "\"6929a361-44901\"",
+        "ts": 1764336481,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "atari5200": {
+        "last_modified": "Wed, 22 Jul 2026 07:43:24 GMT",
+        "etag": "\"6a60749c-55a65\"",
+        "ts": 1784706204,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "igtslots": {
+        "last_modified": "Wed, 27 May 2026 10:15:40 GMT",
+        "etag": "\"6a16c44c-29f7a0\"",
+        "ts": 1779876940,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "vg5k": {
+        "last_modified": "Wed, 27 May 2026 10:16:18 GMT",
+        "etag": "\"6a16c472-6f5f\"",
+        "ts": 1779876978,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "hikaru": {
+        "last_modified": "Wed, 27 May 2026 10:15:38 GMT",
+        "etag": "\"6a16c44a-20f9\"",
+        "ts": 1779876938,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "exaarcadia_batocera": {
+        "last_modified": "Wed, 27 May 2026 10:16:06 GMT",
+        "ts": 1779876966,
+        "checked_at": "2026-10-17 18:40:52"
+    },
+    "pv2000": {
+        "last_modified": "Wed, 27 May 2026 10:16:06 GMT",
+        "etag": "\"6a16c466-3a39\"",
+        "ts": 1779876966,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "lindbergh": {
+        "last_modified": "Mon, 27 Jul 2026 12:52:34 GMT",
+        "ts": 1785156754,
+        "checked_at": "2026-10-17 18:40:52"
+    },
+    "vectrex": {
+        "last_modified": "Wed, 27 May 2026 10:16:18 GMT",
+        "etag": "\"6a16c472-91a4\"",
+        "ts": 1779876978,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "amigacd32": {
+        "last_modified": "Sat, 12 Sep 2026 18:15:13 GMT",
+        "etag": "\"6aa596b1-f515a\"",
+        "ts": 1789236913,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "videodriver": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:49 GMT",
+        "etag": "\"6a550071-18e8\"",
+        "ts": 1783955569,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "captpower": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:48 GMT",
+        "etag": "\"6a550070-21a6\"",
+        "ts": 1783955568,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "cps3": {
+        "last_modified": "Wed, 27 May 2026 10:15:15 GMT",
+        "etag": "\"6a16c433-3a4b\"",
+        "ts": 1779876915,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "cps1": {
+        "last_modified": "Wed, 27 May 2026 10:15:15 GMT",
+        "etag": "\"6a16c433-10634\"",
+        "ts": 1779876915,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "cps2": {
+        "last_modified": "Wed, 27 May 2026 10:15:15 GMT",
+        "etag": "\"6a16c433-16709\"",
+        "ts": 1779876915,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "neogeomvs": {
+        "last_modified": "Wed, 27 May 2026 10:15:53 GMT",
+        "etag": "\"6a16c459-38516\"",
+        "ts": 1779876953,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "uzebox": {
+        "last_modified": "Mon, 27 Jul 2026 12:52:34 GMT",
+        "etag": "\"6a675492-15718\"",
+        "ts": 1785156754,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "atom": {
+        "last_modified": "Mon, 13 Jul 2026 17:45:20 GMT",
+        "etag": "\"6a552430-2e42\"",
+        "ts": 1783964720,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "tic80": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:13 GMT",
+        "etag": "\"6a55004d-2cb4\"",
+        "ts": 1783955533,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "3do": {
+        "last_modified": "Mon, 24 Aug 2026 16:15:09 GMT",
+        "etag": "\"6a8c6e0d-a7d50\"",
+        "ts": 1787588109,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "3dsen": {
+        "last_modified": "Wed, 27 May 2026 10:14:48 GMT",
+        "etag": "\"6a16c418-7faee\"",
+        "ts": 1779876888,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "abuse": {
+        "last_modified": "Wed, 27 May 2026 10:14:49 GMT",
+        "etag": "\"6a16c419-70f\"",
+        "ts": 1779876889,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "adam": {
+        "last_modified": "Sat, 25 Jul 2026 09:09:35 GMT",
+        "etag": "\"6a647d4f-9df9\"",
+        "ts": 1784970575,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "advision": {
+        "last_modified": "Wed, 27 May 2026 10:14:49 GMT",
+        "etag": "\"6a16c419-1a98\"",
+        "ts": 1779876889,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "aleck64": {
+        "last_modified": "Wed, 27 May 2026 10:14:49 GMT",
+        "etag": "\"6a16c419-3d99\"",
+        "ts": 1779876889,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "alice32": {
+        "last_modified": "Wed, 15 Jul 2026 08:29:39 GMT",
+        "etag": "\"6a5744f3-1028\"",
+        "ts": 1784104179,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "amiga1200": {
+        "last_modified": "Fri, 17 Jul 2026 11:54:41 GMT",
+        "etag": "\"6a5a1801-4d0ea\"",
+        "ts": 1784289281,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "amiga4000": {
+        "last_modified": "Wed, 27 May 2026 10:14:56 GMT",
+        "etag": "\"6a16c420-750\"",
+        "ts": 1779876896,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "amiga500": {
+        "last_modified": "Wed, 07 Oct 2026 11:27:04 GMT",
+        "etag": "\"6ac62c88-41968c\"",
+        "ts": 1791372424,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "amigacdtv": {
+        "last_modified": "Fri, 17 Jul 2026 11:55:08 GMT",
+        "etag": "\"6a5a181c-14165\"",
+        "ts": 1784289308,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "amstradcpc": {
+        "last_modified": "Sat, 19 Sep 2026 13:58:53 GMT",
+        "etag": "\"6aae951d-6f2b74\"",
+        "ts": 1789826333,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "apfm1000": {
+        "last_modified": "Mon, 13 Jul 2026 15:10:22 GMT",
+        "etag": "\"6a54ffde-5ac9\"",
+        "ts": 1783955422,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "apple2": {
+        "last_modified": "Sun, 23 Aug 2026 08:18:48 GMT",
+        "etag": "\"6a8aace8-1bfc9c\"",
+        "ts": 1787473128,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "apple2gs": {
+        "last_modified": "Mon, 13 Jul 2026 17:44:14 GMT",
+        "etag": "\"6a5523ee-6d1c7\"",
+        "ts": 1783964654,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "aquarius": {
+        "last_modified": "Mon, 13 Jul 2026 17:44:24 GMT",
+        "etag": "\"6a5523f8-dead\"",
+        "ts": 1783964664,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "arcadia": {
+        "last_modified": "Mon, 13 Jul 2026 17:44:29 GMT",
+        "etag": "\"6a5523fd-13d68\"",
+        "ts": 1783964669,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "archimedes": {
+        "last_modified": "Fri, 17 Jul 2026 12:01:37 GMT",
+        "etag": "\"6a5a19a1-42915\"",
+        "ts": 1784289697,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "arduboy": {
+        "last_modified": "Mon, 13 Jul 2026 17:44:52 GMT",
+        "etag": "\"6a552414-bf7d\"",
+        "ts": 1783964692,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "astrocade": {
+        "last_modified": "Mon, 13 Jul 2026 17:44:55 GMT",
+        "etag": "\"6a552417-14ca3\"",
+        "ts": 1783964695,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "atari2600": {
+        "last_modified": "Mon, 27 Jul 2026 11:09:52 GMT",
+        "etag": "\"6a673c80-18a29b\"",
+        "ts": 1785150592,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "atari7800": {
+        "last_modified": "Wed, 22 Jul 2026 20:25:08 GMT",
+        "etag": "\"6a612724-2641f\"",
+        "ts": 1784751908,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "atari800": {
+        "last_modified": "Sun, 23 Aug 2026 08:15:22 GMT",
+        "etag": "\"6a8aac1a-11a9a6\"",
+        "ts": 1787472922,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "atarist": {
+        "last_modified": "Mon, 13 Jul 2026 15:10:30 GMT",
+        "etag": "\"6a54ffe6-40f150\"",
+        "ts": 1783955430,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "atomiswave": {
+        "last_modified": "Wed, 27 May 2026 10:15:08 GMT",
+        "etag": "\"6a16c42c-9ea0\"",
+        "ts": 1779876908,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "avgn": {
+        "last_modified": "Wed, 27 May 2026 10:15:08 GMT",
+        "etag": "\"6a16c42c-359e2\"",
+        "ts": 1779876908,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "bbcmicro": {
+        "last_modified": "Sat, 25 Jul 2026 09:08:22 GMT",
+        "etag": "\"6a647d06-180ab8\"",
+        "ts": 1784970502,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "boom3": {
+        "last_modified": "Fri, 01 May 2026 19:15:53 GMT",
+        "etag": "\"69f4fbe9-eb0\"",
+        "ts": 1777662953,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "c128": {
+        "last_modified": "Fri, 17 Jul 2026 12:02:29 GMT",
+        "etag": "\"6a5a19d5-9b4b\"",
+        "ts": 1784289749,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "c20": {
+        "last_modified": "Sun, 23 Aug 2026 08:15:17 GMT",
+        "etag": "\"6a8aac15-1ac6b2\"",
+        "ts": 1787472917,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "c64": {
+        "last_modified": "Mon, 28 Sep 2026 01:54:05 GMT",
+        "etag": "\"6ab9c8bd-8f4e13\"",
+        "ts": 1790560445,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "camplynx": {
+        "last_modified": "Fri, 17 Jul 2026 12:12:16 GMT",
+        "etag": "\"6a5a1c20-e695\"",
+        "ts": 1784290336,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "cannonball": {
+        "last_modified": "Wed, 27 May 2026 10:15:13 GMT",
+        "etag": "\"6a16c431-a4e\"",
+        "ts": 1779876913,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "catacomb": {
+        "last_modified": "Wed, 27 May 2026 10:15:13 GMT",
+        "etag": "\"6a16c431-3519\"",
+        "ts": 1779876913,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "cavestory": {
+        "last_modified": "Wed, 27 May 2026 10:15:13 GMT",
+        "etag": "\"6a16c431-64f\"",
+        "ts": 1779876913,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "cdi": {
+        "last_modified": "Sat, 12 Sep 2026 18:15:07 GMT",
+        "etag": "\"6aa596ab-5228d\"",
+        "ts": 1789236907,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "cdogs": {
+        "last_modified": "Wed, 27 May 2026 10:15:13 GMT",
+        "etag": "\"6a16c431-563\"",
+        "ts": 1779876913,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "cgenie": {
+        "last_modified": "Mon, 13 Jul 2026 17:47:07 GMT",
+        "etag": "\"6a55249b-9158\"",
+        "ts": 1783964827,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "cgenius": {
+        "last_modified": "Wed, 27 May 2026 10:15:14 GMT",
+        "etag": "\"6a16c432-8089\"",
+        "ts": 1779876914,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "channelf": {
+        "last_modified": "Mon, 13 Jul 2026 17:47:12 GMT",
+        "etag": "\"6a5524a0-dd96\"",
+        "ts": 1783964832,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "chihiro_batocera": {
+        "last_modified": "Wed, 27 May 2026 10:15:14 GMT",
+        "etag": "\"6a16c432-ef3\"",
+        "ts": 1779876914,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "clonehero": {
+        "last_modified": "Wed, 27 May 2026 10:15:14 GMT",
+        "etag": "\"6a16c432-f12a\"",
+        "ts": 1779876914,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "coco": {
+        "last_modified": "Thu, 23 Jul 2026 08:13:09 GMT",
+        "etag": "\"6a61cd15-2548d\"",
+        "ts": 1784794389,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "colecovision": {
+        "last_modified": "Mon, 13 Jul 2026 17:47:16 GMT",
+        "etag": "\"6a5524a4-9165a\"",
+        "ts": 1783964836,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "corsixth": {
+        "last_modified": "Wed, 27 May 2026 10:15:14 GMT",
+        "etag": "\"6a16c432-73b\"",
+        "ts": 1779876914,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "cplus4": {
+        "last_modified": "Sun, 23 Aug 2026 08:15:05 GMT",
+        "etag": "\"6a8aac09-4f788\"",
+        "ts": 1787472905,
+        "checked_at": "2026-10-17 21:40:30"
+    },
+    "crvision": {
+        "last_modified": "Mon, 13 Jul 2026 15:10:41 GMT",
+        "etag": "\"6a54fff1-7166\"",
+        "ts": 1783955441,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "datach": {
+        "last_modified": "Wed, 27 May 2026 10:15:16 GMT",
+        "etag": "\"6a16c434-3b3c\"",
+        "ts": 1779876916,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "devilutionx": {
+        "last_modified": "Wed, 27 May 2026 10:15:16 GMT",
+        "etag": "\"6a16c434-4d25\"",
+        "ts": 1779876916,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "dinothawr": {
+        "last_modified": "Wed, 27 May 2026 10:15:16 GMT",
+        "etag": "\"6a16c434-447\"",
+        "ts": 1779876916,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "doom3": {
+        "last_modified": "Wed, 27 May 2026 10:15:16 GMT",
+        "etag": "\"6a16c434-1ab2\"",
+        "ts": 1779876916,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "dragon32": {
+        "last_modified": "Wed, 22 Jul 2026 17:02:53 GMT",
+        "etag": "\"6a60f7bd-a2cc6\"",
+        "ts": 1784739773,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "dreamcast": {
+        "last_modified": "Fri, 17 Jul 2026 12:12:47 GMT",
+        "etag": "\"6a5a1c3f-b759f\"",
+        "ts": 1784290367,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "dreamcast-jp": {
+        "last_modified": "Sat, 12 Sep 2026 18:15:23 GMT",
+        "etag": "\"6aa596bb-cb7d0\"",
+        "ts": 1789236923,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "dxx-rebirth": {
+        "last_modified": "Wed, 27 May 2026 10:15:23 GMT",
+        "etag": "\"6a16c43b-21ce\"",
+        "ts": 1779876923,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "easyrpg": {
+        "last_modified": "Fri, 17 Jul 2026 12:13:00 GMT",
+        "etag": "\"6a5a1c4c-2e555\"",
+        "ts": 1784290380,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "electron": {
+        "last_modified": "Fri, 17 Jul 2026 12:13:07 GMT",
+        "etag": "\"6a5a1c53-45bd6\"",
+        "ts": 1784290387,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "etlegacy": {
+        "last_modified": "Wed, 27 May 2026 10:15:24 GMT",
+        "etag": "\"6a16c43c-101b\"",
+        "ts": 1779876924,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "exl100": {
+        "last_modified": "Fri, 17 Jul 2026 12:13:37 GMT",
+        "etag": "\"6a5a1c71-2d78\"",
+        "ts": 1784290417,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "famicom": {
+        "last_modified": "Sat, 25 Jul 2026 09:07:11 GMT",
+        "etag": "\"6a647cbf-e3fd8\"",
+        "ts": 1784970431,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "fds": {
+        "last_modified": "Wed, 15 Jul 2026 08:35:49 GMT",
+        "etag": "\"6a574665-a5ba2\"",
+        "ts": 1784104549,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "flash": {
+        "last_modified": "Wed, 27 May 2026 10:15:26 GMT",
+        "etag": "\"6a16c43e-3498\"",
+        "ts": 1779876926,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "fm7": {
+        "last_modified": "Fri, 17 Jul 2026 12:13:43 GMT",
+        "etag": "\"6a5a1c77-25a73\"",
+        "ts": 1784290423,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "fmtowns": {
+        "last_modified": "Sat, 25 Jul 2026 11:43:33 GMT",
+        "etag": "\"6a64a165-409d1\"",
+        "ts": 1784979813,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "fpinball": {
+        "last_modified": "Wed, 27 May 2026 10:15:27 GMT",
+        "etag": "\"6a16c43f-8659b\"",
+        "ts": 1779876927,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "galaxy": {
+        "last_modified": "Wed, 15 Jul 2026 08:28:43 GMT",
+        "etag": "\"6a5744bb-538b\"",
+        "ts": 1784104123,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gamate": {
+        "last_modified": "Wed, 15 Jul 2026 08:29:37 GMT",
+        "etag": "\"6a5744f1-a190\"",
+        "ts": 1784104177,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gamecom": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:00 GMT",
+        "etag": "\"6a550004-4c6f\"",
+        "ts": 1783955460,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gamecube": {
+        "last_modified": "Wed, 27 May 2026 10:15:28 GMT",
+        "etag": "\"6a16c440-132fad\"",
+        "ts": 1779876928,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gamegear": {
+        "last_modified": "Fri, 17 Jul 2026 12:13:54 GMT",
+        "etag": "\"6a5a1c82-9eaa5\"",
+        "ts": 1784290434,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gamepock": {
+        "last_modified": "Mon, 13 Jul 2026 17:55:49 GMT",
+        "etag": "\"6a5526a5-1ede\"",
+        "ts": 1783965349,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gb": {
+        "last_modified": "Fri, 17 Jul 2026 12:18:50 GMT",
+        "etag": "\"6a5a1daa-1523b1\"",
+        "ts": 1784290730,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gb2players": {
+        "last_modified": "Wed, 15 Jul 2026 08:27:28 GMT",
+        "etag": "\"6a574470-4087c\"",
+        "ts": 1784104048,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gba": {
+        "last_modified": "Fri, 17 Jul 2026 12:19:01 GMT",
+        "etag": "\"6a5a1db5-246687\"",
+        "ts": 1784290741,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gbah": {
+        "last_modified": "Fri, 17 Jul 2026 12:19:13 GMT",
+        "etag": "\"6a5a1dc1-37e2\"",
+        "ts": 1784290753,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gbc": {
+        "last_modified": "Fri, 17 Jul 2026 12:19:07 GMT",
+        "etag": "\"6a5a1dbb-157e2a\"",
+        "ts": 1784290747,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gbc2players": {
+        "last_modified": "Wed, 15 Jul 2026 08:28:33 GMT",
+        "etag": "\"6a5744b1-35939\"",
+        "ts": 1784104113,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gbch": {
+        "last_modified": "Sat, 25 Jul 2026 11:41:54 GMT",
+        "etag": "\"6a64a102-36f2\"",
+        "ts": 1784979714,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gbh": {
+        "last_modified": "Fri, 17 Jul 2026 12:19:18 GMT",
+        "etag": "\"6a5a1dc6-2e8a\"",
+        "ts": 1784290758,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gc-jp": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:08 GMT",
+        "etag": "\"6a55000c-253a7\"",
+        "ts": 1783955468,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gemrb": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:08 GMT",
+        "etag": "\"6a55000c-12dc\"",
+        "ts": 1783955468,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "genh": {
+        "last_modified": "Sat, 25 Jul 2026 11:44:05 GMT",
+        "etag": "\"6a64a185-21935\"",
+        "ts": 1784979845,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "ggh": {
+        "last_modified": "Wed, 15 Jul 2026 08:28:54 GMT",
+        "etag": "\"6a5744c6-b5d\"",
+        "ts": 1784104134,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gmaster": {
+        "last_modified": "Wed, 15 Jul 2026 08:29:34 GMT",
+        "etag": "\"6a5744ee-372e\"",
+        "ts": 1784104174,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "gp32": {
+        "last_modified": "Fri, 17 Jul 2026 12:19:45 GMT",
+        "etag": "\"6a5a1de1-af55\"",
+        "ts": 1784290785,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "hec2hrx": {
+        "last_modified": "Wed, 15 Jul 2026 08:29:31 GMT",
+        "etag": "\"6a5744eb-478b\"",
+        "ts": 1784104171,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "hurrican": {
+        "last_modified": "Wed, 27 May 2026 10:15:38 GMT",
+        "etag": "\"6a16c44a-82b\"",
+        "ts": 1779876938,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "ibmpcjr": {
+        "last_modified": "Fri, 17 Jul 2026 12:19:56 GMT",
+        "etag": "\"6a5a1dec-5783\"",
+        "ts": 1784290796,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "igspgm": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:18 GMT",
+        "etag": "\"6a550016-f0b6\"",
+        "ts": 1783955478,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "ikemen": {
+        "last_modified": "Sat, 08 Aug 2026 17:04:41 GMT",
+        "etag": "\"6a7761a9-7ebd\"",
+        "ts": 1786208681,
+        "checked_at": "2026-10-17 21:40:32"
+    },
+    "intellivision": {
+        "last_modified": "Wed, 27 May 2026 10:15:40 GMT",
+        "etag": "\"6a16c44c-58d91\"",
+        "ts": 1779876940,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "iqueplayer": {
+        "last_modified": "Fri, 17 Jul 2026 12:20:02 GMT",
+        "etag": "\"6a5a1df2-45b5\"",
+        "ts": 1784290802,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "jaguar": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:24 GMT",
+        "etag": "\"6a55001c-24b82\"",
+        "ts": 1783955484,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "jaguarcd": {
+        "last_modified": "Sun, 26 Jul 2026 04:04:04 GMT",
+        "etag": "\"6a658734-a672\"",
+        "ts": 1785038644,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "jkdf2": {
+        "last_modified": "Fri, 25 Sep 2026 12:49:29 GMT",
+        "etag": "\"6ab66dd9-20a2\"",
+        "ts": 1790340569,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "laser310": {
+        "last_modified": "Wed, 15 Jul 2026 08:28:37 GMT",
+        "etag": "\"6a5744b5-121d1\"",
+        "ts": 1784104117,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "lcdgames": {
+        "last_modified": "Wed, 15 Jul 2026 08:11:49 GMT",
+        "etag": "\"6a5740c5-48a6\"",
+        "ts": 1784103109,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "lindbergh_batocera": {
+        "last_modified": "Wed, 27 May 2026 10:15:41 GMT",
+        "etag": "\"6a16c44d-aa02\"",
+        "ts": 1779876941,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "loopy": {
+        "last_modified": "Mon, 24 Aug 2026 15:34:49 GMT",
+        "etag": "\"6a8c6499-37d2\"",
+        "ts": 1787585689,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "lowresnx": {
+        "last_modified": "Thu, 23 Jul 2026 11:09:44 GMT",
+        "etag": "\"6a61f678-837c4\"",
+        "ts": 1784804984,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "lutro": {
+        "last_modified": "Wed, 15 Jul 2026 08:29:28 GMT",
+        "etag": "\"6a5744e8-27f1\"",
+        "ts": 1784104168,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "markiii": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:34 GMT",
+        "etag": "\"6a550026-22010\"",
+        "ts": 1783955494,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "mastersystem": {
+        "last_modified": "Sat, 25 Jul 2026 19:25:22 GMT",
+        "etag": "\"6a650da2-bde9c\"",
+        "ts": 1785007522,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "mbee": {
+        "last_modified": "Thu, 23 Jul 2026 11:09:18 GMT",
+        "etag": "\"6a61f65e-14a9d\"",
+        "ts": 1784804958,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "megacd": {
+        "last_modified": "Wed, 27 May 2026 10:15:46 GMT",
+        "etag": "\"6a16c452-1c5e9\"",
+        "ts": 1779876946,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "megadrive": {
+        "last_modified": "Mon, 05 Oct 2026 22:36:52 GMT",
+        "etag": "\"6ac42684-451f7\"",
+        "ts": 1791239812,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "megaduck": {
+        "last_modified": "Wed, 15 Jul 2026 08:29:15 GMT",
+        "etag": "\"6a5744db-cbdf\"",
+        "ts": 1784104155,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "microvsn": {
+        "last_modified": "Fri, 17 Jul 2026 12:21:27 GMT",
+        "etag": "\"6a5a1e47-1d67\"",
+        "ts": 1784290887,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "model2": {
+        "last_modified": "Wed, 27 May 2026 10:15:47 GMT",
+        "etag": "\"6a16c453-9cb9\"",
+        "ts": 1779876947,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "model3": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:36 GMT",
+        "etag": "\"6a550028-7b7c\"",
+        "ts": 1783955496,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "msx1": {
+        "last_modified": "Sat, 25 Jul 2026 19:25:16 GMT",
+        "etag": "\"6a650d9c-246b17\"",
+        "ts": 1785007516,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "msx2": {
+        "last_modified": "Sat, 25 Jul 2026 19:24:29 GMT",
+        "etag": "\"6a650d6d-1c4c9\"",
+        "ts": 1785007469,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "msxlaserdisk": {
+        "last_modified": "Wed, 27 May 2026 10:15:48 GMT",
+        "etag": "\"6a16c454-65f7\"",
+        "ts": 1779876948,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "msxturbor": {
+        "last_modified": "Fri, 17 Jul 2026 12:22:12 GMT",
+        "etag": "\"6a5a1e74-1744d\"",
+        "ts": 1784290932,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "mtx512": {
+        "last_modified": "Thu, 23 Jul 2026 21:44:37 GMT",
+        "etag": "\"6a628b45-f5ab\"",
+        "ts": 1784843077,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "mugen": {
+        "last_modified": "Thu, 10 Sep 2026 15:51:19 GMT",
+        "etag": "\"6aa2d1f7-2bead\"",
+        "ts": 1789055479,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "multivision": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:39 GMT",
+        "etag": "\"6a55002b-3bab\"",
+        "ts": 1783955499,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "myvision": {
+        "last_modified": "Mon, 13 Jul 2026 19:52:46 GMT",
+        "etag": "\"6a55420e-ef8\"",
+        "ts": 1783972366,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "mz2500": {
+        "last_modified": "Wed, 15 Jul 2026 08:28:48 GMT",
+        "etag": "\"6a5744c0-9452\"",
+        "ts": 1784104128,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "n64": {
+        "last_modified": "Wed, 27 May 2026 10:15:49 GMT",
+        "etag": "\"6a16c455-932d9\"",
+        "ts": 1779876949,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "n64-jp": {
+        "last_modified": "Wed, 27 May 2026 10:15:49 GMT",
+        "etag": "\"6a16c455-246f8\"",
+        "ts": 1779876949,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "n64dd": {
+        "last_modified": "Wed, 27 May 2026 10:15:49 GMT",
+        "etag": "\"6a16c455-491b\"",
+        "ts": 1779876949,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "n64h": {
+        "last_modified": "Sat, 25 Jul 2026 19:23:49 GMT",
+        "etag": "\"6a650d45-293e\"",
+        "ts": 1785007429,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "namco11": {
+        "last_modified": "Wed, 27 May 2026 10:15:50 GMT",
+        "etag": "\"6a16c456-3ce1\"",
+        "ts": 1779876950,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "namco22": {
+        "last_modified": "Wed, 27 May 2026 10:15:50 GMT",
+        "etag": "\"6a16c456-7e3c\"",
+        "ts": 1779876950,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "namco2x6_batocera": {
+        "last_modified": "Mon, 17 Aug 2026 10:44:27 GMT",
+        "etag": "\"6a82e60b-15187\"",
+        "ts": 1786963467,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "naomi2": {
+        "last_modified": "Wed, 27 May 2026 10:15:50 GMT",
+        "etag": "\"6a16c456-452b\"",
+        "ts": 1779876950,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "nds": {
+        "last_modified": "Sat, 25 Jul 2026 19:40:13 GMT",
+        "etag": "\"6a65111d-4f8ecd\"",
+        "ts": 1785008413,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "neogeo64": {
+        "last_modified": "Wed, 27 May 2026 10:15:53 GMT",
+        "etag": "\"6a16c459-1e5c\"",
+        "ts": 1779876953,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "neogeocd": {
+        "last_modified": "Sat, 08 Aug 2026 22:58:21 GMT",
+        "etag": "\"6a77b48d-422a8\"",
+        "ts": 1786229901,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "nes": {
+        "last_modified": "Mon, 27 Jul 2026 08:58:58 GMT",
+        "etag": "\"6a671dd2-1f29c8\"",
+        "ts": 1785142738,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "nes-msu": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:46 GMT",
+        "etag": "\"6a550032-4bbe9\"",
+        "ts": 1783955506,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "nes_hd": {
+        "last_modified": "Wed, 27 May 2026 10:15:55 GMT",
+        "etag": "\"6a16c45b-11787\"",
+        "ts": 1779876955,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "nesh": {
+        "last_modified": "Mon, 27 Jul 2026 08:59:23 GMT",
+        "etag": "\"6a671deb-1de25\"",
+        "ts": 1785142763,
+        "checked_at": "2026-10-17 21:40:34"
+    },
+    "ngage": {
+        "last_modified": "Fri, 17 Jul 2026 12:23:31 GMT",
+        "etag": "\"6a5a1ec3-1e149\"",
+        "ts": 1784291011,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "nomad": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:48 GMT",
+        "etag": "\"6a550034-1520f\"",
+        "ts": 1783955508,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "odyssey2": {
+        "last_modified": "Fri, 21 Aug 2026 22:18:16 GMT",
+        "etag": "\"6a88cea8-34681\"",
+        "ts": 1787350696,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "openjazz": {
+        "last_modified": "Wed, 27 May 2026 10:15:56 GMT",
+        "etag": "\"6a16c45c-f88\"",
+        "ts": 1779876956,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "openlara": {
+        "last_modified": "Wed, 27 May 2026 10:15:56 GMT",
+        "etag": "\"6a16c45c-4001\"",
+        "ts": 1779876956,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "oricatmos": {
+        "last_modified": "Thu, 13 Aug 2026 16:01:48 GMT",
+        "etag": "\"6a7dea6c-2b0ab\"",
+        "ts": 1786636908,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "p2000t": {
+        "last_modified": "Thu, 23 Jul 2026 21:34:45 GMT",
+        "etag": "\"6a6288f5-3062\"",
+        "ts": 1784842485,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pc88": {
+        "last_modified": "Thu, 23 Jul 2026 21:34:39 GMT",
+        "etag": "\"6a6288ef-5b781\"",
+        "ts": 1784842479,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pc98": {
+        "last_modified": "Thu, 23 Jul 2026 21:34:35 GMT",
+        "etag": "\"6a6288eb-4f593\"",
+        "ts": 1784842475,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pcenginecd": {
+        "last_modified": "Mon, 24 Aug 2026 15:46:30 GMT",
+        "etag": "\"6a8c6756-d4b2f\"",
+        "ts": 1787586390,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pcfx": {
+        "last_modified": "Wed, 27 May 2026 10:15:57 GMT",
+        "etag": "\"6a16c45d-28722\"",
+        "ts": 1779876957,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pdp1": {
+        "last_modified": "Wed, 27 May 2026 10:15:57 GMT",
+        "etag": "\"6a16c45d-cbb\"",
+        "ts": 1779876957,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pecom64": {
+        "last_modified": "Mon, 27 Jul 2026 09:00:15 GMT",
+        "etag": "\"6a671e1f-f54\"",
+        "ts": 1785142815,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pegasus": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:50 GMT",
+        "etag": "\"6a550036-1205\"",
+        "ts": 1783955510,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pet": {
+        "last_modified": "Mon, 27 Jul 2026 09:00:21 GMT",
+        "etag": "\"6a671e25-f4c0\"",
+        "ts": 1785142821,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pico": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:50 GMT",
+        "etag": "\"6a550036-5584\"",
+        "ts": 1783955510,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pico8": {
+        "last_modified": "Mon, 27 Jul 2026 09:02:04 GMT",
+        "etag": "\"6a671e8c-e90bc\"",
+        "ts": 1785142924,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pinballfx": {
+        "last_modified": "Wed, 27 May 2026 10:15:59 GMT",
+        "etag": "\"6a16c45f-2b9e6\"",
+        "ts": 1779876959,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pinballfx2": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:51 GMT",
+        "etag": "\"6a550037-3c790\"",
+        "ts": 1783955511,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pinballfx3": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:51 GMT",
+        "etag": "\"6a550037-4e677\"",
+        "ts": 1783955511,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pinballm": {
+        "last_modified": "Wed, 27 May 2026 10:15:59 GMT",
+        "etag": "\"6a16c45f-255b\"",
+        "ts": 1779876959,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pockstat": {
+        "last_modified": "Fri, 24 Jul 2026 08:37:40 GMT",
+        "etag": "\"6a632454-9ab2\"",
+        "ts": 1784882260,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "prboom": {
+        "last_modified": "Fri, 24 Jul 2026 08:37:54 GMT",
+        "etag": "\"6a632462-b101\"",
+        "ts": 1784882274,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "ps3": {
+        "last_modified": "Mon, 15 Jun 2026 17:32:55 GMT",
+        "etag": "\"6a303747-5b08c\"",
+        "ts": 1781544775,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "psp": {
+        "last_modified": "Thu, 13 Aug 2026 19:32:01 GMT",
+        "etag": "\"6a7e1bb1-1d4caa\"",
+        "ts": 1786649521,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pspminis": {
+        "last_modified": "Fri, 17 Jul 2026 12:24:15 GMT",
+        "etag": "\"6a5a1eef-a1a62\"",
+        "ts": 1784291055,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "psvita": {
+        "last_modified": "Wed, 27 May 2026 10:16:04 GMT",
+        "etag": "\"6a16c464-2897f\"",
+        "ts": 1779876964,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "psx": {
+        "last_modified": "Mon, 05 Oct 2026 10:11:29 GMT",
+        "etag": "\"6ac377d1-47ace3\"",
+        "ts": 1791195089,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "pv1000": {
+        "last_modified": "Mon, 13 Jul 2026 15:11:58 GMT",
+        "etag": "\"6a55003e-5e43\"",
+        "ts": 1783955518,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "quake": {
+        "last_modified": "Sat, 19 Sep 2026 14:29:47 GMT",
+        "etag": "\"6aae9c5b-20be\"",
+        "ts": 1789828187,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "reminiscence": {
+        "last_modified": "Wed, 27 May 2026 10:16:06 GMT",
+        "etag": "\"6a16c466-b45\"",
+        "ts": 1779876966,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "rtcw": {
+        "last_modified": "Wed, 27 May 2026 10:16:06 GMT",
+        "etag": "\"6a16c466-dab\"",
+        "ts": 1779876966,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "rx78": {
+        "last_modified": "Thu, 16 Jul 2026 17:33:58 GMT",
+        "etag": "\"6a591606-6c2f\"",
+        "ts": 1784223238,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "samcoupe": {
+        "last_modified": "Mon, 27 Jul 2026 12:49:51 GMT",
+        "etag": "\"6a6753ef-b166\"",
+        "ts": 1785156591,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "satellaview": {
+        "last_modified": "Mon, 27 Jul 2026 12:50:27 GMT",
+        "etag": "\"6a675413-2a3e7\"",
+        "ts": 1785156627,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "saturn": {
+        "last_modified": "Wed, 27 May 2026 10:16:07 GMT",
+        "etag": "\"6a16c467-9542e\"",
+        "ts": 1779876967,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "saturn-jp": {
+        "last_modified": "Wed, 15 Jul 2026 08:29:24 GMT",
+        "etag": "\"6a5744e4-1abe4f\"",
+        "ts": 1784104164,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "sc3000": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:01 GMT",
+        "etag": "\"6a550041-aeee\"",
+        "ts": 1783955521,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "scv": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:03 GMT",
+        "etag": "\"6a550043-c4da\"",
+        "ts": 1783955523,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "sdlpop": {
+        "last_modified": "Wed, 27 May 2026 10:16:09 GMT",
+        "etag": "\"6a16c469-d18\"",
+        "ts": 1779876969,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "sega32x": {
+        "last_modified": "Wed, 27 May 2026 10:16:09 GMT",
+        "etag": "\"6a16c469-15b46\"",
+        "ts": 1779876969,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "sega32xcd": {
+        "last_modified": "Wed, 27 May 2026 10:16:09 GMT",
+        "etag": "\"6a16c469-3840\"",
+        "ts": 1779876969,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "segacd": {
+        "last_modified": "Wed, 27 May 2026 10:16:09 GMT",
+        "etag": "\"6a16c469-4d09c\"",
+        "ts": 1779876969,
+        "checked_at": "2026-10-17 21:40:36"
+    },
+    "sg1000": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:07 GMT",
+        "etag": "\"6a550047-1ed3b\"",
+        "ts": 1783955527,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "sgb": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:07 GMT",
+        "etag": "\"6a550047-450f1\"",
+        "ts": 1783955527,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "snesh": {
+        "last_modified": "Mon, 27 Jul 2026 09:12:00 GMT",
+        "etag": "\"6a6720e0-6376d\"",
+        "ts": 1785143520,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "socrates": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:09 GMT",
+        "etag": "\"6a550049-16e3\"",
+        "ts": 1783955529,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "sorcerer": {
+        "last_modified": "Mon, 27 Jul 2026 12:50:53 GMT",
+        "etag": "\"6a67542d-8b1f\"",
+        "ts": 1785156653,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "sordm5": {
+        "last_modified": "Mon, 27 Jul 2026 09:12:32 GMT",
+        "etag": "\"6a672100-a440\"",
+        "ts": 1785143552,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "spectravideo": {
+        "last_modified": "Mon, 27 Jul 2026 12:51:47 GMT",
+        "etag": "\"6a675463-20611\"",
+        "ts": 1785156707,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "superbroswar": {
+        "last_modified": "Wed, 15 Jul 2026 08:29:11 GMT",
+        "etag": "\"6a5744d7-536\"",
+        "ts": 1784104151,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "supercharger": {
+        "last_modified": "Wed, 27 May 2026 10:16:14 GMT",
+        "etag": "\"6a16c46e-8202\"",
+        "ts": 1779876974,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "supergrafx": {
+        "last_modified": "Wed, 27 May 2026 10:16:14 GMT",
+        "etag": "\"6a16c46e-29e2\"",
+        "ts": 1779876974,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "supracan": {
+        "last_modified": "Wed, 27 May 2026 10:16:14 GMT",
+        "etag": "\"6a16c46e-4036\"",
+        "ts": 1779876974,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "sv8000": {
+        "last_modified": "Wed, 27 May 2026 10:16:14 GMT",
+        "etag": "\"6a16c46e-280b\"",
+        "ts": 1779876974,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "svmu": {
+        "last_modified": "Mon, 27 Jul 2026 09:12:17 GMT",
+        "etag": "\"6a6720f1-7bba\"",
+        "ts": 1785143537,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "switch": {
+        "last_modified": "Sat, 26 Sep 2026 14:42:43 GMT",
+        "etag": "\"6ab7d9e3-42389e\"",
+        "ts": 1790433763,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "tgcd": {
+        "last_modified": "Wed, 27 May 2026 10:16:17 GMT",
+        "etag": "\"6a16c471-1d6b3\"",
+        "ts": 1779876977,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "theforceengine": {
+        "last_modified": "Mon, 05 Oct 2026 13:05:06 GMT",
+        "etag": "\"6ac3a082-355be\"",
+        "ts": 1791205506,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "thomson": {
+        "last_modified": "Mon, 27 Jul 2026 12:52:24 GMT",
+        "etag": "\"6a675488-26aa9\"",
+        "ts": 1785156744,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "ti99": {
+        "last_modified": "Wed, 15 Jul 2026 08:29:03 GMT",
+        "etag": "\"6a5744cf-1c95f\"",
+        "ts": 1784104143,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "tiger": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:13 GMT",
+        "etag": "\"6a55004d-18678\"",
+        "ts": 1783955533,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "triforce": {
+        "last_modified": "Wed, 27 May 2026 10:16:17 GMT",
+        "etag": "\"6a16c471-4218\"",
+        "ts": 1779876977,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "tutor": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:13 GMT",
+        "etag": "\"6a55004d-3dc6\"",
+        "ts": 1783955533,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "tvgames": {
+        "last_modified": "Fri, 18 Sep 2026 16:37:05 GMT",
+        "etag": "\"6aad68b1-1380e\"",
+        "ts": 1789749425,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "tyrian": {
+        "last_modified": "Wed, 27 May 2026 10:16:18 GMT",
+        "etag": "\"6a16c472-780\"",
+        "ts": 1779876978,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "vc4000": {
+        "last_modified": "Wed, 15 Jul 2026 08:29:18 GMT",
+        "etag": "\"6a5744de-b035\"",
+        "ts": 1784104158,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "vidbrain": {
+        "last_modified": "Mon, 27 Jul 2026 12:52:53 GMT",
+        "etag": "\"6a6754a5-1a03\"",
+        "ts": 1785156773,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "videopacplus": {
+        "last_modified": "Thu, 20 Aug 2026 16:19:42 GMT",
+        "etag": "\"6a87291e-f3fc\"",
+        "ts": 1787242782,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "virtualboy": {
+        "last_modified": "Wed, 27 May 2026 10:16:19 GMT",
+        "etag": "\"6a16c473-9ffe\"",
+        "ts": 1779876979,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "vpinball": {
+        "last_modified": "Thu, 12 Dec 2024 18:39:26 GMT",
+        "etag": "\"675b2dde-2018e\"",
+        "ts": 1734028766,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "wasm4": {
+        "last_modified": "Mon, 27 Jul 2026 09:09:53 GMT",
+        "etag": "\"6a672061-141f7\"",
+        "ts": 1785143393,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "wiiu": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:19 GMT",
+        "etag": "\"6a550053-53d8a\"",
+        "ts": 1783955539,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "wiiware": {
+        "last_modified": "Fri, 17 Jul 2026 12:25:22 GMT",
+        "etag": "\"6a5a1f32-cda5f\"",
+        "ts": 1784291122,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "windows": {
+        "last_modified": "Thu, 10 Sep 2026 15:50:31 GMT",
+        "etag": "\"6aa2d1c7-2d9b3d\"",
+        "ts": 1789055431,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "x1": {
+        "last_modified": "Mon, 27 Jul 2026 12:54:17 GMT",
+        "etag": "\"6a6754f9-61f47\"",
+        "ts": 1785156857,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "x68000": {
+        "last_modified": "Mon, 27 Jul 2026 12:56:15 GMT",
+        "etag": "\"6a67556f-505170\"",
+        "ts": 1785156975,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "xbla": {
+        "last_modified": "Wed, 27 May 2026 10:16:28 GMT",
+        "etag": "\"6a16c47c-10699d\"",
+        "ts": 1779876988,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "xbox": {
+        "last_modified": "Mon, 27 Jul 2026 09:07:44 GMT",
+        "etag": "\"6a671fe0-1a7c1c\"",
+        "ts": 1785143264,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "xbox360": {
+        "last_modified": "Wed, 27 May 2026 10:16:29 GMT",
+        "etag": "\"6a16c47d-1094b\"",
+        "ts": 1779876989,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "xegs": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:25 GMT",
+        "etag": "\"6a550059-c6aa\"",
+        "ts": 1783955545,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "xrick": {
+        "last_modified": "Wed, 27 May 2026 10:16:29 GMT",
+        "etag": "\"6a16c47d-8b9\"",
+        "ts": 1779876989,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "zaccariapinball": {
+        "last_modified": "Wed, 27 May 2026 10:16:29 GMT",
+        "etag": "\"6a16c47d-17b46\"",
+        "ts": 1779876989,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "zx81": {
+        "last_modified": "Mon, 27 Jul 2026 12:56:30 GMT",
+        "etag": "\"6a67557e-1346f\"",
+        "ts": 1785156990,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "zxspectrum": {
+        "last_modified": "Tue, 28 Jul 2026 18:25:32 GMT",
+        "etag": "\"6a68f41c-11e9141\"",
+        "ts": 1785263132,
+        "checked_at": "2026-10-17 21:40:38"
+    },
+    "solarus": {
+        "last_modified": "Mon, 13 Jul 2026 15:12:10 GMT",
+        "etag": "\"6a55004a-c771\"",
+        "ts": 1783955530,
+        "checked_at": "2026-10-17 21:40:38"
+    }
+}

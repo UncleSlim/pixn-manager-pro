@@ -1,0 +1,2836 @@
+[
+    {
+        "id": "102 Dalmatians - Puppies to the Rescue (UK).chd",
+        "name": "102 Dalmatians - Puppies to the Rescue",
+        "publisher": "Eidos Interactive",
+        "releasedate": "20001115T000000",
+        "size_mb": 422.4,
+        "developer": "Crystal Dynamics",
+        "genre": "Platform"
+    },
+    {
+        "id": "18 Wheeler - American Pro Trucker (Europe) (En,Fr,De,Es).chd",
+        "name": "18 Wheeler - American Pro Trucker",
+        "publisher": "SEGA",
+        "releasedate": "20010601T000000",
+        "size_mb": 160.48,
+        "developer": "CRI",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "4 Wheel Thunder (Europe) (En,Fr).chd",
+        "name": "4 Wheel Thunder",
+        "publisher": "Midway",
+        "releasedate": "20000609T000000",
+        "size_mb": 694.56,
+        "developer": "Kalisto",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "4x4 Evo (USA).chd",
+        "name": "4x4 Evo",
+        "publisher": "Gathering Of Developpers",
+        "releasedate": "20001101T000000",
+        "size_mb": 200.88,
+        "developer": "Terminal Reality",
+        "genre": "Race, Driving, Simulation"
+    },
+    {
+        "id": "4x4 Jam.cdi",
+        "name": "4x4 Jam",
+        "publisher": "Josh Prod",
+        "releasedate": "20170930T000000",
+        "size_mb": 75.34,
+        "developer": "Invictus Games",
+        "genre": "Racing, Driving"
+    },
+    {
+        "id": "90 Minutes - Sega Championship Football (Europe) (En,Fr,De,Es,It).chd",
+        "name": "90 Minutes - Sega Championship Football",
+        "publisher": "SEGA",
+        "releasedate": "20011025T000000",
+        "size_mb": 324.7,
+        "developer": "Smilebit",
+        "genre": "Sports, Sports / Soccer"
+    },
+    {
+        "id": "AeroWings (Europe) (En,Fr,De).chd",
+        "name": "AeroWings",
+        "publisher": "Crave Entertainment",
+        "releasedate": "19991001T000000",
+        "size_mb": 674.38,
+        "developer": "CRI",
+        "genre": "Simulation, Shooter / Plane, Simulation / Vehicle, Shooter"
+    },
+    {
+        "id": "AeroWings 2 - Airstrike (Europe) (En,De).chd",
+        "name": "AeroWings 2 - Airstrike",
+        "publisher": "Crave Entertainment",
+        "releasedate": "20001001T000000",
+        "size_mb": 641.32,
+        "developer": "CRI",
+        "genre": "Simulation, Shooter / Plane, Simulation / Vehicle, Shooter"
+    },
+    {
+        "id": "AirForce Delta (USA).chd",
+        "name": "AirForce Delta",
+        "publisher": "Konami",
+        "releasedate": "19990909T000000",
+        "size_mb": 637.1,
+        "developer": "Konami Computer Entertainment Yokohama",
+        "genre": "Simulation, Shoot'em Up"
+    },
+    {
+        "id": "Alice's Mom's Rescue (World) (Unl).cdi",
+        "name": "Alice's Moms Rescue",
+        "publisher": "Josh Prod",
+        "releasedate": "20150323T000000",
+        "size_mb": 24.25,
+        "developer": ""
+    },
+    {
+        "id": "Alien Front Online (USA).chd",
+        "name": "Alien Front Online",
+        "publisher": "SEGA",
+        "releasedate": "20010807T000000",
+        "size_mb": 133.85,
+        "developer": "Wow Entertainment",
+        "genre": "Action, Shooter / Vehicle, 3Rd Person, Shooter"
+    },
+    {
+        "id": "Alone in the Dark - The New Nightmare (Europe).m3u",
+        "name": "Alone in the Dark - The New Nightmare",
+        "publisher": "Infogrames",
+        "releasedate": "20010622T000000",
+        "size_mb": 1701.98,
+        "developer": "Darkworks",
+        "genre": "Adventure, Adventure / Survival Horror"
+    },
+    {
+        "id": "Aqua GT (Europe) (En,Fr,De).chd",
+        "name": "Aqua GT",
+        "publisher": "Take 2 Interactive",
+        "releasedate": "20001222T000000",
+        "size_mb": 207.48,
+        "developer": "East Point Software",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Armada (USA).chd",
+        "name": "Armada",
+        "publisher": "Metro 3D",
+        "releasedate": "19991031T000000",
+        "size_mb": 478.08,
+        "developer": "Metro 3D",
+        "genre": "Shoot'em Up, Role Playing Games, Action"
+    },
+    {
+        "id": "Army Men - Sarge's Heroes (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Army Men - Sarge's Heroes",
+        "publisher": "Midway",
+        "releasedate": "20001117T000000",
+        "size_mb": 409.83,
+        "developer": "Saffire",
+        "genre": "Action, Action / Adventure"
+    },
+    {
+        "id": "Atari Anniversary Edition (USA).chd",
+        "name": "Atari Anniversary Edition",
+        "publisher": "Infogrames",
+        "releasedate": "20000701T000000",
+        "size_mb": 410.13,
+        "developer": "Digital Eclipse",
+        "genre": "Compilation"
+    },
+    {
+        "id": "Bang! Gunship Elite (USA).chd",
+        "name": "Bang! Gunship Elite",
+        "publisher": "Red Storm Entertainment",
+        "releasedate": "20001218T000000",
+        "size_mb": 396.08,
+        "developer": "Rayland Interactive",
+        "genre": "Action, Shoot'em Up"
+    },
+    {
+        "id": "Bangai-O (Europe) (En,Fr,De).chd",
+        "name": "Bangai-O",
+        "publisher": "Entertainment Software Publishing",
+        "releasedate": "20001020T000000",
+        "size_mb": 477.88,
+        "developer": "Treasure",
+        "genre": "Shoot'em Up"
+    },
+    {
+        "id": "Blue Stinger (Europe).chd",
+        "name": "Blue Stinger",
+        "publisher": "Activision",
+        "releasedate": "19991014T000000",
+        "size_mb": 714.97,
+        "developer": "Climax Graphics",
+        "genre": "Adventure, Adventure / Survival Horror"
+    },
+    {
+        "id": "Bomberman Online (USA).chd",
+        "name": "Bomberman Online",
+        "publisher": "Hudson",
+        "releasedate": "20011030T000000",
+        "size_mb": 494.15,
+        "developer": "Hudson",
+        "genre": "Action, Action / Labyrinth"
+    },
+    {
+        "id": "Buggy Heat (Europe) (En,Fr,De,Es).chd",
+        "name": "Buggy Heat",
+        "publisher": "CRI",
+        "releasedate": "19991014T000000",
+        "size_mb": 444.82,
+        "developer": "CRI",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Bust-A-Move 4 (Europe).chd",
+        "name": "Bust-A-Move 4",
+        "publisher": "Club Acclaim",
+        "releasedate": "20000101T000000",
+        "size_mb": 204.33,
+        "developer": "Taito",
+        "genre": "Puzzle-Game, Puzzle-Game / Throw"
+    },
+    {
+        "id": "Caesars Palace 2000 - Millennium Gold Edition (Europe).chd",
+        "name": "Caesars Palace 2000 - Millennium Gold Edition",
+        "publisher": "Interplay",
+        "releasedate": "20000616T000000",
+        "size_mb": 223.91,
+        "developer": "Runecraft",
+        "genre": "Playing Cards, Various, Simulation, Board Game"
+    },
+    {
+        "id": "Cannon Spike (Europe).chd",
+        "name": "Cannon Spike",
+        "publisher": "Bigben Interactive",
+        "releasedate": "20020426T000000",
+        "size_mb": 123.39,
+        "developer": "Psikyo",
+        "genre": "Action, Shooter"
+    },
+    {
+        "id": "Capcom Fighting Collection (Hack)[Final v2].cdi",
+        "name": "Capcom Fighting Collection",
+        "publisher": "Homebrew",
+        "releasedate": "20070206T000000",
+        "size_mb": 776.77,
+        "developer": "Homebrew",
+        "genre": "Compilation"
+    },
+    {
+        "id": "Capcom vs. SNK v1.001 (US).chd",
+        "name": "Capcom vs. SNK",
+        "publisher": "Virgin",
+        "releasedate": "20001215T000000",
+        "size_mb": 798.45,
+        "developer": "Capcom",
+        "genre": "Fighting"
+    },
+    {
+        "id": "Capcom vs. SNK Millennium Collection (Hack)[RDC].cdi",
+        "name": "Capcom vs. SNK Millennium Collection",
+        "publisher": "Revivedc Project",
+        "releasedate": "20111116T000000",
+        "size_mb": 773.33,
+        "developer": "Revivedc Project",
+        "genre": "Fighting / 2D, Fighting, Compilation"
+    },
+    {
+        "id": "Carrier (Europe) (En,Fr,De,Es).chd",
+        "name": "Carrier",
+        "publisher": "Xicat Interactive",
+        "releasedate": "20010705T000000",
+        "size_mb": 644.13,
+        "developer": "Jaleco",
+        "genre": "Adventure, Action, Adventure / Survival Horror"
+    },
+    {
+        "id": "Castlevania - Resurrection (E3 Pre-Demo).chd",
+        "name": "Castlevania : Resurrection",
+        "publisher": "Konami",
+        "releasedate": "20000301T000000",
+        "size_mb": 12.92,
+        "developer": "Konami",
+        "genre": "Action / Adventure, Action"
+    },
+    {
+        "id": "Centipede (USA).chd",
+        "name": "Centipede",
+        "publisher": "Atari",
+        "releasedate": "19991123T000000",
+        "size_mb": 340.03,
+        "developer": "Leaping Lizard Games",
+        "genre": "Shoot'em Up, Action",
+        "desc": "This is a remake or \"modernaization\" of the classic arcade shooter Centipede, originally released in arcades by Atari in 1980.  This remake keeps some of the original game's shooter-style gameplay while mixing in more console-style exploration.  Gameplay progresses through five \"worlds\":  Weedom, Frostonia, Infernium, Enigma, and Evile.  Players blast away at the classic centipedes, spiders, fleas, and scorpions while fighting new enemies like the mosquito, cockroach, and killer mushroom.  A \"classic\" mode is also included, which allows players to play the classic game in a new \"3D\" isometric perspective."
+    },
+    {
+        "id": "Championship Surfer (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Championship Surfer",
+        "publisher": "Mattel Interactive",
+        "releasedate": "20010810T000000",
+        "size_mb": 293.26,
+        "developer": "Krome",
+        "genre": "Sports, Sports / Water"
+    },
+    {
+        "id": "Charge 'N Blast (Europe).chd",
+        "name": "Charge 'N Blast",
+        "publisher": "Xicat Interactive",
+        "releasedate": "20010629T000000",
+        "size_mb": 62.6,
+        "developer": "CRI",
+        "genre": "Shoot'em Up"
+    },
+    {
+        "id": "Chicken Run (Europe) (Fr,De,Es,It).chd",
+        "name": "Chicken Run",
+        "publisher": "Eidos Interactive",
+        "releasedate": "20001113T000000",
+        "size_mb": 854.19,
+        "developer": "Blitz Games",
+        "genre": "Action, Action / Adventure, Platform"
+    },
+    {
+        "id": "ChuChu Rocket! (Europe) (En,Ja,Fr,De,Es).chd",
+        "name": "ChuChu Rocket!",
+        "publisher": "SEGA",
+        "releasedate": "20000609T000000",
+        "size_mb": 222.78,
+        "developer": "Sonic Team",
+        "genre": "Puzzle-Game, Strategy"
+    },
+    {
+        "id": "Coaster Works (Europe).chd",
+        "name": "Coaster Works",
+        "publisher": "Xicat Interactive",
+        "releasedate": "20010629T000000",
+        "size_mb": 77.87,
+        "developer": "Bimboosoft",
+        "genre": "Strategy, Various"
+    },
+    {
+        "id": "Confidential Mission (Europe) (En,Fr,De,Es).chd",
+        "name": "Confidential Mission",
+        "publisher": "SEGA",
+        "releasedate": "20010520T000000",
+        "size_mb": 168.3,
+        "developer": "Hitmaker",
+        "genre": "Lightgun Shooter"
+    },
+    {
+        "id": "Conflict Zone (Europe) (En,Fr,De).chd",
+        "name": "Conflict Zone",
+        "publisher": "Bigben Interactive",
+        "releasedate": "20020412T000000",
+        "size_mb": 560.5,
+        "developer": "Masa",
+        "genre": "Strategy, Simulation"
+    },
+    {
+        "id": "Cool Herders (USA).cdi",
+        "name": "Cool Herders",
+        "publisher": "Goat Store Publishing",
+        "releasedate": "20051215T000000",
+        "size_mb": 235.68,
+        "developer": "Harmlesslion",
+        "genre": "Action / Adventure, Action"
+    },
+    {
+        "id": "Crazy Taxi (Europe).chd",
+        "name": "Crazy Taxi",
+        "publisher": "SEGA",
+        "releasedate": "20000218T000000",
+        "size_mb": 73.44,
+        "developer": "SEGA",
+        "genre": "Race, Driving, Race 3Rd Pers. View"
+    },
+    {
+        "id": "Crazy Taxi 2 (Europe) (En,Ja,Fr,De,Es).chd",
+        "name": "Crazy Taxi 2",
+        "publisher": "SEGA",
+        "releasedate": "20010607T000000",
+        "size_mb": 104.61,
+        "developer": "Hitmaker",
+        "genre": "Race, Driving, Race 3Rd Pers. View"
+    },
+    {
+        "id": "Cyber Troopers - Virtual-On - Oratorio Tangram (USA).chd",
+        "name": "Cyber Troopers - Virtual-On - Oratorio Tangram",
+        "publisher": "SEGA",
+        "releasedate": "20000630T000000",
+        "size_mb": 714.72,
+        "developer": "CRI",
+        "genre": "Fight, Shoot'em Up"
+    },
+    {
+        "id": "D2 (USA).m3u",
+        "name": "D2",
+        "publisher": "SEGA",
+        "releasedate": "20000822T000000",
+        "size_mb": 2480.79,
+        "developer": "WARP",
+        "genre": "Role Playing Games, Action / Adventure, Action"
+    },
+    {
+        "id": "Dalforce X.O.P. (Prototype).cdi",
+        "name": "Dalforce X.O.P. (Prototype)",
+        "publisher": "The Goat Store",
+        "releasedate": "20070101T000000",
+        "size_mb": 774.85,
+        "developer": "Christopher Emizrian",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up"
+    },
+    {
+        "id": "Dave Mirra Freestyle BMX (Europe).chd",
+        "name": "Dave Mirra Freestyle BMX",
+        "publisher": "Acclaim",
+        "releasedate": "20001208T000000",
+        "size_mb": 320.07,
+        "developer": "Z-Axis",
+        "genre": "Sports, Sports / Cycling"
+    },
+    {
+        "id": "Daytona USA 2001 (Europe) (En,Fr,De,Es).chd",
+        "name": "Daytona USA 2001",
+        "publisher": "Infogrames",
+        "releasedate": "20010427T000000",
+        "size_mb": 397.76,
+        "developer": "Amusement Vision",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Death Crimson OX (USA).chd",
+        "name": "Death Crimson OX",
+        "publisher": "Sammy Corporation",
+        "releasedate": "20010805T000000",
+        "size_mb": 121.8,
+        "developer": "Ecole",
+        "genre": "Lightgun Shooter"
+    },
+    {
+        "id": "Deep Fighter (Europe) (En,It).m3u",
+        "name": "Deep Fighter",
+        "publisher": "Ubisoft",
+        "releasedate": "20000922T000000",
+        "size_mb": 687.4,
+        "developer": "Criterion Games",
+        "genre": "Shoot'em Up, Simulation"
+    },
+    {
+        "id": "Demolition Racer - No Exit (USA).chd",
+        "name": "Demolition Racer - No Exit",
+        "publisher": "Infogrames",
+        "releasedate": "20001023T000000",
+        "size_mb": 389.94,
+        "developer": "Pitbull Syndicate",
+        "genre": "Race, Driving",
+        "desc": "The sequel to  Demolition Racer. Race 14 tortuous tracks with mines and crates all over the place slowing you down, racing over 16 savage cars to a sports car to a hearse with its own characteristics to win the race. New game mode \"last man standing\" where you face all cars in race not for position, but to wreck each other going down a track to see who's last, and \"demolition derby\" where you fight cars in a arena to see who's last by hitting each other with state-of-the-art graphics where you can see tires, doors, hoods, bumpers, etc. go everywhere."
+    },
+    {
+        "id": "Dino Crisis (Europe).chd",
+        "name": "Dino Crisis",
+        "publisher": "Capcom",
+        "releasedate": "20001222T000000",
+        "size_mb": 521.35,
+        "developer": "Nextech",
+        "genre": "Adventure / Survival Horror, Adventure, Shooter / 3Rd Person, Shooter"
+    },
+    {
+        "id": "Disney's Dinosaur (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Disney's Dinosaur",
+        "publisher": "Ubisoft",
+        "releasedate": "20001124T000000",
+        "size_mb": 854.19,
+        "developer": "Ubisoft",
+        "genre": "Action, Action / Adventure, Platform"
+    },
+    {
+        "id": "Disney's Donald Duck - Quack Attack (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Disney's Donald Duck - Quack Attack",
+        "publisher": "Ubisoft",
+        "releasedate": "20001215T000000",
+        "size_mb": 532.06,
+        "developer": "Disney Interactive",
+        "genre": "Platform, Action"
+    },
+    {
+        "id": "Disney-Pixar Buzz Lightyear of Star Command (Europe).chd",
+        "name": "Disney-Pixar Buzz Lightyear of Star Command",
+        "publisher": "Activision",
+        "releasedate": "20000926T000000",
+        "size_mb": 520.78,
+        "developer": "Travellers Tales",
+        "genre": "Platform, Action"
+    },
+    {
+        "id": "Disney-Pixar Toy Story 2 - Buzz Lightyear to the Rescue! (Europe).chd",
+        "name": "Disney-Pixar Toy Story 2 - Buzz Lightyear to the Rescue!",
+        "publisher": "Activision",
+        "releasedate": "20000630T000000",
+        "size_mb": 683.51,
+        "developer": "Travellers Tales",
+        "genre": "Platform"
+    },
+    {
+        "id": "Dragon Riders - Chronicles of Pern (Europe).chd",
+        "name": "Dragon Riders - Chronicles of Pern",
+        "publisher": "Ubisoft",
+        "releasedate": "20020208T000000",
+        "size_mb": 504.79,
+        "developer": "Ubisoft",
+        "genre": "Adventure, Role Playing Games"
+    },
+    {
+        "id": "Dragons Blood (Europe) (En,Fr,De).chd",
+        "name": "Dragons Blood",
+        "publisher": "Interplay",
+        "releasedate": "20000630T000000",
+        "size_mb": 827.99,
+        "developer": "Treyarch",
+        "genre": "Role Playing Games"
+    },
+    {
+        "id": "Drill.cdi",
+        "name": "Drill",
+        "publisher": "Freeware",
+        "releasedate": "20050101T000000",
+        "size_mb": 375.97,
+        "developer": "Handmade Games",
+        "genre": "Shooter"
+    },
+    {
+        "id": "Ducati World (Europe) (En,Fr,De,It).chd",
+        "name": "Ducati World",
+        "publisher": "Acclaim",
+        "releasedate": "20010309T000000",
+        "size_mb": 425.8,
+        "developer": "ATD",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "DUX - Version 1,5 (World) (Unl).cdi",
+        "name": "DUX 1.5",
+        "publisher": "Hucast",
+        "releasedate": "20130422T000000",
+        "size_mb": 489.85,
+        "developer": "Hucast",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up"
+    },
+    {
+        "id": "Dynamite Cop (Europe).chd",
+        "name": "Dynamite Cop",
+        "publisher": "SEGA",
+        "releasedate": "19991014T000000",
+        "size_mb": 212.7,
+        "developer": "SEGA",
+        "genre": "Beat'em Up"
+    },
+    {
+        "id": "Ecco II - Sentinels of the Universe (Prototype).chd",
+        "name": "Ecco II : Sentinels of the Universe (Prototype)",
+        "publisher": "SEGA",
+        "releasedate": "20010201T000000",
+        "size_mb": 38.65,
+        "developer": "Appaloosa Interactive",
+        "genre": "Action, Action / Adventure"
+    },
+    {
+        "id": "Ecco the Dolphin - Defender of the Future (Europe) (En,Fr,De,Es).chd",
+        "name": "Ecco the Dolphin - Defender of the Future",
+        "publisher": "SEGA",
+        "releasedate": "20000616T000000",
+        "size_mb": 551.62,
+        "developer": "Appaloosa Interactive",
+        "genre": "Adventure, Action / Adventure, Action"
+    },
+    {
+        "id": "ECW Anarchy Rulz (Europe).chd",
+        "name": "ECW Anarchy Rulz",
+        "publisher": "Acclaim",
+        "releasedate": "20010209T000000",
+        "size_mb": 416.82,
+        "developer": "Acclaim",
+        "genre": "Fight, Sports"
+    },
+    {
+        "id": "ECW Hardcore Revolution (Europe).chd",
+        "name": "ECW Hardcore Revolution",
+        "publisher": "Acclaim",
+        "releasedate": "20000101T000000",
+        "size_mb": 245.03,
+        "developer": "Acclaim",
+        "genre": "Fight, Sports"
+    },
+    {
+        "id": "Elemental Gimmick Gear (USA).chd",
+        "name": "Elemental Gimmick Gear",
+        "publisher": "Hudson",
+        "releasedate": "19991229T000000",
+        "size_mb": 439.85,
+        "developer": "Hudson",
+        "genre": "Role Playing Games"
+    },
+    {
+        "id": "Epitech Collection (FR).cdi",
+        "name": "Epitech Collection, The (Europe)",
+        "publisher": "Epitech",
+        "releasedate": "2002",
+        "size_mb": 62.26,
+        "developer": "Epitech",
+        "genre": "Compilation"
+    },
+    {
+        "id": "ESPN International Track & Field (Europe) (En,Fr,De).chd",
+        "name": "ESPN International Track & Field",
+        "publisher": "Konami",
+        "releasedate": "20001001T000000",
+        "size_mb": 118.39,
+        "developer": "Konami",
+        "genre": "Sports, Sports / Multisports"
+    },
+    {
+        "id": "ESPN NBA 2Night (USA).chd",
+        "name": "ESPN NBA 2Night",
+        "publisher": "Konami",
+        "releasedate": "20001120T000000",
+        "size_mb": 325.24,
+        "developer": "Konami",
+        "genre": "Sports / Basketball, Sports"
+    },
+    {
+        "id": "European Super League (Europe) (En,Fr,De,Es,It,Pt).chd",
+        "name": "European Super League",
+        "publisher": "Virgin",
+        "releasedate": "20010223T000000",
+        "size_mb": 330.63,
+        "developer": "Crimson",
+        "genre": "Sports, Sports / Soccer"
+    },
+    {
+        "id": "Evil Dead - Hail to the King (Europe).chd",
+        "name": "Evil Dead - Hail to the King",
+        "publisher": "THQ",
+        "releasedate": "20010627T000000",
+        "size_mb": 845.46,
+        "developer": "Heavy Iron",
+        "genre": "Adventure",
+        "desc": "Ash, the square-jawed, insult-spewing, shotgun-toting, chainsaw-armed hero from the cult classic Evil Dead trilogy is back. Picking up eight years after the last installment of the Evil Dead films, Ash is drawn back to the infamous cabin in the woods only to again face evil forces that have crossed over to our world. Our hero finds himself slicing and dicing carnivorous Kandarian demons, vicious deadites, and other unspeakable atrocities spawned by the notorious Book of the Dead. And in true Evil Dead fashion, Ash must once again attempt to save the world from an appalling and horrific end.\nEvil Dead: Hail to the King is a survival horror game with over-the-top bloodlust and signature Ash humor--all within the confines of the Evil Dead universe."
+    },
+    {
+        "id": "Evil Twin - Cyprien's Chronicles (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Evil Twin - Cyprien's Chronicles",
+        "publisher": "Bigben Interactive",
+        "releasedate": "20020426T000000",
+        "size_mb": 547.59,
+        "developer": "In Utero",
+        "genre": "Platform, Action"
+    },
+    {
+        "id": "Evolution - The World of Sacred Device (Europe).chd",
+        "name": "Evolution - The World of Sacred Device",
+        "publisher": "Ubisoft",
+        "releasedate": "20000428T000000",
+        "size_mb": 401.2,
+        "developer": "Sting Entertainment",
+        "genre": "Role Playing Games"
+    },
+    {
+        "id": "Evolution 2 - Far Off Promise (Europe).chd",
+        "name": "Evolution 2 - Far Off Promise",
+        "publisher": "Swing! Entertainment",
+        "releasedate": "20011123T000000",
+        "size_mb": 449.43,
+        "developer": "Sting Entertainment",
+        "genre": "Role Playing Games"
+    },
+    {
+        "id": "Exhibition of Speed (Europe) (En,Fr,De,Es,It,Nl).chd",
+        "name": "Exhibition of Speed",
+        "publisher": "Titus",
+        "releasedate": "20010323T000000",
+        "size_mb": 327.67,
+        "developer": "Player 1",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Expendable (USA) (En,Fr,De,Es,It).chd",
+        "name": "Expendable",
+        "publisher": "Infogrames",
+        "releasedate": "19990909T000000",
+        "size_mb": 529.29,
+        "developer": "Rage Software",
+        "genre": "Shooter",
+        "desc": "In 2463 a race of vicious aliens has invaded human planets, wiping out the population of Novocastria first. Only the Millennium Soldier can lead the human fightback. In this sci-fi action game, reflex shooting dominates over planning or tactical play. Expect non-stop action from fighting and relentlessly killing off tons of bad guys across more than 20 levels of 3rd person 3D action, taking place inside and outside. Powering up your weaponry is crucial - there are 18 different ones to collect, from pulse cannons to particle accelerators and rockets to missiles. Two player cooperative and deathmatch modes are provided."
+    },
+    {
+        "id": "F1 Racing Championship (Europe) (En,Fr,De,Es,It).chd",
+        "name": "F1 Racing Championship",
+        "publisher": "Video System",
+        "releasedate": "20010119T000000",
+        "size_mb": 258.95,
+        "developer": "Ubisoft",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "F1 World Grand Prix (Europe) (En,Fr,De,Es).chd",
+        "name": "F1 World Grand Prix",
+        "publisher": "SEGA",
+        "releasedate": "19991101T000000",
+        "size_mb": 338.52,
+        "developer": "Video System",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "F1 World Grand Prix II for Dreamcast (Europe) (En,Fr,De,Es,It).chd",
+        "name": "F1 World Grand Prix II for Dreamcast",
+        "publisher": "Video System",
+        "releasedate": "20001202T000000",
+        "size_mb": 417.68,
+        "developer": "Video System",
+        "genre": "Race, Driving, Simulation"
+    },
+    {
+        "id": "F355 Challenge - Passione Rossa (Europe) (En,Fr,De,Es,It).chd",
+        "name": "F355 Challenge - Passione Rossa",
+        "publisher": "Acclaim",
+        "releasedate": "20001020T000000",
+        "size_mb": 249.77,
+        "developer": "SEGA AM2",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Fast Striker (2010)(NGDEV_TEAM).cdi",
+        "name": "Fast Striker",
+        "publisher": "NG:Dev.Team",
+        "releasedate": "20101221T000000",
+        "size_mb": 480.09,
+        "developer": "NG:Dev.Team",
+        "genre": "Shoot'em Up",
+        "desc": "2D arcade shooting game with emphasis on scoring originally developed for NEO·GEO. The game lets the player choose between 3 game modes with different scoring systems. Novice Mode for beginners, Original Mode for classic Shoot’ em Up players and Maniac for very experienced players. It features six stages of excellent 2D arcade game play with over 40 unique enemy types, super smooth 3D scrolling backgrounds, huge CGI bosses and it features the biggest megabit count ever since the beginning of NEO·GEO games."
+    },
+    {
+        "id": "Feet of Fury [RDC].cdi",
+        "name": "Feet of Fury - Mobile Tactical Dancing Action",
+        "publisher": "The GOAT Store",
+        "releasedate": "20030707T000000",
+        "size_mb": 604.14,
+        "developer": "Cryptic Allusion",
+        "genre": "Music And Dancing"
+    },
+    {
+        "id": "Fighting Force 2 (Europe) (En,Fr).chd",
+        "name": "Fighting Force 2",
+        "publisher": "Eidos Interactive",
+        "releasedate": "19991130T000000",
+        "size_mb": 331.52,
+        "developer": "Core Design",
+        "genre": "Beat'em Up, Adventure"
+    },
+    {
+        "id": "Fighting Vipers 2 (Europe) (En,Ja,Fr,De,Es,It).chd",
+        "name": "Fighting Vipers 2",
+        "publisher": "SEGA",
+        "releasedate": "20010316T000000",
+        "size_mb": 144.18,
+        "developer": "CRI",
+        "genre": "Fight",
+        "desc": "This game is a sequel to Fighting Vipers, a 3D fighting game that allows you to face adolescents and adults that comes from different \"urban tribes\", but also, in that second version you can choose or beat another time the most charismatic characters of FV1 and some unedited characters never seen again (either in FV2 arcade, version appeared in 1998 on Model 3 arcade board). FV2, as in FV, has the incentive to destroy the fight arena walls with the last combat impact, also, you can destroy again the armor of your opponent, that as a newness in 1998's FV2, includes the \"Super KO System\", in which, if you break the armor of your opponent and immediately, you make a Super Combo that leaves him \"confused\", you will win without dispute a second round."
+    },
+    {
+        "id": "Flag to Flag (USA).chd",
+        "name": "Flag to Flag",
+        "publisher": "SEGA",
+        "releasedate": "19990909T000000",
+        "size_mb": 696.07,
+        "developer": "Zoom",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Flashback HD.cdi",
+        "name": "Flashback",
+        "publisher": "Josh Prod",
+        "releasedate": "20171206T000000",
+        "size_mb": 742.01,
+        "developer": "Delphine Software International",
+        "genre": "Platform"
+    },
+    {
+        "id": "Floigan Bros. - Episode 1 (Europe).chd",
+        "name": "Floigan Bros. - Episode 1",
+        "publisher": "SEGA",
+        "releasedate": "20011123T000000",
+        "size_mb": 401.71,
+        "developer": "Visual Concepts",
+        "genre": "Adventure, Action"
+    },
+    {
+        "id": "Freestyle Scooter (Europe).chd",
+        "name": "Freestyle Scooter",
+        "publisher": "Ubisoft",
+        "releasedate": "20020426T000000",
+        "size_mb": 410.1,
+        "developer": "Titanium",
+        "genre": "Sports, Action"
+    },
+    {
+        "id": "Frog Feast (World) (Unl).cdi",
+        "name": "Frog Feast",
+        "publisher": "Oldergames",
+        "releasedate": "20071115T000000",
+        "size_mb": 2.94,
+        "developer": "Charles Doty",
+        "genre": "Action / Adventure, Action"
+    },
+    {
+        "id": "Frogger 2 - Swampy's Revenge (USA).chd",
+        "name": "Frogger 2 - Swampy's Revenge",
+        "publisher": "Hasbro Interactive",
+        "releasedate": "20001013T000000",
+        "size_mb": 293.34,
+        "developer": "Blitz Games",
+        "genre": "Platform, Action"
+    },
+    {
+        "id": "Fur Fighters (Europe) (En,Fr,De,Es).chd",
+        "name": "Fur Fighters",
+        "publisher": "Acclaim",
+        "releasedate": "20000602T000000",
+        "size_mb": 732.2,
+        "developer": "Bizarre Creations",
+        "genre": "Action, Action / Adventure, Shooter / 3Rd Person, Shooter"
+    },
+    {
+        "id": "Gauntlet Legends (Europe) (En,Fr,De).chd",
+        "name": "Gauntlet Legends",
+        "publisher": "Midway",
+        "releasedate": "20000727T000000",
+        "size_mb": 403.4,
+        "developer": "Midway",
+        "genre": "Beat'em Up, Role Playing Games"
+    },
+    {
+        "id": "Geist.Force-Resorted.cdi",
+        "name": "Geist Force (Prototype)",
+        "publisher": "SEGA",
+        "releasedate": "19981210T000000",
+        "size_mb": 774.47,
+        "developer": "SEGA",
+        "genre": "Shoot'em Up"
+    },
+    {
+        "id": "Ghost Blade (World) (Unl).cdi",
+        "name": "Ghost Blade",
+        "publisher": "Hucast",
+        "releasedate": "20180921T000000",
+        "size_mb": 786.2,
+        "developer": "Hucast",
+        "genre": "Shoot'em Up / Vertical, Shoot'em Up"
+    },
+    {
+        "id": "GigaWing (Europe).chd",
+        "name": "GigaWing",
+        "publisher": "Virgin Interactive",
+        "releasedate": "20001020T000000",
+        "size_mb": 228.98,
+        "developer": "Takumi",
+        "genre": "Shoot'em Up"
+    },
+    {
+        "id": "GigaWing 2 (USA).chd",
+        "name": "GigaWing 2",
+        "publisher": "Capcom",
+        "releasedate": "20010516T000000",
+        "size_mb": 271.76,
+        "developer": "Takumi",
+        "genre": "Shoot'em Up, Shoot'em Up / Vertical"
+    },
+    {
+        "id": "GK - Giant Killers (Europe).chd",
+        "name": "GK - Giant Killers",
+        "publisher": "AAA Game",
+        "releasedate": "20010511T000000",
+        "size_mb": 146.22,
+        "developer": "Smoking Gun Productions",
+        "genre": "Simulation"
+    },
+    {
+        "id": "Grand Theft Auto 2 (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Grand Theft Auto 2",
+        "publisher": "Rockstar Games",
+        "releasedate": "20000520T000000",
+        "size_mb": 290.93,
+        "developer": "DMA Design",
+        "genre": "Race, Driving, Adventure"
+    },
+    {
+        "id": "Grandia II (Europe).chd",
+        "name": "Grandia II",
+        "publisher": "Ubisoft",
+        "releasedate": "20010223T000000",
+        "size_mb": 834.49,
+        "developer": "Game Arts",
+        "genre": "Role Playing Games"
+    },
+    {
+        "id": "Grinch, The (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Grinch, The",
+        "publisher": "Konami",
+        "releasedate": "20001215T000000",
+        "size_mb": 259.63,
+        "developer": "Artificial Mind & Movement",
+        "genre": "Platform, Action"
+    },
+    {
+        "id": "Gunbird 2 (Europe).chd",
+        "name": "Gunbird 2",
+        "publisher": "Virgin Interactive",
+        "releasedate": "20010105T000000",
+        "size_mb": 140.24,
+        "developer": "Psikyo",
+        "genre": "Shoot'em Up, Shoot'em Up / Vertical"
+    },
+    {
+        "id": "Gundam Side Story 0079 - Rise from the Ashes (USA).chd",
+        "name": "Gundam Side Story 0079 - Rise from the Ashes",
+        "publisher": "Bandai",
+        "releasedate": "20000428T000000",
+        "size_mb": 409.47,
+        "developer": "Bandai",
+        "genre": "Action, Shoot'em Up"
+    },
+    {
+        "id": "GunLord (2012)(NGDEV.TEAM).cdi",
+        "name": "GunLord",
+        "publisher": "NG:Dev.Team",
+        "releasedate": "20120614T000000",
+        "size_mb": 481.46,
+        "developer": "NG:Dev.Team",
+        "genre": "Platform / Fighter Scrolling, Platform"
+    },
+    {
+        "id": "Half-Life.chd",
+        "name": "Half-Life",
+        "publisher": "Havas Interactive",
+        "releasedate": "20000901T000000",
+        "size_mb": 227.75,
+        "developer": "Valve",
+        "genre": "Shooter / Tpv, Shooter"
+    },
+    {
+        "id": "Headhunter (Europe) (En,Fr,De,Es).m3u",
+        "name": "Headhunter",
+        "publisher": "SEGA",
+        "releasedate": "20011116T000000",
+        "size_mb": 1358.13,
+        "developer": "Amuze AB",
+        "genre": "Action / Adventure, Adventure, Action"
+    },
+    {
+        "id": "Heavy Metal - Geomatrix (Europe) (En,Fr,De,Es).chd",
+        "name": "Heavy Metal - Geomatrix",
+        "publisher": "Bigben Interactive",
+        "releasedate": "20020426T000000",
+        "size_mb": 184.1,
+        "developer": "Capcom",
+        "genre": "Action, Action / Adventure"
+    },
+    {
+        "id": "Hellgate v2 (Europe) [accel99].cdi",
+        "name": "Hellgate",
+        "publisher": "Jester Interactive",
+        "releasedate": "20010701T000000",
+        "size_mb": 533.26,
+        "developer": "Jester Interactive",
+        "genre": "Shoot'em Up"
+    },
+    {
+        "id": "Heroes of Might and Magic III (Prototype).chd",
+        "name": "Heroes of Might and Magic III: The Restoration of Erathia (Prototype)",
+        "publisher": "Ubisoft",
+        "releasedate": "19990101T000000",
+        "size_mb": 450.83,
+        "developer": "New World Computing's",
+        "genre": "Strategy"
+    },
+    {
+        "id": "Hidden & Dangerous (Europe) (En,Fr,De,Es).chd",
+        "name": "Hidden & Dangerous",
+        "publisher": "Take 2 Interactive",
+        "releasedate": "20000908T000000",
+        "size_mb": 330.01,
+        "developer": "Illusion Softworks",
+        "genre": "Strategy, Action"
+    },
+    {
+        "id": "House of the Dead 2, The (Europe) (En,Fr,De,Es).chd",
+        "name": "House of the Dead 2, The",
+        "publisher": "SEGA",
+        "releasedate": "19991105T000000",
+        "size_mb": 447.86,
+        "developer": "CRI",
+        "genre": "Lightgun Shooter"
+    },
+    {
+        "id": "Hoyle Casino (USA).chd",
+        "name": "Hoyle Casino",
+        "publisher": "Sierra",
+        "releasedate": "20000929T000000",
+        "size_mb": 261.02,
+        "developer": "Sierra",
+        "genre": "Simulation, Casino"
+    },
+    {
+        "id": "Hydro Thunder (Europe).chd",
+        "name": "Hydro Thunder",
+        "publisher": "Midway",
+        "releasedate": "19991024T000000",
+        "size_mb": 329.11,
+        "developer": "Eurocom",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Illbleed (USA).chd",
+        "name": "Illbleed",
+        "publisher": "SEGA",
+        "releasedate": "20010416T000000",
+        "size_mb": 280.72,
+        "developer": "Crazy Games",
+        "genre": "Adventure, Adventure / Survival Horror"
+    },
+    {
+        "id": "Incoming (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Incoming",
+        "publisher": "Rage Software",
+        "releasedate": "19991014T000000",
+        "size_mb": 234.94,
+        "developer": "Rage Software",
+        "genre": "Shoot'em Up"
+    },
+    {
+        "id": "Industrial Spy - Operation Espionage (USA).chd",
+        "name": "Industrial Spy - Operation Espionage",
+        "publisher": "U.F.O. Interactive",
+        "releasedate": "20000601T000000",
+        "size_mb": 78.78,
+        "developer": "NEC Home Electronics",
+        "genre": "Role Playing Games, Strategy, Simulation"
+    },
+    {
+        "id": "Inhabitants (US).cdi",
+        "name": "Inhabitants",
+        "publisher": "The GOAT Store",
+        "releasedate": "20050119T000000",
+        "size_mb": 641.83,
+        "developer": "S+F Software",
+        "genre": "Puzzle"
+    },
+    {
+        "id": "Internet Game Pack (Prototype) disc.chd",
+        "name": "Internet Game Pack (Prototype)",
+        "publisher": "Sega",
+        "releasedate": "20190809",
+        "size_mb": 24.2,
+        "developer": "Visual Concepts",
+        "genre": "Compilation"
+    },
+    {
+        "id": "Irides - Master of Blocks (World) (Unl).cdi",
+        "name": "Irides : Master of Blocks",
+        "publisher": "Goat Store Publishing",
+        "releasedate": "20091212T000000",
+        "size_mb": 679.5,
+        "developer": "Madpeet",
+        "genre": "Puzzle"
+    },
+    {
+        "id": "Iron Aces (Europe).chd",
+        "name": "Iron Aces",
+        "publisher": "Xicat Interactive",
+        "releasedate": "20010629T000000",
+        "size_mb": 328.36,
+        "developer": "Marionette",
+        "genre": "Various, Simulation, Shooter / Plane, Shooter"
+    },
+    {
+        "id": "Jeremy McGrath Supercross 2000 (Europe) (En,Fr,De).chd",
+        "name": "Jeremy McGrath Supercross 2000",
+        "publisher": "Acclaim",
+        "releasedate": "20000908T000000",
+        "size_mb": 230.64,
+        "developer": "Acclaim",
+        "genre": "Race, Driving, Sports, Race, Driving / Motorcycle"
+    },
+    {
+        "id": "Jet Grind Radio (USA).chd",
+        "name": "Jet Set Radio",
+        "publisher": "SEGA",
+        "releasedate": "20001124T000000",
+        "size_mb": 622.63,
+        "developer": "Smilebit",
+        "genre": "Sports",
+        "desc": "The government is trying to curb the activities of young people in Tokyo-To ...\nEquipped with super fast rollerblades, it is not easy to get your hands on them! The music of Professor K, DJ of the pirate radio station Jet Set Radio, brings these young people together and inspires them to fight for their freedom of expression: so now it's up to you to grab your spray paint and cover the walls of the room. city of tags! But beware of your rivals who also want to tag the walls of your neighborhood. You will therefore have to associate yourself with cool characters who will help you in your projects. And do not forget that the police are on your tail: you will have to be quick to escape them. Jet Set Radio is 100% speed, fun and above all super funky!"
+    },
+    {
+        "id": "Jimmy White's 2 - Cueball (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Jimmy White's 2 - Cueball",
+        "publisher": "Virgin Interactive Entertainment",
+        "releasedate": "19991101T000000",
+        "size_mb": 153.25,
+        "developer": "Awesome Studios",
+        "genre": "Simulation, Sports, Sports / Pool"
+    },
+    {
+        "id": "JoJo's Bizarre Adventure (Europe).chd",
+        "name": "JoJo's Bizarre Adventure",
+        "publisher": "Virgin",
+        "releasedate": "20000421T000000",
+        "size_mb": 85.58,
+        "developer": "Capcom",
+        "genre": "Fight"
+    },
+    {
+        "id": "Kao the Kangaroo (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Kao the Kangaroo",
+        "publisher": "Titus",
+        "releasedate": "20001208T000000",
+        "size_mb": 408.25,
+        "developer": "X-Ray",
+        "genre": "Platform"
+    },
+    {
+        "id": "KISS Psycho Circus - The Nightmare Child (Europe).chd",
+        "name": "KISS Psycho Circus - The Nightmare Child",
+        "publisher": "Take 2 Interactive",
+        "releasedate": "20010119T000000",
+        "size_mb": 429.98,
+        "developer": "Tremor Entertainment",
+        "genre": "Shooter / 1St Person, Shooter"
+    },
+    {
+        "id": "Last Hope.cdi",
+        "name": "Last Hope",
+        "publisher": "NG:Dev.Team",
+        "releasedate": "20070208T000000",
+        "size_mb": 243.78,
+        "developer": "NG:Dev.Team",
+        "genre": "Shoot'em Up, Shoot'em Up / Horizontal",
+        "desc": "An evil empire from another galaxy is heading towards Earth. Barely 24 hours beforehand, they had penetrated the last line of defense in Earth's galaxy, the Arsion Laser Belt. Millions of innocent people perished in outer space colonies. 70% of earth's fleet was destroyed during first contact. Intelligence reports six days until their arrival. Conventional weapons cannot stop them. The last hope is in your hands: The Z-42 Warpstar. Warp into their territories and destroy their leader before they reach Earth."
+    },
+    {
+        "id": "Last Hope - Pink Bullets (World) (Unl).cdi",
+        "name": "Last Hope: Pink Bullets",
+        "publisher": "NG:Dev.Team",
+        "releasedate": "20090618T000000",
+        "size_mb": 451.32,
+        "developer": "NG:Dev.Team",
+        "genre": "Shoot'em Up / Horizontal, Shoot'em Up"
+    },
+    {
+        "id": "Legacy of Kain - Soul Reaver (Europe).chd",
+        "name": "Legacy of Kain - Soul Reaver",
+        "publisher": "Eidos Interactive",
+        "releasedate": "20000225T000000",
+        "size_mb": 317.49,
+        "developer": "Crystal Dynamics",
+        "genre": "Adventure, Action / Adventure, Action"
+    },
+    {
+        "id": "Looney Tunes - Space Race (Europe) (En,Fr,De,Es,It,Nl).chd",
+        "name": "Looney Tunes - Space Race",
+        "publisher": "Infogrames",
+        "releasedate": "20001117T000000",
+        "size_mb": 462.18,
+        "developer": "Infogrames",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "MagForce Racing (Europe) (En,Fr,De,Es,It).chd",
+        "name": "MagForce Racing",
+        "publisher": "Crave Entertainment",
+        "releasedate": "20000825T000000",
+        "size_mb": 291.84,
+        "developer": "VCC",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Maken X (Europe) (En,Fr,De,Es).chd",
+        "name": "Maken X",
+        "publisher": "SEGA",
+        "releasedate": "20000707T000000",
+        "size_mb": 495.29,
+        "developer": "Atlus",
+        "genre": "Adventure"
+    },
+    {
+        "id": "Mars Matrix (USA).chd",
+        "name": "Mars Matrix",
+        "publisher": "Capcom",
+        "releasedate": "20010425T000000",
+        "size_mb": 237.98,
+        "developer": "Takumi",
+        "genre": "Shoot'em Up, Shoot'em Up / Vertical"
+    },
+    {
+        "id": "Marvel vs. Capcom - Clash of Super Heroes (Europe).chd",
+        "name": "Marvel vs. Capcom - Clash of Super Heroes",
+        "publisher": "Virgin",
+        "releasedate": "20000623T000000",
+        "size_mb": 280.54,
+        "developer": "Capcom",
+        "genre": "Fight"
+    },
+    {
+        "id": "Marvel vs. Capcom 2 - New Age of Heroes (Europe).chd",
+        "name": "Marvel vs. Capcom 2 - New Age of Heroes",
+        "publisher": "Virgin",
+        "releasedate": "20000716T000000",
+        "size_mb": 152.39,
+        "developer": "Capcom",
+        "genre": "Fight"
+    },
+    {
+        "id": "Mat Hoffman's Pro BMX (USA).chd",
+        "name": "Mat Hoffman's Pro BMX",
+        "publisher": "Activision",
+        "releasedate": "20010911T000000",
+        "size_mb": 725.7,
+        "developer": "Rune Craft",
+        "genre": "Sports, Sports / Cycling"
+    },
+    {
+        "id": "Max Steel - Covert Missions (USA).chd",
+        "name": "Max Steel - Covert Missions",
+        "publisher": "Mattel Electronics",
+        "releasedate": "20010530T000000",
+        "size_mb": 517.98,
+        "developer": "Treyarch",
+        "genre": "Action, Action / Adventure, Shooter / 3Rd Person, Shooter"
+    },
+    {
+        "id": "Maximum Pool (USA).chd",
+        "name": "Maximum Pool",
+        "publisher": "Sierra",
+        "releasedate": "20001204T000000",
+        "size_mb": 321.73,
+        "developer": "Dynamix",
+        "genre": "Sports / Pool, Sports"
+    },
+    {
+        "id": "MDK2 (Europe) (En,Fr,De,Es,It).chd",
+        "name": "MDK2",
+        "publisher": "Interplay",
+        "releasedate": "20000407T000000",
+        "size_mb": 705.39,
+        "developer": "Bioware",
+        "genre": "Adventure"
+    },
+    {
+        "id": "Metal Slug 6.chd",
+        "name": "Metal Slug 6",
+        "publisher": "SEGA",
+        "releasedate": "20201031T000000",
+        "size_mb": 105.26,
+        "developer": "Megavolt85",
+        "genre": "Shooter, Shooter / Run And Gun",
+        "desc": "Port from Sammy Atomiswave\n\nThe seventh main game in the series stays close to the fast-paced 2D side-scrolling shooting gameplay of the original, but with a few enhancements. The storyline is reminiscent of Metal Slug 2, X, and 3, as it focuses on the Rebel-Martian alliance where the team, with the help of the Rebels, had to fight the Martians. In this version however, all sides team up to combat a threat together. The four original heroes, Marco, Tarma, Fio and Eri, are joined by Ralf and Clark, of King of Fighters and Ikari Warriors fame, each with different attributes and a special ability. The characters also vary by running speed, the defense abilities when driving vehicles, and the amount of ammo received. The characters can now carry two power-ups at the same time, and choose to discard one, or give it to another player in the Co-op mode. Next to new drivable vehicles, there is also a new weapon, the Zantetsu Sword, a blade that neutralizes enemy firepower. An additional melee attack has been added, and the sliding technique from the previous game has been removed. When enemies are killed at a fast rate, more points are received, and this is reflected by a meter at the bottom of the screen. When the meter maxes out, enemies drop coins. Two new difficulty levels have been added: Easy and Hard. In the Easy mode, the fifth and final level cannot be accessed, but instead of the pistol, the default weapon is the heavy machine gun with unlimited ammo. Next to the main Arcade Mode, there is Combat School, a modified version where skills are tested."
+    },
+    {
+        "id": "Microsoft Combat Flight Simulator - WWII Europe Series (Prototype).chd",
+        "name": "Microsoft Combat Flight Simulator: WWII Europe Series (Prototype)",
+        "publisher": "Konami",
+        "releasedate": "19991201T000000",
+        "size_mb": 156.5,
+        "developer": "Microsoft",
+        "genre": "Simulation / Vehicle, Simulation, Shooter / Plane, Shooter"
+    },
+    {
+        "id": "Midway's Greatest Arcade Hits - Volume 1 (Europe).chd",
+        "name": "Midway's Greatest Arcade Hits - Volume 1",
+        "publisher": "Midway",
+        "releasedate": "20000728T000000",
+        "size_mb": 27.91,
+        "developer": "Digital Eclipse",
+        "genre": "Compilation"
+    },
+    {
+        "id": "Midway's Greatest Arcade Hits - Volume 2 (USA).chd",
+        "name": "Midway's Greatest Arcade Hits - Volume 2",
+        "publisher": "Midway",
+        "releasedate": "20011115T000000",
+        "size_mb": 162.76,
+        "developer": "Digital Eclipse",
+        "genre": "Compilation"
+    },
+    {
+        "id": "Millenium Racer - Y2K Fighters (Prototype).chd",
+        "name": "Millenium Racer: Y2K Fighters (Prototype)",
+        "publisher": "Cryo Interactive",
+        "releasedate": "19990101T000000",
+        "size_mb": 231.76,
+        "developer": "Creat",
+        "genre": "Racing, Driving"
+    },
+    {
+        "id": "Millennium Soldier - Expendable (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Millennium Soldier - Expendable",
+        "publisher": "Infogrames",
+        "releasedate": "19991014T000000",
+        "size_mb": 529.29,
+        "developer": "Rage Software",
+        "genre": "Shooter"
+    },
+    {
+        "id": "MoHo (Europe) (En,Fr,De).chd",
+        "name": "MoHo",
+        "publisher": "Take 2 Interactive",
+        "releasedate": "20001117T000000",
+        "size_mb": 571.77,
+        "developer": "Lost Toys",
+        "genre": "Action / Adventure, Action"
+    },
+    {
+        "id": "Monaco Grand Prix (USA).chd",
+        "name": "Monaco Grand Prix",
+        "publisher": "Ubisoft",
+        "releasedate": "19990909T000000",
+        "size_mb": 605.48,
+        "developer": "Ubisoft",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Mortal Kombat Gold (Europe).chd",
+        "name": "Mortal Kombat Gold",
+        "publisher": "Midway",
+        "releasedate": "19991029T000000",
+        "size_mb": 568.91,
+        "developer": "Eurocom",
+        "genre": "Fight"
+    },
+    {
+        "id": "Mr. Driller (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Mr. Driller",
+        "publisher": "Virgin Interactive",
+        "releasedate": "20001201T000000",
+        "size_mb": 347.54,
+        "developer": "Namco",
+        "genre": "Puzzle-Game, Strategy"
+    },
+    {
+        "id": "Ms. Pac-Man Maze Madness (USA).chd",
+        "name": "Ms. Pac-Man Maze Madness",
+        "publisher": "Namco",
+        "releasedate": "20001130T000000",
+        "size_mb": 358.14,
+        "developer": "Mass Media",
+        "genre": "Action, Action / Labyrinth, Puzzle-Game"
+    },
+    {
+        "id": "MSR - Metropolis Street Racer (Europe) (En,Fr,De,Es).chd",
+        "name": "MSR - Metropolis Street Racer",
+        "publisher": "SEGA",
+        "releasedate": "20001108T000000",
+        "size_mb": 629.59,
+        "developer": "Bizarre Creations",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "MTV Sports - Skateboarding featuring Andy Macdonald (Europe).chd",
+        "name": "MTV Sports - Skateboarding featuring Andy Macdonald",
+        "publisher": "THQ",
+        "releasedate": "20001124T000000",
+        "size_mb": 241.5,
+        "developer": "Darkblack",
+        "genre": "Sports, Sports / Skateboard"
+    },
+    {
+        "id": "Namco Museum (USA).chd",
+        "name": "Namco Museum",
+        "publisher": "Namco",
+        "releasedate": "20000731T000000",
+        "size_mb": 13.52,
+        "developer": "Mass Media",
+        "genre": "Compilation"
+    },
+    {
+        "id": "NBA 2K (Europe) (En,Fr,De,Es).chd",
+        "name": "NBA 2K",
+        "publisher": "SEGA",
+        "releasedate": "20000303T000000",
+        "size_mb": 555.99,
+        "developer": "Visual Concepts",
+        "genre": "Sports, Sports / Basketball"
+    },
+    {
+        "id": "NBA 2K1 (USA).chd",
+        "name": "NBA 2K1",
+        "publisher": "SEGA",
+        "releasedate": "20001031T000000",
+        "size_mb": 480.57,
+        "developer": "Visual Concepts",
+        "genre": "Sports, Sports / Basketball"
+    },
+    {
+        "id": "NBA 2K2 (Europe).chd",
+        "name": "NBA 2K2",
+        "publisher": "SEGA",
+        "releasedate": "20020308T000000",
+        "size_mb": 582.9,
+        "developer": "Visual Concepts",
+        "genre": "Sports, Sports / Basketball"
+    },
+    {
+        "id": "NBA Hoopz (Europe) (En,Fr,De).chd",
+        "name": "NBA Hoopz",
+        "publisher": "Midway",
+        "releasedate": "20010313T000000",
+        "size_mb": 288.77,
+        "developer": "Midway",
+        "genre": "Sports, Sports / Basketball",
+        "desc": "Rather than 5 on 5 action like professional play, this game features 3 on 3 play. Using players from the NBA, each player chooses a guard, forward, and center from the team's NBA roster for the first half and can make substitutions for the second half.\n\nNBA Hoopz is an arcade-style game and not meant to be realistic: players can jump twenty or thirty feet in the air, dunk the ball from 20 feet (6.1 m) away, and do otherwise physically impossible things. Fouls are only called on flagrant pushes, foul shots are rare (and only after a number of fouls are accumulated), and there is no out of bounds. In addition, after a player makes three consecutive shots he becomes \"on fire\" which allows him to make almost any shot as well as goaltend without penalty."
+    },
+    {
+        "id": "NBA Showtime - NBA on NBC (Europe).chd",
+        "name": "NBA Showtime - NBA on NBC",
+        "publisher": "Midway",
+        "releasedate": "19991130T000000",
+        "size_mb": 240.99,
+        "developer": "Midway",
+        "genre": "Sports, Sports / Basketball",
+        "desc": "The game features gameplay similar to its predecessors NBA Jam and NBA Hangtime. Rather than typical 5 on 5 action, this game features 2 on 2 play with the ability to pick two players from any NBA team's starting line-up for the first half and can choose again for the second.\n\nThe game introduces personal fouls for each shove on another player; after a certain number of fouls the opposing team gets a free throw. The game retains the series standard \"on fire\" feature. After a player makes three consecutive shots he becomes \"on fire\", which allows him to easily make shots from almost anywhere, as well as goaltend without penalty and push opponents without being charged a foul. Play otherwise is similar to NBA rules."
+    },
+    {
+        "id": "NCAA College Football 2K2 - Road to the Rose Bowl (USA).chd",
+        "name": "NCAA College Football 2K2 - Road to the Rose Bowl",
+        "publisher": "SEGA",
+        "releasedate": "20010830T000000",
+        "size_mb": 513.28,
+        "developer": "Visual Concepts",
+        "genre": "Sports / Football, Sports"
+    },
+    {
+        "id": "Neo XYX (2014)(NGDEV_TEAM).cdi",
+        "name": "Neo XYX",
+        "publisher": "NG:Dev.Team",
+        "releasedate": "20140217T000000",
+        "size_mb": 280.75,
+        "developer": "NG:Dev.Team",
+        "genre": "Shoot'em Up",
+        "desc": "NEO XYX is the first TATE Maniac Shooter on NEO·GEO. Now on Dreamcast. \n\nSwitchable between vertical (TATE) and horizontal controls (YOKO)."
+    },
+    {
+        "id": "Next Tetris, The (Europe).chd",
+        "name": "Next Tetris, The",
+        "publisher": "Crave Entertainment",
+        "releasedate": "20010105T000000",
+        "size_mb": 296.33,
+        "developer": "Blue Planet Software",
+        "genre": "Puzzle-Game, Puzzle-Game / Fall"
+    },
+    {
+        "id": "NFL 2K (USA).chd",
+        "name": "NFL 2K",
+        "publisher": "SEGA",
+        "releasedate": "19990909T000000",
+        "size_mb": 606.37,
+        "developer": "Visual Concepts",
+        "genre": "Sports, Sports / Football"
+    },
+    {
+        "id": "NFL 2K1 (USA).chd",
+        "name": "NFL 2K1",
+        "publisher": "SEGA",
+        "releasedate": "20000905T000000",
+        "size_mb": 632.95,
+        "developer": "Visual Concepts",
+        "genre": "Sports, Sports / Football"
+    },
+    {
+        "id": "NFL 2K2 (USA).chd",
+        "name": "NFL 2K2",
+        "publisher": "SEGA",
+        "releasedate": "20011023T000000",
+        "size_mb": 644.12,
+        "developer": "Visual Concepts",
+        "genre": "Sports, Sports / Football"
+    },
+    {
+        "id": "NFL Blitz 2000 (Europe).chd",
+        "name": "NFL Blitz 2000",
+        "publisher": "Midway",
+        "releasedate": "19991101T000000",
+        "size_mb": 177.81,
+        "developer": "Midway",
+        "genre": "Sports, Sports / Football"
+    },
+    {
+        "id": "NFL Blitz 2001 (USA).chd",
+        "name": "NFL Blitz 2001",
+        "publisher": "Midway",
+        "releasedate": "20000914T000000",
+        "size_mb": 390.07,
+        "developer": "Midway",
+        "genre": "Sports, Sports / Football"
+    },
+    {
+        "id": "NFL QB Club 2001 (USA).chd",
+        "name": "NFL QB Club 2001",
+        "publisher": "Acclaim",
+        "releasedate": "20000824T000000",
+        "size_mb": 89.94,
+        "developer": "High Voltage",
+        "genre": "Sports, Sports / Football"
+    },
+    {
+        "id": "NFL Quarterback Club 2000 (Europe).chd",
+        "name": "NFL Quarterback Club 2000",
+        "publisher": "Acclaim",
+        "releasedate": "19990101T000000",
+        "size_mb": 97.65,
+        "developer": "Acclaim",
+        "genre": "Sports, Sports / Football"
+    },
+    {
+        "id": "NHL 2K (Europe).chd",
+        "name": "NHL 2K",
+        "publisher": "SEGA",
+        "releasedate": "20000707T000000",
+        "size_mb": 446.89,
+        "developer": "Black Box",
+        "genre": "Sports, Sports / Hockey"
+    },
+    {
+        "id": "NHL 2K2 (USA).chd",
+        "name": "NHL 2K2",
+        "publisher": "SEGA",
+        "releasedate": "20020212T000000",
+        "size_mb": 568.78,
+        "developer": "Treyarch",
+        "genre": "Sports / Hockey, Sports"
+    },
+    {
+        "id": "Nightmare Creatures II (Europe) (En,Fr,De,Es).chd",
+        "name": "Nightmare Creatures II",
+        "publisher": "Konami",
+        "releasedate": "20000601T000000",
+        "size_mb": 376.52,
+        "developer": "Kalisto",
+        "genre": "Adventure, Adventure / Survival Horror"
+    },
+    {
+        "id": "Nomad Soul, The (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Nomad Soul, The",
+        "publisher": "Eidos Interactive",
+        "releasedate": "20000623T000000",
+        "size_mb": 587.85,
+        "developer": "Quantic Dream",
+        "genre": "Role Playing Games, Adventure"
+    },
+    {
+        "id": "Ooga Booga (USA).chd",
+        "name": "Ooga Booga",
+        "publisher": "SEGA",
+        "releasedate": "20010911T000000",
+        "size_mb": 63.3,
+        "developer": "Visual Concepts",
+        "genre": "Casual Game, Adventure, Action / Adventure, Action"
+    },
+    {
+        "id": "Outtrigger (Europe) (En,Fr,De,Es).chd",
+        "name": "Outtrigger",
+        "publisher": "SEGA",
+        "releasedate": "20010720T000000",
+        "size_mb": 380.91,
+        "developer": "SEGA AM2",
+        "genre": "Shooter / 3Rd Person, Shooter"
+    },
+    {
+        "id": "PenPen (Europe) (En,Fr,De,Es,It,Nl).chd",
+        "name": "PenPen",
+        "publisher": "Infogrames",
+        "releasedate": "19991014T000000",
+        "size_mb": 638.81,
+        "developer": "General Entertainment",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Phantasy Star Online Ver. 2 (Europe) (En,Ja,Fr,De,Es).chd",
+        "name": "Phantasy Star Online Ver. 2",
+        "publisher": "SEGA",
+        "releasedate": "20020301T000000",
+        "size_mb": 637.4,
+        "developer": "Sonic Team",
+        "genre": "Role Playing Games, Massive Multiplayer Online Rpg"
+    },
+    {
+        "id": "Planet Ring (Europe) (En,Fr,De,Es).chd",
+        "name": "Planet Ring",
+        "publisher": "SEGA",
+        "releasedate": "20000412T000000",
+        "size_mb": 54.05,
+        "developer": "SEGA",
+        "genre": "Strategy"
+    },
+    {
+        "id": "Plasma Sword - Nightmare of Bilstein (Europe).chd",
+        "name": "Plasma Sword - Nightmare of Bilstein",
+        "publisher": "Virgin",
+        "releasedate": "20000825T000000",
+        "size_mb": 650.46,
+        "developer": "Capcom",
+        "genre": "Fight"
+    },
+    {
+        "id": "POD - Speedzone (USA).chd",
+        "name": "POD - Speedzone",
+        "publisher": "Ubisoft",
+        "releasedate": "20001206T000000",
+        "size_mb": 264,
+        "developer": "Ubisoft",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "POD 2 - Multiplayer Online (Europe).chd",
+        "name": "POD 2",
+        "publisher": "Ubisoft",
+        "releasedate": "20001215T000000",
+        "size_mb": 261.93,
+        "developer": "Ubisoft",
+        "genre": "Racing, Driving"
+    },
+    {
+        "id": "Power Stone (Europe).chd",
+        "name": "Power Stone",
+        "publisher": "Eidos Interactive",
+        "releasedate": "19991014T000000",
+        "size_mb": 103.52,
+        "developer": "Capcom",
+        "genre": "Fight"
+    },
+    {
+        "id": "Power Stone 2 (Europe).chd",
+        "name": "Power Stone 2",
+        "publisher": "Eidos Interactive",
+        "releasedate": "20000824T000000",
+        "size_mb": 265.78,
+        "developer": "Capcom",
+        "genre": "Fight"
+    },
+    {
+        "id": "Prince of Persia - Arabian Nights (USA).chd",
+        "name": "Prince of Persia - Arabian Nights",
+        "publisher": "Mattel Interactive",
+        "releasedate": "20001206T000000",
+        "size_mb": 538.75,
+        "developer": "Avalanche Software",
+        "genre": "Adventure, Action / Adventure, Action"
+    },
+    {
+        "id": "Pro Pinball Trilogy (Europe).chd",
+        "name": "Pro Pinball Trilogy",
+        "publisher": "Empire Interactive",
+        "releasedate": "20010608T000000",
+        "size_mb": 431.83,
+        "developer": "Cunning Developments",
+        "genre": "Pinball, Compilation",
+        "desc": "This compilation contains the following three tables of Empire's Pro Pinball series:\nPro Pinball: Timeshock!\nPro Pinball: Big Race USA\nPro Pinball: Fantastic Journey\nThe first part of the series, Pro Pinball: The Web, is not included."
+    },
+    {
+        "id": "Project Justice - Rival Schools 2 (Europe).chd",
+        "name": "Project Justice - Rival Schools 2",
+        "publisher": "Virgin Interactive",
+        "releasedate": "20010302T000000",
+        "size_mb": 826.22,
+        "developer": "Capcom",
+        "genre": "Fight"
+    },
+    {
+        "id": "Propeller Arena [PROPER].cdi",
+        "name": "Propeller Arena: Aviation Battle Championship",
+        "publisher": "SEGA",
+        "releasedate": "20011109T000000",
+        "size_mb": 771.3,
+        "developer": "SEGA AM2",
+        "genre": "Shooter / Plane, Tpv, Shooter"
+    },
+    {
+        "id": "Psychic Force 2012 (Europe).chd",
+        "name": "Psychic Force 2012",
+        "publisher": "Taito",
+        "releasedate": "19991203T000000",
+        "size_mb": 495.04,
+        "developer": "Taito",
+        "genre": "Fight"
+    },
+    {
+        "id": "Q-bert (USA).chd",
+        "name": "Q-bert",
+        "publisher": "Hasbro Interactive",
+        "releasedate": "20001114T000000",
+        "size_mb": 164.54,
+        "developer": "Artech",
+        "genre": "Puzzle-Game",
+        "desc": "The hip character from the 1980's returns in a new, 3D puzzle adventure. This time, you must help Q*bert save his friends, while solving all of the detailed 3D level that are part of 4 unique worlds, while avoiding the bad guys at the same time. And that's no easy task. Powerups litter the levels, while warp points can get you out of all those sticky situations."
+    },
+    {
+        "id": "Quake III - Arena (Europe) (En,Fr,De,Es).chd",
+        "name": "Quake III - Arena",
+        "publisher": "SEGA",
+        "releasedate": "20001208T000000",
+        "size_mb": 452.68,
+        "developer": "No Cliché",
+        "genre": "Shooter / 1St Person, Shooter"
+    },
+    {
+        "id": "Racing Simulation - Monaco Grand Prix (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Racing Simulation 2: Monaco Grand Prix",
+        "publisher": "Ubisoft",
+        "releasedate": "19991014T000000",
+        "size_mb": 627.08,
+        "developer": "Ubisoft",
+        "genre": "Racing, Driving"
+    },
+    {
+        "id": "Railroad Tycoon II (Europe) (En,Fr,De).chd",
+        "name": "Railroad Tycoon II",
+        "publisher": "Take 2 Interactive",
+        "releasedate": "20001006T000000",
+        "size_mb": 397.52,
+        "developer": "Pop Top Software",
+        "genre": "Simulation, Strategy, Build And Management"
+    },
+    {
+        "id": "Rayman 2 - The Great Escape (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Rayman 2 - The Great Escape",
+        "publisher": "Ubisoft",
+        "releasedate": "20000317T000000",
+        "size_mb": 649.82,
+        "developer": "Ubisoft",
+        "genre": "Platform"
+    },
+    {
+        "id": "Re-Volt (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Re-Volt",
+        "publisher": "Acclaim",
+        "releasedate": "19991217T000000",
+        "size_mb": 415.63,
+        "developer": "Acclaim",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Ready 2 Rumble Boxing (Europe) (En,Fr,De).chd",
+        "name": "Ready 2 Rumble Boxing",
+        "publisher": "Midway",
+        "releasedate": "19991014T000000",
+        "size_mb": 359.41,
+        "developer": "Midway",
+        "genre": "Sports / Boxing, Sports"
+    },
+    {
+        "id": "Ready 2 Rumble Boxing - Round 2 (Europe) (En,Fr,De).chd",
+        "name": "Ready 2 Rumble Boxing - Round 2",
+        "publisher": "Midway",
+        "releasedate": "20001110T000000",
+        "size_mb": 754.08,
+        "developer": "Midway",
+        "genre": "Sports / Boxing, Sports"
+    },
+    {
+        "id": "Record of Lodoss War (Europe).chd",
+        "name": "Record of Lodoss War",
+        "publisher": "Swing! Entertainment",
+        "releasedate": "20001215T000000",
+        "size_mb": 451.35,
+        "developer": "Neverland",
+        "genre": "Role Playing Games, Strategy"
+    },
+    {
+        "id": "Red Dog - Superior Firepower (Europe) (En,Fr,De,Es).chd",
+        "name": "Red Dog - Superior Firepower",
+        "publisher": "SEGA",
+        "releasedate": "20000421T000000",
+        "size_mb": 260.06,
+        "developer": "Argonaut Software",
+        "genre": "Action / Adventure, Shooter / Vehicle, 3Rd Person, Shooter, Action"
+    },
+    {
+        "id": "Reel Fishing + Wild (USA).chd",
+        "name": "Reel Fishing + Wild",
+        "publisher": "Victor Interactive",
+        "releasedate": "20010701T000000",
+        "size_mb": 401.7,
+        "developer": "Westone Bit Entertainment",
+        "genre": "Simulation, Fishing, Hunting And Fishing"
+    },
+    {
+        "id": "Resident Evil - Code - Veronica (Spain).m3u",
+        "name": "Resident Evil - Code - Veronica (Spain)",
+        "publisher": "Capcom",
+        "releasedate": "20010322",
+        "size_mb": 1182.8,
+        "developer": "Capcom",
+        "genre": "Action, Adventure, Puzzle"
+    },
+    {
+        "id": "Resident Evil - Code - Veronica X.m3u",
+        "name": "Resident Evil - Code - Veronica X",
+        "publisher": "Capcom Co. Ltd.",
+        "releasedate": "20010101T000000",
+        "size_mb": 1277.56,
+        "developer": "Capcom Co. Ltd.",
+        "genre": "Action"
+    },
+    {
+        "id": "Resident Evil 2 (Europe) (En,Fr).m3u",
+        "name": "Resident Evil 2",
+        "publisher": "Virgin Interactive",
+        "releasedate": "20000424T000000",
+        "size_mb": 1487.67,
+        "developer": "Capcom",
+        "genre": "Adventure / Survival Horror, Adventure"
+    },
+    {
+        "id": "Resident Evil 3 - Nemesis (Europe) (Fr,Es).chd",
+        "name": "Resident Evil 3 - Nemesis",
+        "publisher": "Virgin Interactive",
+        "releasedate": "20001221T000000",
+        "size_mb": 561.43,
+        "developer": "Capcom",
+        "genre": "Adventure / Survival Horror, Adventure"
+    },
+    {
+        "id": "Rez (Europe) (En,Ja,Fr,De,Es,It).chd",
+        "name": "Rez",
+        "publisher": "SEGA",
+        "releasedate": "20020111T000000",
+        "size_mb": 288.58,
+        "developer": "United Game Artists",
+        "genre": "Shoot'em Up"
+    },
+    {
+        "id": "Ring, The - Terror's Realm (USA).chd",
+        "name": "Ring, The - Terror's Realm",
+        "publisher": "Infogrames",
+        "releasedate": "20000822T000000",
+        "size_mb": 479.19,
+        "developer": "Asmik",
+        "genre": "Adventure / Survival Horror, Adventure"
+    },
+    {
+        "id": "Rippin' Riders (USA).chd",
+        "name": "Rippin' Riders",
+        "publisher": "SEGA",
+        "releasedate": "19991110T000000",
+        "size_mb": 457.25,
+        "developer": "UEP Systems",
+        "genre": "Sports, Sports / Skiing"
+    },
+    {
+        "id": "Roadsters (Europe) (En,Fr,De,Es,It,Nl).chd",
+        "name": "Roadsters",
+        "publisher": "Titus",
+        "releasedate": "20000707T000000",
+        "size_mb": 283.72,
+        "developer": "Player 1",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Samba de Amigo (Europe).chd",
+        "name": "Samba de Amigo",
+        "publisher": "SEGA",
+        "releasedate": "20001208T000000",
+        "size_mb": 951.27,
+        "developer": "Sonic Team",
+        "genre": "Music And Dance, Rhythm"
+    },
+    {
+        "id": "San Francisco Rush 2049 (Europe) (En,Fr,De,Es,It,Nl).chd",
+        "name": "San Francisco Rush 2049",
+        "publisher": "Midway",
+        "releasedate": "20000922T000000",
+        "size_mb": 921.93,
+        "developer": "Midway",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Seaman (USA).chd",
+        "name": "Seaman",
+        "publisher": "Vivarium",
+        "releasedate": "20000808T000000",
+        "size_mb": 707.28,
+        "developer": "Vivarium",
+        "genre": "Various, Simulation"
+    },
+    {
+        "id": "Sega Bass Fishing (Europe).chd",
+        "name": "Sega Bass Fishing",
+        "publisher": "SEGA",
+        "releasedate": "20000414T000000",
+        "size_mb": 83.76,
+        "developer": "Sims",
+        "genre": "Sports, Fishing, Hunting And Fishing"
+    },
+    {
+        "id": "Sega Bass Fishing 2 (USA).chd",
+        "name": "Sega Bass Fishing 2",
+        "publisher": "SEGA",
+        "releasedate": "20010821T000000",
+        "size_mb": 249.85,
+        "developer": "Wow Entertainment",
+        "genre": "Sports, Fishing, Hunting And Fishing"
+    },
+    {
+        "id": "Sega Extreme Sports (Europe) (En,Fr,De,Es).chd",
+        "name": "Sega Extreme Sports",
+        "publisher": "SEGA",
+        "releasedate": "20001027T000000",
+        "size_mb": 582.73,
+        "developer": "Innerloop",
+        "genre": "Sports, Sports / Multisports, Sports / Extreme"
+    },
+    {
+        "id": "Sega GT (Europe) (En,Fr,De,Es).chd",
+        "name": "Sega GT",
+        "publisher": "SEGA",
+        "releasedate": "20001208T000000",
+        "size_mb": 636.68,
+        "developer": "Wow Entertainment",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Sega Marine Fishing (USA).chd",
+        "name": "Sega Marine Fishing",
+        "publisher": "SEGA",
+        "releasedate": "20001017T000000",
+        "size_mb": 92.2,
+        "developer": "Wow Entertainment",
+        "genre": "Sports, Fishing, Hunting And Fishing"
+    },
+    {
+        "id": "Sega Rally 2 (Europe).chd",
+        "name": "Sega Rally 2",
+        "publisher": "SEGA",
+        "releasedate": "19991014T000000",
+        "size_mb": 574.67,
+        "developer": "SEGA",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Sega Smash Pack - Volume 1 (USA).chd",
+        "name": "Sega Smash Pack - Volume 1",
+        "publisher": "SEGA",
+        "releasedate": "20010130T000000",
+        "size_mb": 271.36,
+        "developer": "SEGA",
+        "genre": "Compilation"
+    },
+    {
+        "id": "Sega Worldwide Soccer 2000 (Europe) (En,Fr,De,Es).chd",
+        "name": "Sega Worldwide Soccer 2000",
+        "publisher": "SEGA",
+        "releasedate": "19991201T000000",
+        "size_mb": 407.68,
+        "developer": "Silicon Dreams",
+        "genre": "Sports, Sports / Soccer"
+    },
+    {
+        "id": "Sega Worldwide Soccer 2000 - Euro Edition (Europe) (En,Fr,De,Es).chd",
+        "name": "Sega Worldwide Soccer 2000 - Euro Edition",
+        "publisher": "SEGA",
+        "releasedate": "20000526T000000",
+        "size_mb": 436.14,
+        "developer": "Silicon Dreams",
+        "genre": "Sports, Sports / Soccer"
+    },
+    {
+        "id": "Seventh Cross Evolution (USA).chd",
+        "name": "Seventh Cross Evolution",
+        "publisher": "NEC",
+        "releasedate": "19991218T000000",
+        "size_mb": 223.27,
+        "developer": "NEC",
+        "genre": "Adventure, Role Playing Games"
+    },
+    {
+        "id": "Shadow Man (Europe) (En,Fr,Es,It).chd",
+        "name": "Shadow Man",
+        "publisher": "Acclaim",
+        "releasedate": "19991210T000000",
+        "size_mb": 337.9,
+        "developer": "Acclaim",
+        "genre": "Action / Adventure, Action"
+    },
+    {
+        "id": "Shenmue (Europe) (En,Fr,De,Es).m3u",
+        "name": "Shenmue",
+        "publisher": "SEGA",
+        "releasedate": "20001208T000000",
+        "size_mb": 1163.56,
+        "developer": "SEGA AM2",
+        "genre": "Adventure, Adventure / Realtime 3D"
+    },
+    {
+        "id": "Shenmue II (Europe) (En,Fr,De,Es).m3u",
+        "name": "Shenmue II",
+        "publisher": "SEGA",
+        "releasedate": "20011123T000000",
+        "size_mb": 2532.37,
+        "developer": "SEGA AM2",
+        "genre": "Adventure, Adventure / Realtime 3D"
+    },
+    {
+        "id": "Silent Scope (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Silent Scope",
+        "publisher": "Konami",
+        "releasedate": "20001104T000000",
+        "size_mb": 85.99,
+        "developer": "Konami Computer Entertainment",
+        "genre": "Lightgun Shooter"
+    },
+    {
+        "id": "Silver (Spain).chd",
+        "name": "Silver",
+        "publisher": "Infogrames",
+        "releasedate": "20000629T000000",
+        "size_mb": 528.37,
+        "developer": "Spiral House",
+        "genre": "Aventura, Juegos De Rol"
+    },
+    {
+        "id": "Skies of Arcadia (Europe) (En,Fr,De,Es).m3u",
+        "name": "Skies of Arcadia",
+        "publisher": "SEGA",
+        "releasedate": "20010427T000000",
+        "size_mb": 1019.73,
+        "developer": "Overworks",
+        "genre": "Role Playing Games"
+    },
+    {
+        "id": "Slave Zero (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Slave Zero",
+        "publisher": "Infogrames",
+        "releasedate": "20000324T000000",
+        "size_mb": 254.38,
+        "developer": "Infogrames",
+        "genre": "Action, Action / Adventure"
+    },
+    {
+        "id": "SnoCross Championship Racing (Europe) (En,Fr,De).chd",
+        "name": "SnoCross Championship Racing",
+        "publisher": "Ubisoft",
+        "releasedate": "20010119T000000",
+        "size_mb": 432.78,
+        "developer": "Uds",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Snow Surfers (Europe).chd",
+        "name": "Snow Surfers",
+        "publisher": "SEGA",
+        "releasedate": "19991101T000000",
+        "size_mb": 463.65,
+        "developer": "UEP Systems",
+        "genre": "Sports, Sports / Skiing"
+    },
+    {
+        "id": "Soldier of Fortune (Europe).chd",
+        "name": "Soldier of Fortune",
+        "publisher": "Crave Entertainment",
+        "releasedate": "20010713T000000",
+        "size_mb": 708.3,
+        "developer": "Runecraft",
+        "genre": "Shooter / 1St Person, Shooter"
+    },
+    {
+        "id": "Sonic Adventure (Europe) (En,Ja,Fr,De,Es).chd",
+        "name": "Sonic Adventure",
+        "publisher": "SEGA",
+        "releasedate": "19991014T000000",
+        "size_mb": 876.03,
+        "developer": "Sonic Team",
+        "genre": "Platform"
+    },
+    {
+        "id": "Sonic Adventure 2 (Europe) (En,Ja,Fr,De,Es).chd",
+        "name": "Sonic Adventure 2",
+        "publisher": "SEGA",
+        "releasedate": "20010623T000000",
+        "size_mb": 878.89,
+        "developer": "Sonic Team",
+        "genre": "Platform"
+    },
+    {
+        "id": "Sonic Shuffle (Europe) (En,Fr,De,Es).chd",
+        "name": "Sonic Shuffle",
+        "publisher": "SEGA",
+        "releasedate": "20010309T000000",
+        "size_mb": 215.5,
+        "developer": "Hudson",
+        "genre": "Casual Game"
+    },
+    {
+        "id": "Soul Fighter (Europe).chd",
+        "name": "Soul Fighter",
+        "publisher": "TLC Multimedia",
+        "releasedate": "19991101T000000",
+        "size_mb": 596.92,
+        "developer": "Toka",
+        "genre": "Beat'em Up"
+    },
+    {
+        "id": "Soulcalibur (Europe) (En,Fr,De,Es).chd",
+        "name": "Soulcalibur",
+        "publisher": "Namco",
+        "releasedate": "19991126T000000",
+        "size_mb": 599.08,
+        "developer": "Namco",
+        "genre": "Fight, Fight / 3D"
+    },
+    {
+        "id": "South Park - Chef's Luv Shack (Europe).chd",
+        "name": "South Park - Chef's Luv Shack",
+        "publisher": "Acclaim",
+        "releasedate": "19991126T000000",
+        "size_mb": 199.83,
+        "developer": "Acclaim",
+        "genre": "Casual Game, Board Game"
+    },
+    {
+        "id": "South Park Rally (Europe) (En,Fr,De,Es).chd",
+        "name": "South Park Rally",
+        "publisher": "Acclaim",
+        "releasedate": "20000728T000000",
+        "size_mb": 222.34,
+        "developer": "Tantalus",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Space Channel 5 (Europe) (En,Fr,De,Es).chd",
+        "name": "Space Channel 5",
+        "publisher": "SEGA",
+        "releasedate": "20001006T000000",
+        "size_mb": 870.06,
+        "developer": "SEGA",
+        "genre": "Music And Dance"
+    },
+    {
+        "id": "Spawn - In the Demon's Hand (Europe).chd",
+        "name": "Spawn - In the Demon's Hand",
+        "publisher": "Eidos Interactive",
+        "releasedate": "20010119T000000",
+        "size_mb": 550.48,
+        "developer": "Capcom",
+        "genre": "Beat'em Up, Action / Adventure, Action"
+    },
+    {
+        "id": "Spec Ops II - Omega Squad (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Spec Ops II - Omega Squad",
+        "publisher": "Swing! Entertainment",
+        "releasedate": "20010810T000000",
+        "size_mb": 352.26,
+        "developer": "Zombie",
+        "genre": "Shoot'em Up, Shooter"
+    },
+    {
+        "id": "Speed Devils (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Speed Devils",
+        "publisher": "Ubisoft",
+        "releasedate": "19991014T000000",
+        "size_mb": 489.52,
+        "developer": "Ubisoft",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Speed Devils - Online Racing (Europe).chd",
+        "name": "Speed Devils - Online Racing",
+        "publisher": "Ubisoft",
+        "releasedate": "20010202T000000",
+        "size_mb": 422.63,
+        "developer": "Ubisoft",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Spider-Man (Europe).chd",
+        "name": "Spider-Man",
+        "publisher": "Activision",
+        "releasedate": "20010601T000000",
+        "size_mb": 523.56,
+        "developer": "Neversoft Entertainment",
+        "genre": "Action, Action / Adventure, Platform, Fight"
+    },
+    {
+        "id": "Spirit of Speed 1937 (Europe) (En,Fr,De,Es).chd",
+        "name": "Spirit of Speed 1937",
+        "publisher": "LJN",
+        "releasedate": "20000609T000000",
+        "size_mb": 216.56,
+        "developer": "Broadsword Interactive",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Sports Jam (USA).chd",
+        "name": "Sports Jam",
+        "publisher": "SEGA",
+        "releasedate": "20010718T000000",
+        "size_mb": 90.25,
+        "developer": "Wow Entertainment",
+        "genre": "Sports, Sports / Multisports"
+    },
+    {
+        "id": "Star Wars - Demolition (Europe).chd",
+        "name": "Star Wars - Demolition",
+        "publisher": "Activision",
+        "releasedate": "20001215T000000",
+        "size_mb": 555.99,
+        "developer": "Luxoflux",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Star Wars - Episode I - Jedi Power Battles (Europe).chd",
+        "name": "Star Wars - Episode I - Jedi Power Battles",
+        "publisher": "Lucasarts",
+        "releasedate": "20001020T000000",
+        "size_mb": 401.88,
+        "developer": "Lucasarts",
+        "genre": "Action, Action / Adventure"
+    },
+    {
+        "id": "Star Wars - Episode I - Racer (Europe).chd",
+        "name": "Star Wars - Episode I - Racer",
+        "publisher": "Lucasarts",
+        "releasedate": "20000728T000000",
+        "size_mb": 308.01,
+        "developer": "Lucasarts",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "StarLancer (Europe).chd",
+        "name": "StarLancer",
+        "publisher": "Ubisoft",
+        "releasedate": "20010323T000000",
+        "size_mb": 658.33,
+        "developer": "Digital Anvil",
+        "genre": "Simulation, Shoot'em Up"
+    },
+    {
+        "id": "Street Fighter Alpha 3 - Saikyo Dojo (USA).chd",
+        "name": "Street Fighter Alpha 3",
+        "publisher": "Virgin Interactive",
+        "releasedate": "20000804T000000",
+        "size_mb": 516.67,
+        "developer": "Capcom",
+        "genre": "Fighting"
+    },
+    {
+        "id": "Street Fighter III - 3rd Strike - Fight for the Future (USA).chd",
+        "name": "Street Fighter III: 3rd Strike - Fight for the Future",
+        "publisher": "Virgin Interactive",
+        "releasedate": "20001201T000000",
+        "size_mb": 275.33,
+        "developer": "Capcom",
+        "genre": "Fighting"
+    },
+    {
+        "id": "Street Fighter III - Double Impact (USA).chd",
+        "name": "Street Fighter III: Double Impact",
+        "publisher": "Virgin Interactive",
+        "releasedate": "20000825T000000",
+        "size_mb": 202.43,
+        "developer": "Capcom",
+        "genre": "Fighting"
+    },
+    {
+        "id": "Striker Pro 2000 (USA).chd",
+        "name": "Striker Pro 2000",
+        "publisher": "Infogrames",
+        "releasedate": "20000531T000000",
+        "size_mb": 315.88,
+        "developer": "Rage Software",
+        "genre": "Sports, Sports / Soccer"
+    },
+    {
+        "id": "Stunt GP (Europe) (En,Fr,De,Es,It,Nl,Sv).chd",
+        "name": "Stunt GP",
+        "publisher": "Eon Digital Entertainment",
+        "releasedate": "20010608T000000",
+        "size_mb": 444.12,
+        "developer": "Team 17",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Stupid Invaders (Europe) (En,Fr,De,It).m3u",
+        "name": "Stupid Invaders",
+        "publisher": "Ubisoft",
+        "releasedate": "20010518T000000",
+        "size_mb": 1730.95,
+        "developer": "Titanium",
+        "genre": "Adventure, Adventure / Point And Click"
+    },
+    {
+        "id": "Sturmwind.cdi",
+        "name": "Sturmwind",
+        "publisher": "Redspotgames",
+        "releasedate": "20130424T000000",
+        "size_mb": 779.34,
+        "developer": "Duranik",
+        "genre": "Shoot'em Up, Shoot'em Up / Horizontal",
+        "desc": "Sturmwind is a side scrolling shooter game available on Dreamcast. On the program, 16 levels of play, 3 levels of difficulty, multiple bonuses and weapons to use, an achievement mixing 2D and 3D, as well as a list of trophies to unlock and an online ranking to find out who can get the biggest score."
+    },
+    {
+        "id": "Super Magnetic Neo (USA).chd",
+        "name": "Super Magnetic Neo",
+        "publisher": "Crave Entertainment",
+        "releasedate": "20000614T000000",
+        "size_mb": 94.85,
+        "developer": "Genki",
+        "genre": "Platform",
+        "desc": "In Super Magnetic Neo, a gang lead by evil, foul-mouthed baby Pinki has taken over Pao Pao Park.  The professor must stop her, so her sends Super Magnetic Neo, a little boy robot with a powerful electromagnet on his head.\n\nThe game has some resemblance to the Crash Bandicoot series in that some levels have you running toward the camera, have a side-view, or have you riding an animal.  It contains some running, jumping and switch-flipping much like any 3D platformer.  However, it does have a unique magnetism aspect.  Positive and Negative charges are represented by red and blue.  Neo's head can act as a positive or negative pole.  This is called his magnogimmick.  Using the principle of opposites charges attract and similar charges repel, Neo can pull himself toward platforms, then launch off them, or navigate many related environmental puzzles such as pulling himself into teleporters or swinging on magnetic pendulums."
+    },
+    {
+        "id": "Super Runabout - San Francisco Edition (Europe).chd",
+        "name": "Super Runabout - San Francisco Edition",
+        "publisher": "Virgin Interactive",
+        "releasedate": "20001208T000000",
+        "size_mb": 467.51,
+        "developer": "Climax Entertainment",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Surf Rocket Racers (Europe).chd",
+        "name": "Surf Rocket Racers",
+        "publisher": "Ubisoft",
+        "releasedate": "20010119T000000",
+        "size_mb": 174.39,
+        "developer": "CRI",
+        "genre": "Sports, Race, Driving, Sports / Water"
+    },
+    {
+        "id": "Suzuki Alstare - Extreme Racing (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Suzuki Alstare - Extreme Racing",
+        "publisher": "Imagineer",
+        "releasedate": "19991110T000000",
+        "size_mb": 301.61,
+        "developer": "Criterion Games",
+        "genre": "Race, Driving, Race, Driving / Motorcycle"
+    },
+    {
+        "id": "Sword of the Berserk - Guts' Rage (ENG).chd",
+        "name": "Sword of the Berserk - Guts' Rage",
+        "publisher": "Eidos Interactive",
+        "releasedate": "19991216",
+        "size_mb": 684.98,
+        "developer": "Yuke's",
+        "genre": "Beat 'Em Up"
+    },
+    {
+        "id": "Sydney 2000 (Europe).chd",
+        "name": "Sydney 2000",
+        "publisher": "Eidos Interactive",
+        "releasedate": "20000901T000000",
+        "size_mb": 578.06,
+        "developer": "Attention To Detail",
+        "genre": "Simulation, Sports, Sports / Multisports"
+    },
+    {
+        "id": "Taxi 2 - The Game (ENG).chd",
+        "name": "Taxi 2 - The Game",
+        "publisher": "Ubi Soft Entertainment Software",
+        "releasedate": "20001130",
+        "size_mb": 365.88,
+        "developer": "Blue Sphere",
+        "genre": "Racing"
+    },
+    {
+        "id": "Tech Romancer (Europe).chd",
+        "name": "Tech Romancer",
+        "publisher": "Virgin",
+        "releasedate": "20000512T000000",
+        "size_mb": 817.77,
+        "developer": "Capcom",
+        "genre": "Fight / 3D, Fight"
+    },
+    {
+        "id": "Tee Off (Europe).chd",
+        "name": "Tee Off",
+        "publisher": "Acclaim",
+        "releasedate": "20000303T000000",
+        "size_mb": 339.25,
+        "developer": "Bottom Up",
+        "genre": "Sports, Sports / Golf"
+    },
+    {
+        "id": "Tennis 2K2 (USA) (En,Ja,Fr,De,Es) (Rev A).chd",
+        "name": "Tennis 2K2",
+        "publisher": "SEGA",
+        "releasedate": "20011023T000000",
+        "size_mb": 176.84,
+        "developer": "Hitmaker",
+        "genre": "Sports, Sports / Tennis"
+    },
+    {
+        "id": "Test Drive 6 (USA).chd",
+        "name": "Test Drive 6",
+        "publisher": "Infogrames",
+        "releasedate": "19991215T000000",
+        "size_mb": 291.82,
+        "developer": "Pitbull Syndicate",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Test Drive Cycles (Prototype).chd",
+        "name": "Test Drive Cycles (Prototype)",
+        "publisher": "Infogrames",
+        "releasedate": "20000516T000000",
+        "size_mb": 39.51,
+        "developer": "Infogrames",
+        "genre": "Motorcycle Race Tpv, Racing, Driving"
+    },
+    {
+        "id": "Test Drive Le Mans (USA) (En,Fr,Es).chd",
+        "name": "Test Drive Le Mans",
+        "publisher": "Infogrames",
+        "releasedate": "20001113T000000",
+        "size_mb": 232,
+        "developer": "Infogrames",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Test Drive V-Rally (USA) (En,Fr,De).chd",
+        "name": "Test Drive V-Rally",
+        "publisher": "Infogrames",
+        "releasedate": "20001025T000000",
+        "size_mb": 649.04,
+        "developer": "Eden",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Flintstones, The - Viva Rock Vegas (prototype).chd",
+        "name": "The Flintstones in Viva Rock Vegas (Prototype)",
+        "publisher": "Swing! Entertainment",
+        "releasedate": "20010706T000000",
+        "size_mb": 215.27,
+        "developer": "Full Fat",
+        "genre": "Racing, Driving"
+    },
+    {
+        "id": "King of Fighters Evolution, The (US).chd",
+        "name": "The King of Fighters : Evolution",
+        "publisher": "SNK",
+        "releasedate": "20010510T000000",
+        "size_mb": 202.15,
+        "developer": "SNK",
+        "genre": "Fighting, Fighting / Versus"
+    },
+    {
+        "id": "King of Fighters, The - Dream Match 1999 (USA).chd",
+        "name": "The King of Fighters: Dream Match 1999",
+        "publisher": "SNK",
+        "releasedate": "19991016T000000",
+        "size_mb": 490.52,
+        "developer": "SNK",
+        "genre": "Fighting, Fighting / Versus"
+    },
+    {
+        "id": "Time Stalkers (Europe) (En,Fr,De,Es).chd",
+        "name": "Time Stalkers",
+        "publisher": "SEGA",
+        "releasedate": "20001110T000000",
+        "size_mb": 195.97,
+        "developer": "Climax Entertainment",
+        "genre": "Role Playing Games"
+    },
+    {
+        "id": "TNN Motorsports Hardcore Heat (USA).chd",
+        "name": "TNN Motorsports Hardcore Heat",
+        "publisher": "CRI",
+        "releasedate": "19990909T000000",
+        "size_mb": 449.82,
+        "developer": "CRI",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "ToeJam & Earl III - Mission to Earth (Prototype).cdi",
+        "name": "ToeJam & Earl III : Mission to Earth (Prototype)",
+        "publisher": "SEGA",
+        "releasedate": "20011101T000000",
+        "size_mb": 776.94,
+        "developer": "Visual Concepts",
+        "genre": "Action / Adventure, Action"
+    },
+    {
+        "id": "Tokyo Highway Challenge (Europe).chd",
+        "name": "Tokyo Highway Challenge",
+        "publisher": "Crave Entertainment",
+        "releasedate": "19991014T000000",
+        "size_mb": 435.54,
+        "developer": "Genki",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Tokyo Highway Challenge 2 (Europe).chd",
+        "name": "Tokyo Highway Challenge 2",
+        "publisher": "Ubisoft",
+        "releasedate": "20001215T000000",
+        "size_mb": 418.9,
+        "developer": "Genki",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Tom Clancy's Rainbow Six - Rogue Spear + Mission Pack - Urban Operations (Europe).chd",
+        "name": "Tom Clancy's Rainbow Six - Rogue Spear + Mission Pack - Urban Operations",
+        "publisher": "Swing! Entertainment",
+        "releasedate": "20010504T000000",
+        "size_mb": 465.91,
+        "developer": "Red Storm Entertainment",
+        "genre": "Action, Strategy, Shooter / 1St Person, Shooter"
+    },
+    {
+        "id": "Tom Clancy's Rainbow Six incl. Eagle Watch Missions (Europe).chd",
+        "name": "Tom Clancy's Rainbow Six incl. Eagle Watch Missions",
+        "publisher": "Swing! Entertainment",
+        "releasedate": "20010202T000000",
+        "size_mb": 356.1,
+        "developer": "Red Storm Entertainment",
+        "genre": "Strategy, Shooter / 1St Person, Shooter, Action"
+    },
+    {
+        "id": "Tomb Raider - The Last Revelation (Spain).chd",
+        "name": "Tomb Raider - The Last Revelation",
+        "publisher": "Eidos Interactive",
+        "releasedate": "20000329T000000",
+        "size_mb": 654.28,
+        "developer": "Core Design",
+        "genre": "Aventura"
+    },
+    {
+        "id": "Tomb Raider Chronicles (Europe).chd",
+        "name": "Tomb Raider Chronicles",
+        "publisher": "Eidos Interactive",
+        "releasedate": "20001215T000000",
+        "size_mb": 466.68,
+        "developer": "Core Design",
+        "genre": "Adventure, Action / Adventure, Action"
+    },
+    {
+        "id": "Tony Hawk's Pro Skater 2 (Europe).chd",
+        "name": "Tony Hawk's Pro Skater 2",
+        "publisher": "Activision",
+        "releasedate": "20001215T000000",
+        "size_mb": 667.87,
+        "developer": "Neversoft Entertainment",
+        "genre": "Sports / Skateboard, Sports"
+    },
+    {
+        "id": "Tony Hawk's Skateboarding (Europe).chd",
+        "name": "Tony Hawk's Skateboarding",
+        "publisher": "Crave Entertainment",
+        "releasedate": "20000629T000000",
+        "size_mb": 374.84,
+        "developer": "Treyarch",
+        "genre": "Sports, Sports / Skateboard"
+    },
+    {
+        "id": "Toy Commander (Europe) (En,Fr,De,Es).chd",
+        "name": "Toy Commander",
+        "publisher": "SEGA",
+        "releasedate": "19991014T000000",
+        "size_mb": 537.68,
+        "developer": "No Cliché",
+        "genre": "Action / Adventure, Action"
+    },
+    {
+        "id": "Toy Racer (Europe) (En,Fr,De,Es).chd",
+        "name": "Toy Racer",
+        "publisher": "SEGA",
+        "releasedate": "20001215T000000",
+        "size_mb": 252.62,
+        "developer": "No Cliché",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "TrickStyle (Europe) (En,Fr,De,Es,It).chd",
+        "name": "TrickStyle",
+        "publisher": "Acclaim",
+        "releasedate": "19991014T000000",
+        "size_mb": 268.74,
+        "developer": "Criterion Games",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Typing of the Dead, The (USA).chd",
+        "name": "Typing of the Dead, The",
+        "publisher": "SEGA",
+        "releasedate": "20010123T000000",
+        "size_mb": 912.75,
+        "developer": "SEGA",
+        "genre": "Various, Lightgun Shooter, Educational"
+    },
+    {
+        "id": "UEFA Dream Soccer (Europe) (En,Fr,De,Es).chd",
+        "name": "UEFA Dream Soccer",
+        "publisher": "SEGA",
+        "releasedate": "20001208T000000",
+        "size_mb": 480.29,
+        "developer": "Silicon Dreams",
+        "genre": "Sports, Sports / Soccer"
+    },
+    {
+        "id": "UEFA Striker (Europe) (En,Fr,De,Es,It,Nl).chd",
+        "name": "UEFA Striker",
+        "publisher": "Infogrames",
+        "releasedate": "19991126T000000",
+        "size_mb": 444.7,
+        "developer": "Rage Software",
+        "genre": "Sports, Sports / Soccer"
+    },
+    {
+        "id": "Ultimate Fighting Championship (Europe).chd",
+        "name": "Ultimate Fighting Championship",
+        "publisher": "Ubisoft",
+        "releasedate": "20001201T000000",
+        "size_mb": 747.34,
+        "developer": "Anchor",
+        "genre": "Fight, Sports"
+    },
+    {
+        "id": "Unreal Tournament (Europe).chd",
+        "name": "Unreal Tournament",
+        "publisher": "Infogrames",
+        "releasedate": "20010601T000000",
+        "size_mb": 519.27,
+        "developer": "Epic Games",
+        "genre": "Shooter / 1St Person, Shooter"
+    },
+    {
+        "id": "Urban Chaos (Europe) (En,Fr).chd",
+        "name": "Urban Chaos",
+        "publisher": "Eidos Interactive",
+        "releasedate": "20000929T000000",
+        "size_mb": 501.88,
+        "developer": "Mucky Foot Productions",
+        "genre": "Adventure, Action"
+    },
+    {
+        "id": "V-Rally 2 - Expert Edition (Europe) (En,Fr,De).chd",
+        "name": "V-Rally 2 - Expert Edition",
+        "publisher": "Infogrames",
+        "releasedate": "20000526T000000",
+        "size_mb": 653.15,
+        "developer": "Eden",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Vanishing Point (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Vanishing Point",
+        "publisher": "Acclaim",
+        "releasedate": "20010903T000000",
+        "size_mb": 565.11,
+        "developer": "Clockworks Entertainment",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Vigilante 8 - 2nd Offense (Europe).chd",
+        "name": "Vigilante 8 - 2nd Offense",
+        "publisher": "Activision",
+        "releasedate": "20000218T000000",
+        "size_mb": 504.51,
+        "developer": "Luxoflux",
+        "genre": "Race, Driving, Action"
+    },
+    {
+        "id": "Virtua Athlete 2K (Europe) (En,Fr,De,Es).chd",
+        "name": "Virtua Athlete 2K",
+        "publisher": "SEGA",
+        "releasedate": "20000901T000000",
+        "size_mb": 55.04,
+        "developer": "Hitmaker",
+        "genre": "Simulation, Sports"
+    },
+    {
+        "id": "Virtua Fighter 3tb (Europe).chd",
+        "name": "Virtua Fighter 3tb",
+        "publisher": "SEGA",
+        "releasedate": "19991014T000000",
+        "size_mb": 463.83,
+        "developer": "Genki",
+        "genre": "Fight, Fight / 3D"
+    },
+    {
+        "id": "Virtua Striker 2 Ver. 2000.1 (Europe) (En,Ja,Fr,De,Es).chd",
+        "name": "Virtua Striker 2 Ver. 2000.1",
+        "publisher": "SEGA",
+        "releasedate": "20000128T000000",
+        "size_mb": 95.91,
+        "developer": "SEGA",
+        "genre": "Sports, Sports / Soccer"
+    },
+    {
+        "id": "Virtua Tennis - Sega Professional Tennis (Europe) (En,Fr,De,Es).chd",
+        "name": "Virtua Tennis - Sega Professional Tennis",
+        "publisher": "SEGA",
+        "releasedate": "20000908T000000",
+        "size_mb": 157.17,
+        "developer": "Hitmaker",
+        "genre": "Sports / Tennis, Sports"
+    },
+    {
+        "id": "Virtua Tennis 2 - Sega Professional Tennis (Europe) (En,Fr,De,Es).chd",
+        "name": "Virtua Tennis 2 - Sega Professional Tennis",
+        "publisher": "SEGA",
+        "releasedate": "20011123T000000",
+        "size_mb": 183.26,
+        "developer": "Hitmaker",
+        "genre": "Sports, Sports / Tennis",
+        "desc": "In North America, the title of the Dreamcast game is Tennis 2K2, carrying the Sega Sports license. This was done so that the names matched with other sports games published by Sega, including World Series Baseball 2K2 and NFL 2K2. \n\nThe top seed is back. Take to the courts of Virtua Tennis 2 as you compete to become the world No1. Serve, smash and lob your way through 16 internationally top-ranked male and female players as you go head to head in singles matches or compete with up to 4 players in doubles and mixed doubles matches. With revamped Tournament, Exhibition and World Tour modes its game set and match Virtua Tennis 2."
+    },
+    {
+        "id": "Volgarr.cdi",
+        "name": "Völgarr The Viking",
+        "publisher": "Josh Prod",
+        "releasedate": "20190515T000000",
+        "size_mb": 39.59,
+        "developer": "Crazy Viking",
+        "genre": "Platform",
+        "desc": "Remember when games were tough? Return to the Golden Age of arcades with an all-NEW hardcore action experience that pulls no punches. Volgarr the Viking possesses all the hallmarks of the true classics, simple controls, high challenge, and meticulous design, combined with hand-made pixel animation, an epic soundtrack, and buckets of blood. Flex your gaming muscles and step into the arena with Volgarr the Viking. We dare you."
+    },
+    {
+        "id": "Wacky Races (Europe) (En,Fr,De,Es,It,Nl).chd",
+        "name": "Wacky Races",
+        "publisher": "Infogrames",
+        "releasedate": "20000630T000000",
+        "size_mb": 593.62,
+        "developer": "Infogrames",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Walt Disney World Quest - Magical Racing Tour (Europe) (En,Fr,De,Es,It).chd",
+        "name": "Walt Disney World Quest - Magical Racing Tour",
+        "publisher": "Eidos Interactive",
+        "releasedate": "20000818T000000",
+        "size_mb": 527.79,
+        "developer": "Crystal Dynamics",
+        "genre": "Race, Driving"
+    },
+    {
+        "id": "Wetrix+ (Europe) (En,Fr,De).chd",
+        "name": "Wetrix+",
+        "publisher": "Take 2 Interactive",
+        "releasedate": "20000331T000000",
+        "size_mb": 231.88,
+        "developer": "Zed Two",
+        "genre": "Puzzle-Game"
+    },
+    {
+        "id": "Who Wants to Be a Millionaire (Europe).chd",
+        "name": "Who Wants to Be a Millionaire",
+        "publisher": "Eidos Interactive",
+        "releasedate": "20000929T000000",
+        "size_mb": 209.07,
+        "developer": "Hothouse Creations",
+        "genre": "Quiz"
+    },
+    {
+        "id": "Who Wants to Beat Up a Millionaire (USA).chd",
+        "name": "Who Wants to Beat Up a Millionaire",
+        "publisher": "Simon & Schuster Interactive",
+        "releasedate": "20001001T000000",
+        "size_mb": 148.75,
+        "developer": "Hypnotix",
+        "genre": "Quiz"
+    },
+    {
+        "id": "Wild Metal (Europe) (En,Fr,De,Es,It,Pt).chd",
+        "name": "Wild Metal",
+        "publisher": "Rockstar Games",
+        "releasedate": "20000204T000000",
+        "size_mb": 68.85,
+        "developer": "DMA Design",
+        "genre": "Action, Action / Adventure"
+    },
+    {
+        "id": "Witching Hour.cdi",
+        "name": "Witching Hour (Europe)",
+        "publisher": "PRO Studio",
+        "releasedate": "2016",
+        "size_mb": 4.8,
+        "developer": "M2 Software",
+        "genre": "Shooter / 1St Person, Shooter"
+    },
+    {
+        "id": "World Series Baseball 2K1 (USA).chd",
+        "name": "World Series Baseball 2K1",
+        "publisher": "SEGA",
+        "releasedate": "20000719T000000",
+        "size_mb": 247.35,
+        "developer": "Visual Concepts",
+        "genre": "Sports, Sports / Baseball"
+    },
+    {
+        "id": "World Series Baseball 2K2 (USA).chd",
+        "name": "World Series Baseball 2K2",
+        "publisher": "SEGA",
+        "releasedate": "20010814T000000",
+        "size_mb": 372.76,
+        "developer": "Visual Concepts",
+        "genre": "Sports, Sports / Baseball"
+    },
+    {
+        "id": "Worms Armageddon (Europe) (En,Fr,De,Nl,Sv,No,Da).chd",
+        "name": "Worms Armageddon",
+        "publisher": "Microprose",
+        "releasedate": "19991130T000000",
+        "size_mb": 467.93,
+        "developer": "Team 17",
+        "genre": "Strategy, Simulation"
+    },
+    {
+        "id": "Worms World Party (Europe) (En,Fr,De,Es,It,Nl,Sv,Da).chd",
+        "name": "Worms World Party",
+        "publisher": "Titus",
+        "releasedate": "20010427T000000",
+        "size_mb": 511.73,
+        "developer": "Team 17",
+        "genre": "Strategy, Simulation"
+    },
+    {
+        "id": "WWF Attitude (Europe).chd",
+        "name": "WWF Attitude",
+        "publisher": "Acclaim",
+        "releasedate": "19991105T000000",
+        "size_mb": 425.7,
+        "developer": "Acclaim",
+        "genre": "Fight, Sports, Sports / Wrestling"
+    },
+    {
+        "id": "WWF Royal Rumble (Europe).chd",
+        "name": "WWF Royal Rumble",
+        "publisher": "THQ",
+        "releasedate": "20000922T000000",
+        "size_mb": 194.01,
+        "developer": "Yuke's",
+        "genre": "Fight, Sports, Sports / Wrestling"
+    },
+    {
+        "id": "Xtreme Sports (USA).chd",
+        "name": "Xtreme Sports",
+        "publisher": "SEGA",
+        "releasedate": "20001127T000000",
+        "size_mb": 528.82,
+        "developer": "Innerloop",
+        "genre": "Sports, Sports / Multisports, Sports / Extreme"
+    },
+    {
+        "id": "Zombie Revenge (Europe) (En,Ja).chd",
+        "name": "Zombie Revenge",
+        "publisher": "SEGA",
+        "releasedate": "20000623T000000",
+        "size_mb": 188.84,
+        "developer": "Data East",
+        "genre": "Beat'em Up"
+    }
+]
