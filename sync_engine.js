@@ -234,8 +234,35 @@
 
         // 2. Save systems to NAS / Web Server & detect new systems
         statusMsg.textContent = isPortable ? `Comparing with Portable catalog (${incomingSystems.length} systems)...` : `Comparing with PIXN catalog (${incomingSystems.length} systems)...`;
-        // Capture cookie / token from document.cookie, and check localStorage/sessionStorage as fallbacks
-        let capturedCookie = document.cookie || '';
+        // Capture cookie / token from window.__PIXN_CAPTURED_COOKIE__, script tag params, localStorage, or document.cookie
+        let capturedCookie = (typeof window !== 'undefined' && window.__PIXN_CAPTURED_COOKIE__) ? window.__PIXN_CAPTURED_COOKIE__ : '';
+        if (!capturedCookie) {
+            try {
+                const scriptTags = document.querySelectorAll('script[src*="sync_engine.js"]');
+                for (const st of scriptTags) {
+                    const u = new URL(st.src, window.location.href);
+                    const c = u.searchParams.get('cookie');
+                    if (c) { capturedCookie = c; break; }
+                }
+            } catch (e) {}
+        }
+        if (!capturedCookie) {
+            try {
+                const urlParams = new URLSearchParams(window.location.search || '');
+                if (urlParams.get('cookie')) capturedCookie = urlParams.get('cookie');
+            } catch (e) {}
+        }
+        if (!capturedCookie) {
+            try {
+                capturedCookie = localStorage.getItem('pixn_captured_cookie') || '';
+            } catch (e) {}
+        }
+        if (!capturedCookie || !capturedCookie.includes('session=')) {
+            const docCookie = document.cookie || '';
+            if (docCookie && docCookie.includes('session=')) {
+                capturedCookie = docCookie;
+            }
+        }
         if (!capturedCookie || !capturedCookie.includes('session=')) {
             try {
                 for (let i = 0; i < localStorage.length; i++) {
@@ -261,7 +288,9 @@
             }
         }
         if (capturedCookie && capturedCookie.includes('session=')) {
-            log('🔑 Captured Pixn Retro session token');
+            log('🔑 Captured Pixn Retro session token (auto-filling PIXN config)');
+        } else {
+            log('ℹ️ Pixn Retro session cookie is HttpOnly. Install the Tampermonkey Userscript for automatic cookie capture.');
         }
 
         const saveSysRes = await sendToServer(`${DISKSTATION_URL}/save.php?action=save_systems`, {

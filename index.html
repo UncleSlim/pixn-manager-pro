@@ -8160,6 +8160,21 @@
                                 </span>
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;">
+                                <!-- Userscript Option (Recommended for Cookie Capture) -->
+                                <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 6px; padding: 0.45rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.3rem;">
+                                    <div>
+                                        <strong style="font-size: 0.74rem; color: #10b981; display: flex; align-items: center; gap: 0.25rem;">
+                                            <i class="fa-solid fa-wand-magic-sparkles"></i> Userscript <span style="font-size: 0.6rem; background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 1px 4px; border-radius: 3px;">Auto-Cookie</span>
+                                        </strong>
+                                        <span style="font-size: 0.67rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
+                                            Tampermonkey script. Auto-captures session cookie &amp; adds sync button.
+                                        </span>
+                                    </div>
+                                    <a id="btnInstallUserScriptSettings" href="pixn_sync.user.js" target="_blank" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.22rem 0.5rem; text-align: center; background: #059669; border-color: #10b981;" title="Install Tampermonkey / Violentmonkey Userscript for automatic cookie sync">
+                                        <i class="fa-solid fa-download"></i> Install Script
+                                    </a>
+                                </div>
+
                                 <!-- Bookmarklet Option -->
                                 <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 6px; padding: 0.45rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.3rem;">
                                     <div>
@@ -8167,26 +8182,11 @@
                                             <i class="fa-solid fa-bookmark"></i> Bookmarklet
                                         </strong>
                                         <span style="font-size: 0.67rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
-                                            Click to open Pixn Retro &amp; Sync. Drag to bookmarks bar for easy access.
+                                            Drag to bookmarks bar, then click on Pixn Retro.
                                         </span>
                                     </div>
-                                    <a id="dragBookmarkletSettings" href="#" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.22rem 0.5rem; text-align: center; cursor: grab;" title="Click to open Pixn Retro &amp; Sync. Drag to bookmarks bar for easy access.">
+                                    <a id="dragBookmarkletSettings" href="#" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.22rem 0.5rem; text-align: center; cursor: grab; border-color: #38bdf8; color: #38bdf8;" title="Drag to bookmarks bar for easy access, or click to open Pixn Retro.">
                                         <i class="fa-solid fa-bookmark"></i> PIXN Retro Sync
-                                    </a>
-                                </div>
-
-                                <!-- Userscript Option -->
-                                <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 6px; padding: 0.45rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.3rem;">
-                                    <div>
-                                        <strong style="font-size: 0.74rem; color: #10b981; display: flex; align-items: center; gap: 0.25rem;">
-                                            <i class="fa-solid fa-code"></i> Userscript
-                                        </strong>
-                                        <span style="font-size: 0.67rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
-                                            Tampermonkey extension. Auto-adds sync button in browser.
-                                        </span>
-                                    </div>
-                                    <a id="btnInstallUserScriptSettings" href="pixn_sync.user.js" target="_blank" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.22rem 0.5rem; text-align: center; border-color: #10b981; color: #10b981;" title="Install Tampermonkey / Violentmonkey Userscript">
-                                        <i class="fa-solid fa-download"></i> Install Script
                                     </a>
                                 </div>
                             </div>
@@ -22348,6 +22348,7 @@
                     bm.addEventListener('click', (e) => {
                         e.preventDefault();
                         const srv = (cfgNasUrlInput && cfgNasUrlInput.value.trim() ? cfgNasUrlInput.value.trim() : getActiveWebServerUrl()).replace(/\/+$/, '');
+                        showToast('Opening Pixn Retro... Tampermonkey will auto-sync and capture your session cookie!', 4500, 'info');
                         window.open('https://pixn-retro.dedyn.io/releases#autosync&server=' + encodeURIComponent(srv), '_blank');
                     });
                 }
@@ -22361,6 +22362,13 @@
                     bmSettings.addEventListener('click', (e) => {
                         e.preventDefault();
                         const srv = (cfgNasUrlInput && cfgNasUrlInput.value.trim() ? cfgNasUrlInput.value.trim() : getActiveWebServerUrl()).replace(/\/+$/, '');
+                        showToast('Opening Pixn Retro... Tampermonkey will auto-sync and capture your session cookie!', 4500, 'info');
+                        if (cfgCookieStatusBadge && (!cfgCookieInput || !cfgCookieInput.value)) {
+                            cfgCookieStatusBadge.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Waiting for sync...';
+                            cfgCookieStatusBadge.style.color = '#f59e0b';
+                            cfgCookieStatusBadge.style.borderColor = 'rgba(245, 158, 11, 0.4)';
+                            cfgCookieStatusBadge.style.backgroundColor = 'rgba(245, 158, 11, 0.1)';
+                        }
                         window.open('https://pixn-retro.dedyn.io/releases#autosync&server=' + encodeURIComponent(srv), '_blank');
                     });
                 }
@@ -22406,12 +22414,40 @@
             });
         }
 
+        let settingsPollInterval = null;
         function openSettingsModal() {
             if (settingsModal) {
                 loadServerConfig();
                 settingsModal.classList.add('open');
+                if (!settingsPollInterval) {
+                    settingsPollInterval = setInterval(() => {
+                        if (settingsModal && settingsModal.classList.contains('open')) {
+                            loadServerConfig();
+                        } else {
+                            clearInterval(settingsPollInterval);
+                            settingsPollInterval = null;
+                        }
+                    }, 2500);
+                }
             }
         }
+
+        function closeSettingsModal() {
+            if (settingsModal) {
+                settingsModal.classList.remove('open');
+            }
+            if (settingsPollInterval) {
+                clearInterval(settingsPollInterval);
+                settingsPollInterval = null;
+            }
+            sessionStorage.setItem('pixn_first_run_dismissed', '1');
+        }
+
+        window.addEventListener('focus', () => {
+            if (settingsModal && settingsModal.classList.contains('open')) {
+                loadServerConfig();
+            }
+        });
 
         async function loadServerConfig(isAutoInit = false) {
             try {
@@ -22455,8 +22491,15 @@
                     cfgBatoceraUncInput.value = cfg.batocera_unc_path || detectedBato || localStorage.getItem('batocera_roms_unc_path') || '\\\\BATOCERA\\share\\roms';
                 }
 
+                const oldCookie = cfgCookieInput ? cfgCookieInput.value.trim() : '';
+                const newCookie = (cfg.pixn_session_cookie || '').trim();
                 if (cfgCookieInput) {
-                    cfgCookieInput.value = cfg.pixn_session_cookie || '';
+                    if (document.activeElement !== cfgCookieInput) {
+                        cfgCookieInput.value = newCookie;
+                    }
+                }
+                if (!oldCookie && newCookie) {
+                    showToast('🔑 Pixn Retro session cookie captured and auto-filled!', 3500, 'success');
                 }
 
                 if (cfgCookieStatusBadge) {
@@ -22659,21 +22702,18 @@
         }
         if (btnCloseSettingsModal) {
             btnCloseSettingsModal.addEventListener('click', () => {
-                sessionStorage.setItem('pixn_first_run_dismissed', '1');
-                settingsModal.classList.remove('open');
+                closeSettingsModal();
             });
         }
         if (btnCancelSettingsModal) {
             btnCancelSettingsModal.addEventListener('click', () => {
-                sessionStorage.setItem('pixn_first_run_dismissed', '1');
-                settingsModal.classList.remove('open');
+                closeSettingsModal();
             });
         }
         if (settingsModal) {
             settingsModal.addEventListener('click', (e) => {
                 if (e.target === settingsModal) {
-                    sessionStorage.setItem('pixn_first_run_dismissed', '1');
-                    settingsModal.classList.remove('open');
+                    closeSettingsModal();
                 }
             });
         }

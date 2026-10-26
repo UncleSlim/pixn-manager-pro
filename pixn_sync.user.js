@@ -1,11 +1,16 @@
 // ==UserScript==
 // @name         PIXN Retro -> PIXN Manager Pro 1-Click Sync
 // @namespace    https://github.com/UncleSlim/pixn-manager-pro
-// @version      1.5
+// @version      1.6
 // @description  Adds a floating 1-click Sync button on Pixn Retro releases page to sync new systems and games directly to PIXN Manager Pro
 // @match        https://pixn-retro.dedyn.io/*
+// @connect      127.0.0.1
+// @connect      localhost
+// @connect      *
+// @grant        GM_cookie
+// @grant        GM.cookie
+// @grant        GM_xmlhttpRequest
 // @run-at       document-idle
-// @grant        none
 // ==/UserScript==
 
 (function() {
@@ -34,10 +39,67 @@
         }
     } catch(e) {}
 
-    function launchSync() {
+    // Extract Pixn Retro session cookie (supports HttpOnly cookies via privileged Tampermonkey/Violentmonkey APIs)
+    function getSessionCookie() {
+        return new Promise(function(resolve) {
+            // 1. Try GM.cookie (Violentmonkey & modern Tampermonkey Promise API)
+            if (typeof GM !== 'undefined' && GM.cookie && typeof GM.cookie.list === 'function') {
+                try {
+                    GM.cookie.list({ url: 'https://pixn-retro.dedyn.io/' }).then(function(cookies) {
+                        if (Array.isArray(cookies) && cookies.length > 0) {
+                            let c = cookies.find(function(x) { return x.name === 'session'; });
+                            if (!c) c = cookies.find(function(x) { return x.name && x.name.toLowerCase().includes('session'); });
+                            if (c && c.value) return resolve('session=' + c.value);
+                        }
+                        resolve('');
+                    }).catch(function() { resolve(''); });
+                    return;
+                } catch(e) {}
+            }
+
+            // 2. Try GM_cookie (Tampermonkey callback API)
+            if (typeof GM_cookie !== 'undefined' && typeof GM_cookie.list === 'function') {
+                try {
+                    GM_cookie.list({ url: 'https://pixn-retro.dedyn.io/' }, function(cookies, error) {
+                        if (!error && Array.isArray(cookies) && cookies.length > 0) {
+                            let c = cookies.find(function(x) { return x.name === 'session'; });
+                            if (!c) c = cookies.find(function(x) { return x.name && x.name.toLowerCase().includes('session'); });
+                            if (c && c.value) return resolve('session=' + c.value);
+                        }
+                        resolve('');
+                    });
+                    return;
+                } catch(e) {}
+            }
+
+            // 3. Fallback: document.cookie (if not HttpOnly)
+            if (document.cookie && document.cookie.includes('session=')) {
+                const m = document.cookie.match(/session=([^;]+)/);
+                if (m) return resolve('session=' + m[1]);
+            }
+            resolve('');
+        });
+    }
+
+    async function launchSync() {
         if (document.getElementById('pixn-sync-hud')) return;
+
+        // Auto-capture session cookie for seamless 1-click PIXN configuration
+        let capturedCookie = '';
+        try {
+            capturedCookie = await getSessionCookie();
+            if (capturedCookie) {
+                window.__PIXN_CAPTURED_COOKIE__ = capturedCookie;
+                try { localStorage.setItem('pixn_captured_cookie', capturedCookie); } catch(e) {}
+            }
+        } catch(e) {}
+
         const s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?server=' + encodeURIComponent(TARGET_SERVER) + '&t=' + Date.now();
+        let srcUrl = 'https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?server=' + encodeURIComponent(TARGET_SERVER) + '&t=' + Date.now();
+        if (capturedCookie) {
+            srcUrl += '&cookie=' + encodeURIComponent(capturedCookie);
+        }
+        s.src = srcUrl;
         document.body.appendChild(s);
     }
 

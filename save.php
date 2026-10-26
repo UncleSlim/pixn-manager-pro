@@ -47,73 +47,11 @@ if ($reqAction === 'get_userscript') {
         $path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
         $server = rtrim($proto . $host . $path, '/');
     }
-    $isPortable = (strpos($server, '127.0.0.1') !== false || strpos($server, 'localhost') !== false);
-    $scriptName = $isPortable ? 'PIXN Retro -> Portable PIXN 1-Click Sync' : 'PIXN Retro -> PIXN Manager Pro 1-Click Sync';
-    $btnLabel = $isPortable ? '🔄 Sync to Portable PIXN' : '🔄 Sync to PIXN Manager Pro';
-    $btnTitle = $isPortable ? 'Sync new systems and games directly into your local Portable PIXN folder' : 'Sync new systems and games directly to PIXN Manager Pro';
-    
-    $jsContent = "// ==UserScript==\n" .
-        "// @name         " . $scriptName . "\n" .
-        "// @namespace    " . $server . "/\n" .
-        "// @version      1.3\n" .
-        "// @description  Adds a floating 1-click Sync button on Pixn Retro releases page to sync new systems and games directly to " . $server . "\n" .
-        "// @match        https://pixn-retro.dedyn.io/*\n" .
-        "// @connect      127.0.0.1\n" .
-        "// @connect      localhost\n" .
-        "// @connect      *\n" .
-        "// @grant        GM_xmlhttpRequest\n" .
-        "// @run-at       document-idle\n" .
-        "// ==/UserScript==\n\n" .
-        "(function() {\n" .
-        "    'use strict';\n" .
-        "    const TARGET_SERVER = '" . addslashes($server) . "';\n\n" .
-        "    function launchSync() {\n" .
-        "        if (document.getElementById('pixn-sync-hud')) return;\n" .
-        "        window.__PIXN_SERVER__ = TARGET_SERVER;\n" .
-        "        const s = document.createElement('script');\n" .
-        "        s.src = TARGET_SERVER + '/sync_engine.js?server=' + encodeURIComponent(TARGET_SERVER) + '&t=' + Date.now();\n" .
-        "        document.body.appendChild(s);\n" .
-        "    }\n\n" .
-        "    if (document.getElementById('pixn-ds-sync-btn')) return;\n\n" .
-        "    const btn = document.createElement('button');\n" .
-        "    btn.id = 'pixn-ds-sync-btn';\n" .
-        "    btn.innerHTML = '" . addslashes($btnLabel) . "';\n" .
-        "    btn.title = '" . addslashes($btnTitle) . "';\n" .
-        "    btn.style.cssText = `\n" .
-        "        position: fixed;\n" .
-        "        bottom: 20px;\n" .
-        "        right: 20px;\n" .
-        "        z-index: 99999;\n" .
-        "        background: linear-gradient(135deg, #0284c7, #0ea5e9);\n" .
-        "        color: #ffffff;\n" .
-        "        border: 1px solid rgba(255, 255, 255, 0.25);\n" .
-        "        border-radius: 24px;\n" .
-        "        padding: 10px 18px;\n" .
-        "        font-size: 13px;\n" .
-        "        font-weight: 600;\n" .
-        "        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\n" .
-        "        box-shadow: 0 10px 25px rgba(2, 132, 199, 0.45), 0 0 15px rgba(56, 189, 248, 0.3);\n" .
-        "        cursor: pointer;\n" .
-        "        transition: all 0.2s ease;\n" .
-        "        display: flex;\n" .
-        "        align-items: center;\n" .
-        "        gap: 8px;\n" .
-        "    `;\n\n" .
-        "    btn.onmouseover = () => {\n" .
-        "        btn.style.transform = 'translateY(-2px) scale(1.02)';\n" .
-        "        btn.style.boxShadow = '0 14px 30px rgba(2, 132, 199, 0.6), 0 0 20px rgba(56, 189, 248, 0.45)';\n" .
-        "    };\n" .
-        "    btn.onmouseout = () => {\n" .
-        "        btn.style.transform = 'none';\n" .
-        "        btn.style.boxShadow = '0 10px 25px rgba(2, 132, 199, 0.45), 0 0 15px rgba(56, 189, 248, 0.3)';\n" .
-        "    };\n\n" .
-        "    btn.onclick = launchSync;\n" .
-        "    document.body.appendChild(btn);\n\n" .
-        "    if (window.location.hash.includes('autosync')) {\n" .
-        "        setTimeout(launchSync, 800);\n" .
-        "    }\n" .
-        "})();\n";
-    echo $jsContent;
+    $scriptFile = $baseDir . '/pixn_sync.user.js';
+    $template = file_exists($scriptFile) ? file_get_contents($scriptFile) : '';
+    $out = preg_replace('#let TARGET_SERVER = [\'"][^\'"]*[\'"];#i', "let TARGET_SERVER = '" . addslashes($server) . "';", $template);
+    $out = preg_replace('#https://(jimmy\.langtoft\.dk/pixn|cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main)#i', $server, $out);
+    echo $out;
     exit;
 }
 
@@ -2374,8 +2312,13 @@ if ($action === 'save_systems') {
 
         if (!empty($data['cookie']) && is_string($data['cookie'])) {
             $rawCookie = trim($data['cookie']);
+            $sessVal = '';
             if (preg_match('/session=([^;]+)/', $rawCookie, $m)) {
                 $sessVal = 'session=' . trim($m[1]);
+            } else if (strlen($rawCookie) > 10 && strpos($rawCookie, ';') === false) {
+                $sessVal = (strpos($rawCookie, '=') === false) ? 'session=' . $rawCookie : $rawCookie;
+            }
+            if ($sessVal !== '') {
                 $configFile = $baseDir . '/config.json';
                 $curCfg = file_exists($configFile) ? readJsonFile($configFile) : [];
                 if (!is_array($curCfg)) $curCfg = [];
