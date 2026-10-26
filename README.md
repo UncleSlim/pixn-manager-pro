@@ -85,7 +85,6 @@ pixn/
 ├── index.html                           # Main frontend application (Single-Page App)
 ├── save.php                             # Backend API engine (API sync, Batocera proxy, video streaming, repair)
 ├── sync_engine.js                       # Client-side sync script for Pixn Retro bookmarklet
-├── pixn_sync.user.js                    # Tampermonkey/Violentmonkey auto-sync user script
 ├── extension/                           # [Chrome/Edge/Brave] Dedicated Manifest V3 browser extension
 ├── systems.json                         # Primary metadata index for all 331 gaming systems
 ├── search_index.json                    # Compact lookup index for instant global searching

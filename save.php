@@ -37,25 +37,6 @@ if ($reqAction === 'tab_closed') {
     exit;
 }
 
-if ($reqAction === 'get_userscript') {
-    header('Content-Type: application/javascript; charset=utf-8');
-    header('Content-Disposition: inline; filename="pixn_sync.user.js"');
-    $server = trim($_GET['server'] ?? '');
-    if (!$server) {
-        $proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
-        $host = $_SERVER['HTTP_HOST'] ?? '127.0.0.1:8989';
-        $path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-        $server = rtrim($proto . $host . $path, '/');
-    }
-    $scriptFile = $baseDir . '/pixn_sync.user.js';
-    $template = file_exists($scriptFile) ? file_get_contents($scriptFile) : '';
-    $out = preg_replace('#let TARGET_SERVER = [\'"][^\'"]*[\'"];#i', "let TARGET_SERVER = '" . addslashes($server) . "';", $template);
-    if (stripos($server, 'https://') === 0) {
-        $out = preg_replace('#https://cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main#i', $server, $out);
-    }
-    echo $out;
-    exit;
-}
 
 if ($reqAction !== 'stream_batocera_video' && $reqAction !== 'download_torrent' && !ob_get_level() && function_exists('ob_gzhandler')) {
     @ob_start('ob_gzhandler');
@@ -3095,29 +3076,6 @@ if ($action === 'save_config') {
     exit;
 }
 
-if ($action === 'get_userscript') {
-    $cfg = getPixnConfig($baseDir);
-    $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443);
-    $proto = $isHttps ? 'https://' : 'http://';
-    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    $scriptDir = dirname($_SERVER['SCRIPT_NAME'] ?? '/pixn/save.php');
-    $detectedUrl = rtrim($proto . $host . $scriptDir, '/\\');
-
-    $requestedServer = !empty($_GET['server']) ? trim($_GET['server']) : '';
-    $nasUrl = !empty($requestedServer) ? rtrim($requestedServer, '/\\') : (!empty($cfg['nas_base_url']) ? rtrim($cfg['nas_base_url'], '/\\') : $detectedUrl);
-
-    header('Content-Type: text/javascript; charset=utf-8');
-    header('Content-Disposition: inline; filename="pixn_sync.user.js"');
-
-    $scriptFile = $baseDir . '/pixn_sync.user.js';
-    $template = file_exists($scriptFile) ? file_get_contents($scriptFile) : '';
-    $out = preg_replace('#let TARGET_SERVER = [\'"][^\'"]*[\'"];#i', "let TARGET_SERVER = '" . addslashes($nasUrl) . "';", $template);
-    if (stripos($nasUrl, 'https://') === 0) {
-        $out = preg_replace('#https://cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main#i', $nasUrl, $out);
-    }
-    echo $out;
-    exit;
-}
 
 if ($action === 'download_extension') {
     $zipPath = $baseDir . '/data/pixn-chrome-extension.zip';
