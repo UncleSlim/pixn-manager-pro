@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PIXN Retro -> PIXN Manager Pro 1-Click Sync
 // @namespace    https://github.com/UncleSlim/pixn-manager-pro
-// @version      1.4
+// @version      1.5
 // @description  Adds a floating 1-click Sync button on Pixn Retro releases page to sync new systems and games directly to PIXN Manager Pro
 // @match        https://pixn-retro.dedyn.io/*
 // @run-at       document-idle
@@ -11,10 +11,33 @@
 (function() {
     'use strict';
 
+    // Target PIXN Server (Auto-configured: Local Portable default)
+    let TARGET_SERVER = 'http://127.0.0.1:8989';
+
+    // Check if server was passed via URL hash (e.g. from Bookmarklet or PIXN Manager Pro)
+    if (window.location.hash) {
+        try {
+            const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+            const hashServer = hashParams.get('server');
+            if (hashServer) {
+                TARGET_SERVER = hashServer.replace(/\/+$/, '');
+                try { localStorage.setItem('pixn_target_server', TARGET_SERVER); } catch(e) {}
+            }
+        } catch(e) {}
+    }
+
+    // Check localStorage fallback
+    try {
+        const savedServer = localStorage.getItem('pixn_target_server');
+        if (savedServer) {
+            TARGET_SERVER = savedServer.replace(/\/+$/, '');
+        }
+    } catch(e) {}
+
     function launchSync() {
         if (document.getElementById('pixn-sync-hud')) return;
         const s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?t=' + Date.now();
+        s.src = 'https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?server=' + encodeURIComponent(TARGET_SERVER) + '&t=' + Date.now();
         document.body.appendChild(s);
     }
 

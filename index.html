@@ -22337,7 +22337,7 @@
                 `https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?server=${encodeURIComponent(serverUrl)}` : 
                 `${serverUrl}/sync_engine.js?server=${encodeURIComponent(serverUrl)}`;
 
-            const bookmarkletCode = `javascript:(function(){var p='https://pixn-retro.dedyn.io/releases#autosync';if(window.location.hostname.indexOf('pixn-retro.dedyn.io')===-1){var w=window.open(p,'_blank');if(!w){window.location.href=p;}else if(typeof showToast==='function'){showToast('Opening Pixn Retro in new tab...',4000,'warning');}}else{window.__PIXN_SERVER__='${serverUrl}';var s=document.createElement('script');s.src='${scriptEngineUrl}&t='+Date.now();document.body.appendChild(s);}})()`;
+            const bookmarkletCode = `javascript:(function(){var srv='${serverUrl}';var p='https://pixn-retro.dedyn.io/releases#autosync&server='+encodeURIComponent(srv);if(window.location.hostname.indexOf('pixn-retro.dedyn.io')===-1){var w=window.open(p,'_blank');if(!w){window.location.href=p;}else if(typeof showToast==='function'){showToast('Opening Pixn Retro targeting '+srv+'...',4000,'warning');}}else{window.__PIXN_SERVER__=srv;var s=document.createElement('script');s.src='${scriptEngineUrl}&t='+Date.now();document.body.appendChild(s);}})()`;
 
             const bm = document.getElementById('dragBookmarklet');
             if (bm) {
@@ -22350,8 +22350,8 @@
                 bmSettings.title = "Click to open Pixn Retro & Sync. Drag to bookmarks bar for easy access.";
             }
 
-            // UserScript via .user.js endpoint so Tampermonkey / Violentmonkey detects and prompts installation automatically
-            const userScriptUrl = `${serverUrl}/pixn_sync.user.js?server=${encodeURIComponent(serverUrl)}`;
+            // UserScript via save.php?action=get_userscript endpoint so Tampermonkey / Violentmonkey detects and prompts installation automatically with pre-baked server
+            const userScriptUrl = `${serverUrl}/save.php?action=get_userscript&server=${encodeURIComponent(serverUrl)}`;
             const btnUserScript = document.getElementById('btnInstallUserScript');
             if (btnUserScript) {
                 btnUserScript.href = userScriptUrl;
@@ -22412,12 +22412,19 @@
 
                 // Default input field to current server URL if saved config host doesn't match active host
                 let currentNasUrl = cfg.nas_base_url || detectedNas;
-                try {
-                    const savedHost = new URL(currentNasUrl).hostname;
-                    if (savedHost && clientHost && savedHost !== clientHost && clientHost !== 'localhost' && clientHost !== '127.0.0.1') {
+                if (clientHost === 'localhost' || clientHost === '127.0.0.1') {
+                    // Running in Portable mode: default to the active local server unless explicitly configured as localhost
+                    if (!cfg.nas_base_url || (!cfg.nas_base_url.includes('127.0.0.1') && !cfg.nas_base_url.includes('localhost'))) {
                         currentNasUrl = clientDetected;
                     }
-                } catch(e) {}
+                } else {
+                    try {
+                        const savedHost = new URL(currentNasUrl).hostname;
+                        if (savedHost && clientHost && savedHost !== clientHost) {
+                            currentNasUrl = clientDetected;
+                        }
+                    } catch(e) {}
+                }
 
                 if (cfgNasUrlInput) {
                     cfgNasUrlInput.value = currentNasUrl;

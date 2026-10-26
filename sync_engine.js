@@ -7,15 +7,18 @@
     // 1. Authoritative detection from the currently executing script element:
     // The script tag src is the exact webserver that served sync_engine.js.
     let DISKSTATION_URL = '';
+    const isPublicCdn = (origin) => /jsdelivr\.net|github\.io|githubusercontent\.com|githack\.com/i.test(origin || '');
+
+    // 1. Authoritative detection from script URL parameter ?server=...
     try {
         const scripts = Array.from(document.querySelectorAll('script')).filter(s => s.src && s.src.includes('sync_engine.js'));
         const curScript = document.currentScript || (scripts.length ? scripts[scripts.length - 1] : null);
         if (curScript && curScript.src) {
             const u = new URL(curScript.src, (typeof window !== 'undefined' && window.location) ? window.location.href : undefined);
             const serverParam = u.searchParams.get('server');
-            if (serverParam) {
+            if (serverParam && !isPublicCdn(serverParam)) {
                 DISKSTATION_URL = serverParam.replace(/\/+$/, '');
-            } else if (u.origin && !u.origin.includes('pixn-retro.dedyn.io')) {
+            } else if (u.origin && !u.origin.includes('pixn-retro.dedyn.io') && !isPublicCdn(u.origin)) {
                 let path = u.pathname;
                 if (path.endsWith('.js') || path.endsWith('.html') || path.endsWith('.php')) {
                     path = path.substring(0, path.lastIndexOf('/'));
@@ -28,25 +31,43 @@
         console.warn('Script URL detection warning:', e);
     }
 
-    // 2. Fallback to global window.__PIXN_SERVER__ if script detection was not possible
-    if (!DISKSTATION_URL && typeof window !== 'undefined' && window.__PIXN_SERVER__) {
+    // 2. Check URL Hash parameter (e.g. #autosync&server=http://127.0.0.1:8989)
+    if (!DISKSTATION_URL && typeof window !== 'undefined' && window.location && window.location.hash) {
+        try {
+            const hp = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+            const sFromHash = hp.get('server');
+            if (sFromHash && !isPublicCdn(sFromHash)) {
+                DISKSTATION_URL = sFromHash.replace(/\/+$/, '');
+            }
+        } catch(e) {}
+    }
+
+    // 3. Fallback to global window.__PIXN_SERVER__ if explicitly set by Bookmarklet
+    if (!DISKSTATION_URL && typeof window !== 'undefined' && window.__PIXN_SERVER__ && !isPublicCdn(window.__PIXN_SERVER__)) {
         DISKSTATION_URL = window.__PIXN_SERVER__.replace(/\/+$/, '');
     }
 
-    // 3. Fallback to current host if not running inside pixn-retro.dedyn.io
-    if (!DISKSTATION_URL && typeof window !== 'undefined' && window.location && !window.location.origin.includes('pixn-retro.dedyn.io')) {
-        let path = window.location.pathname;
-        if (path.endsWith('.js') || path.endsWith('.html') || path.endsWith('.php')) {
-            path = path.substring(0, path.lastIndexOf('/'));
-        }
-        path = path.replace(/\/+$/, '');
-        DISKSTATION_URL = (window.location.origin + path).replace(/\/+$/, '');
+    // 4. Fallback to remembered server in browser localStorage on pixn-retro.dedyn.io
+    if (!DISKSTATION_URL && typeof window !== 'undefined' && window.localStorage) {
+        try {
+            const savedServer = window.localStorage.getItem('pixn_target_server');
+            if (savedServer && !isPublicCdn(savedServer)) {
+                DISKSTATION_URL = savedServer.replace(/\/+$/, '');
+            }
+        } catch(e) {}
     }
 
-    // 4. Default fallback (Local Portable default)
+    // 5. Default fallback for Local Portable Edition (127.0.0.1:8989)
     if (!DISKSTATION_URL) {
         DISKSTATION_URL = 'http://127.0.0.1:8989';
     }
+
+    // Persist target server into localStorage so future syncs on this browser remember it
+    try {
+        if (typeof window !== 'undefined' && window.localStorage && DISKSTATION_URL) {
+            window.localStorage.setItem('pixn_target_server', DISKSTATION_URL);
+        }
+    } catch(e) {}
 
     // Always update global window object to match the actively executing script's server
     if (typeof window !== 'undefined') {

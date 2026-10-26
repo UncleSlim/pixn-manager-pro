@@ -2880,14 +2880,17 @@ if ($action === 'get_userscript') {
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
     $scriptDir = dirname($_SERVER['SCRIPT_NAME'] ?? '/pixn/save.php');
     $detectedUrl = rtrim($proto . $host . $scriptDir, '/\\');
-    $nasUrl = !empty($cfg['nas_base_url']) ? rtrim($cfg['nas_base_url'], '/\\') : $detectedUrl;
+
+    $requestedServer = !empty($_GET['server']) ? trim($_GET['server']) : '';
+    $nasUrl = !empty($requestedServer) ? rtrim($requestedServer, '/\\') : (!empty($cfg['nas_base_url']) ? rtrim($cfg['nas_base_url'], '/\\') : $detectedUrl);
 
     header('Content-Type: application/javascript; charset=utf-8');
-    header('Content-Disposition: attachment; filename="pixn_sync.user.js"');
+    header('Content-Disposition: inline; filename="pixn_sync.user.js"');
 
     $scriptFile = $baseDir . '/pixn_sync.user.js';
     $template = file_exists($scriptFile) ? file_get_contents($scriptFile) : '';
-    $out = preg_replace('#https://(jimmy\.langtoft\.dk/pixn|cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main)#i', $nasUrl, $template);
+    $out = preg_replace('#let TARGET_SERVER = [\'"][^\'"]*[\'"];#i', "let TARGET_SERVER = '" . addslashes($nasUrl) . "';", $template);
+    $out = preg_replace('#https://(jimmy\.langtoft\.dk/pixn|cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main)#i', $nasUrl, $out);
     echo $out;
     exit;
 }
