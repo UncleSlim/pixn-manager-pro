@@ -150,32 +150,90 @@
         const existingScript = document.getElementById('pixn-sync-engine-script');
         if (existingScript) existingScript.remove();
 
+        window.__PIXN_SYNCING__ = true;
+
+        // Auto-recovery timeout: never allow button to remain permanently stuck on "Synchronizing"
+        clearTimeout(window.__PIXN_SYNC_TIMEOUT__);
+        window.__PIXN_SYNC_TIMEOUT__ = setTimeout(() => {
+            if (window.__PIXN_SYNCING__) {
+                window.__PIXN_SYNCING__ = false;
+                resetButton(true);
+            }
+        }, 30000);
+
         const s = document.createElement('script');
         s.id = 'pixn-sync-engine-script';
         s.src = `https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?server=${encodeURIComponent(targetServer)}&t=${Date.now()}`;
-        
-        s.onload = () => {
-            if (btn) {
-                btn.disabled = false;
-                btn.style.opacity = '1';
+
+        s.onerror = () => {
+            // Fallback to local server if CDN is unreachable
+            const fallbackScript = document.createElement('script');
+            fallbackScript.id = 'pixn-sync-engine-script-fallback';
+            fallbackScript.src = `${targetServer}/sync_engine.js?server=${encodeURIComponent(targetServer)}&t=${Date.now()}`;
+            fallbackScript.onerror = () => {
+                window.__PIXN_SYNCING__ = false;
+                resetButton(false, 'Script Blocked');
+            };
+            document.body.appendChild(fallbackScript);
+        };
+
+        document.body.appendChild(s);
+    }
+
+    // Reset button back to idle or completed state
+    function resetButton(success = true, message = '') {
+        const btn = document.getElementById('pixn-ext-sync-btn');
+        if (!btn) return;
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        if (success) {
+            btn.style.backgroundImage = 'linear-gradient(135deg, #059669 0%, #10b981 100%)';
+            btn.style.borderColor = 'rgba(16, 185, 129, 0.6)';
+            btn.innerHTML = `
+                <svg style="width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.5;" viewBox="0 0 24 24">
+                    <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>${message || 'Sync Complete!'}</span>
+            `;
+            setTimeout(() => {
+                btn.style.backgroundImage = 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)';
+                btn.style.borderColor = 'rgba(56, 189, 248, 0.4)';
                 btn.innerHTML = `
                     <svg style="width: 17px; height: 17px; fill: currentColor;" viewBox="0 0 24 24">
                         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
                     </svg>
                     <span>Sync to PIXN Pro</span>
                 `;
-            }
-        };
-
-        s.onerror = () => {
-            // Fallback to local server if CDN is unreachable
-            const fallbackScript = document.createElement('script');
-            fallbackScript.src = `${targetServer}/sync_engine.js?server=${encodeURIComponent(targetServer)}&t=${Date.now()}`;
-            document.body.appendChild(fallbackScript);
-        };
-
-        document.body.appendChild(s);
+            }, 4000);
+        } else {
+            btn.style.backgroundImage = 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)';
+            btn.innerHTML = `
+                <svg style="width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.5;" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span>${message || 'Sync Failed'}</span>
+            `;
+            setTimeout(() => {
+                btn.style.backgroundImage = 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)';
+                btn.innerHTML = `
+                    <svg style="width: 17px; height: 17px; fill: currentColor;" viewBox="0 0 24 24">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    <span>Sync to PIXN Pro</span>
+                `;
+            }, 4000);
+        }
     }
+
+    // Listen for completion events dispatched by sync_engine.js
+    window.addEventListener('pixn_sync_done', (e) => {
+        window.__PIXN_SYNCING__ = false;
+        clearTimeout(window.__PIXN_SYNC_TIMEOUT__);
+        const isOk = !e.detail || e.detail.status !== 'error';
+        resetButton(isOk, isOk ? 'Sync Complete!' : (e.detail && e.detail.error ? 'Sync Failed' : 'Sync Error'));
+    });
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', injectFloatingButton);

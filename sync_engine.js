@@ -73,6 +73,69 @@
     const VIEWER_URL = DISKSTATION_URL.endsWith('.html') ? DISKSTATION_URL : (DISKSTATION_URL.replace(/\/+$/, '') + '/index.html');
     const BATCH_SIZE = 6;
 
+    // Notify Extension Button of progress & completion
+    function updateExtButton(status, message) {
+        try {
+            const btn = document.getElementById('pixn-ext-sync-btn');
+            if (btn) {
+                if (status === 'syncing') {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.85';
+                    btn.innerHTML = `
+                        <svg style="width: 16px; height: 16px; animation: pixn-spin 1s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+                            <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+                        </svg>
+                        <span>${message || 'Synchronizing...'}</span>
+                    `;
+                } else if (status === 'completed') {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.backgroundImage = 'linear-gradient(135deg, #059669 0%, #10b981 100%)';
+                    btn.style.borderColor = 'rgba(16, 185, 129, 0.6)';
+                    btn.innerHTML = `
+                        <svg style="width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.5;" viewBox="0 0 24 24">
+                            <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>${message || 'Sync Complete!'}</span>
+                    `;
+                    setTimeout(() => {
+                        btn.style.backgroundImage = 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)';
+                        btn.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+                        btn.innerHTML = `
+                            <svg style="width: 17px; height: 17px; fill: currentColor;" viewBox="0 0 24 24">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                            <span>Sync to PIXN Pro</span>
+                        `;
+                    }, 4000);
+                } else if (status === 'error') {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.backgroundImage = 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)';
+                    btn.innerHTML = `
+                        <svg style="width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.5;" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <span>${message || 'Sync Failed'}</span>
+                    `;
+                    setTimeout(() => {
+                        btn.style.backgroundImage = 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)';
+                        btn.innerHTML = `
+                            <svg style="width: 17px; height: 17px; fill: currentColor;" viewBox="0 0 24 24">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                            <span>Sync to PIXN Pro</span>
+                        `;
+                    }, 4000);
+                }
+            }
+        } catch(e) {}
+    }
+    updateExtButton('syncing', 'Synchronizing...');
+
     // Check if HUD already exists
     let hud = document.getElementById('pixn-sync-hud');
     if (hud) {
@@ -566,6 +629,9 @@
             last_sync: new Date().toISOString()
         });
 
+        updateExtButton('completed', 'Sync Complete!');
+        try { window.dispatchEvent(new CustomEvent('pixn_sync_done', { detail: { status: 'completed' } })); } catch(e) {}
+
         if (cookieIsConfigured) {
             log("Done! Everything is synchronized and ready.");
             log("Closing HUD in 5 seconds...");
@@ -596,6 +662,8 @@
         document.getElementById('sync-dot').style.background = '#ef4444';
         document.getElementById('sync-dot').style.boxShadow = '0 0 10px #ef4444';
         log(`ERROR: ${err.message}`);
+        updateExtButton('error', 'Sync Failed');
+        try { window.dispatchEvent(new CustomEvent('pixn_sync_done', { detail: { status: 'error', error: err.message } })); } catch(e) {}
         await sendDiskStationStatus({
             status: 'idle',
             current_task: `Error: ${err.message}`
