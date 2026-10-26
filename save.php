@@ -2814,7 +2814,7 @@ if ($action === 'get_config') {
         }
     }
 
-    $configuredBatocera = !empty($cfg['batocera_unc_path']) ? $cfg['batocera_unc_path'] : '\\\\batocera-rgs\\share\\roms';
+    $configuredBatocera = !empty($cfg['batocera_unc_path']) ? $cfg['batocera_unc_path'] : '\\\\BATOCERA\\share\\roms';
 
     echo json_encode([
         'status' => 'ok',

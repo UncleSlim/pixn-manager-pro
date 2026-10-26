@@ -22417,21 +22417,50 @@
         const cfgPermissionBanner = document.getElementById('cfgPermissionBanner');
         const cfgPermissionText = document.getElementById('cfgPermissionText');
 
-        if (cfgNasUrlInput) {
-            cfgNasUrlInput.addEventListener('input', () => {
-                updateDynamicSyncTools(cfgNasUrlInput.value.trim() || getActiveWebServerUrl());
+        let settingsPollInterval = null;
+        let cfgBatoceraUncUserModified = false;
+        let cfgNasUrlUserModified = false;
+        let cfgCookieUserModified = false;
+
+        if (cfgBatoceraUncInput) {
+            cfgBatoceraUncInput.addEventListener('input', () => {
+                cfgBatoceraUncUserModified = true;
+            });
+            cfgBatoceraUncInput.addEventListener('change', () => {
+                cfgBatoceraUncUserModified = true;
             });
         }
 
-        let settingsPollInterval = null;
+        if (cfgNasUrlInput) {
+            cfgNasUrlInput.addEventListener('input', () => {
+                cfgNasUrlUserModified = true;
+                updateDynamicSyncTools(cfgNasUrlInput.value.trim() || getActiveWebServerUrl());
+            });
+            cfgNasUrlInput.addEventListener('change', () => {
+                cfgNasUrlUserModified = true;
+            });
+        }
+
+        if (cfgCookieInput) {
+            cfgCookieInput.addEventListener('input', () => {
+                cfgCookieUserModified = true;
+            });
+            cfgCookieInput.addEventListener('change', () => {
+                cfgCookieUserModified = true;
+            });
+        }
+
         function openSettingsModal() {
             if (settingsModal) {
-                loadServerConfig();
+                cfgBatoceraUncUserModified = false;
+                cfgNasUrlUserModified = false;
+                cfgCookieUserModified = false;
+                loadServerConfig(false, false);
                 settingsModal.classList.add('open');
                 if (!settingsPollInterval) {
                     settingsPollInterval = setInterval(() => {
                         if (settingsModal && settingsModal.classList.contains('open')) {
-                            loadServerConfig();
+                            loadServerConfig(false, true); // Background poll: only check cookie & statuses
                         } else {
                             clearInterval(settingsPollInterval);
                             settingsPollInterval = null;
@@ -22449,16 +22478,19 @@
                 clearInterval(settingsPollInterval);
                 settingsPollInterval = null;
             }
+            cfgBatoceraUncUserModified = false;
+            cfgNasUrlUserModified = false;
+            cfgCookieUserModified = false;
             sessionStorage.setItem('pixn_first_run_dismissed', '1');
         }
 
         window.addEventListener('focus', () => {
             if (settingsModal && settingsModal.classList.contains('open')) {
-                loadServerConfig();
+                loadServerConfig(false, true); // Background poll: do not wipe out inputs
             }
         });
 
-        async function loadServerConfig(isAutoInit = false) {
+        async function loadServerConfig(isAutoInit = false, isBackgroundPoll = false) {
             try {
                 const res = await fetch('save.php?action=get_config');
                 const clientDetected = getActiveWebServerUrl();
@@ -22487,7 +22519,8 @@
                     } catch(e) {}
                 }
 
-                if (cfgNasUrlInput) {
+                // Never overwrite NAS URL if user has typed/modified or is currently typing, or if background polling
+                if (cfgNasUrlInput && !isBackgroundPoll && document.activeElement !== cfgNasUrlInput && !cfgNasUrlUserModified) {
                     cfgNasUrlInput.value = currentNasUrl;
                 }
                 if (detectedNasBadge) {
@@ -22495,7 +22528,8 @@
                     detectedNasBadge.title = `Auto-detected server: ${detectedNas}`;
                 }
 
-                if (cfgBatoceraUncInput) {
+                // Never overwrite Batocera UNC Path if user has typed/modified or is currently typing, or if background polling
+                if (cfgBatoceraUncInput && !isBackgroundPoll && document.activeElement !== cfgBatoceraUncInput && !cfgBatoceraUncUserModified) {
                     const detectedBato = (data && data.detected_batocera_unc) ? data.detected_batocera_unc : '';
                     cfgBatoceraUncInput.value = cfg.batocera_unc_path || detectedBato || localStorage.getItem('batocera_roms_unc_path') || '\\\\BATOCERA\\share\\roms';
                 }
@@ -22503,8 +22537,10 @@
                 const oldCookie = cfgCookieInput ? cfgCookieInput.value.trim() : '';
                 const newCookie = (cfg.pixn_session_cookie || '').trim();
                 if (cfgCookieInput) {
-                    if (document.activeElement !== cfgCookieInput) {
-                        cfgCookieInput.value = newCookie;
+                    if (document.activeElement !== cfgCookieInput && !cfgCookieUserModified) {
+                        if (newCookie || !isBackgroundPoll) {
+                            cfgCookieInput.value = newCookie;
+                        }
                     }
                 }
                 if (!oldCookie && newCookie) {
@@ -22738,7 +22774,10 @@
 
         document.querySelectorAll('.cfg-preset-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                if (cfgBatoceraUncInput) cfgBatoceraUncInput.value = btn.dataset.path;
+                if (cfgBatoceraUncInput) {
+                    cfgBatoceraUncInput.value = btn.dataset.path;
+                    cfgBatoceraUncUserModified = true;
+                }
             });
         });
 
@@ -22845,6 +22884,9 @@
                     }
 
                     if (data && (data.status === 'ok' || data.status === 'success')) {
+                        cfgBatoceraUncUserModified = false;
+                        cfgNasUrlUserModified = false;
+                        cfgCookieUserModified = false;
                         showToast('Configuration saved successfully to config.json!', 3000, 'success');
                         sessionStorage.setItem('pixn_first_run_dismissed', '1');
                         if (cfgFirstRunBanner) cfgFirstRunBanner.style.display = 'none';
