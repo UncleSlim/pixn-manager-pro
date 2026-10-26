@@ -81,24 +81,28 @@ Browse over **329 gaming systems** (308 active console platforms with RetroBat p
 
 ## 📁 Repository Structure
 
+```text
 pixn/
-├── index.html                # Main frontend application (Single-Page App)
-├── save.php                  # NAS backend engine (API sync, Batocera SMB proxy, repair)
-├── sync_engine.js            # Client-side sync script for Pixn Retro bookmarklet
-├── pixn_sync.user.js         # Tampermonkey/Violentmonkey auto-sync user script
-├── systems.json              # Primary metadata index for all 329 gaming systems
-├── search_index.json         # Compact lookup index for instant global searching
-├── batocera_config.json      # Batocera network share configuration
-├── sync_status.json          # Synchronization status and update change log
-├── data/                     # Backend cache directory
-│   ├── cache_batocera/       # Cached Batocera scan results and other ROM indices
-│   ├── cache_gamelist/       # Cached system gamelist XML/JSON data
-│   ├── torrents/             # Cached system torrent files (.torrent)
-│   ├── pixn_auth.json        # Session authentication token for Pixn Retro API
-│   └── pixn_releases_meta.json # Release version and ETag tracking metadata
-├── games/                    # Detailed individual {system}.json metadata files
-├── games_txt/                # Plain-text {system}.txt export lists
-└── system-logos/             # Official system logos (SVG/PNG), qBittorrent icon, pixn.ico & pixn_256.png
+├── index.html                           # Main frontend application (Single-Page App)
+├── save.php                             # Backend API engine (API sync, Batocera proxy, repair)
+├── sync_engine.js                       # Client-side sync script for Pixn Retro bookmarklet
+├── pixn_sync.user.js                    # Tampermonkey/Violentmonkey auto-sync user script
+├── systems.json                         # Primary metadata index for all 329 gaming systems
+├── search_index.json                    # Compact lookup index for instant global searching
+├── config.sample.json                   # Configuration template for first-time setups
+├── PORTABLE_DISTRIBUTION_CLEANUP_GUIDE.md # Cleanup instructions for packaging portable releases
+├── README.md                            # Documentation and setup guide
+├── sync_status.json                     # Synchronization status and update change log
+├── data/                                # Backend cache and data directory
+│   ├── cache_batocera/                  # Cached Batocera scan results (auto-generated)
+│   ├── cache_gamelist/                  # Cached system gamelist XML/JSON (auto-generated)
+│   ├── torrents/                        # Cached system torrent files (.torrent)
+│   ├── pixn_releases_meta.json          # Release version and ETag tracking metadata
+│   └── pixn_media_timestamps.json       # Media update cache timestamps
+├── games/                               # Detailed individual {system}.json metadata files (329 systems)
+├── games_txt/                           # Plain-text {system}.txt export lists
+└── system-logos/                        # Official system logos (SVG/PNG) & application icons
+```
 
 ## 🔄 Browser Synchronization Tools (Bookmarklet & Tampermonkey)
 
@@ -200,6 +204,7 @@ If you use a UserScript manager such as **Tampermonkey** or **Violentmonkey**, t
 > * **Do not publish `config.json` or `data/pixn_auth.json`**: These files contain your private session cookie and local network machine names.
 > * A clean template [`config.sample.json`](config.sample.json) is provided for distribution.
 > * Add `config.json` and `data/pixn_auth.json` to your `.gitignore`.
+> * **Packaging a Portable Release?** See [`PORTABLE_DISTRIBUTION_CLEANUP_GUIDE.md`](PORTABLE_DISTRIBUTION_CLEANUP_GUIDE.md) for full instructions and a PowerShell cleanup script to wipe caches and personal tokens before distributing.
 
 ---
 
