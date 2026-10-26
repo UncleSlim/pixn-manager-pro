@@ -122,16 +122,14 @@ You have three convenient options (choose whichever you prefer):
 
 A dedicated Manifest V3 extension for **Google Chrome, Microsoft Edge, Brave, and Opera**. Provides native Discord session cookie auto-capture and a floating 1-click sync button on Pix'n Retro with zero external dependencies.
 
-#### How to Install in Chrome / Edge / Brave:
+#### How to Load in Chrome / Edge / Brave:
 
-1. In PIXN Manager Pro's **Server Setup & Configuration** modal, click **Download Extension (.zip)** (or use the included `extension/` folder).
-2. Unzip `pixn-chrome-extension.zip` if downloaded as a zip.
-3. Open your browser and navigate to:
+1. Open your browser and navigate to:
    * **Chrome / Brave:** `chrome://extensions`
    * **Edge:** `edge://extensions`
-4. In the top-right corner, toggle **Developer mode** to **ON**.
-5. Click **Load unpacked** (top-left) and select the `extension` folder.
-6. Visit [https://pixn-retro.dedyn.io/releases](https://pixn-retro.dedyn.io/releases) — a floating **⚡ Sync to PIXN Pro** button will automatically appear to synchronize catalogs and auto-import your session cookie!
+2. In the top-right corner, toggle **Developer mode** to **ON**.
+3. Click **Load unpacked** (top-left) and select the `extension` folder included in your PIXN directory.
+4. Visit [https://pixn-retro.dedyn.io/releases](https://pixn-retro.dedyn.io/releases) — a floating **⚡ Sync to PIXN Pro** button will automatically appear to synchronize catalogs and auto-import your session cookie!
 
 ---
 
