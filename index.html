@@ -8121,33 +8121,10 @@
                         </div>
                     </div>
 
-                    <!-- Right Column: Pixn Retro Cookie & Sync Tools -->
+                    <!-- Right Column: Browser Sync Extension & Pixn Retro Cookie -->
                     <div style="display: flex; flex-direction: column; gap: 0.55rem; height: 100%;">
-                        <!-- Section 3: Pixn Retro Authentication -->
-                        <div class="bookmarklet-card" style="padding: 0.5rem 0.75rem; min-height: 86px; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; gap: 0.25rem;">
-                            <div>
-                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.2rem;">
-                                    <span style="font-size: 0.78rem; font-weight: 600; color: #10b981; display: flex; align-items: center; gap: 0.35rem;">
-                                        <i class="fa-solid fa-key"></i> Pixn Retro Session Cookie
-                                    </span>
-                                    <span id="cfgCookieStatusBadge" style="font-size: 0.68rem; color: #94a3b8; background: rgba(255, 255, 255, 0.05); padding: 1px 5px; border-radius: 4px; border: 1px solid var(--border-subtle);">
-                                        Checking...
-                                    </span>
-                                </div>
-                                <span style="font-size: 0.68rem; color: var(--text-dim); display: block; margin-bottom: 0.25rem; line-height: 1.35;">
-                                    Required for downloading system <code>.torrent</code> packs directly from PIXN. Paste from <a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">Pix'n Retro</a> (<kbd style="background: rgba(255,255,255,0.08); padding: 1px 4px; border-radius: 3px; font-size: 0.64rem;">F12</kbd> &rarr; Application &rarr; Cookies &rarr; <code>session</code>), or use Tampermonkey below:
-                                </span>
-                            </div>
-                            <div style="position: relative; width: 100%;">
-                                <input type="password" id="cfgCookieInput" class="input-field" placeholder="Paste session=... or token value" style="width: 100%; height: 30px; font-family: var(--font-mono); font-size: 0.78rem; padding-left: 0.65rem; padding-right: 2.2rem;">
-                                <button type="button" id="btnToggleCookieVisibility" style="position: absolute; right: 0.45rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-dim); cursor: pointer; padding: 0.15rem;" title="Show / Hide token">
-                                    <i class="fa-solid fa-eye" id="iconCookieVisibility" style="font-size: 0.75rem;"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Section 4: Browser Sync Extension -->
-                        <div class="bookmarklet-card" style="padding: 0.5rem 0.75rem; flex: 1; min-height: 142px; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box;">
+                        <!-- Section 3: Browser Sync Extension -->
+                        <div class="bookmarklet-card" style="padding: 0.5rem 0.75rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; gap: 0.35rem;">
                             <div>
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
                                     <span style="font-size: 0.78rem; font-weight: 600; color: #38bdf8; display: flex; align-items: center; gap: 0.35rem;">
@@ -8158,30 +8135,40 @@
                                     </span>
                                 </div>
                                 <span style="font-size: 0.68rem; color: var(--text-dim); display: block; margin-bottom: 0.35rem; line-height: 1.35;">
-                                    Native extension included in the <code>extension/</code> folder. Auto-captures your Discord session cookie and syncs all release catalogs with 1-click on <a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">pixn-retro.dedyn.io</a>.
+                                    Included in the <code>extension/</code> folder. 1-click syncs release catalogs on <a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">pixn-retro.dedyn.io</a> and automatically imports your session key below.
                                 </span>
                             </div>
 
-                            <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.4); border-radius: 6px; padding: 0.55rem 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                                    <div>
-                                        <strong style="font-size: 0.76rem; color: #38bdf8; display: flex; align-items: center; gap: 0.3rem;">
-                                            <i class="fa-brands fa-chrome"></i> PIXN Sync Pro Extension
-                                        </strong>
-                                        <span style="font-size: 0.64rem; color: var(--text-dim); display: block; margin-top: 0.1rem;">
-                                            Located in <code>extension/</code>
-                                        </span>
-                                    </div>
-                                    <button type="button" id="btnExtensionHelp" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.22rem 0.65rem; text-align: center; background: #0284c7; border-color: #38bdf8;" title="View 2-step install guide">
-                                        <i class="fa-solid fa-puzzle-piece"></i> How to Load
-                                    </button>
+                            <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.35); border-radius: 6px; padding: 0.45rem 0.65rem; font-size: 0.68rem; color: #cbd5e1; line-height: 1.45;">
+                                <div style="font-weight: 600; color: #38bdf8; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem;">
+                                    <i class="fa-solid fa-puzzle-piece"></i> How to Load:
                                 </div>
-                                <div id="extGuideBox" style="display: none; background: rgba(0,0,0,0.35); border-radius: 5px; padding: 0.45rem 0.6rem; font-size: 0.66rem; color: #cbd5e1; line-height: 1.45; border: 1px dashed rgba(56, 189, 248, 0.4); margin-top: 0.25rem;">
-                                    <strong>How to Load in Chrome / Edge / Brave:</strong><br>
-                                    1. Open <code>chrome://extensions</code> (or <code>edge://extensions</code>) and toggle <strong>Developer mode</strong> ON (top-right).<br>
-                                    2. Click <strong>Load unpacked</strong> (top-left) and select the <code>extension</code> folder in your PIXN directory!<br>
-                                    3. Visit <a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8;">pixn-retro.dedyn.io/releases</a> and click the floating <strong>⚡ Sync to PIXN Pro</strong> button.
+                                <div style="margin-bottom: 0.15rem;"><strong>1.</strong> Open <code>chrome://extensions</code> (or <code>edge://extensions</code>) and toggle <strong>Developer mode</strong> ON (top-right).</div>
+                                <div style="margin-bottom: 0.15rem;"><strong>2.</strong> Click <strong>Load unpacked</strong> (top-left) and select the <code>extension</code> folder in your PIXN directory.</div>
+                                <div><strong>3.</strong> Go to <a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">pixn-retro.dedyn.io/releases</a> and click the floating <strong>⚡ Sync to PIXN Pro</strong> button.</div>
+                            </div>
+                        </div>
+
+                        <!-- Section 4: Pixn Retro Authentication -->
+                        <div class="bookmarklet-card" style="padding: 0.5rem 0.75rem; min-height: 94px; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; gap: 0.25rem;">
+                            <div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.2rem;">
+                                    <span style="font-size: 0.78rem; font-weight: 600; color: #10b981; display: flex; align-items: center; gap: 0.35rem;">
+                                        <i class="fa-solid fa-key"></i> Pixn Retro Session Cookie
+                                    </span>
+                                    <span id="cfgCookieStatusBadge" style="font-size: 0.68rem; color: #94a3b8; background: rgba(255, 255, 255, 0.05); padding: 1px 5px; border-radius: 4px; border: 1px solid var(--border-subtle);">
+                                        Checking...
+                                    </span>
                                 </div>
+                                <span style="font-size: 0.68rem; color: var(--text-dim); display: block; margin-bottom: 0.25rem; line-height: 1.35;">
+                                    Required for downloading <code>.torrent</code> packs and background updates. When using the <strong>Browser Sync Extension</strong>, it will automatically attempt to capture and import your session key on sync. Alternatively, paste it manually from Developer Tools (<kbd style="background: rgba(255,255,255,0.08); padding: 1px 4px; border-radius: 3px; font-size: 0.64rem;">F12</kbd> &rarr; Application &rarr; Cookies &rarr; <code>session</code>):
+                                </span>
+                            </div>
+                            <div style="position: relative; width: 100%;">
+                                <input type="password" id="cfgCookieInput" class="input-field" placeholder="Paste session=... or token value" style="width: 100%; height: 30px; font-family: var(--font-mono); font-size: 0.78rem; padding-left: 0.65rem; padding-right: 2.2rem;">
+                                <button type="button" id="btnToggleCookieVisibility" style="position: absolute; right: 0.45rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-dim); cursor: pointer; padding: 0.15rem;" title="Show / Hide token">
+                                    <i class="fa-solid fa-eye" id="iconCookieVisibility" style="font-size: 0.75rem;"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -22317,17 +22304,8 @@
             return (window.location.origin + path).replace(/\/+$/, '');
         }
 
-        // Browser Sync Tools Handler
-        function updateDynamicSyncTools() {
-            const btnExtensionHelp = document.getElementById('btnExtensionHelp');
-            const extGuideBox = document.getElementById('extGuideBox');
-            if (btnExtensionHelp && extGuideBox && !btnExtensionHelp.__guideHandler) {
-                btnExtensionHelp.__guideHandler = true;
-                btnExtensionHelp.addEventListener('click', () => {
-                    extGuideBox.style.display = extGuideBox.style.display === 'none' ? 'block' : 'none';
-                });
-            }
-        }
+        // Browser Sync Tools Handler (Guide is permanently visible)
+        function updateDynamicSyncTools() {}
         updateDynamicSyncTools();
 
         // Server Setup & Configuration Modal Handling
