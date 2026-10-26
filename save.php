@@ -2887,7 +2887,7 @@ if ($action === 'get_userscript') {
 
     $scriptFile = $baseDir . '/pixn_sync.user.js';
     $template = file_exists($scriptFile) ? file_get_contents($scriptFile) : '';
-    $out = preg_replace('#https://jimmy\.langtoft\.dk/pixn#i', $nasUrl, $template);
+    $out = preg_replace('#https://(jimmy\.langtoft\.dk/pixn|cdn\.jsdelivr\.net/gh/UncleSlim/pixn-manager-pro@main)#i', $nasUrl, $template);
     echo $out;
     exit;
 }

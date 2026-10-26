@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PIXN Retro -> PIXN Manager Pro 1-Click Sync
-// @namespace    https://jimmy.langtoft.dk/pixn/
-// @version      1.3
+// @namespace    https://github.com/UncleSlim/pixn-manager-pro
+// @version      1.4
 // @description  Adds a floating 1-click Sync button on Pixn Retro releases page to sync new systems and games directly to PIXN Manager Pro
 // @match        https://pixn-retro.dedyn.io/*
 // @run-at       document-idle
@@ -14,7 +14,7 @@
     function launchSync() {
         if (document.getElementById('pixn-sync-hud')) return;
         const s = document.createElement('script');
-        s.src = 'https://jimmy.langtoft.dk/pixn/sync_engine.js?t=' + Date.now();
+        s.src = 'https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?t=' + Date.now();
         document.body.appendChild(s);
     }
 

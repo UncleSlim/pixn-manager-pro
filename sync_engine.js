@@ -43,9 +43,9 @@
         DISKSTATION_URL = (window.location.origin + path).replace(/\/+$/, '');
     }
 
-    // 4. Default fallback
+    // 4. Default fallback (Local Portable default)
     if (!DISKSTATION_URL) {
-        DISKSTATION_URL = 'https://jimmy.langtoft.dk/pixn';
+        DISKSTATION_URL = 'http://127.0.0.1:8989';
     }
 
     // Always update global window object to match the actively executing script's server

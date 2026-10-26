@@ -22332,9 +22332,9 @@
 
             // For Bookmarklet on HTTPS pixn-retro.dedyn.io:
             // When running locally via HTTP, loading HTTP script from HTTPS causes Mixed Content blocking.
-            // Loading via the verified HTTPS CDN https://jimmy.langtoft.dk/pixn/sync_engine.js?server=... executes cleanly and targets serverUrl!
+            // Loading via the verified HTTPS CDN https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?server=... executes cleanly and targets serverUrl!
             const scriptEngineUrl = isPortable ? 
-                `https://jimmy.langtoft.dk/pixn/sync_engine.js?server=${encodeURIComponent(serverUrl)}` : 
+                `https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?server=${encodeURIComponent(serverUrl)}` : 
                 `${serverUrl}/sync_engine.js?server=${encodeURIComponent(serverUrl)}`;
 
             const bookmarkletCode = `javascript:(function(){var p='https://pixn-retro.dedyn.io/releases#autosync';if(window.location.hostname.indexOf('pixn-retro.dedyn.io')===-1){var w=window.open(p,'_blank');if(!w){window.location.href=p;}else if(typeof showToast==='function'){showToast('Opening Pixn Retro in new tab...',4000,'warning');}}else{window.__PIXN_SERVER__='${serverUrl}';var s=document.createElement('script');s.src='${scriptEngineUrl}&t='+Date.now();document.body.appendChild(s);}})()`;
