@@ -74,7 +74,7 @@ Browse over **329 gaming systems** (308 active console platforms with RetroBat p
 
 ### 🔄 Catalog Synchronization & Self-Healing
 
-* **1-Click Browser Sync:** Includes both a **Tampermonkey UserScript** (`pixn_sync.user.js`) and a drag-and-drop **Bookmarklet** to pull updates directly from [pixn-retro.dedyn.io](https://pixn-retro.dedyn.io/releases).
+* **1-Click Browser Sync:** Includes the native **PIXN Sync Pro** browser extension (`extension/`) to pull updates directly from [pixn-retro.dedyn.io](https://pixn-retro.dedyn.io/releases) and auto-capture session cookies.
 * **Self-Repair Engine:** Checks catalog integrity, rebuilds `search_index.json`, and restores missing `.txt` list files.
 
 ---
@@ -110,17 +110,15 @@ pixn/
 > **Can I use the Portable release files for NAS / Web Server hosting?**  
 > **Yes!** The Portable version contains the exact same web application files. If you copy the portable package to a NAS or web server (Method 2), you can safely **delete `PIXN.exe` and the `php/` folder**, as your NAS uses its own built-in web server (Synology Web Station, Apache, Nginx) and native PHP engine.
 
-## 🔄 Browser Synchronization Tools (Chrome Extension, Bookmarklet & Tampermonkey)
+## 🔄 Browser Synchronization (PIXN Sync Pro Extension)
 
-Because **Pix'n Retro** releases require Discord authentication and use secure `HttpOnly` session cookies that cannot be read by external scripts or long-lived servers, browser-side tools provide the most reliable, zero-maintenance synchronization workflow directly within your authenticated browser session.
-
-You have three convenient options (choose whichever you prefer):
+Because **Pix'n Retro** releases require Discord authentication and use secure `HttpOnly` session cookies that cannot be read by standard scripts, the included **PIXN Sync Pro** browser extension provides the seamless, zero-maintenance synchronization workflow directly inside your browser.
 
 ---
 
-### Option 1: PIXN Sync Pro Chrome Extension (Recommended & Native)
+### PIXN Sync Pro Browser Extension (Chrome, Edge, Brave, Opera)
 
-A dedicated Manifest V3 extension for **Google Chrome, Microsoft Edge, Brave, and Opera**. Provides native Discord session cookie auto-capture and a floating 1-click sync button on Pix'n Retro with zero external dependencies.
+A native Manifest V3 extension included directly in the `extension/` folder. It auto-captures your Discord session cookie and adds a floating 1-click sync button on Pix'n Retro.
 
 #### How to Load in Chrome / Edge / Brave:
 
@@ -133,46 +131,19 @@ A dedicated Manifest V3 extension for **Google Chrome, Microsoft Edge, Brave, an
 
 ---
 
-### Option 2: Manual PIXN Update Bookmarklet (Zero-Install)
-
-Drag-and-drop one-click bookmark for any modern browser (Chrome, Edge, Firefox, Safari).
-
-#### How to Install & Use the Bookmarklet
-
-1. Open PIXN Manager Pro (`http://127.0.0.1:8989/`).
-2. Click the **Sync indicator** in the top navigation bar (or open **Server Setup & Configuration**).
-3. Drag the **Manual PIXN Update** button directly onto your browser's Bookmarks bar.
-4. Log into [https://pixn-retro.dedyn.io/releases](https://pixn-retro.dedyn.io/releases) in your browser.
-5. Click the **Manual PIXN Update** bookmarklet. A floating HUD appears in the bottom-right corner showing live progress and logs.
-
----
-
-### Option 3: Tampermonkey / Violentmonkey UserScript (Alternative)
-
-If you use a UserScript manager such as **Tampermonkey** or **Violentmonkey**, the included `pixn_sync.user.js` script adds a persistent, floating sync button directly onto Pix'n Retro.
-
-#### How to Install & Use the UserScript
-
-1. Ensure the **Tampermonkey** or **Violentmonkey** extension is installed in your browser.
-2. In PIXN Manager Pro's **Server Setup & Configuration** modal, click **Install** (or click **Copy** and paste manually into a new script).
-3. Tampermonkey will prompt you to install the script. Click **Install**.
-4. Visit [https://pixn-retro.dedyn.io/releases](https://pixn-retro.dedyn.io/releases).
-5. Click the floating **⚡ Sync to PIXN Pro** button in the bottom-right corner.
-
----
-
 ### How the Sync Engine Works Behind the Scenes
 
 1. **Authenticated In-Browser Requests:** Runs inside your already authenticated Pix'n Retro browser session.
-2. **Delta Comparison:** Queries `/api/catalog/systems?catalog_type=releases` directly from Pix'n Retro and compares systems against your NAS catalog.
-3. **Smart Batch Download:** Only systems that have new versions, updated release dates, or missing local files are fetched (`/api/catalog/games/{sysId}?catalog_type=releases`).
-4. **Server Storage & Rebuild:** Scraped catalog data is posted to `save.php`, saving `{system}.json` and `{system}.txt` files to NAS, and automatically triggers an instant rebuild of `search_index.json`.
-5. **Direct Viewer Access:** Once complete, the HUD shows a summary of new/updated systems with an **Open PIXN Manager Pro** button linking directly to your NAS `index.html`.
+2. **Automatic Cookie Capture:** Captures the `HttpOnly` session cookie via the browser extension and saves it automatically to your server's `config.json`.
+3. **Delta Comparison:** Queries `/api/catalog/systems?catalog_type=releases` directly from Pix'n Retro and compares systems against your catalog.
+4. **Smart Batch Download:** Only systems that have new versions, updated release dates, or missing local files are fetched (`/api/catalog/games/{sysId}?catalog_type=releases`).
+5. **Server Storage & Rebuild:** Scraped catalog data is posted to `save.php`, saving `{system}.json` and `{system}.txt` files, and automatically triggers an instant rebuild of `search_index.json`.
+6. **Direct Viewer Access:** Once complete, the HUD shows a summary of new/updated systems with an **Open PIXN Manager Pro** button linking directly to your PIXN instance.
 
-### Server Auto-Updater vs. Browser Sync Tools
+### Server Auto-Updater vs. Browser Sync Extension
 
-* **Browser Sync Tools (Bookmarklet / Tampermonkey) [Recommended & Automatic]:** Zero complex setup! The very first time you click "Sync to PIXN" on Pix'n Retro, the script automatically captures your active login session and saves your session cookie directly to your server's `config.json`. You never need to use browser developer tools or manually copy cookies.
-* **Server Background Auto-Updater:** Uses the automatically saved cookie to check for newly published rom sets every few minutes and enables direct `.torrent` downloads for qBittorrent. Whenever your Discord session naturally expires, simply clicking the Bookmarklet or Tampermonkey sync refreshes your server cookie seamlessly.
+* **Browser Sync Extension [Recommended & Automatic]:** Zero complex setup! The very first time you click "Sync to PIXN" on Pix'n Retro, the extension automatically captures your active login session and saves your session cookie directly to your server's `config.json`. You never need to use browser developer tools or manually copy cookies.
+* **Server Background Auto-Updater:** Uses the automatically saved cookie to check for newly published rom sets every few minutes and enables direct `.torrent` downloads for qBittorrent. Whenever your Discord session naturally expires, simply clicking the Sync button on Pix'n Retro refreshes your server cookie seamlessly.
 * **Manual Paste (Fallback only):** If you wish to pre-configure the cookie before running your first browser sync, you can paste it manually under **Setup** &rarr; **Pix'n Retro Session Cookie**.
 
 ---
@@ -241,7 +212,7 @@ For users who want to host PIXN Manager Pro 24/7 on a home server or NAS accessi
    * **Web Server Address:** Auto-detected from your browser address bar.
    * **Batocera ROMs UNC Path:** Enter `\\BATOCERA\share\roms` (or your local mount path).
    * Click **Save & Apply** to generate your `config.json`.
-5. **Install Sync Tools:** Click the **Sync indicator** to install the **Bookmarklet** or download the **Tampermonkey UserScript** (`pixn_sync.user.js`) to sync releases from Pix'n Retro with 1-click.
+5. **Load Sync Extension:** Load the `extension/` folder in Chrome/Edge Developer Mode to sync releases from Pix'n Retro with 1-click and auto-capture your session cookie.
 
 ---
 

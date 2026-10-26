@@ -8146,84 +8146,41 @@
                             </div>
                         </div>
 
-                        <!-- Section 4: Browser Sync Tools (Pre-configured for this Server) -->
+                        <!-- Section 4: Browser Sync Extension -->
                         <div class="bookmarklet-card" style="padding: 0.5rem 0.75rem; flex: 1; min-height: 142px; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box;">
                             <div>
-                                <div style="display: justify-content: space-between; display: flex; align-items: center; margin-bottom: 0.2rem;">
-                                    <span style="font-size: 0.78rem; font-weight: 600; color: #f59e0b; display: flex; align-items: center; gap: 0.35rem;">
-                                        <i class="fa-solid fa-cloud-arrow-down"></i> Browser Sync Tools
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
+                                    <span style="font-size: 0.78rem; font-weight: 600; color: #38bdf8; display: flex; align-items: center; gap: 0.35rem;">
+                                        <i class="fa-solid fa-arrows-rotate"></i> Browser Sync Extension
                                     </span>
-                                    <span style="font-size: 0.68rem; color: var(--text-dim);"><a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">pixn-retro.dedyn.io</a></span>
+                                    <span style="font-size: 0.68rem; color: #38bdf8; background: rgba(56, 189, 248, 0.12); padding: 1px 5px; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.3);">
+                                        <i class="fa-brands fa-chrome"></i> Chrome / Edge / Brave
+                                    </span>
                                 </div>
-                                <span style="font-size: 0.7rem; color: var(--text-dim); display: block; margin-bottom: 0.35rem;">
-                                    Choose your preferred sync tool (you only need one):
+                                <span style="font-size: 0.68rem; color: var(--text-dim); display: block; margin-bottom: 0.35rem; line-height: 1.35;">
+                                    Native extension included in the <code>extension/</code> folder. Auto-captures your Discord session cookie and syncs all release catalogs with 1-click on <a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">pixn-retro.dedyn.io</a>.
                                 </span>
                             </div>
 
-                            <!-- Option 1: Chrome Extension (Recommended) -->
-                            <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.4); border-radius: 6px; padding: 0.45rem 0.6rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.3rem; margin-bottom: 0.45rem;">
+                            <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.4); border-radius: 6px; padding: 0.55rem 0.7rem; display: flex; flex-direction: column; gap: 0.35rem;">
                                 <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                                    <div style="flex: 1; min-width: 220px;">
-                                        <div style="display: flex; align-items: center; gap: 0.35rem;">
-                                            <strong style="font-size: 0.74rem; color: #38bdf8; display: flex; align-items: center; gap: 0.25rem;">
-                                                <i class="fa-brands fa-chrome"></i> Option 1: Chrome Extension
-                                            </strong>
-                                            <span style="font-size: 0.58rem; background: #0284c7; color: #fff; padding: 1px 5px; border-radius: 4px; font-weight: 600; text-transform: uppercase;">Recommended</span>
-                                        </div>
-                                        <span style="font-size: 0.65rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
-                                            Included in the <code>extension/</code> folder. Auto-captures Discord session cookie with 1-click sync on Pix'n Retro.
+                                    <div>
+                                        <strong style="font-size: 0.76rem; color: #38bdf8; display: flex; align-items: center; gap: 0.3rem;">
+                                            <i class="fa-brands fa-chrome"></i> PIXN Sync Pro Extension
+                                        </strong>
+                                        <span style="font-size: 0.64rem; color: var(--text-dim); display: block; margin-top: 0.1rem;">
+                                            Located in <code>extension/</code>
                                         </span>
                                     </div>
-                                    <div style="display: flex; gap: 4px;">
-                                        <button type="button" id="btnExtensionHelp" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.22rem 0.65rem; text-align: center; background: #0284c7; border-color: #38bdf8;" title="View 2-step install guide">
-                                            <i class="fa-solid fa-puzzle-piece"></i> How to Load
-                                        </button>
-                                    </div>
+                                    <button type="button" id="btnExtensionHelp" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.22rem 0.65rem; text-align: center; background: #0284c7; border-color: #38bdf8;" title="View 2-step install guide">
+                                        <i class="fa-solid fa-puzzle-piece"></i> How to Load
+                                    </button>
                                 </div>
-                                <div id="extGuideBox" style="display: none; background: rgba(0,0,0,0.35); border-radius: 5px; padding: 0.4rem 0.6rem; font-size: 0.66rem; color: #cbd5e1; line-height: 1.4; border: 1px dashed rgba(56, 189, 248, 0.4); margin-top: 0.25rem;">
+                                <div id="extGuideBox" style="display: none; background: rgba(0,0,0,0.35); border-radius: 5px; padding: 0.45rem 0.6rem; font-size: 0.66rem; color: #cbd5e1; line-height: 1.45; border: 1px dashed rgba(56, 189, 248, 0.4); margin-top: 0.25rem;">
                                     <strong>How to Load in Chrome / Edge / Brave:</strong><br>
                                     1. Open <code>chrome://extensions</code> (or <code>edge://extensions</code>) and toggle <strong>Developer mode</strong> ON (top-right).<br>
-                                    2. Click <strong>Load unpacked</strong> (top-left) and select the <code>extension</code> folder in your PIXN directory!
-                                </div>
-                            </div>
-
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;">
-                                <!-- Option 2: Bookmarklet (No Extension Needed) -->
-                                <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 6px; padding: 0.45rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.4rem;">
-                                    <div>
-                                        <strong style="font-size: 0.74rem; color: #38bdf8; display: flex; align-items: center; gap: 0.25rem;">
-                                            <i class="fa-solid fa-bookmark"></i> Option 2: Bookmarklet
-                                        </strong>
-                                        <span style="font-size: 0.67rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
-                                            No extension required. Drag this button to your browser bookmarks bar: visit https://pixn-retro.dedyn.io/releases and click the bookmark to sync.
-                                        </span>
-                                    </div>
-                                    <a id="dragBookmarkletSettings" href="#" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.22rem 0.5rem; text-align: center; cursor: grab; background: #0284c7; border-color: #38bdf8; color: #ffffff;" title="Drag to bookmarks bar for easy access, or click to open Pixn Retro.">
-                                        <i class="fa-solid fa-bookmark"></i> PIXN Retro Sync
-                                    </a>
-                                </div>
-
-                                <!-- Option 3: Userscript (Tampermonkey) -->
-                                <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 6px; padding: 0.45rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.4rem;">
-                                    <div>
-                                        <strong style="font-size: 0.74rem; color: #10b981; display: flex; align-items: center; gap: 0.25rem;">
-                                            <i class="fa-solid fa-wand-magic-sparkles"></i> Option 3: Tampermonkey
-                                        </strong>
-                                        <span style="font-size: 0.67rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
-                                            Browser script manager alternative. Adds a floating sync button on Pix'n Retro with 1-click sync.
-                                        </span>
-                                        <span style="font-size: 0.61rem; color: #94a3b8; display: block; margin-top: 0.25rem; line-height: 1.25;">
-                                            If raw code opens, enable "Developer mode" in chrome://extensions or use Copy, and add the script manually to your tampermonkey plugin.
-                                        </span>
-                                    </div>
-                                    <div style="display: flex; gap: 4px;">
-                                        <a id="btnInstallUserScriptSettings" href="https://raw.githubusercontent.com/UncleSlim/pixn-manager-pro/main/pixn_sync.user.js" target="_blank" class="btn btn-primary" style="flex: 1; font-size: 0.72rem; padding: 0.22rem 0.4rem; text-align: center; background: #059669; border-color: #10b981;" title="Install Tampermonkey / Violentmonkey Userscript">
-                                            <i class="fa-solid fa-download"></i> Install
-                                        </a>
-                                        <button type="button" id="btnCopyUserScriptSettings" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.22rem 0.45rem; text-align: center; border-color: #10b981; color: #10b981;" title="Copy Userscript code to paste manually in Tampermonkey">
-                                            <i class="fa-solid fa-copy"></i> Copy
-                                        </button>
-                                    </div>
+                                    2. Click <strong>Load unpacked</strong> (top-left) and select the <code>extension</code> folder in your PIXN directory!<br>
+                                    3. Visit <a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8;">pixn-retro.dedyn.io/releases</a> and click the floating <strong>⚡ Sync to PIXN Pro</strong> button.
                                 </div>
                             </div>
                         </div>
@@ -22360,69 +22317,8 @@
             return (window.location.origin + path).replace(/\/+$/, '');
         }
 
-        // Dynamic Bookmarklet & Sync Tools Generator
-        function updateDynamicSyncTools(customNasUrl = '') {
-            const clientDetected = getActiveWebServerUrl();
-            const serverUrl = (customNasUrl ? customNasUrl.trim() : clientDetected).replace(/\/+$/, '');
-            const isPortable = serverUrl.includes('127.0.0.1') || serverUrl.includes('localhost');
-
-            // For Bookmarklet on HTTPS pixn-retro.dedyn.io:
-            // When running locally via HTTP, loading HTTP script from HTTPS causes Mixed Content blocking.
-            // Loading via the verified HTTPS CDN https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?server=... executes cleanly and targets serverUrl!
-            const scriptEngineUrl = isPortable ? 
-                `https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?server=${encodeURIComponent(serverUrl)}` : 
-                `${serverUrl}/sync_engine.js?server=${encodeURIComponent(serverUrl)}`;
-
-            const bookmarkletCode = `javascript:(function(){var srv='${serverUrl}';var p='https://pixn-retro.dedyn.io/releases';if(window.location.hostname.indexOf('pixn-retro.dedyn.io')===-1){var w=window.open(p,'_blank');if(!w){window.location.href=p;}}else{window.__PIXN_SERVER__=srv;var s=document.createElement('script');s.src='${scriptEngineUrl}&t='+Date.now();document.body.appendChild(s);}})()`;
-
-            const bm = document.getElementById('dragBookmarklet');
-            if (bm) {
-                bm.href = bookmarkletCode;
-                bm.title = "Drag to bookmarks bar for easy access, or click to open Pixn Retro.";
-            }
-            const bmSettings = document.getElementById('dragBookmarkletSettings');
-            if (bmSettings) {
-                bmSettings.href = bookmarkletCode;
-                bmSettings.title = "Drag to bookmarks bar for easy access, or click to open Pixn Retro.";
-            }
-
-            // Use GitHub raw URL so Tampermonkey / Violentmonkey detects and prompts installation directly (Chrome blocks extension interception on 127.0.0.1)
-            const githubUserScriptUrl = 'https://raw.githubusercontent.com/UncleSlim/pixn-manager-pro/main/pixn_sync.user.js';
-            const localUserScriptUrl = `${serverUrl}/save.php?action=get_userscript&server=${encodeURIComponent(serverUrl)}&file=pixn_sync.user.js`;
-            const btnUserScript = document.getElementById('btnInstallUserScript');
-            if (btnUserScript) {
-                btnUserScript.href = githubUserScriptUrl;
-                btnUserScript.title = 'Install Tampermonkey script directly from GitHub';
-            }
-            const btnUserScriptSettings = document.getElementById('btnInstallUserScriptSettings');
-            if (btnUserScriptSettings) {
-                btnUserScriptSettings.href = githubUserScriptUrl;
-                btnUserScriptSettings.title = 'Install Tampermonkey script directly from GitHub';
-            }
-            const btnCopyUserScriptSettings = document.getElementById('btnCopyUserScriptSettings');
-            if (btnCopyUserScriptSettings && !btnCopyUserScriptSettings.__copyHandler) {
-                btnCopyUserScriptSettings.__copyHandler = true;
-                btnCopyUserScriptSettings.addEventListener('click', async () => {
-                    btnCopyUserScriptSettings.disabled = true;
-                    btnCopyUserScriptSettings.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-                    try {
-                        const r = await fetch(localUserScriptUrl);
-                        const scriptCode = await r.text();
-                        await navigator.clipboard.writeText(scriptCode);
-                        showToast('✅ Userscript copied! In Tampermonkey, click + (Add a new script) and paste.', 5000, 'success');
-                        btnCopyUserScriptSettings.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
-                        setTimeout(() => {
-                            btnCopyUserScriptSettings.disabled = false;
-                            btnCopyUserScriptSettings.innerHTML = '<i class="fa-solid fa-copy"></i> Copy';
-                        }, 2500);
-                    } catch (err) {
-                        showToast('Failed to copy: ' + err.message, 4000, 'error');
-                        btnCopyUserScriptSettings.disabled = false;
-                        btnCopyUserScriptSettings.innerHTML = '<i class="fa-solid fa-copy"></i> Copy';
-                    }
-                });
-            }
-
+        // Browser Sync Tools Handler
+        function updateDynamicSyncTools() {
             const btnExtensionHelp = document.getElementById('btnExtensionHelp');
             const extGuideBox = document.getElementById('extGuideBox');
             if (btnExtensionHelp && extGuideBox && !btnExtensionHelp.__guideHandler) {
@@ -22558,7 +22454,7 @@
                         cfgCookieStatusBadge.style.backgroundColor = 'rgba(245, 158, 11, 0.12)';
                         cfgCookieStatusBadge.style.borderColor = 'rgba(245, 158, 11, 0.3)';
                         cfgCookieStatusBadge.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Not Configured';
-                        cfgCookieStatusBadge.title = 'Paste session cookie from DevTools or use Tampermonkey userscript';
+                        cfgCookieStatusBadge.title = 'Paste session cookie from DevTools or use PIXN browser extension';
                     }
                 }
 
@@ -22583,8 +22479,7 @@
                     if (cfgFirstRunBanner) cfgFirstRunBanner.style.display = 'none';
                 }
 
-                // The bookmarklet ALWAYS represents the active webserver the user is browsing from
-                updateDynamicSyncTools(clientDetected);
+                updateDynamicSyncTools();
             } catch (e) {
                 console.warn('Could not fetch server configuration:', e);
                 // Fallback auto-detection from window.location
@@ -22592,7 +22487,7 @@
                 if (cfgNasUrlInput && !cfgNasUrlInput.value) {
                     cfgNasUrlInput.value = clientDetected;
                 }
-                updateDynamicSyncTools(clientDetected);
+                updateDynamicSyncTools();
             }
         }
 
@@ -23083,7 +22978,7 @@
                 const hasRestored = data && data.sync_result && (data.sync_result.restored_count > 0 || (data.sync_result.synced_systems && data.sync_result.synced_systems.length > 0));
                 const isFreshlySynced = hasNewSys || hasExplicitUpdated || hasRestored;
 
-                const statusLabel = isAuthed ? 'Online &amp; Active' : (isFreshlySynced ? 'Online (Synced via Bookmarklet)' : 'Online (Server Auth Required)');
+                const statusLabel = isAuthed ? 'Online &amp; Active' : (isFreshlySynced ? 'Online (Synced via Extension)' : 'Online (Server Auth Required)');
                 const statusColor = isAuthed || isFreshlySynced ? '#10b981' : '#f59e0b';
                 const statusIcon = isAuthed || isFreshlySynced ? 'fa-circle-check' : 'fa-triangle-exclamation';
 
@@ -23107,7 +23002,7 @@
                             <div style="flex:1;">
                                 <strong style="color:#fef08a;">Unattended Server Updater Note:</strong>
                                 <div style="margin-top:2px; color:#e2e8f0; font-size:0.77rem; line-height:1.4;">
-                                    Because Pix'n Retro cookies are protected (<code>HttpOnly</code>), browser sync runs directly via your <strong>Manuel PIXN Update</strong> bookmarklet. To also enable background auto-checks on your server, paste your session cookie in <strong>Setup</strong>.
+                                    Browser sync and cookie capture run directly via the <strong>PIXN Sync Pro</strong> browser extension. To also enable background auto-checks on your server, paste your session cookie in <strong>Setup</strong>.
                                 </div>
                             </div>
                         </div>
