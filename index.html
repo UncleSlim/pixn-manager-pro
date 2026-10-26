@@ -22343,11 +22343,27 @@
             if (bm) {
                 bm.href = bookmarkletCode;
                 bm.title = "Click to open Pixn Retro & Sync. Drag to bookmarks bar for easy access.";
+                if (!bm.__pixnClickHandler) {
+                    bm.__pixnClickHandler = true;
+                    bm.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const srv = (cfgNasUrlInput && cfgNasUrlInput.value.trim() ? cfgNasUrlInput.value.trim() : getActiveWebServerUrl()).replace(/\/+$/, '');
+                        window.open('https://pixn-retro.dedyn.io/releases#autosync&server=' + encodeURIComponent(srv), '_blank');
+                    });
+                }
             }
             const bmSettings = document.getElementById('dragBookmarkletSettings');
             if (bmSettings) {
                 bmSettings.href = bookmarkletCode;
                 bmSettings.title = "Click to open Pixn Retro & Sync. Drag to bookmarks bar for easy access.";
+                if (!bmSettings.__pixnClickHandler) {
+                    bmSettings.__pixnClickHandler = true;
+                    bmSettings.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const srv = (cfgNasUrlInput && cfgNasUrlInput.value.trim() ? cfgNasUrlInput.value.trim() : getActiveWebServerUrl()).replace(/\/+$/, '');
+                        window.open('https://pixn-retro.dedyn.io/releases#autosync&server=' + encodeURIComponent(srv), '_blank');
+                    });
+                }
             }
 
             // UserScript via save.php?action=get_userscript endpoint so Tampermonkey / Violentmonkey detects and prompts installation automatically with pre-baked server

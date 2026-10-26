@@ -7,24 +7,17 @@
     // 1. Authoritative detection from the currently executing script element:
     // The script tag src is the exact webserver that served sync_engine.js.
     let DISKSTATION_URL = '';
-    const isPublicCdn = (origin) => /jsdelivr\.net|github\.io|githubusercontent\.com|githack\.com/i.test(origin || '');
+    const isIgnoredHost = (host) => /jsdelivr\.net|github\.io|githubusercontent\.com|githack\.com|jimmy\.langtoft\.dk/i.test(host || '');
 
-    // 1. Authoritative detection from script URL parameter ?server=...
+    // 1. Authoritative detection from explicit script URL parameter ?server=...
     try {
         const scripts = Array.from(document.querySelectorAll('script')).filter(s => s.src && s.src.includes('sync_engine.js'));
         const curScript = document.currentScript || (scripts.length ? scripts[scripts.length - 1] : null);
         if (curScript && curScript.src) {
             const u = new URL(curScript.src, (typeof window !== 'undefined' && window.location) ? window.location.href : undefined);
             const serverParam = u.searchParams.get('server');
-            if (serverParam && !isPublicCdn(serverParam)) {
+            if (serverParam && !isIgnoredHost(serverParam)) {
                 DISKSTATION_URL = serverParam.replace(/\/+$/, '');
-            } else if (u.origin && !u.origin.includes('pixn-retro.dedyn.io') && !isPublicCdn(u.origin)) {
-                let path = u.pathname;
-                if (path.endsWith('.js') || path.endsWith('.html') || path.endsWith('.php')) {
-                    path = path.substring(0, path.lastIndexOf('/'));
-                }
-                path = path.replace(/\/+$/, '');
-                DISKSTATION_URL = (u.origin + path).replace(/\/+$/, '');
             }
         }
     } catch (e) {
@@ -36,14 +29,14 @@
         try {
             const hp = new URLSearchParams(window.location.hash.replace(/^#/, ''));
             const sFromHash = hp.get('server');
-            if (sFromHash && !isPublicCdn(sFromHash)) {
+            if (sFromHash && !isIgnoredHost(sFromHash)) {
                 DISKSTATION_URL = sFromHash.replace(/\/+$/, '');
             }
         } catch(e) {}
     }
 
     // 3. Fallback to global window.__PIXN_SERVER__ if explicitly set by Bookmarklet
-    if (!DISKSTATION_URL && typeof window !== 'undefined' && window.__PIXN_SERVER__ && !isPublicCdn(window.__PIXN_SERVER__)) {
+    if (!DISKSTATION_URL && typeof window !== 'undefined' && window.__PIXN_SERVER__ && !isIgnoredHost(window.__PIXN_SERVER__)) {
         DISKSTATION_URL = window.__PIXN_SERVER__.replace(/\/+$/, '');
     }
 
@@ -51,20 +44,20 @@
     if (!DISKSTATION_URL && typeof window !== 'undefined' && window.localStorage) {
         try {
             const savedServer = window.localStorage.getItem('pixn_target_server');
-            if (savedServer && !isPublicCdn(savedServer)) {
+            if (savedServer && !isIgnoredHost(savedServer)) {
                 DISKSTATION_URL = savedServer.replace(/\/+$/, '');
             }
         } catch(e) {}
     }
 
-    // 5. Default fallback for Local Portable Edition (127.0.0.1:8989)
+    // 5. Default fallback: Local Portable Edition (http://127.0.0.1:8989)
     if (!DISKSTATION_URL) {
         DISKSTATION_URL = 'http://127.0.0.1:8989';
     }
 
     // Persist target server into localStorage so future syncs on this browser remember it
     try {
-        if (typeof window !== 'undefined' && window.localStorage && DISKSTATION_URL) {
+        if (typeof window !== 'undefined' && window.localStorage && DISKSTATION_URL && !isIgnoredHost(DISKSTATION_URL)) {
             window.localStorage.setItem('pixn_target_server', DISKSTATION_URL);
         }
     } catch(e) {}
@@ -114,8 +107,11 @@
             </div>
             <button id="sync-close-btn" style="background: transparent; border: none; color: #94a3b8; font-size: 18px; cursor: pointer; line-height: 1;">&times;</button>
         </div>
-        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 10px; display: flex; align-items: center; gap: 5px;">
-            <span>Target:</span> <code style="color: #38bdf8; background: rgba(56, 189, 248, 0.1); padding: 1px 6px; border-radius: 4px; font-family: monospace;">${DISKSTATION_URL}</code>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 5px;">
+                <span>Target:</span> <code id="sync-target-display" style="color: #38bdf8; background: rgba(56, 189, 248, 0.1); padding: 1px 6px; border-radius: 4px; font-family: monospace;">${DISKSTATION_URL}</code>
+            </div>
+            <button id="sync-change-target-btn" style="background: transparent; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; color: #38bdf8; font-size: 10px; padding: 1px 6px; cursor: pointer;" title="Change target server address">Change</button>
         </div>
         <div id="sync-status-msg" style="font-size: 13px; color: #cbd5e1; margin-bottom: 10px;">Connecting to Pixn Retro API...</div>
         
@@ -159,6 +155,19 @@
     let isCancelled = false;
     cancelBtn.onclick = () => { isCancelled = true; hud.remove(); };
     closeBtn.onclick = () => { hud.remove(); };
+
+    const changeTargetBtn = document.getElementById('sync-change-target-btn');
+    if (changeTargetBtn) {
+        changeTargetBtn.onclick = () => {
+            const newServer = prompt('Enter target PIXN server URL (e.g. http://127.0.0.1:8989):', DISKSTATION_URL);
+            if (newServer && newServer.trim()) {
+                const cleaned = newServer.trim().replace(/\/+$/, '');
+                localStorage.setItem('pixn_target_server', cleaned);
+                window.__PIXN_SERVER__ = cleaned;
+                location.reload();
+            }
+        };
+    }
 
     function log(msg) {
         const d = document.createElement('div');

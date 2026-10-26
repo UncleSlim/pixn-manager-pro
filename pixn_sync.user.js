@@ -26,10 +26,10 @@
         } catch(e) {}
     }
 
-    // Check localStorage fallback
+    // Check localStorage fallback (filtering out legacy script host domain)
     try {
         const savedServer = localStorage.getItem('pixn_target_server');
-        if (savedServer) {
+        if (savedServer && !/jimmy\.langtoft\.dk|jsdelivr\.net/i.test(savedServer)) {
             TARGET_SERVER = savedServer.replace(/\/+$/, '');
         }
     } catch(e) {}
