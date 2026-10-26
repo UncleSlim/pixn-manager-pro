@@ -2917,6 +2917,21 @@ function resolveLanHostname($host) {
         }
     }
 
+    // 4. Candidate variants for generic "batocera" hostnames
+    if (strtolower($host) === 'batocera') {
+        $commonVariants = ['batocera-rgs', 'batocera-pc', 'batocera-box'];
+        foreach ($commonVariants as $variant) {
+            $vIp = @gethostbyname($variant);
+            if ($vIp && $vIp !== $variant && filter_var($vIp, FILTER_VALIDATE_IP)) {
+                return $vIp;
+            }
+            $vIpLocal = @gethostbyname($variant . '.local');
+            if ($vIpLocal && $vIpLocal !== ($variant . '.local') && filter_var($vIpLocal, FILTER_VALIDATE_IP)) {
+                return $vIpLocal;
+            }
+        }
+    }
+
     return null;
 }
 
@@ -3007,7 +3022,7 @@ function getBatoceraFoldersList($baseDir, $uncPath, $forceRefresh = false) {
         if (!is_dir($cacheDir)) {
             @mkdir($cacheDir, 0777, true);
         }
-        $cacheFile = $cacheDir . '/_folders_list.json';
+        $cacheFile = $cacheDir . '/_folders_list_' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $targetHost ?: $host) . '.json';
         $cacheTTL = 600; // 10 minutes cache TTL
 
         if (!$forceRefresh && file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTTL)) {
