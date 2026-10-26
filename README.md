@@ -173,25 +173,53 @@ If you use a UserScript manager such as **Tampermonkey** or **Violentmonkey**, t
 
 ## 🚀 Installation & Setup
 
-### Requirements
+PIXN Manager Pro can be run in two ways: as a **zero-install Windows Portable application** on your PC, or hosted 24/7 on a **NAS / Web Server** (Synology, QNAP, Linux).
 
-* **Web Server:** NAS with webserver, Apache, or Nginx with **PHP 7.4+** or **PHP 8.x** (or the zero-install Windows Portable release).
-* **PHP Extensions:** `curl`, `json`, `mbstring`.
-* **Network Access for Batocera Integration:**
-  * **Samba File Sharing (Port 445) — Required:** Read access to your Batocera ROMs UNC share (e.g. `\\BATOCERA\share\roms`).
-  * **Batocera Web Services (Port 1234) — Optional / Recommended:** EmulationStation built-in REST API daemon for 10x faster scans and in-browser video streaming.
+---
 
-### Deployment Steps
+### Method 1: Windows Portable Edition (Zero-Install — Recommended for PC)
 
-1. Copy or upload the `pixn/` folder into your web server's document root (e.g., into the `web` shared folder on Synology/QNAP, or `/var/www/html/pixn/` on Linux).
-2. **Permissions:** Ensure the web server has read & write permissions on the `pixn/` folder so it can save `config.json`, sync catalogs, and store caches. On NAS devices (Synology, QNAP, etc.), this is typically handled automatically or via the NAS web interface (File Station / Web Station). *(Optional for dedicated Linux servers: `chmod -R 775 /var/www/html/pixn`)*.
-3. Open `http://<your-nas-ip>/pixn/index.html` in your web browser.
-4. **First-Time Setup Wizard:** On first launch, the **Server Setup & Configuration** modal opens automatically:
-   * **Web Server Address:** Auto-detected from your browser address bar and pre-filled.
-   * **Batocera ROMs UNC Path:** e.g. `\\BATOCERA\share\roms` (with 1-click live connection testing).
-   * **Pixn Retro Session Cookie:** Auto-filled on your first sync with the Bookmarklet/Tampermonkey script (or paste manually as a fallback).
-   * Click **Save & Apply** to create your local `config.json`.
-5. **Browser Sync Tools:** Click and drag the pre-configured bookmarklet to your browser bookmarks bar, or download the Tampermonkey user script (`pixn_sync.user.js`).
+The portable edition is completely self-contained. It requires **no web server** (Apache/Nginx/IIS), **no PHP installation**, and **no administrative rights**.
+
+#### Requirements:
+* **Operating System:** Windows 10 or Windows 11 (64-bit).
+* **Network Access to Batocera PC:**
+  * **Samba File Sharing (Port 445) — Required:** Access to your Batocera ROMs network share (e.g. `\\BATOCERA\share\roms`).
+  * **Batocera Web Services (Port 1234) — Recommended:** Enabled by default on Batocera v33+ for 10x faster scans and in-browser video streaming.
+
+#### Quick Start:
+1. **Download & Extract:** Download the latest `PIXN-Portable-v*.zip` from [GitHub Releases](https://github.com/UncleSlim/pixn-manager-pro/releases) and extract it to any folder on your PC (e.g., `C:\PIXN\` or your desktop).
+2. **Launch:** Double-click **`PIXN.exe`**.
+   * Starts the built-in, lightweight background PHP engine on port `8989`.
+   * Adds a discreet icon to your Windows Notification Tray.
+   * Automatically opens your default web browser to [http://127.0.0.1:8989/](http://127.0.0.1:8989/).
+3. **First-Time Setup Wizard:**
+   * Enter your Batocera PC's network path (e.g. `\\BATOCERA\share\roms`) and click **Test Connection**.
+   * Click **Save & Apply**.
+4. **Closing & Exiting:**
+   * When you finish, simply close your browser tab. PIXN automatically detects the tab close and safely shuts down the background engine within 3 seconds.
+   * You can also right-click the **PIXN tray icon** in the taskbar and select **Exit PIXN**.
+
+---
+
+### Method 2: NAS & Dedicated Web Server Deployment (Synology, QNAP, Linux)
+
+For users who want to host PIXN Manager Pro 24/7 on a home server or NAS accessible from any device on their local network.
+
+#### Requirements:
+* **Web Server:** Synology Web Station, QNAP, Apache, or Nginx.
+* **PHP Runtime:** **PHP 7.4+** or **PHP 8.x** with extensions: `curl`, `json`, `mbstring`.
+* **Network Access to Batocera:** Read access via SMB (`\\BATOCERA\share\roms` or mounted share).
+
+#### Deployment Steps:
+1. **Upload Files:** Copy the contents of the repository into your web server's document root (e.g., the `web/pixn/` shared folder on Synology/QNAP, or `/var/www/html/pixn/` on Linux).
+2. **Set Permissions:** Ensure the web server process (`http`, `www-data`, or `nobody`) has write permissions to the `pixn/` folder so it can create `config.json`, store caches, and sync game catalogs.
+3. **Open in Browser:** Navigate to `http://<your-nas-ip>/pixn/index.html`.
+4. **Configuration Wizard:**
+   * **Web Server Address:** Auto-detected from your browser address bar.
+   * **Batocera ROMs UNC Path:** Enter `\\BATOCERA\share\roms` (or your local mount path).
+   * Click **Save & Apply** to generate your `config.json`.
+5. **Install Sync Tools:** Click the **Sync indicator** to install the **Bookmarklet** or download the **Tampermonkey UserScript** (`pixn_sync.user.js`) to sync releases from Pix'n Retro with 1-click.
 
 ---
 
