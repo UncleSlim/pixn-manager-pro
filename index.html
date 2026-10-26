@@ -8156,33 +8156,39 @@
                                     <span style="font-size: 0.68rem; color: var(--text-dim);"><a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">pixn-retro.dedyn.io</a></span>
                                 </div>
                                 <span style="font-size: 0.7rem; color: var(--text-dim); display: block; margin-bottom: 0.35rem;">
-                                    Choose <strong>Option 1</strong> OR <strong>Option 2</strong> (you only need one):
+                                    Choose your preferred sync tool (you only need one):
                                 </span>
                             </div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;">
-                                <!-- Option 1: Userscript (Tampermonkey) -->
-                                <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 6px; padding: 0.45rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.4rem;">
-                                    <div>
-                                        <strong style="font-size: 0.74rem; color: #10b981; display: flex; align-items: center; gap: 0.25rem;">
-                                            <i class="fa-solid fa-wand-magic-sparkles"></i> Option 1: Tampermonkey
-                                        </strong>
-                                        <span style="font-size: 0.67rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
-                                            Browser extension. Adds a floating sync button on Pix'n Retro with 1-click sync.
-                                        </span>
-                                        <span style="font-size: 0.61rem; color: #94a3b8; display: block; margin-top: 0.25rem; line-height: 1.25;">
-                                            If raw code opens, enable "Developer mode" in chrome://extensions or use Copy, and add the script manually to your tampermonkey plugin.
+
+                            <!-- Option 1: Chrome Extension (Recommended) -->
+                            <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.4); border-radius: 6px; padding: 0.45rem 0.6rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.3rem; margin-bottom: 0.45rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                                    <div style="flex: 1; min-width: 220px;">
+                                        <div style="display: flex; align-items: center; gap: 0.35rem;">
+                                            <strong style="font-size: 0.74rem; color: #38bdf8; display: flex; align-items: center; gap: 0.25rem;">
+                                                <i class="fa-brands fa-chrome"></i> Option 1: Chrome Extension
+                                            </strong>
+                                            <span style="font-size: 0.58rem; background: #0284c7; color: #fff; padding: 1px 5px; border-radius: 4px; font-weight: 600; text-transform: uppercase;">Recommended</span>
+                                        </div>
+                                        <span style="font-size: 0.65rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
+                                            Native extension for Chrome, Edge &amp; Brave. Auto-captures Discord session cookie with 1-click sync.
                                         </span>
                                     </div>
                                     <div style="display: flex; gap: 4px;">
-                                        <a id="btnInstallUserScriptSettings" href="https://raw.githubusercontent.com/UncleSlim/pixn-manager-pro/main/pixn_sync.user.js" target="_blank" class="btn btn-primary" style="flex: 1; font-size: 0.72rem; padding: 0.22rem 0.4rem; text-align: center; background: #059669; border-color: #10b981;" title="Install Tampermonkey / Violentmonkey Userscript">
-                                            <i class="fa-solid fa-download"></i> Install
+                                        <a href="save.php?action=download_extension" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.22rem 0.55rem; text-align: center; background: #0284c7; border-color: #38bdf8;" title="Download PIXN Sync Pro Chrome Extension (.zip)">
+                                            <i class="fa-solid fa-download"></i> Download Extension (.zip)
                                         </a>
-                                        <button type="button" id="btnCopyUserScriptSettings" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.22rem 0.45rem; text-align: center; border-color: #10b981; color: #10b981;" title="Copy Userscript code to paste manually in Tampermonkey">
-                                            <i class="fa-solid fa-copy"></i> Copy
+                                        <button type="button" id="btnExtensionHelp" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.22rem 0.5rem; text-align: center; border-color: #38bdf8; color: #38bdf8;" title="View quick 2-step install guide">
+                                            <i class="fa-solid fa-circle-question"></i> Guide
                                         </button>
                                     </div>
                                 </div>
+                                <div id="extGuideBox" style="display: none; background: rgba(0,0,0,0.35); border-radius: 5px; padding: 0.35rem 0.55rem; font-size: 0.64rem; color: #cbd5e1; line-height: 1.35; border: 1px dashed rgba(56, 189, 248, 0.3); margin-top: 0.2rem;">
+                                    <strong>2-Step Install:</strong> 1. Unzip the downloaded file. 2. In Chrome/Edge, open <code>chrome://extensions</code>, turn on <strong>Developer mode</strong> (top-right), click <strong>Load unpacked</strong> and select the unzipped <code>extension</code> folder!
+                                </div>
+                            </div>
 
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;">
                                 <!-- Option 2: Bookmarklet (No Extension Needed) -->
                                 <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 6px; padding: 0.45rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.4rem;">
                                     <div>
@@ -8196,6 +8202,29 @@
                                     <a id="dragBookmarkletSettings" href="#" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.22rem 0.5rem; text-align: center; cursor: grab; background: #0284c7; border-color: #38bdf8; color: #ffffff;" title="Drag to bookmarks bar for easy access, or click to open Pixn Retro.">
                                         <i class="fa-solid fa-bookmark"></i> PIXN Retro Sync
                                     </a>
+                                </div>
+
+                                <!-- Option 3: Userscript (Tampermonkey) -->
+                                <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 6px; padding: 0.45rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.4rem;">
+                                    <div>
+                                        <strong style="font-size: 0.74rem; color: #10b981; display: flex; align-items: center; gap: 0.25rem;">
+                                            <i class="fa-solid fa-wand-magic-sparkles"></i> Option 3: Tampermonkey
+                                        </strong>
+                                        <span style="font-size: 0.67rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
+                                            Browser script manager alternative. Adds a floating sync button on Pix'n Retro with 1-click sync.
+                                        </span>
+                                        <span style="font-size: 0.61rem; color: #94a3b8; display: block; margin-top: 0.25rem; line-height: 1.25;">
+                                            If raw code opens, enable "Developer mode" in chrome://extensions or use Copy, and add the script manually to your tampermonkey plugin.
+                                        </span>
+                                    </div>
+                                    <div style="display: flex; gap: 4px;">
+                                        <a id="btnInstallUserScriptSettings" href="https://raw.githubusercontent.com/UncleSlim/pixn-manager-pro/main/pixn_sync.user.js" target="_blank" class="btn btn-primary" style="flex: 1; font-size: 0.72rem; padding: 0.22rem 0.4rem; text-align: center; background: #059669; border-color: #10b981;" title="Install Tampermonkey / Violentmonkey Userscript">
+                                            <i class="fa-solid fa-download"></i> Install
+                                        </a>
+                                        <button type="button" id="btnCopyUserScriptSettings" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.22rem 0.45rem; text-align: center; border-color: #10b981; color: #10b981;" title="Copy Userscript code to paste manually in Tampermonkey">
+                                            <i class="fa-solid fa-copy"></i> Copy
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -22392,6 +22421,13 @@
                         btnCopyUserScriptSettings.disabled = false;
                         btnCopyUserScriptSettings.innerHTML = '<i class="fa-solid fa-copy"></i> Copy';
                     }
+                });
+            const btnExtensionHelp = document.getElementById('btnExtensionHelp');
+            const extGuideBox = document.getElementById('extGuideBox');
+            if (btnExtensionHelp && extGuideBox && !btnExtensionHelp.__guideHandler) {
+                btnExtensionHelp.__guideHandler = true;
+                btnExtensionHelp.addEventListener('click', () => {
+                    extGuideBox.style.display = extGuideBox.style.display === 'none' ? 'block' : 'none';
                 });
             }
         }

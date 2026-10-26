@@ -2843,6 +2843,39 @@ if ($action === 'get_userscript') {
     exit;
 }
 
+if ($action === 'download_extension') {
+    $zipPath = $baseDir . '/data/pixn-chrome-extension.zip';
+    if (!file_exists($zipPath) && class_exists('ZipArchive')) {
+        $extDir = $baseDir . '/extension';
+        if (is_dir($extDir)) {
+            $zip = new ZipArchive();
+            if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
+                $files = new RecursiveIteratorIterator(
+                    new RecursiveDirectoryIterator($extDir, RecursiveDirectoryIterator::SKIP_DOTS),
+                    RecursiveIteratorIterator::LEAVES_ONLY
+                );
+                foreach ($files as $file) {
+                    if (!$file->isDir()) {
+                        $filePath = $file->getRealPath();
+                        $relativePath = substr($filePath, strlen(realpath($extDir)) + 1);
+                        $zip->addFile($filePath, str_replace('\\', '/', $relativePath));
+                    }
+                }
+                $zip->close();
+            }
+        }
+    }
+    if (file_exists($zipPath)) {
+        header('Content-Type: application/zip');
+        header('Content-Disposition: attachment; filename="pixn-chrome-extension.zip"');
+        header('Content-Length: ' . filesize($zipPath));
+        readfile($zipPath);
+        exit;
+    }
+    echo json_encode(['status' => 'error', 'message' => 'Extension package not found']);
+    exit;
+}
+
 function getSmbClientBinary() {
     static $smbBin = null;
     if ($smbBin !== null) return $smbBin;
