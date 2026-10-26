@@ -2,7 +2,7 @@
 
 > **The Ultimate Retro Game Catalog & Batocera Hub**
 
-An interactive, high-performance web catalog and retro gaming collection manager designed for local deployment and NAS servers (e.g., Synology DiskStation).
+An interactive, high-performance web catalog and retro gaming collection manager designed for local deployment.
 
 Browse over **329 gaming systems** (308 active console platforms with RetroBat ports filtered) and **72,000+ titles**, inspect high-resolution multi-media artwork (3D boxes, 2D covers, screenshots, marquees, cartridges), search globally across all platforms, and verify your actual ROM collection against an active **Batocera Linux PC** via SMB network shares.
 
