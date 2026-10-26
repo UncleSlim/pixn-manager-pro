@@ -8869,6 +8869,8 @@
             return window.latestCatalogReleaseDate || localStorage.getItem('pixn_catalog_version') || '1';
         }
 
+        const gameCollator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+
         function openPixnDb() {
             return new Promise((resolve) => {
                 if (!('indexedDB' in window)) return resolve(null);
@@ -11639,35 +11641,30 @@
             }
         };
 
-        function createGridCardHtml(g, idx, isGlobal = false) {
-            const sysId = isGlobal ? g.system : (activeSystem ? activeSystem.id : '');
-            const sysObj = systemsMap[sysId] || activeSystem;
-            const sysName = sysObj ? sysObj.name : sysId;
-            const gameTitle = g.name || g.filename || g.id || 'Untitled';
+        function getGameStatusBadgeHtml(g, sysId, isGlobal = false) {
             const isOther = Boolean(g.is_other || (!isGlobal && activeBatoceraFilter === 'other'));
             const isDirectInstalled = !isGlobal && batoceraOnline && batoceraFolderExists && ((g.id && batoceraMatchedIds.has(g.id)) || (g.name && batoceraMatchedNames.has(g.name)));
             const isFuzzyInstalled = !isGlobal && batoceraOnline && batoceraFolderExists && ((g.id && batoceraFuzzyMatchedIds.has(g.id)) || (g.name && batoceraFuzzyMatchedNames.has(g.name)));
 
-            let statusBadge = '';
             if (isGlobal) {
                 if (batoceraOnline) {
-                    const isOther = Boolean(g.is_other);
-                    const installed = isOther || isGlobalGameInstalled(g);
-                    const mismatchInfo = (!isOther && installed) ? getGameMismatchInfo(g, sysId) : null;
+                    const isOtherRom = Boolean(g.is_other);
+                    const installed = isOtherRom || isGlobalGameInstalled(g);
+                    const mismatchInfo = (!isOtherRom && installed) ? getGameMismatchInfo(g, sysId) : null;
                     const isMismatch = Boolean(mismatchInfo && mismatchInfo.is_mismatch);
-                    if (isOther) {
-                        statusBadge = `<span class="grid-badge-status matched" title="Verified on Batocera (Other ROM)"><i class="fa-solid fa-circle-check"></i></span>`;
+                    if (isOtherRom) {
+                        return `<span class="grid-badge-status matched" title="Verified on Batocera (Other ROM)"><i class="fa-solid fa-circle-check"></i></span>`;
                     } else if (isMismatch) {
                         const mTip = (mismatchInfo.ext_mismatch && mismatchInfo.size_mismatch)
                             ? `Format & Size Mismatch (Local: .${mismatchInfo.found_ext} ${mismatchInfo.found_size_mb} MB vs Catalog: .${mismatchInfo.catalog_ext} ${mismatchInfo.catalog_size_mb} MB)`
                             : (mismatchInfo.ext_mismatch
                                 ? `Format Mismatch (Local: .${mismatchInfo.found_ext} vs Catalog: .${mismatchInfo.catalog_ext})`
                                 : `Size Mismatch (Local: ${mismatchInfo.found_size_mb} MB vs Catalog: ${mismatchInfo.catalog_size_mb} MB)`);
-                        statusBadge = `<span class="grid-badge-status mismatch" title="${escapeHtml(mTip)}"><i class="fa-solid fa-triangle-exclamation"></i></span>`;
+                        return `<span class="grid-badge-status mismatch" title="${escapeHtml(mTip)}"><i class="fa-solid fa-triangle-exclamation"></i></span>`;
                     } else if (installed) {
-                        statusBadge = `<span class="grid-badge-status installed" title="Installed on Batocera"><i class="fa-solid fa-circle-check"></i></span>`;
+                        return `<span class="grid-badge-status installed" title="Installed on Batocera"><i class="fa-solid fa-circle-check"></i></span>`;
                     } else {
-                        statusBadge = `<span class="grid-badge-status missing" title="Missing from Batocera"><i class="fa-regular fa-circle"></i></span>`;
+                        return `<span class="grid-badge-status missing" title="Missing from Batocera"><i class="fa-regular fa-circle"></i></span>`;
                     }
                 }
             } else if (batoceraOnline) {
@@ -11675,25 +11672,34 @@
                     const mismatchInfo = (!isOther && (isDirectInstalled || isFuzzyInstalled)) ? getGameMismatchInfo(g, sysId) : null;
                     const isMismatch = Boolean(mismatchInfo && mismatchInfo.is_mismatch);
                     if (isOther) {
-                        statusBadge = `<span class="grid-badge-status matched" title="Verified on Batocera (Other ROM)"><i class="fa-solid fa-circle-check"></i></span>`;
+                        return `<span class="grid-badge-status matched" title="Verified on Batocera (Other ROM)"><i class="fa-solid fa-circle-check"></i></span>`;
                     } else if (isMismatch) {
                         const mTip = (mismatchInfo.ext_mismatch && mismatchInfo.size_mismatch)
                             ? `Format & Size Mismatch (Local: .${mismatchInfo.found_ext} ${mismatchInfo.found_size_mb} MB vs Catalog: .${mismatchInfo.catalog_ext} ${mismatchInfo.catalog_size_mb} MB)`
                             : (mismatchInfo.ext_mismatch
                                 ? `Format Mismatch (Local: .${mismatchInfo.found_ext} vs Catalog: .${mismatchInfo.catalog_ext})`
                                 : `Size Mismatch (Local: ${mismatchInfo.found_size_mb} MB vs Catalog: ${mismatchInfo.catalog_size_mb} MB)`);
-                        statusBadge = `<span class="grid-badge-status mismatch" title="${escapeHtml(mTip)}"><i class="fa-solid fa-triangle-exclamation"></i></span>`;
+                        return `<span class="grid-badge-status mismatch" title="${escapeHtml(mTip)}"><i class="fa-solid fa-triangle-exclamation"></i></span>`;
                     } else if (isFuzzyInstalled) {
-                        statusBadge = `<span class="grid-badge-status matched" title="Matched on Batocera"><i class="fa-solid fa-circle-check"></i></span>`;
+                        return `<span class="grid-badge-status matched" title="Matched on Batocera"><i class="fa-solid fa-circle-check"></i></span>`;
                     } else if (isDirectInstalled) {
-                        statusBadge = `<span class="grid-badge-status installed" title="Installed on Batocera"><i class="fa-solid fa-circle-check"></i></span>`;
+                        return `<span class="grid-badge-status installed" title="Installed on Batocera"><i class="fa-solid fa-circle-check"></i></span>`;
                     } else {
-                        statusBadge = `<span class="grid-badge-status missing" title="Missing from Batocera"><i class="fa-regular fa-circle"></i></span>`;
+                        return `<span class="grid-badge-status missing" title="Missing from Batocera"><i class="fa-regular fa-circle"></i></span>`;
                     }
                 } else if (!isOther) {
-                    statusBadge = `<span class="grid-badge-status missing" title="Missing from Batocera"><i class="fa-regular fa-circle"></i></span>`;
+                    return `<span class="grid-badge-status missing" title="Missing from Batocera"><i class="fa-regular fa-circle"></i></span>`;
                 }
             }
+            return '';
+        }
+
+        function createGridCardHtml(g, idx, isGlobal = false) {
+            const sysId = isGlobal ? g.system : (activeSystem ? activeSystem.id : '');
+            const sysObj = systemsMap[sysId] || activeSystem;
+            const sysName = sysObj ? sysObj.name : sysId;
+            const gameTitle = g.name || g.filename || g.id || 'Untitled';
+            const statusBadge = getGameStatusBadgeHtml(g, sysId, isGlobal);
 
             let ratingBadge = '';
             if (g.rating) {
@@ -13423,6 +13429,7 @@
                         selectSystem(match.id);
                     }
                 }
+                prewarmPopularCatalogs();
             } catch (err) {
                 console.error('Error loading systems:', err);
                 statusMessage.innerHTML = `<span style="color: #ef4444; font-weight: 600;"><i class="fa-solid fa-triangle-exclamation"></i> Error loading systems.json: ${err.message}</span> &nbsp;<button onclick="loadSystems(true)" class="btn btn-outline" style="padding: 2px 8px; font-size: 0.75rem;"><i class="fa-solid fa-arrows-rotate"></i> Retry</button> &nbsp;<button onclick="if (typeof openSettingsModal === 'function') openSettingsModal(); else document.getElementById('settingsModal').classList.add('open');" class="btn btn-outline" style="padding: 2px 8px; font-size: 0.75rem;"><i class="fa-solid fa-gear"></i> Setup</button>`;
@@ -13443,6 +13450,51 @@
                         </div>
                     `;
                 }
+            }
+        }
+
+        // Background pre-warming of top retro catalogs into IndexedDB during idle time
+        function prewarmPopularCatalogs() {
+            const popular = ['snes', 'megadrive', 'nes', 'gba', 'psx', 'mame', 'c64', 'n64', 'amiga500', 'mastersystem'];
+            const ver = getCatalogVersion();
+            let idx = 0;
+
+            function next() {
+                if (idx >= popular.length) return;
+                const sysId = popular[idx++];
+                const key = 'games_' + sysId + '_' + ver;
+                getCachedData(key).then(cached => {
+                    if (!cached) {
+                        fetch(`games/${encodeURIComponent(sysId)}.json?v=${encodeURIComponent(ver)}`)
+                            .then(r => r.ok ? r.json() : null)
+                            .then(data => {
+                                if (data) {
+                                    const list = Array.isArray(data) ? data : [data];
+                                    setCachedData(key, list);
+                                    if (!systemGamesCache.has(sysId)) {
+                                        systemGamesCache.set(sysId, list);
+                                    }
+                                }
+                            })
+                            .catch(() => {})
+                            .finally(() => {
+                                setTimeout(next, 700);
+                            });
+                    } else {
+                        if (!systemGamesCache.has(sysId)) {
+                            systemGamesCache.set(sysId, cached);
+                        }
+                        setTimeout(next, 100);
+                    }
+                }).catch(() => {
+                    setTimeout(next, 200);
+                });
+            }
+
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(() => setTimeout(next, 2000));
+            } else {
+                setTimeout(next, 3000);
             }
         }
 
@@ -14794,8 +14846,12 @@
                     // Re-enrich developer/publisher datalist with other games
                     populateDevPubDatalist();
 
-                    // Re-render games
-                    renderGameList();
+                    // Smooth zero-flicker badge update if viewing all games in grid mode, or full filter re-render if active filter is applied
+                    if (activeBatoceraFilter === 'all' && currentViewMode === 'grid') {
+                        updateRenderedCardBadges();
+                    } else {
+                        renderGameList();
+                    }
                 } else {
                     batoceraOnline = false;
                     batoceraFolderExists = false;
@@ -15832,8 +15888,25 @@
                 renderQuickChips();
                 renderGameList();
                 statusMessage.textContent = `Loaded ${currentGames.length.toLocaleString()} games for ${activeSystem.name}`;
-                prehydrateSystemMetadata(sysId);
-                checkBatoceraForCurrentSystem(sysId);
+                setTimeout(() => checkBatoceraForCurrentSystem(sysId), 150);
+                setTimeout(() => prehydrateSystemMetadata(sysId), 1200);
+                return;
+            }
+
+            // High-speed Persistent IndexedDB Cache Hit (< 15ms): eliminates downloading megabytes over loopback socket
+            const catalogVer = getCatalogVersion();
+            const idbCacheKey = 'games_' + sysId + '_' + catalogVer;
+            const idbCached = await getCachedData(idbCacheKey);
+            if (idbCached && Array.isArray(idbCached) && idbCached.length > 0) {
+                currentGames = idbCached;
+                systemGamesCache.set(sysId, currentGames);
+                populateDevPubDatalist();
+                updateBatoceraFilterUI();
+                renderQuickChips();
+                renderGameList();
+                statusMessage.textContent = `Loaded ${currentGames.length.toLocaleString()} games for ${activeSystem.name}`;
+                setTimeout(() => checkBatoceraForCurrentSystem(sysId), 150);
+                setTimeout(() => prehydrateSystemMetadata(sysId), 1200);
                 return;
             }
 
@@ -15858,7 +15931,7 @@
 
             try {
                 // Fetch games json for rich formatting & raw text fallback
-                const res = await fetch(`games/${encodeURIComponent(sysId)}.json?v=${encodeURIComponent(getCatalogVersion())}`);
+                const res = await fetch(`games/${encodeURIComponent(sysId)}.json?v=${encodeURIComponent(catalogVer)}`);
                 if (res.ok) {
                     let gamesData = await res.json();
                     if (gamesData && !Array.isArray(gamesData)) {
@@ -15866,17 +15939,19 @@
                     }
                     currentGames = gamesData;
                     systemGamesCache.set(sysId, currentGames);
+                    setCachedData(idbCacheKey, currentGames);
                     // Defer background enrichment so it doesn't block UI or server queue
                     if (currentGames.length > 0 && !('developer' in currentGames[0])) {
                         setTimeout(() => {
                             fetch(`save.php?action=enrich_system&system=${sysId}`).then(r => r.json()).then(data => {
                                 if (data.status === 'ok' && data.enriched_count > 0 && activeSystem && activeSystem.id === sysId) {
-                                    fetch(`games/${encodeURIComponent(sysId)}.json?v=${encodeURIComponent(getCatalogVersion())}`).then(r => r.json()).then(fresh => {
+                                    fetch(`games/${encodeURIComponent(sysId)}.json?v=${encodeURIComponent(catalogVer)}`).then(r => r.json()).then(fresh => {
                                         if (fresh && !Array.isArray(fresh)) {
                                             fresh = (typeof fresh === 'object' && fresh !== null) ? [fresh] : [];
                                         }
                                         currentGames = fresh;
                                         systemGamesCache.set(sysId, fresh);
+                                        setCachedData(idbCacheKey, fresh);
                                         populateDevPubDatalist();
                                         renderQuickChips();
                                         renderGameList();
@@ -15887,11 +15962,12 @@
                     }
                 } else {
                     // Fallback to text file
-                    const txtRes = await fetch(`games_txt/${encodeURIComponent(txtFileName)}?v=${encodeURIComponent(getCatalogVersion())}`);
+                    const txtRes = await fetch(`games_txt/${encodeURIComponent(txtFileName)}?v=${encodeURIComponent(catalogVer)}`);
                     if (!txtRes.ok) throw new Error(`Could not load games/${sysId}.json or games_txt/${txtFileName}`);
                     const txt = await txtRes.text();
                     currentGames = txt.split('\n').filter(Boolean).map(line => ({ name: line, id: line }));
                     systemGamesCache.set(sysId, currentGames);
+                    setCachedData(idbCacheKey, currentGames);
                 }
 
                 // Populate Developer / Publisher datalist
@@ -15905,11 +15981,9 @@
                 renderGameList();
                 statusMessage.textContent = `Loaded ${currentGames.length.toLocaleString()} games for ${activeSystem.name}`;
 
-                // Pre-hydrate system metadata (synopsis, ratings, developer, etc.) in background for instant gamecard opening
-                prehydrateSystemMetadata(sysId);
-
-                // Check Batocera PC for existing games in background
-                checkBatoceraForCurrentSystem(sysId);
+                // Pre-hydrate system metadata in background with staggered timing so cards and art load first
+                setTimeout(() => checkBatoceraForCurrentSystem(sysId), 150);
+                setTimeout(() => prehydrateSystemMetadata(sysId), 1200);
             } catch (err) {
                 console.error('Error fetching games:', err);
                 editorContentEl.innerHTML = `

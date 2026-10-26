@@ -4060,53 +4060,16 @@ if ($action === 'check_batocera_games') {
     $cacheFile = $cacheDir . '/' . $cacheKey . '.json';
     $cacheTTL = 600; // 10 minutes TTL
 
-    // Invalidate cache automatically if Batocera directory was modified on disk more recently than the cache file
-    if (!$forceRefresh && file_exists($cacheFile) && $directBasePath !== '' && @is_dir($directBasePath)) {
-        $dirMtime = @filemtime($directBasePath);
-        if ($dirMtime && $dirMtime > filemtime($cacheFile)) {
-            $forceRefresh = true;
-        }
-    }
-
-    // Return cached scan if valid and not forced to refresh
-    if (!$forceRefresh && file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTTL)) {
-        $cachedJson = @file_get_contents($cacheFile);
-        if ($cachedJson) {
-            $cachedObj = json_decode($cachedJson, true);
-            if (is_array($cachedObj) && !empty($cachedObj['online'])) {
-                // If the cached scan has matched items but all sizes are 0, or gamelist_meta lacks descriptions, re-scan to enrich
-                $hasStaleZeroSizes = false;
-                if (!empty($cachedObj['matched_details']) && is_array($cachedObj['matched_details'])) {
-                    $zeroCount = 0;
-                    $totalCount = 0;
-                    foreach ($cachedObj['matched_details'] as $det) {
-                        $totalCount++;
-                        if (empty($det['found_size_mb'])) $zeroCount++;
-                    }
-                    if ($totalCount > 0 && $zeroCount === $totalCount) {
-                        $hasStaleZeroSizes = true;
-                    }
-                }
-                $hasStaleMeta = false;
-                if (!empty($cachedObj['gamelist_meta']) && is_array($cachedObj['gamelist_meta'])) {
-                    $descCount = 0;
-                    $sampleCount = 0;
-                    foreach ($cachedObj['gamelist_meta'] as $gm) {
-                        $sampleCount++;
-                        if (!empty($gm['desc'])) $descCount++;
-                        if ($sampleCount >= 30) break;
-                    }
-                    if ($sampleCount > 0 && $descCount === 0) {
-                        $hasStaleMeta = true;
-                    }
-                }
-                if (!$hasStaleZeroSizes && !$hasStaleMeta) {
-                    $cachedObj['cached'] = true;
-                    $cachedObj['cache_age'] = time() - filemtime($cacheFile);
-                    attachBatoceraSettingsToResponse($baseDir, $uncPath, $sysId, $cachedObj);
-                    echo json_encode($cachedObj, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-                    exit;
-                }
+    // Fast path: if cache file exists and is fresh (< 10 minutes), return directly!
+    if (!$forceRefresh && file_exists($cacheFile)) {
+        $age = time() - filemtime($cacheFile);
+        if ($age < $cacheTTL) {
+            $cachedJson = @file_get_contents($cacheFile);
+            if ($cachedJson && strlen($cachedJson) > 50) {
+                header('Content-Type: application/json; charset=utf-8');
+                header('X-Pixn-Cache: HIT');
+                echo $cachedJson;
+                exit;
             }
         }
     }
