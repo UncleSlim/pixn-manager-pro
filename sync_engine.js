@@ -290,7 +290,62 @@
         if (capturedCookie && capturedCookie.includes('session=')) {
             log('🔑 Captured Pixn Retro session token (auto-filling PIXN config)');
         } else {
-            log('ℹ️ Pixn Retro session cookie is HttpOnly. Install the Tampermonkey Userscript for automatic cookie capture.');
+            log('ℹ️ Pixn Retro session cookie is HttpOnly.');
+            // Render interactive cookie helper box in the HUD
+            if (!document.getElementById('pixn-cookie-helper-box')) {
+                const helperBox = document.createElement('div');
+                helperBox.id = 'pixn-cookie-helper-box';
+                helperBox.style.cssText = 'background: rgba(30, 41, 59, 0.95); border: 1px solid #f59e0b; border-radius: 6px; padding: 8px 10px; margin-bottom: 10px; text-align: left;';
+                helperBox.innerHTML = `
+                    <div style="font-size: 11px; font-weight: 600; color: #fbbf24; margin-bottom: 3px; display: flex; align-items: center; justify-content: space-between;">
+                        <span><i class="fa-solid fa-key"></i> Auto-fill PIXN Session Cookie</span>
+                        <span style="font-size: 9px; color: #f59e0b; border: 1px solid #f59e0b; padding: 1px 4px; border-radius: 3px;">1-Time Setup</span>
+                    </div>
+                    <div style="font-size: 10px; color: #94a3b8; margin-bottom: 6px; line-height: 1.35;">
+                        Browser security blocks reading HttpOnly cookies automatically without Tampermonkey. Paste your session cookie below to save it directly into PIXN:
+                    </div>
+                    <div style="display: flex; gap: 5px; margin-bottom: 4px;">
+                        <input id="sync-manual-cookie-input" placeholder="Paste session=... or token value" style="flex: 1; padding: 4px 6px; font-size: 11px; background: #0f172a; border: 1px solid #475569; color: #fff; border-radius: 4px;">
+                        <button id="sync-manual-cookie-save" style="background: #10b981; border: none; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer;">Save</button>
+                    </div>
+                    <div id="sync-manual-cookie-status" style="font-size: 10px; color: #64748b;">
+                        💡 Press <kbd style="background: rgba(255,255,255,0.1); padding: 1px 3px; border-radius: 2px;">F12</kbd> &rarr; Application &rarr; Cookies &rarr; copy <code>session</code>.
+                    </div>
+                `;
+                const logBoxEl = document.getElementById('sync-log-box');
+                if (logBoxEl && logBoxEl.parentNode) {
+                    logBoxEl.parentNode.insertBefore(helperBox, logBoxEl);
+                }
+                const saveBtn = document.getElementById('sync-manual-cookie-save');
+                const inp = document.getElementById('sync-manual-cookie-input');
+                const stat = document.getElementById('sync-manual-cookie-status');
+                if (saveBtn && inp) {
+                    saveBtn.onclick = async () => {
+                        let val = inp.value.trim();
+                        if (!val) return;
+                        if (!val.includes('=')) val = 'session=' + val;
+                        try {
+                            localStorage.setItem('pixn_captured_cookie', val);
+                        } catch(e) {}
+                        saveBtn.disabled = true;
+                        saveBtn.textContent = 'Saving...';
+                        try {
+                            await sendToServer(`${DISKSTATION_URL}/save.php?action=save_systems`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ systems: [], cookie: val })
+                            });
+                            stat.innerHTML = '<span style="color: #34d399; font-weight: 600;">✅ Saved to PIXN! Switch back to PIXN Manager Pro.</span>';
+                            saveBtn.textContent = 'Saved';
+                            log('🔑 Session token saved to PIXN config');
+                        } catch (err) {
+                            stat.innerHTML = `<span style="color: #ef4444;">Failed to save: ${err.message}</span>`;
+                            saveBtn.disabled = false;
+                            saveBtn.textContent = 'Save';
+                        }
+                    };
+                }
+            }
         }
 
         const saveSysRes = await sendToServer(`${DISKSTATION_URL}/save.php?action=save_systems`, {
