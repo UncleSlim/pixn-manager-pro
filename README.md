@@ -89,6 +89,7 @@ pixn/
 ├── save.php                             # Backend API engine (API sync, Batocera proxy, repair)
 ├── sync_engine.js                       # Client-side sync script for Pixn Retro bookmarklet
 ├── pixn_sync.user.js                    # Tampermonkey/Violentmonkey auto-sync user script
+├── extension/                           # [Chrome/Edge/Brave] Dedicated Manifest V3 browser extension
 ├── systems.json                         # Primary metadata index for all 329 gaming systems
 ├── search_index.json                    # Compact lookup index for instant global searching
 ├── config.sample.json                   # Configuration template for first-time setups
@@ -109,21 +110,38 @@ pixn/
 > **Can I use the Portable release files for NAS / Web Server hosting?**  
 > **Yes!** The Portable version contains the exact same web application files. If you copy the portable package to a NAS or web server (Method 2), you can safely **delete `PIXN.exe` and the `php/` folder**, as your NAS uses its own built-in web server (Synology Web Station, Apache, Nginx) and native PHP engine.
 
-## 🔄 Browser Synchronization Tools (Bookmarklet & Tampermonkey)
+## 🔄 Browser Synchronization Tools (Chrome Extension, Bookmarklet & Tampermonkey)
 
 Because **Pix'n Retro** releases require Discord authentication and use secure `HttpOnly` session cookies that cannot be read by external scripts or long-lived servers, browser-side tools provide the most reliable, zero-maintenance synchronization workflow directly within your authenticated browser session.
 
-You have two convenient options:
+You have three convenient options (choose whichever you prefer):
 
 ---
 
-### Option 1: Manual PIXN Update Bookmarklet (Zero-Install)
+### Option 1: PIXN Sync Pro Chrome Extension (Recommended & Native)
+
+A dedicated Manifest V3 extension for **Google Chrome, Microsoft Edge, Brave, and Opera**. Provides native Discord session cookie auto-capture and a floating 1-click sync button on Pix'n Retro with zero external dependencies.
+
+#### How to Install in Chrome / Edge / Brave:
+
+1. In PIXN Manager Pro's **Server Setup & Configuration** modal, click **Download Extension (.zip)** (or use the included `extension/` folder).
+2. Unzip `pixn-chrome-extension.zip` if downloaded as a zip.
+3. Open your browser and navigate to:
+   * **Chrome / Brave:** `chrome://extensions`
+   * **Edge:** `edge://extensions`
+4. In the top-right corner, toggle **Developer mode** to **ON**.
+5. Click **Load unpacked** (top-left) and select the `extension` folder.
+6. Visit [https://pixn-retro.dedyn.io/releases](https://pixn-retro.dedyn.io/releases) — a floating **⚡ Sync to PIXN Pro** button will automatically appear to synchronize catalogs and auto-import your session cookie!
+
+---
+
+### Option 2: Manual PIXN Update Bookmarklet (Zero-Install)
 
 Drag-and-drop one-click bookmark for any modern browser (Chrome, Edge, Firefox, Safari).
 
 #### How to Install & Use the Bookmarklet
 
-1. Open PIXN Manager Pro, by starting the PIXN.exe  (`http://127.0.0.1:8989/`).
+1. Open PIXN Manager Pro (`http://127.0.0.1:8989/`).
 2. Click the **Sync indicator** in the top navigation bar (or open **Server Setup & Configuration**).
 3. Drag the **Manual PIXN Update** button directly onto your browser's Bookmarks bar.
 4. Log into [https://pixn-retro.dedyn.io/releases](https://pixn-retro.dedyn.io/releases) in your browser.
@@ -131,17 +149,17 @@ Drag-and-drop one-click bookmark for any modern browser (Chrome, Edge, Firefox, 
 
 ---
 
-### Option 2: Tampermonkey / Violentmonkey UserScript (Fully Automated)
+### Option 3: Tampermonkey / Violentmonkey UserScript (Alternative)
 
 If you use a UserScript manager such as **Tampermonkey** or **Violentmonkey**, the included `pixn_sync.user.js` script adds a persistent, floating sync button directly onto Pix'n Retro.
 
 #### How to Install & Use the UserScript
 
 1. Ensure the **Tampermonkey** or **Violentmonkey** extension is installed in your browser.
-2. In PIXN Manager Pro's **Catalog Synchronization** or **Server Setup** modal, click **Install UserScript** (or open `pixn_sync.user.js`).
+2. In PIXN Manager Pro's **Server Setup & Configuration** modal, click **Install** (or click **Copy** and paste manually into a new script).
 3. Tampermonkey will prompt you to install the script. Click **Install**.
 4. Visit [https://pixn-retro.dedyn.io/releases](https://pixn-retro.dedyn.io/releases).
-5. A floating **🔄 Sync to PIXN Manager Pro** button appears automatically in the bottom-right corner. Click it anytime to synchronize new systems, or append `#autosync` to the URL for automatic synchronization.
+5. Click the floating **⚡ Sync to PIXN Pro** button in the bottom-right corner.
 
 ---
 

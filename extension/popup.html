@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIXN Sync Pro</title>
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: rgba(15, 23, 42, 0.75);
+            --border: rgba(56, 189, 248, 0.25);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 320px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-main);
+            padding: 14px;
+            overflow-x: hidden;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #38bdf8;
+            letter-spacing: 0.3px;
+        }
+
+        .header-title img {
+            width: 22px;
+            height: 22px;
+        }
+
+        .badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 12px;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            backdrop-filter: blur(8px);
+        }
+
+        .card-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 5px;
+            padding: 6px 9px;
+            color: #fff;
+            font-size: 12px;
+            font-family: monospace;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #38bdf8;
+        }
+
+        button {
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 12px;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            border: 1px solid #38bdf8;
+            padding: 6px 12px;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11.5px;
+            padding: 5px 0;
+            color: var(--text-muted);
+        }
+
+        .status-row:not(:last-child) {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .dot-green { background: var(--success); box-shadow: 0 0 6px var(--success); }
+        .dot-yellow { background: var(--warning); box-shadow: 0 0 6px var(--warning); }
+        .dot-red { background: var(--danger); box-shadow: 0 0 6px var(--danger); }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .btn-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .btn-sync {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: #ffffff;
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+        }
+
+        .btn-sync:hover {
+            background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .notice {
+            font-size: 10.5px;
+            color: #64748b;
+            text-align: center;
+            margin-top: 8px;
+            line-height: 1.35;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-title">
+            <img src="icons/icon-48.png" alt="PIXN Logo">
+            <span>PIXN Sync Pro</span>
+        </div>
+        <span class="badge">v1.0</span>
+    </div>
+
+    <!-- Target Server Configuration -->
+    <div class="card">
+        <div class="card-label">
+            <span>Target PIXN Web Server</span>
+        </div>
+        <div class="input-group">
+            <input type="text" id="targetServerInput" placeholder="http://127.0.0.1:8989" spellcheck="false">
+            <button id="btnSaveServer" class="btn-primary">Save</button>
+        </div>
+    </div>
+
+    <!-- Live Status Overview -->
+    <div class="card">
+        <div class="card-label">Live Status</div>
+        
+        <div class="status-row">
+            <span>PIXN Web Server:</span>
+            <span class="status-indicator" id="serverStatus">
+                <span class="dot dot-yellow"></span> Checking...
+            </span>
+        </div>
+
+        <div class="status-row">
+            <span>Pix'n Retro Session:</span>
+            <span class="status-indicator" id="cookieStatus">
+                <span class="dot dot-yellow"></span> Checking...
+            </span>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="actions">
+        <button id="btnOpenAndSync" class="btn-action btn-sync">
+            ⚡ Open Pix'n Retro &amp; Sync
+        </button>
+        <button id="btnOpenPixnManager" class="btn-action btn-outline">
+            🖥️ Open PIXN Web Manager
+        </button>
+    </div>
+
+    <div class="notice">
+        Automatically captures your Discord session token and synchronizes releases with zero setup.
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
