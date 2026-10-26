@@ -14,6 +14,7 @@ portable/data/pixn_auth.json
 BACKUP*/
 scratch/
 portable/
+PORTABLE_DISTRIBUTION_CLEANUP_GUIDE.md
 
 # 🧹 CACHE & SCANS (Auto-generated per user)
 data/cache_batocera/*

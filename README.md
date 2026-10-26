@@ -90,7 +90,6 @@ pixn/
 ├── systems.json                         # Primary metadata index for all 329 gaming systems
 ├── search_index.json                    # Compact lookup index for instant global searching
 ├── config.sample.json                   # Configuration template for first-time setups
-├── PORTABLE_DISTRIBUTION_CLEANUP_GUIDE.md # Cleanup instructions for packaging portable releases
 ├── README.md                            # Documentation and setup guide
 ├── sync_status.json                     # Synchronization status and update change log
 ├── data/                                # Backend cache and data directory
@@ -204,7 +203,6 @@ If you use a UserScript manager such as **Tampermonkey** or **Violentmonkey**, t
 > * **Do not publish `config.json` or `data/pixn_auth.json`**: These files contain your private session cookie and local network machine names.
 > * A clean template [`config.sample.json`](config.sample.json) is provided for distribution.
 > * Add `config.json` and `data/pixn_auth.json` to your `.gitignore`.
-> * **Packaging a Portable Release?** See [`PORTABLE_DISTRIBUTION_CLEANUP_GUIDE.md`](PORTABLE_DISTRIBUTION_CLEANUP_GUIDE.md) for full instructions and a PowerShell cleanup script to wipe caches and personal tokens before distributing.
 
 ---
 
