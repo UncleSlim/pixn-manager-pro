@@ -14863,7 +14863,8 @@
                         renderGameList();
                     }
                 } else {
-                    batoceraOnline = false;
+                    // Scan reported failure. Do NOT trust it blindly: re-verify real connectivity
+                    // via the folder list so header, popover and state stay consistent.
                     batoceraFolderExists = false;
                     const folder = getBatoceraFolderName(sysId);
                     if (infoBatoceraFolder) {
@@ -14871,9 +14872,13 @@
                     }
                     if (batoceraFilterGroup) batoceraFilterGroup.style.display = 'none';
                     if (filterRow) filterRow.style.display = 'none';
+                    await getOrFetchBatoceraFolders(true);
+                    if (typeof updateBatoceraPopover === 'function') updateBatoceraPopover();
                 }
             } catch (err) {
-                batoceraOnline = false;
+                // Network/parse/timeout error during a (possibly huge) scan: this says nothing about
+                // whether the Batocera PC is online, so keep the current online state and re-verify.
+                console.warn('Batocera scan failed for', sysId, err);
                 batoceraFolderExists = false;
                 const folder = getBatoceraFolderName(sysId);
                 if (infoBatoceraFolder) {
@@ -14881,6 +14886,10 @@
                 }
                 if (batoceraFilterGroup) batoceraFilterGroup.style.display = 'none';
                 if (filterRow) filterRow.style.display = 'none';
+                try {
+                    await getOrFetchBatoceraFolders(true);
+                    if (typeof updateBatoceraPopover === 'function') updateBatoceraPopover();
+                } catch (e) {}
             } finally {
                 if (btnRescanBatocera) {
                     btnRescanBatocera.classList.remove('spinning');
