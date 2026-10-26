@@ -8156,23 +8156,23 @@
                                     <span style="font-size: 0.68rem; color: var(--text-dim);"><a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">pixn-retro.dedyn.io</a></span>
                                 </div>
                                 <span style="font-size: 0.7rem; color: var(--text-dim); display: block; margin-bottom: 0.35rem;">
-                                    Choose how to sync systems and games from Pixn Retro:
+                                    Choose <strong>Option 1</strong> OR <strong>Option 2</strong> (you only need one):
                                 </span>
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem;">
-                                <!-- Userscript Option (Recommended for Cookie Capture) -->
+                                <!-- Option 1: Userscript (Tampermonkey) -->
                                 <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 6px; padding: 0.45rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.3rem;">
                                     <div>
                                         <strong style="font-size: 0.74rem; color: #10b981; display: flex; align-items: center; gap: 0.25rem;">
-                                            <i class="fa-solid fa-wand-magic-sparkles"></i> Tampermonkey <span style="font-size: 0.6rem; background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 1px 4px; border-radius: 3px;">Auto-Cookie</span>
+                                            <i class="fa-solid fa-wand-magic-sparkles"></i> Option 1: Tampermonkey
                                         </strong>
                                         <span style="font-size: 0.67rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
-                                            Auto-reads session cookie &amp; adds 1-click sync button.
+                                            Browser extension. Adds a floating sync button on Pix'n Retro with 1-click sync.
                                         </span>
                                     </div>
                                     <div>
                                         <div style="display: flex; gap: 4px;">
-                                            <a id="btnInstallUserScriptSettings" href="pixn_sync.user.js" target="_blank" class="btn btn-primary" style="flex: 1; font-size: 0.72rem; padding: 0.22rem 0.4rem; text-align: center; background: #059669; border-color: #10b981;" title="Install Tampermonkey / Violentmonkey Userscript">
+                                            <a id="btnInstallUserScriptSettings" href="https://raw.githubusercontent.com/UncleSlim/pixn-manager-pro/main/pixn_sync.user.js" target="_blank" class="btn btn-primary" style="flex: 1; font-size: 0.72rem; padding: 0.22rem 0.4rem; text-align: center; background: #059669; border-color: #10b981;" title="Install Tampermonkey / Violentmonkey Userscript">
                                                 <i class="fa-solid fa-download"></i> Install
                                             </a>
                                             <button type="button" id="btnCopyUserScriptSettings" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.22rem 0.45rem; text-align: center; border-color: #10b981; color: #10b981;" title="Copy Userscript code to paste manually in Tampermonkey">
@@ -8185,18 +8185,18 @@
                                     </div>
                                 </div>
 
-                                <!-- Bookmarklet Option -->
+                                <!-- Option 2: Bookmarklet (No Extension Needed) -->
                                 <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 6px; padding: 0.45rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.3rem;">
                                     <div>
                                         <strong style="font-size: 0.74rem; color: #38bdf8; display: flex; align-items: center; gap: 0.25rem;">
-                                            <i class="fa-solid fa-bookmark"></i> PIXN Retro Sync
+                                            <i class="fa-solid fa-bookmark"></i> Option 2: Bookmarklet
                                         </strong>
                                         <span style="font-size: 0.67rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
-                                            1-click catalog sync. (Prompts for cookie in sync window if missing).
+                                            No extension required. Drag this button to your browser bookmarks bar:
                                         </span>
                                     </div>
-                                    <a id="dragBookmarkletSettings" href="#" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.22rem 0.5rem; text-align: center; cursor: grab; border-color: #38bdf8; color: #38bdf8;" title="Drag to bookmarks bar for easy access, or click to open Pixn Retro.">
-                                        <i class="fa-solid fa-bookmark"></i> Open &amp; Sync Catalog
+                                    <a id="dragBookmarkletSettings" href="#" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.22rem 0.5rem; text-align: center; cursor: grab; background: #0284c7; border-color: #38bdf8; color: #ffffff;" title="Drag to bookmarks bar for easy access, or click to open Pixn Retro.">
+                                        <i class="fa-solid fa-bookmark"></i> PIXN Retro Sync
                                     </a>
                                 </div>
                             </div>
@@ -22347,41 +22347,17 @@
                 `https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?server=${encodeURIComponent(serverUrl)}` : 
                 `${serverUrl}/sync_engine.js?server=${encodeURIComponent(serverUrl)}`;
 
-            const bookmarkletCode = `javascript:(function(){var srv='${serverUrl}';var p='https://pixn-retro.dedyn.io/releases#autosync&server='+encodeURIComponent(srv);if(window.location.hostname.indexOf('pixn-retro.dedyn.io')===-1){var w=window.open(p,'_blank');if(!w){window.location.href=p;}else if(typeof showToast==='function'){showToast('Opening Pixn Retro targeting '+srv+'...',4000,'warning');}}else{window.__PIXN_SERVER__=srv;var s=document.createElement('script');s.src='${scriptEngineUrl}&t='+Date.now();document.body.appendChild(s);}})()`;
+            const bookmarkletCode = `javascript:(function(){var srv='${serverUrl}';var p='https://pixn-retro.dedyn.io/releases';if(window.location.hostname.indexOf('pixn-retro.dedyn.io')===-1){var w=window.open(p,'_blank');if(!w){window.location.href=p;}}else{window.__PIXN_SERVER__=srv;var s=document.createElement('script');s.src='${scriptEngineUrl}&t='+Date.now();document.body.appendChild(s);}})()`;
 
             const bm = document.getElementById('dragBookmarklet');
             if (bm) {
                 bm.href = bookmarkletCode;
-                bm.title = "Click to open Pixn Retro & Sync. Drag to bookmarks bar for easy access.";
-                if (!bm.__pixnClickHandler) {
-                    bm.__pixnClickHandler = true;
-                    bm.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const srv = (cfgNasUrlInput && cfgNasUrlInput.value.trim() ? cfgNasUrlInput.value.trim() : getActiveWebServerUrl()).replace(/\/+$/, '');
-                        showToast('Opening Pixn Retro... Tampermonkey will auto-sync and capture your session cookie!', 4500, 'info');
-                        window.open('https://pixn-retro.dedyn.io/releases#autosync&server=' + encodeURIComponent(srv), '_blank');
-                    });
-                }
+                bm.title = "Drag to bookmarks bar for easy access, or click to open Pixn Retro.";
             }
             const bmSettings = document.getElementById('dragBookmarkletSettings');
             if (bmSettings) {
                 bmSettings.href = bookmarkletCode;
-                bmSettings.title = "Click to open Pixn Retro & Sync. Drag to bookmarks bar for easy access.";
-                if (!bmSettings.__pixnClickHandler) {
-                    bmSettings.__pixnClickHandler = true;
-                    bmSettings.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const srv = (cfgNasUrlInput && cfgNasUrlInput.value.trim() ? cfgNasUrlInput.value.trim() : getActiveWebServerUrl()).replace(/\/+$/, '');
-                        showToast('Opening Pixn Retro to synchronize catalog...', 4000, 'info');
-                        if (cfgCookieStatusBadge && (!cfgCookieInput || !cfgCookieInput.value)) {
-                            cfgCookieStatusBadge.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Waiting for sync...';
-                            cfgCookieStatusBadge.style.color = '#f59e0b';
-                            cfgCookieStatusBadge.style.borderColor = 'rgba(245, 158, 11, 0.4)';
-                            cfgCookieStatusBadge.style.backgroundColor = 'rgba(245, 158, 11, 0.1)';
-                        }
-                        window.open('https://pixn-retro.dedyn.io/releases#autosync&server=' + encodeURIComponent(srv), '_blank');
-                    });
-                }
+                bmSettings.title = "Drag to bookmarks bar for easy access, or click to open Pixn Retro.";
             }
 
             // Use GitHub raw URL so Tampermonkey / Violentmonkey detects and prompts installation directly (Chrome blocks extension interception on 127.0.0.1)
