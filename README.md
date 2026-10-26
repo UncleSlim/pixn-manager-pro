@@ -83,6 +83,8 @@ Browse over **329 gaming systems** (308 active console platforms with RetroBat p
 
 ```text
 pixn/
+├── PIXN.exe                             # [Portable Only] Windows desktop launcher & tray app
+├── php/                                 # [Portable Only] Bundled zero-install PHP 8 runtime
 ├── index.html                           # Main frontend application (Single-Page App)
 ├── save.php                             # Backend API engine (API sync, Batocera proxy, repair)
 ├── sync_engine.js                       # Client-side sync script for Pixn Retro bookmarklet
@@ -102,6 +104,10 @@ pixn/
 ├── games_txt/                           # Plain-text {system}.txt export lists
 └── system-logos/                        # Official system logos (SVG/PNG) & application icons
 ```
+
+> [!TIP]
+> **Can I use the Portable release files for NAS / Web Server hosting?**  
+> **Yes!** The Portable version contains the exact same web application files. If you copy the portable package to a NAS or web server (Method 2), you can safely **delete `PIXN.exe` and the `php/` folder**, as your NAS uses its own built-in web server (Synology Web Station, Apache, Nginx) and native PHP engine.
 
 ## 🔄 Browser Synchronization Tools (Bookmarklet & Tampermonkey)
 
