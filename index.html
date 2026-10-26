@@ -8135,7 +8135,7 @@
                                     </span>
                                 </div>
                                 <span style="font-size: 0.68rem; color: var(--text-dim); display: block; margin-bottom: 0.25rem; line-height: 1.35;">
-                                    Required for full game downloads. Paste from <a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">Pix'n Retro</a> (<kbd style="background: rgba(255,255,255,0.08); padding: 1px 4px; border-radius: 3px; font-size: 0.64rem;">F12</kbd> &rarr; Application &rarr; Cookies &rarr; <code>session</code>), or use Tampermonkey below:
+                                    Required for downloading system <code>.torrent</code> packs directly from PIXN. Paste from <a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">Pix'n Retro</a> (<kbd style="background: rgba(255,255,255,0.08); padding: 1px 4px; border-radius: 3px; font-size: 0.64rem;">F12</kbd> &rarr; Application &rarr; Cookies &rarr; <code>session</code>), or use Tampermonkey below:
                                 </span>
                             </div>
                             <div style="position: relative; width: 100%;">
@@ -8167,12 +8167,22 @@
                                             <i class="fa-solid fa-wand-magic-sparkles"></i> Tampermonkey <span style="font-size: 0.6rem; background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 1px 4px; border-radius: 3px;">Auto-Cookie</span>
                                         </strong>
                                         <span style="font-size: 0.67rem; color: var(--text-dim); display: block; margin-top: 0.15rem; line-height: 1.25;">
-                                            Tampermonkey script. Auto-reads HttpOnly cookie &amp; syncs 1-click.
+                                            Auto-reads session cookie &amp; adds 1-click sync button.
                                         </span>
                                     </div>
-                                    <a id="btnInstallUserScriptSettings" href="pixn_sync.user.js" target="_blank" class="btn btn-primary" style="font-size: 0.72rem; padding: 0.22rem 0.5rem; text-align: center; background: #059669; border-color: #10b981;" title="Install Tampermonkey / Violentmonkey Userscript for automatic cookie sync">
-                                        <i class="fa-solid fa-download"></i> Install Script
-                                    </a>
+                                    <div>
+                                        <div style="display: flex; gap: 4px;">
+                                            <a id="btnInstallUserScriptSettings" href="pixn_sync.user.js" target="_blank" class="btn btn-primary" style="flex: 1; font-size: 0.72rem; padding: 0.22rem 0.4rem; text-align: center; background: #059669; border-color: #10b981;" title="Install Tampermonkey / Violentmonkey Userscript">
+                                                <i class="fa-solid fa-download"></i> Install
+                                            </a>
+                                            <button type="button" id="btnCopyUserScriptSettings" class="btn btn-outline" style="font-size: 0.72rem; padding: 0.22rem 0.45rem; text-align: center; border-color: #10b981; color: #10b981;" title="Copy Userscript code to paste manually in Tampermonkey">
+                                                <i class="fa-solid fa-copy"></i> Copy
+                                            </button>
+                                        </div>
+                                        <span style="font-size: 0.58rem; color: #64748b; display: block; margin-top: 2px; line-height: 1.2;">
+                                            If raw code opens, enable "Developer mode" in chrome://extensions or use Copy.
+                                        </span>
+                                    </div>
                                 </div>
 
                                 <!-- Bookmarklet Option -->
@@ -22362,7 +22372,7 @@
                     bmSettings.addEventListener('click', (e) => {
                         e.preventDefault();
                         const srv = (cfgNasUrlInput && cfgNasUrlInput.value.trim() ? cfgNasUrlInput.value.trim() : getActiveWebServerUrl()).replace(/\/+$/, '');
-                        showToast('Opening Pixn Retro... Tampermonkey will auto-sync and capture your session cookie!', 4500, 'info');
+                        showToast('Opening Pixn Retro to synchronize catalog...', 4000, 'info');
                         if (cfgCookieStatusBadge && (!cfgCookieInput || !cfgCookieInput.value)) {
                             cfgCookieStatusBadge.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Waiting for sync...';
                             cfgCookieStatusBadge.style.color = '#f59e0b';
@@ -22375,7 +22385,7 @@
             }
 
             // UserScript via save.php?action=get_userscript endpoint so Tampermonkey / Violentmonkey detects and prompts installation automatically with pre-baked server
-            const userScriptUrl = `${serverUrl}/save.php?action=get_userscript&server=${encodeURIComponent(serverUrl)}`;
+            const userScriptUrl = `${serverUrl}/save.php?action=get_userscript&server=${encodeURIComponent(serverUrl)}&file=pixn_sync.user.js`;
             const btnUserScript = document.getElementById('btnInstallUserScript');
             if (btnUserScript) {
                 btnUserScript.href = userScriptUrl;
@@ -22385,6 +22395,29 @@
             if (btnUserScriptSettings) {
                 btnUserScriptSettings.href = userScriptUrl;
                 btnUserScriptSettings.title = isPortable ? `Install Tampermonkey script configured for Portable PIXN (${serverUrl})` : `Install Tampermonkey script for DiskStation`;
+            }
+            const btnCopyUserScriptSettings = document.getElementById('btnCopyUserScriptSettings');
+            if (btnCopyUserScriptSettings && !btnCopyUserScriptSettings.__copyHandler) {
+                btnCopyUserScriptSettings.__copyHandler = true;
+                btnCopyUserScriptSettings.addEventListener('click', async () => {
+                    btnCopyUserScriptSettings.disabled = true;
+                    btnCopyUserScriptSettings.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                    try {
+                        const r = await fetch(userScriptUrl);
+                        const scriptCode = await r.text();
+                        await navigator.clipboard.writeText(scriptCode);
+                        showToast('✅ Userscript copied! In Tampermonkey, click + (Add a new script) and paste.', 5000, 'success');
+                        btnCopyUserScriptSettings.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+                        setTimeout(() => {
+                            btnCopyUserScriptSettings.disabled = false;
+                            btnCopyUserScriptSettings.innerHTML = '<i class="fa-solid fa-copy"></i> Copy';
+                        }, 2500);
+                    } catch (err) {
+                        showToast('Failed to copy: ' + err.message, 4000, 'error');
+                        btnCopyUserScriptSettings.disabled = false;
+                        btnCopyUserScriptSettings.innerHTML = '<i class="fa-solid fa-copy"></i> Copy';
+                    }
+                });
             }
         }
         updateDynamicSyncTools();

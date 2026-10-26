@@ -2832,7 +2832,7 @@ if ($action === 'get_userscript') {
     $requestedServer = !empty($_GET['server']) ? trim($_GET['server']) : '';
     $nasUrl = !empty($requestedServer) ? rtrim($requestedServer, '/\\') : (!empty($cfg['nas_base_url']) ? rtrim($cfg['nas_base_url'], '/\\') : $detectedUrl);
 
-    header('Content-Type: application/javascript; charset=utf-8');
+    header('Content-Type: text/javascript; charset=utf-8');
     header('Content-Disposition: inline; filename="pixn_sync.user.js"');
 
     $scriptFile = $baseDir . '/pixn_sync.user.js';
