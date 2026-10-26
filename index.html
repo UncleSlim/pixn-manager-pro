@@ -11128,27 +11128,22 @@
             // Filter out any companion files of matched games (.bin, .iso, .raw, etc.)
             const discCompExts = new Set(['bin', 'iso', 'img', 'raw', 'sub', 'wav', 'mp3', 'ogg', 'flac', 'ape', 'track', 'dat']);
             const cleanOtherGames = [];
+            const matchedStems = new Set();
+            for (const mId of batoceraMatchedIds) {
+                const s = normalizeGameTitle(mId);
+                if (s) matchedStems.add(s);
+            }
+            for (const mName of batoceraMatchedNames) {
+                const s = normalizeGameTitle(mName);
+                if (s) matchedStems.add(s);
+            }
+
             for (const og of batoceraOtherGames) {
                 const fn = (og.filename || og.id || '').toLowerCase();
                 const ext = fn.split('.').pop();
-                const stem = normalizeGameTitle(og.filename || og.id || og.name);
                 if (discCompExts.has(ext)) {
-                    let isCompOfMatched = false;
-                    for (const mId of batoceraMatchedIds) {
-                        if (normalizeGameTitle(mId) === stem) {
-                            isCompOfMatched = true;
-                            break;
-                        }
-                    }
-                    if (!isCompOfMatched) {
-                        for (const mName of batoceraMatchedNames) {
-                            if (normalizeGameTitle(mName) === stem) {
-                                isCompOfMatched = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (isCompOfMatched) continue;
+                    const stem = normalizeGameTitle(og.filename || og.id || og.name);
+                    if (stem && matchedStems.has(stem)) continue;
                 }
                 cleanOtherGames.push(og);
             }
@@ -11161,78 +11156,155 @@
                 return !hasId && !hasName;
             });
 
+            if (unmatchedCatalog.length === 0) {
+                return;
+            }
+
+            // Build fast index maps for instant O(1) matching:
+            const normNameMap = new Map();
+            const normIdMap = new Map();
+            const prefixMap = new Map();
+
+            for (let i = 0; i < unmatchedCatalog.length; i++) {
+                const cg = unmatchedCatalog[i];
+                const nName = normalizeGameTitle(cg.name);
+                const nId = normalizeGameTitle(cg.id || cg.filename);
+                if (nName && !normNameMap.has(nName)) normNameMap.set(nName, cg);
+                if (nId && !normIdMap.has(nId)) normIdMap.set(nId, cg);
+
+                const keyWord = (nName || nId).slice(0, 4);
+                if (keyWord.length >= 3) {
+                    if (!prefixMap.has(keyWord)) prefixMap.set(keyWord, []);
+                    prefixMap.get(keyWord).push(cg);
+                }
+            }
+
             const remainingOtherGames = [];
             const claimedCatalogKeys = new Set();
 
+            function claimMatch(cg, other) {
+                const key = cg.id || cg.filename || cg.name;
+                claimedCatalogKeys.add(key);
+                const matchId = cg.id || cg.filename || cg.name;
+                batoceraFuzzyMatches.set(matchId, other);
+                if (cg.id) batoceraFuzzyMatchedIds.add(cg.id);
+                if (cg.filename) batoceraFuzzyMatchedIds.add(cg.filename);
+                if (cg.name) batoceraFuzzyMatchedNames.add(cg.name);
+
+                // Compute mismatch details for client-side fuzzy match
+                const catalogFn = cg.filename || cg.id || '';
+                const localFn = other.filename || other.id || '';
+                const catalogExt = catalogFn.includes('.') ? catalogFn.split('.').pop().toLowerCase() : '';
+                const localExt = localFn.includes('.') ? localFn.split('.').pop().toLowerCase() : '';
+                const extMismatch = Boolean(catalogExt && localExt && !areExtensionsCompatible(catalogExt, localExt));
+                const catalogSizeMb = (cg.size_mb && !isNaN(cg.size_mb)) ? parseFloat(cg.size_mb) : 0;
+                const localSizeMb = (other.size_mb && !isNaN(other.size_mb)) ? parseFloat(other.size_mb) : 0;
+                const sizeDiffMb = (catalogSizeMb > 0 && localSizeMb > 0) ? Math.abs(catalogSizeMb - localSizeMb) : 0;
+                const sizeRatio = (catalogSizeMb > 0 && localSizeMb > 0) ? (sizeDiffMb / catalogSizeMb) : 0;
+                const isArchive = ARCHIVE_EXTENSIONS.has(localExt) || ARCHIVE_EXTENSIONS.has(catalogExt);
+                let sizeMismatch = false;
+                if (catalogSizeMb > 0 && localSizeMb > 0) {
+                    if (isArchive) {
+                        sizeMismatch = (localSizeMb > catalogSizeMb && sizeDiffMb >= 10.0 && sizeRatio >= 0.25) || (catalogSizeMb >= 100.0 && localSizeMb < 1.0);
+                    } else {
+                        sizeMismatch = ((sizeDiffMb >= 5.0 && sizeRatio >= 0.15) || sizeDiffMb >= 50.0);
+                    }
+                }
+                const fuzzyDetail = {
+                    matched_file: localFn,
+                    matched_rel: other.id || localFn,
+                    found_ext: localExt,
+                    catalog_ext: catalogExt,
+                    found_size_mb: localSizeMb,
+                    catalog_size_mb: catalogSizeMb,
+                    size_diff_mb: Math.round(sizeDiffMb * 100) / 100,
+                    ext_mismatch: extMismatch,
+                    size_mismatch: sizeMismatch,
+                    is_mismatch: extMismatch || sizeMismatch,
+                    is_fuzzy: true
+                };
+                if (cg.id) {
+                    batoceraMatchedDetails[cg.id] = fuzzyDetail;
+                    batoceraMatchedDetails[String(cg.id).toLowerCase()] = fuzzyDetail;
+                }
+                if (cg.filename) {
+                    batoceraMatchedDetails[cg.filename] = fuzzyDetail;
+                    batoceraMatchedDetails[String(cg.filename).toLowerCase()] = fuzzyDetail;
+                }
+                if (cg.name) {
+                    batoceraMatchedDetails[cg.name] = fuzzyDetail;
+                    batoceraMatchedDetails[String(cg.name).toLowerCase()] = fuzzyDetail;
+                }
+            }
+
+            // PASS 1: Fast O(1) hash lookups on normalized names & filenames
             for (const other of batoceraOtherGames) {
-                const availableCatalog = unmatchedCatalog.filter(cg => {
-                    const key = cg.id || cg.filename || cg.name;
-                    return !claimedCatalogKeys.has(key);
-                });
-                const match = findCatalogMatch(other, availableCatalog);
+                const nOtherName = normalizeGameTitle(other.name);
+                const nOtherFile = normalizeGameTitle(other.filename || other.id);
 
-                if (match && match.game) {
-                    const cg = match.game;
-                    const key = cg.id || cg.filename || cg.name;
-                    claimedCatalogKeys.add(key);
-                    const matchId = cg.id || cg.filename || cg.name;
-                    batoceraFuzzyMatches.set(matchId, other);
-                    if (cg.id) batoceraFuzzyMatchedIds.add(cg.id);
-                    if (cg.filename) batoceraFuzzyMatchedIds.add(cg.filename);
-                    if (cg.name) batoceraFuzzyMatchedNames.add(cg.name);
+                let matchedCg = null;
+                if (nOtherName && normNameMap.has(nOtherName)) {
+                    const candidate = normNameMap.get(nOtherName);
+                    const k = candidate.id || candidate.filename || candidate.name;
+                    if (!claimedCatalogKeys.has(k)) matchedCg = candidate;
+                }
+                if (!matchedCg && nOtherFile && normNameMap.has(nOtherFile)) {
+                    const candidate = normNameMap.get(nOtherFile);
+                    const k = candidate.id || candidate.filename || candidate.name;
+                    if (!claimedCatalogKeys.has(k)) matchedCg = candidate;
+                }
+                if (!matchedCg && nOtherFile && normIdMap.has(nOtherFile)) {
+                    const candidate = normIdMap.get(nOtherFile);
+                    const k = candidate.id || candidate.filename || candidate.name;
+                    if (!claimedCatalogKeys.has(k)) matchedCg = candidate;
+                }
+                if (!matchedCg && nOtherName && normIdMap.has(nOtherName)) {
+                    const candidate = normIdMap.get(nOtherName);
+                    const k = candidate.id || candidate.filename || candidate.name;
+                    if (!claimedCatalogKeys.has(k)) matchedCg = candidate;
+                }
 
-                    // Compute mismatch details for client-side fuzzy match
-                    const catalogFn = cg.filename || cg.id || '';
-                    const localFn = other.filename || other.id || '';
-                    const catalogExt = catalogFn.includes('.') ? catalogFn.split('.').pop().toLowerCase() : '';
-                    const localExt = localFn.includes('.') ? localFn.split('.').pop().toLowerCase() : '';
-                    const extMismatch = Boolean(catalogExt && localExt && !areExtensionsCompatible(catalogExt, localExt));
-                    const catalogSizeMb = (cg.size_mb && !isNaN(cg.size_mb)) ? parseFloat(cg.size_mb) : 0;
-                    const localSizeMb = (other.size_mb && !isNaN(other.size_mb)) ? parseFloat(other.size_mb) : 0;
-                    const sizeDiffMb = (catalogSizeMb > 0 && localSizeMb > 0) ? Math.abs(catalogSizeMb - localSizeMb) : 0;
-                    const sizeRatio = (catalogSizeMb > 0 && localSizeMb > 0) ? (sizeDiffMb / catalogSizeMb) : 0;
-                    const isArchive = ARCHIVE_EXTENSIONS.has(localExt) || ARCHIVE_EXTENSIONS.has(catalogExt);
-                    let sizeMismatch = false;
-                    if (catalogSizeMb > 0 && localSizeMb > 0) {
-                        if (isArchive) {
-                            sizeMismatch = (localSizeMb > catalogSizeMb && sizeDiffMb >= 10.0 && sizeRatio >= 0.25) || (catalogSizeMb >= 100.0 && localSizeMb < 1.0);
-                        } else {
-                            sizeMismatch = ((sizeDiffMb >= 5.0 && sizeRatio >= 0.15) || sizeDiffMb >= 50.0);
-                        }
-                    }
-                    const fuzzyDetail = {
-                        matched_file: localFn,
-                        matched_rel: other.id || localFn,
-                        found_ext: localExt,
-                        catalog_ext: catalogExt,
-                        found_size_mb: localSizeMb,
-                        catalog_size_mb: catalogSizeMb,
-                        size_diff_mb: Math.round(sizeDiffMb * 100) / 100,
-                        ext_mismatch: extMismatch,
-                        size_mismatch: sizeMismatch,
-                        is_mismatch: extMismatch || sizeMismatch,
-                        is_fuzzy: true
-                    };
-                    if (cg.id) {
-                        batoceraMatchedDetails[cg.id] = fuzzyDetail;
-                        batoceraMatchedDetails[String(cg.id).toLowerCase()] = fuzzyDetail;
-                    }
-                    if (cg.filename) {
-                        batoceraMatchedDetails[cg.filename] = fuzzyDetail;
-                        batoceraMatchedDetails[String(cg.filename).toLowerCase()] = fuzzyDetail;
-                    }
-                    if (cg.name) {
-                        batoceraMatchedDetails[cg.name] = fuzzyDetail;
-                        batoceraMatchedDetails[String(cg.name).toLowerCase()] = fuzzyDetail;
-                    }
+                if (matchedCg) {
+                    claimMatch(matchedCg, other);
                 } else {
                     remainingOtherGames.push(other);
                 }
             }
 
-            // Update other games list to only contain truly unmatched ROMs
-            batoceraOtherGames = remainingOtherGames;
-            batoceraOtherCount = remainingOtherGames.length;
+            // PASS 2: Prefix-pruned similarity search for small remaining pools (skip if remaining pool is huge > 1500 to keep UI 60fps)
+            if (remainingOtherGames.length > 0 && remainingOtherGames.length <= 1500 && unmatchedCatalog.length <= 3000) {
+                const stillRemaining = [];
+                for (const other of remainingOtherGames) {
+                    const nOtherName = normalizeGameTitle(other.name);
+                    const nOtherFile = normalizeGameTitle(other.filename || other.id);
+                    const keyWord = (nOtherName || nOtherFile).slice(0, 4);
+
+                    let candidatePool = [];
+                    if (keyWord.length >= 3 && prefixMap.has(keyWord)) {
+                        candidatePool = prefixMap.get(keyWord);
+                    } else if (unmatchedCatalog.length <= 300) {
+                        candidatePool = unmatchedCatalog;
+                    }
+
+                    const availablePool = candidatePool.filter(cg => {
+                        const key = cg.id || cg.filename || cg.name;
+                        return !claimedCatalogKeys.has(key);
+                    });
+
+                    if (availablePool.length > 0 && availablePool.length <= 50) {
+                        const match = findCatalogMatch(other, availablePool);
+                        if (match && match.game) {
+                            claimMatch(match.game, other);
+                            continue;
+                        }
+                    }
+                    stillRemaining.push(other);
+                }
+                batoceraOtherGames = stillRemaining;
+            } else {
+                batoceraOtherGames = remainingOtherGames;
+            }
+            batoceraOtherCount = batoceraOtherGames.length;
         }
 
         let artLoadSeq = 0;
@@ -11696,6 +11768,39 @@
                 }
             }
             return '';
+        }
+
+        function updateRenderedCardBadges() {
+            if (!editorContentEl || currentViewMode !== 'grid') {
+                renderGameList();
+                return;
+            }
+            const cards = editorContentEl.querySelectorAll('.game-grid-card');
+            if (!cards || cards.length === 0) {
+                renderGameList();
+                return;
+            }
+            const isGlobal = (currentMode === 'global');
+            cards.forEach(card => {
+                const idx = parseInt(card.dataset.idx, 10);
+                const g = isGlobal ? (globalResults ? globalResults[idx] : null) : (currentGames ? currentGames[idx] : null);
+                if (!g) return;
+                const sysId = isGlobal ? (g.system || card.dataset.system) : (activeSystem ? activeSystem.id : '');
+                const newBadge = getGameStatusBadgeHtml(g, sysId, isGlobal);
+                const badgeContainer = card.querySelector('.grid-card-badges');
+                if (badgeContainer) {
+                    const oldStatus = badgeContainer.querySelector('.grid-badge-status');
+                    if (oldStatus) {
+                        if (newBadge) {
+                            oldStatus.outerHTML = newBadge;
+                        } else {
+                            oldStatus.remove();
+                        }
+                    } else if (newBadge) {
+                        badgeContainer.insertAdjacentHTML('afterbegin', newBadge);
+                    }
+                }
+            });
         }
 
         function createGridCardHtml(g, idx, isGlobal = false) {
@@ -22550,9 +22655,18 @@
                     detectedNasBadge.title = `Auto-detected server: ${detectedNas}`;
                 }
 
-                // Sync Batocera UNC Path with server config
+                // Sync Batocera UNC Path with server config:
+                // Only adopt server path if server has a specific path (not generic placeholder)
+                // or if client has no specific path. Never let generic placeholder clobber a valid client path!
                 const serverBatoPath = (cfg.batocera_unc_path || (data && data.detected_batocera_unc) || '').trim();
-                if (serverBatoPath && (!batoceraUncPath || batoceraUncPath.toLowerCase() === '\\\\batocera\\share\\roms' || isAutoInit)) {
+                const isServerSpecific = Boolean(serverBatoPath && serverBatoPath.toLowerCase() !== '\\\\batocera\\share\\roms');
+                const isClientSpecific = Boolean(batoceraUncPath && batoceraUncPath.toLowerCase() !== '\\\\batocera\\share\\roms');
+
+                if (isServerSpecific) {
+                    batoceraUncPath = serverBatoPath;
+                    localStorage.setItem('batocera_roms_unc_path', batoceraUncPath);
+                    if (typeof updateBatoceraPreview === 'function') updateBatoceraPreview();
+                } else if (!isClientSpecific && serverBatoPath) {
                     batoceraUncPath = serverBatoPath;
                     localStorage.setItem('batocera_roms_unc_path', batoceraUncPath);
                     if (typeof updateBatoceraPreview === 'function') updateBatoceraPreview();

@@ -124,12 +124,18 @@ function getSystemTxtPath($txtDir, $sysId) {
 
 function getPixnConfig($baseDir) {
     $configFile = $baseDir . '/config.json';
+    if (!file_exists($configFile) && file_exists(dirname($baseDir) . '/config.json')) {
+        $configFile = dirname($baseDir) . '/config.json';
+    }
     $config = file_exists($configFile) ? readJsonFile($configFile) : [];
     if (!is_array($config)) $config = [];
 
     // Fallbacks for backwards compatibility:
     if (empty($config['batocera_unc_path'])) {
         $bFile = $baseDir . '/batocera_config.json';
+        if (!file_exists($bFile) && file_exists(dirname($baseDir) . '/batocera_config.json')) {
+            $bFile = dirname($baseDir) . '/batocera_config.json';
+        }
         if (file_exists($bFile)) {
             $bData = readJsonFile($bFile);
             if (!empty($bData['unc_path'])) {
@@ -139,6 +145,9 @@ function getPixnConfig($baseDir) {
     }
     if (empty($config['pixn_session_cookie'])) {
         $aFile = $baseDir . '/data/pixn_auth.json';
+        if (!file_exists($aFile) && file_exists(dirname($baseDir) . '/data/pixn_auth.json')) {
+            $aFile = dirname($baseDir) . '/data/pixn_auth.json';
+        }
         if (file_exists($aFile)) {
             $aData = readJsonFile($aFile);
             if (!empty($aData['cookie'])) {
@@ -164,9 +173,25 @@ function getPixnBatoceraUncPath($baseDir, $explicit = '') {
         if ($isGenericPlaceholder && $cfgPath !== '' && strcasecmp(rtrim(str_replace('/', '\\', $cfgPath), '\\/'), '\\\\batocera\\share\\roms') !== 0) {
             return $cfgPath;
         }
-        if ($cleanExp !== '') {
+        if (!$isGenericPlaceholder && $cleanExp !== '') {
             return $cleanExp;
         }
+    }
+
+    if ($cfgPath !== '' && strcasecmp(rtrim(str_replace('/', '\\', $cfgPath), '\\/'), '\\\\batocera\\share\\roms') !== 0) {
+        return $cfgPath;
+    }
+
+    // Auto-detect fallback if generic default: check if batocera-rgs is alive on the LAN
+    static $autoBatoPath = null;
+    if ($autoBatoPath === null) {
+        $autoBatoPath = '';
+        if (resolveLanHostname('batocera-rgs')) {
+            $autoBatoPath = '\\\\batocera-rgs\\share\\roms';
+        }
+    }
+    if ($autoBatoPath !== '') {
+        return $autoBatoPath;
     }
 
     return $cfgPath !== '' ? $cfgPath : '\\\\BATOCERA\\share\\roms';
@@ -5000,12 +5025,27 @@ if ($action === 'check_batocera_games') {
     }
     $mismatchCount = count($mismatchedFiles);
 
-    // Strip redundant descriptions and long text from gamelist_meta to save 15+ MB of transfer & memory
+    // Clean and compact gamelist_meta: only keep stem and base keys without descriptions or duplicate paths
     $clientGamelistMeta = [];
     foreach ($gamelistMeta as $k => $m) {
-        $cm = $m;
-        unset($cm['desc']);
-        $clientGamelistMeta[$k] = $cm;
+        if (strpos($k, '/') !== false || strpos($k, '\\') !== false) continue;
+        if (isset($clientGamelistMeta[$k])) continue;
+
+        $cm = [];
+        if (!empty($m['name'])) $cm['name'] = $m['name'];
+        if (!empty($m['releasedate'])) $cm['releasedate'] = $m['releasedate'];
+        if (!empty($m['developer'])) $cm['developer'] = $m['developer'];
+        if (!empty($m['publisher'])) $cm['publisher'] = $m['publisher'];
+        if (!empty($m['genre'])) $cm['genre'] = $m['genre'];
+        if (!empty($m['rating'])) $cm['rating'] = $m['rating'];
+        if (!empty($m['thumbnail'])) $cm['thumbnail'] = $m['thumbnail'];
+        if (!empty($m['image'])) $cm['image'] = $m['image'];
+        if (!empty($m['boxart'])) $cm['boxart'] = $m['boxart'];
+        if (!empty($m['video'])) $cm['video'] = $m['video'];
+        if (!empty($m['marquee'])) $cm['marquee'] = $m['marquee'];
+        if (!empty($cm)) {
+            $clientGamelistMeta[$k] = $cm;
+        }
     }
 
     $responseData = [
