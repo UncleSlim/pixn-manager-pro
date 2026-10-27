@@ -2044,7 +2044,7 @@ if ($action === 'build_index' || $action === 'repair') {
     exit;
 }
 
-function getRecentUpdatedSystems($baseDir, $limit = 4) {
+function getRecentUpdatedSystems($baseDir, $limit = 10) {
     $systemsFile = $baseDir . '/systems.json';
     if (!file_exists($systemsFile)) return [];
     $sysList = readJsonFile($systemsFile);
@@ -2138,7 +2138,14 @@ function getSyncStatus($baseDir, $statusFile) {
             $res['latest_catalog_release_date'] = $meta['latest_catalog_release_date'];
         }
     }
-    $res['recent_updated_systems'] = getRecentUpdatedSystems($baseDir, 4);
+    $checkCacheFile = $baseDir . '/data/cache_releases_check.json';
+    if (file_exists($checkCacheFile)) {
+        $cachedCheck = readJsonFile($checkCacheFile);
+        if (is_array($cachedCheck) && !empty($cachedCheck['checked_at'])) {
+            $res['checked_at'] = $cachedCheck['checked_at'];
+        }
+    }
+    $res['recent_updated_systems'] = getRecentUpdatedSystems($baseDir, 10);
     return $res;
 }
 
@@ -2495,7 +2502,7 @@ if ($action === 'check_releases_update') {
         'remote_script' => $remoteScript,
         'new_systems' => $curStatus['new_systems'] ?? [],
         'updated_systems' => !empty($detectedUpdatedSystems) ? $detectedUpdatedSystems : ($curStatus['updated_systems'] ?? []),
-        'recent_updated_systems' => getRecentUpdatedSystems($baseDir, 4),
+        'recent_updated_systems' => getRecentUpdatedSystems($baseDir, 10),
         'last_sync' => $curStatus['last_sync'] ?? '',
         'total_systems' => $curStatus['total_systems'] ?? 0,
         'total_games' => $curStatus['total_games'] ?? 0,

@@ -5710,6 +5710,29 @@
             box-shadow: 0 0 6px #ffffff;
         }
 
+        /* Scrollable container for latest catalog updates */
+        .catalog-updates-scroll {
+            max-height: 240px;
+            overflow-y: auto;
+            padding-right: 6px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(56, 189, 248, 0.45) rgba(15, 23, 42, 0.35);
+        }
+        .catalog-updates-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .catalog-updates-scroll::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.35);
+            border-radius: 4px;
+        }
+        .catalog-updates-scroll::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.45);
+            border-radius: 4px;
+        }
+        .catalog-updates-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(56, 189, 248, 0.75);
+        }
+
         /* =========================================================
            Visual System Browser Modal & Gallery Grid
            ========================================================= */
@@ -7953,7 +7976,7 @@
 
     <!-- Sync Info Modal -->
     <div class="modal-backdrop" id="syncModal">
-        <div class="modal-box" style="max-width: 660px;">
+        <div class="modal-box" style="max-width: 660px; max-height: 92vh; overflow-y: auto;">
             <div class="modal-header">
                 <h3><i class="fa-solid fa-rotate" style="color: var(--accent-primary);"></i> Catalog Synchronization & Auto-Updater</h3>
                 <button class="modal-close" id="btnCloseModal">&times;</button>
@@ -7966,7 +7989,12 @@
                         <i class="fa-solid fa-sparkles" style="color: #38bdf8; font-size: 0.9rem;"></i>
                         <strong id="modalSinceLastVisitTitle" style="font-size: 0.88rem; color: #38bdf8;">Catalog Releases &amp; Update Status</strong>
                     </div>
-                    <span id="modalSinceLastVisitTime" style="font-size: 0.72rem; color: #94a3b8;">Checked: Just now</span>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span id="modalSinceLastVisitTime" style="font-size: 0.72rem; color: #94a3b8;">Checked: Just now</span>
+                        <button type="button" id="btnRefreshCatalogReleases" class="btn btn-outline" title="Check for latest catalog releases now" style="font-size: 0.7rem; padding: 2px 8px; height: 22px; display: inline-flex; align-items: center; gap: 4px; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8; background: rgba(56, 189, 248, 0.08); border-radius: 5px; cursor: pointer; transition: all 0.2s ease;">
+                            <i class="fa-solid fa-arrows-rotate" id="iconRefreshCatalogReleases"></i> Refresh
+                        </button>
+                    </div>
                 </div>
                 <div id="modalSinceLastVisitBody" style="font-size: 0.78rem; color: #e2e8f0; line-height: 1.45;"></div>
             </div>
@@ -22484,6 +22512,14 @@
         // Sync Modal Handling
         btnSyncModal.addEventListener('click', () => {
             syncModal.classList.add('open');
+            if (lastCheckReleasesData) {
+                renderSinceLastVisitBox(lastCheckReleasesData, Boolean(lastCheckReleasesData.update_ready));
+            } else {
+                const cachedCheck = localStorage.getItem('pixn_last_catalog_check');
+                if (cachedCheck && modalSinceLastVisitTime) {
+                    modalSinceLastVisitTime.textContent = `Checked: ${formatCheckDateTime(cachedCheck)}`;
+                }
+            }
             fetchSyncStatus();
             checkForReleasesUpdate();
         });
@@ -23090,13 +23126,32 @@
         const modalSinceLastVisitTitle = document.getElementById('modalSinceLastVisitTitle');
         const modalSinceLastVisitTime = document.getElementById('modalSinceLastVisitTime');
         const modalSinceLastVisitBody = document.getElementById('modalSinceLastVisitBody');
+        const btnRefreshCatalogReleases = document.getElementById('btnRefreshCatalogReleases');
+        const iconRefreshCatalogReleases = document.getElementById('iconRefreshCatalogReleases');
         const btnSyncRepairNow = document.getElementById('btnSyncRepairNow');
         let lastKnownSyncStatus = 'idle';
         let lastKnownReleaseId = '';
         let lastCheckReleasesData = null;
 
+        function formatCheckDateTime(dateInput) {
+            let d;
+            if (!dateInput) {
+                d = new Date();
+            } else if (dateInput instanceof Date) {
+                d = dateInput;
+            } else {
+                const s = String(dateInput).replace(' ', 'T');
+                d = new Date(s);
+                if (isNaN(d.getTime())) d = new Date();
+            }
+            const pad = (n) => String(n).padStart(2, '0');
+            const timeStr = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+            const dateStr = `${pad(d.getDate())}-${pad(d.getMonth() + 1)}-${d.getFullYear()}`;
+            return `${timeStr} ${dateStr}`;
+        }
+
         // Auto-Check if https://pixn-retro.dedyn.io/releases has updated and automatically sync it
-        async function checkForReleasesUpdate(isInitialLaunch = false) {
+        async function checkForReleasesUpdate(isInitialLaunch = false, forceRefresh = false) {
             try {
                 if (isInitialLaunch && headerSyncIndicator && headerSyncText) {
                     headerSyncIndicator.classList.add('running');
@@ -23114,10 +23169,18 @@
                 }
 
                 // Always check https://pixn-retro.dedyn.io/releases and auto-sync when launching, refreshing, or on schedule
-                const res = await fetch(`save.php?action=check_releases_update&auto_sync=1&last_visit=${encodeURIComponent(lastVisit)}`);
-                if (!res.ok) return;
+                const forceParam = forceRefresh ? '&force_refresh=1&force=1' : '';
+                const res = await fetch(`save.php?action=check_releases_update&auto_sync=1${forceParam}&last_visit=${encodeURIComponent(lastVisit)}`);
+                if (!res.ok) return null;
                 const data = await res.json();
                 lastCheckReleasesData = data;
+                if (data && data.checked_at) {
+                    window.lastCatalogCheckTime = data.checked_at;
+                    localStorage.setItem('pixn_last_catalog_check', data.checked_at);
+                } else {
+                    window.lastCatalogCheckTime = new Date().toISOString();
+                    localStorage.setItem('pixn_last_catalog_check', window.lastCatalogCheckTime);
+                }
 
                 if (data.auto_synced && data.sync_result) {
                     const resMeta = data.sync_result;
@@ -23138,8 +23201,10 @@
                 }
 
                 handleReleasesUpdateResult(data);
+                return data;
             } catch (e) {
                 console.warn('Could not check releases update:', e);
+                return null;
             }
         }
 
@@ -23180,8 +23245,8 @@
         }
 
         function getTopUpdatedSystems(data) {
-            if (data && Array.isArray(data.recent_updated_systems) && data.recent_updated_systems.length > 0) {
-                return data.recent_updated_systems;
+            if (data && Array.isArray(data.recent_updated_systems) && data.recent_updated_systems.length >= 10) {
+                return data.recent_updated_systems.slice(0, 10);
             }
             const sysList = (typeof rawAllSystems !== 'undefined' && Array.isArray(rawAllSystems)) ? rawAllSystems : ((typeof allSystems !== 'undefined' && Array.isArray(allSystems)) ? allSystems : []);
             if (sysList.length > 0) {
@@ -23197,7 +23262,10 @@
                     const bIsNew = b.is_new || b.version === 'v1';
                     if (aIsNew !== bIsNew) return aIsNew ? -1 : 1;
                     return (a.name || a.id).localeCompare(b.name || b.id);
-                }).slice(0, 4);
+                }).slice(0, 10);
+            }
+            if (data && Array.isArray(data.recent_updated_systems) && data.recent_updated_systems.length > 0) {
+                return data.recent_updated_systems.slice(0, 10);
             }
             return [];
         }
@@ -23212,7 +23280,8 @@
             modalSinceLastVisitBox.style.display = 'block';
 
             if (modalSinceLastVisitTime) {
-                modalSinceLastVisitTime.textContent = 'Checked: Just now';
+                const ts = (data && data.checked_at) || window.lastCatalogCheckTime || localStorage.getItem('pixn_last_catalog_check') || new Date();
+                modalSinceLastVisitTime.textContent = `Checked: ${formatCheckDateTime(ts)}`;
             }
 
             let items = [];
@@ -23341,9 +23410,9 @@
                             <strong style="font-size:0.83rem; color:#38bdf8; display:flex; align-items:center; gap:0.4rem;">
                                 <i class="fa-solid fa-fire" style="color:#f59e0b;"></i> Latest Catalog Updates &amp; Newly Added Systems:
                             </strong>
-                            <span style="font-size:0.72rem; color:#94a3b8;">Click 'View' to browse</span>
+                            <span style="font-size:0.72rem; color:#94a3b8;">${topSystems.length} systems &bull; Scroll to view</span>
                         </div>
-                        <div style="display:flex; flex-direction:column; gap:0.4rem;">
+                        <div class="catalog-updates-scroll" style="display:flex; flex-direction:column; gap:0.4rem;">
                             ${sysCards}
                         </div>
                     </div>
@@ -23542,6 +23611,36 @@
         // Button Event Listeners
         if (btnSyncRepairNow) {
             btnSyncRepairNow.addEventListener('click', runRepairAndRebuild);
+        }
+        if (btnRefreshCatalogReleases) {
+            btnRefreshCatalogReleases.addEventListener('click', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (btnRefreshCatalogReleases.disabled) return;
+                btnRefreshCatalogReleases.disabled = true;
+                if (iconRefreshCatalogReleases) iconRefreshCatalogReleases.classList.add('fa-spin');
+                if (modalSinceLastVisitTime) modalSinceLastVisitTime.textContent = 'Checking: In progress...';
+
+                try {
+                    const freshData = await checkForReleasesUpdate(false, true);
+                    await fetchSyncStatus();
+                    const checkTs = (freshData && freshData.checked_at) || new Date();
+                    window.lastCatalogCheckTime = checkTs;
+                    if (modalSinceLastVisitTime) {
+                        modalSinceLastVisitTime.textContent = `Checked: ${formatCheckDateTime(checkTs)}`;
+                    }
+                    showToast('✨ Catalog releases status refreshed!');
+                } catch (err) {
+                    console.error('Refresh releases failed:', err);
+                    showToast('⚠️ Failed to refresh catalog status');
+                    if (modalSinceLastVisitTime && window.lastCatalogCheckTime) {
+                        modalSinceLastVisitTime.textContent = `Checked: ${formatCheckDateTime(window.lastCatalogCheckTime)}`;
+                    }
+                } finally {
+                    if (iconRefreshCatalogReleases) iconRefreshCatalogReleases.classList.remove('fa-spin');
+                    btnRefreshCatalogReleases.disabled = false;
+                }
+            });
         }
 
 
