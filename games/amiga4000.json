@@ -1,11 +1,11 @@
 [
-  {
-    "id": "Temptations-DEMO-v1.0c-WHDLoad.lha",
-    "name": "Temptations (Demo)",
-    "publisher": "soyajhc",
-    "releasedate": "20221022T000000",
-    "size_mb": 0.38,
-    "developer": "soyajhc",
-    "genre": "Action, Platform"
-  }
+    {
+        "id": "Temptations-DEMO-v1.0c-WHDLoad.lha",
+        "name": "Temptations (Demo)",
+        "publisher": "soyajhc",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20221022T000000",
+        "size_mb": 0.38
+    }
 ]

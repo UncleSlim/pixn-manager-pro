@@ -1,11 +1,11 @@
 [
-  {
-    "id": "Cannonball.(cannonball|game)",
-    "name": "OutRun (Cannonball)",
-    "publisher": "Chris White",
-    "releasedate": "20171202T000000",
-    "size_mb": null,
-    "developer": "Chris White",
-    "genre": "Racing"
-  }
+    {
+        "id": "Cannonball.(cannonball|game)",
+        "name": "OutRun (Cannonball)",
+        "publisher": "Chris White",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20171202T000000",
+        "size_mb": 0
+    }
 ]

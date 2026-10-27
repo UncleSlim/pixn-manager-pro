@@ -1,11 +1,11 @@
 [
-  {
-    "id": "cdogs.game",
-    "name": "C-Dogs SDL",
-    "publisher": "Cong Xu",
-    "releasedate": "20130725T000000",
-    "size_mb": null,
-    "developer": "Ronny Wester/Cong Xu",
-    "genre": "Shooter / Run and Gun"
-  }
+    {
+        "id": "cdogs.game",
+        "name": "C-Dogs SDL",
+        "publisher": "Cong Xu",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20130725T000000",
+        "size_mb": 0
+    }
 ]

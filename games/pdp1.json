@@ -1,1 +1,11 @@
-[{"id":"spacewar.zip","name":"spacewar","publisher":"","developer":"","genre":"","releasedate":"1962","size_mb":0.01}]
+[
+    {
+        "id": "spacewar.zip",
+        "name": "spacewar",
+        "publisher": "",
+        "developer": "",
+        "genre": "",
+        "releasedate": "1962",
+        "size_mb": 0.01
+    }
+]

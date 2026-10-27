@@ -1,17 +1,39 @@
 {
     "status": "completed",
     "progress": 100,
-    "current_task": "All 331 system text files verified & search index up to date",
-    "last_sync": "2026-10-26 17:03:57",
-    "total_systems": 331,
-    "total_games": 82849,
+    "current_task": "Restored 21 missing text files (abuse.txt, amiga4000.txt, cannonball.txt) & rebuilt search index",
+    "last_sync": "2026-10-27 21:37:23",
+    "total_systems": 332,
+    "total_games": 82865,
     "new_systems_count": 0,
     "new_systems": [],
     "updated_systems_count": 0,
     "log": [],
-    "updated_at": "2026-10-26 17:03:57",
-    "restored_count": 0,
-    "restored_files": [],
+    "updated_at": "2026-10-27 21:37:23",
+    "restored_count": 21,
+    "restored_files": [
+        "abuse.txt",
+        "amiga4000.txt",
+        "cannonball.txt",
+        "cavestory.txt",
+        "cdogs.txt",
+        "corsixth.txt",
+        "dinothawr.txt",
+        "etlegacy.txt",
+        "hcl.txt",
+        "hurrican.txt",
+        "jazz2.txt",
+        "mrboom.txt",
+        "pdp1.txt",
+        "reminiscence.txt",
+        "sdlpop.txt",
+        "sonic-mania.txt",
+        "sonic3-air.txt",
+        "superbroswar.txt",
+        "theforceengine.txt",
+        "tyrian.txt",
+        "xrick.txt"
+    ],
     "missing_systems": [],
     "missing_systems_count": 0,
     "deleted_files_count": 0,
@@ -19,8 +41,21 @@
     "updated_systems": [],
     "deleted_systems_count": 0,
     "deleted_systems": [],
-    "latest_catalog_release_date": "26-10-2026",
+    "latest_catalog_release_date": "27-10-2026",
     "recent_updated_systems": [
+        {
+            "id": "exaarcadia_retrobat",
+            "name": "exA-Arcadia (Retrobat)",
+            "gameCount": 16,
+            "hardware": "arcade",
+            "manufacturer": "exA-Arcadia Pte. Ltd.",
+            "release": "2018",
+            "version": "v1-RGS_exaarcadia_retrobat",
+            "gamelistDate": "27-10-2026",
+            "torrent_available": true,
+            "is_new": false,
+            "file_mtime": 1793133434
+        },
         {
             "id": "konamipc_batocera",
             "name": "Konami PC (Batocera)",
@@ -31,7 +66,8 @@
             "version": "v3-RGS_konamipc_batocera",
             "gamelistDate": "26-10-2026",
             "torrent_available": true,
-            "is_new": false
+            "is_new": false,
+            "file_mtime": 1793030652
         },
         {
             "id": "segarw_batocera",
@@ -43,7 +79,8 @@
             "version": "v4-RGS_segarw_batocera",
             "gamelistDate": "25-10-2026",
             "torrent_available": true,
-            "is_new": false
+            "is_new": false,
+            "file_mtime": 1793030685
         },
         {
             "id": "typex2_batocera",
@@ -55,7 +92,8 @@
             "version": "v4-RGS_typex2_batocera",
             "gamelistDate": "25-10-2026",
             "torrent_available": true,
-            "is_new": false
+            "is_new": false,
+            "file_mtime": 1792993128
         },
         {
             "id": "segare_batocera",
@@ -67,7 +105,74 @@
             "version": "v4-RGS_segare_batocera",
             "gamelistDate": "24-10-2026",
             "torrent_available": true,
-            "is_new": false
+            "is_new": false,
+            "file_mtime": 1793030636
+        },
+        {
+            "id": "rawthrills_batocera",
+            "name": "RAW Thrills (Batocera)",
+            "gameCount": 44,
+            "hardware": "arcade",
+            "manufacturer": "Raw Thrills Inc.",
+            "release": "2001",
+            "version": "v6-RGS_rawthrills_batocera",
+            "gamelistDate": "22-10-2026",
+            "torrent_available": true,
+            "is_new": false,
+            "file_mtime": 1792825343
+        },
+        {
+            "id": "amiga_ransom",
+            "name": "Amiga (Ransom)",
+            "gameCount": 9482,
+            "hardware": "computer",
+            "manufacturer": "Commodore",
+            "release": "1987",
+            "version": "v1.1-RGS_amiga_ransom",
+            "gamelistDate": "22-10-2026",
+            "torrent_available": true,
+            "is_new": false,
+            "file_mtime": 1792692545
+        },
+        {
+            "id": "psvita",
+            "name": "PlayStation Vita",
+            "gameCount": 100,
+            "hardware": "portable",
+            "manufacturer": "Sony",
+            "release": "2012",
+            "version": "v1.1-RGS_psvita",
+            "gamelistDate": "21-10-2026",
+            "torrent_available": true,
+            "is_new": false,
+            "file_mtime": 1792616357
+        },
+        {
+            "id": "chihiro_batocera",
+            "name": "Chihiro (Batocera)",
+            "gameCount": 10,
+            "hardware": "arcade",
+            "manufacturer": "Sega",
+            "release": "2002",
+            "version": "v2-RGS_chihiro_batocera",
+            "gamelistDate": "18-10-2026",
+            "torrent_available": true,
+            "is_new": false,
+            "file_mtime": 1792350330
+        },
+        {
+            "id": "nesicax_batocera",
+            "name": "NESiCAxLive (Batocera)",
+            "gameCount": 50,
+            "hardware": "arcade",
+            "manufacturer": "Taito",
+            "release": "2010",
+            "version": "v4-RGS_nesicax_batocera",
+            "gamelistDate": "17-10-2026",
+            "torrent_available": true,
+            "is_new": false,
+            "file_mtime": 1792266674
         }
-    ]
+    ],
+    "checked_at": "2026-10-27 21:35:19"
 }

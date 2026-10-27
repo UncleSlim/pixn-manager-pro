@@ -1,11 +1,11 @@
 [
-  {
-    "id": "Wolfenstein - Enemy Territory.(etl|exe)",
-    "name": "Wolfenstein: Enemy Territory (ET Legacy)",
-    "publisher": "Bethesda Softworks LLC",
-    "releasedate": "20031101T000000",
-    "size_mb": null,
-    "developer": "Splash Damage",
-    "genre": "Shooter"
-  }
+    {
+        "id": "Wolfenstein - Enemy Territory.(etl|exe)",
+        "name": "Wolfenstein: Enemy Territory (ET Legacy)",
+        "publisher": "Bethesda Softworks LLC",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20031101T000000",
+        "size_mb": 0
+    }
 ]

@@ -1,11 +1,11 @@
 [
-  {
-    "id": "MrBoom.libretro",
-    "name": "MrBoom",
-    "publisher": "Libretro",
-    "releasedate": "20210101T000000",
-    "size_mb": null,
-    "developer": "Remdy Software",
-    "genre": "Action, Puzzle"
-  }
+    {
+        "id": "MrBoom.libretro",
+        "name": "MrBoom",
+        "publisher": "Libretro",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20210101T000000",
+        "size_mb": 0
+    }
 ]

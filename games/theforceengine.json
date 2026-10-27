@@ -1,11 +1,11 @@
 [
-  {
-    "id": "Star Wars - Dark Forces.(tfe|game)",
-    "name": "Star Wars - Dark Forces",
-    "publisher": "Lucasarts",
-    "releasedate": "19950228T000000",
-    "size_mb": null,
-    "developer": "Lucasarts",
-    "genre": "Shooter"
-  }
+    {
+        "id": "Star Wars - Dark Forces.(tfe|game)",
+        "name": "Star Wars - Dark Forces",
+        "publisher": "Lucasarts",
+        "developer": "",
+        "genre": "",
+        "releasedate": "19950228T000000",
+        "size_mb": 0
+    }
 ]

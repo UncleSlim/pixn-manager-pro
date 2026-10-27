@@ -1,11 +1,11 @@
 [
-  {
-    "id": "Theme Hospital HD.(game|exe)",
-    "name": "Theme Hospital HD",
-    "publisher": "Electronic Arts",
-    "releasedate": "19970101T000000",
-    "size_mb": null,
-    "developer": "Bullfrog",
-    "genre": "Simulation / Build And Management"
-  }
+    {
+        "id": "Theme Hospital HD.(game|exe)",
+        "name": "Theme Hospital HD",
+        "publisher": "Electronic Arts",
+        "developer": "",
+        "genre": "",
+        "releasedate": "19970101T000000",
+        "size_mb": 0
+    }
 ]

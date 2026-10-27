@@ -1,11 +1,11 @@
 [
-  {
-    "id": "hurrican.(game|cmd)",
-    "name": "Turrican (Hurrican)",
-    "publisher": "poke 53280",
-    "releasedate": "20071202T000000",
-    "size_mb": null,
-    "developer": "poke 53280",
-    "genre": "Action"
-  }
+    {
+        "id": "hurrican.(game|cmd)",
+        "name": "Turrican (Hurrican)",
+        "publisher": "poke 53280",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20071202T000000",
+        "size_mb": 0
+    }
 ]

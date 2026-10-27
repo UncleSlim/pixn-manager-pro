@@ -1,11 +1,11 @@
 [
-  {
-    "id": "DATA/Flashback.rem",
-    "name": "Flashback: The Quest for Identity",
-    "publisher": "Strategic Simulations",
-    "releasedate": "19930101T000000",
-    "size_mb": null,
-    "developer": "Delphine Software International",
-    "genre": "Platform / Shooter Scrolling"
-  }
+    {
+        "id": "DATA/Flashback.rem",
+        "name": "Flashback: The Quest for Identity",
+        "publisher": "Strategic Simulations",
+        "developer": "",
+        "genre": "",
+        "releasedate": "19930101T000000",
+        "size_mb": 0
+    }
 ]

@@ -1,11 +1,11 @@
 [
-  {
-    "id": "sdlpop.(sdlpop|cmd)",
-    "name": "Prince of Persia (SDLPoP)",
-    "publisher": "SDPoP",
-    "releasedate": "20160725T000000",
-    "size_mb": null,
-    "developer": "Dávid Nagy, Jordan Mechner",
-    "genre": "Platform, Puzzle"
-  }
+    {
+        "id": "sdlpop.(sdlpop|cmd)",
+        "name": "Prince of Persia (SDLPoP)",
+        "publisher": "SDPoP",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20160725T000000",
+        "size_mb": 0
+    }
 ]

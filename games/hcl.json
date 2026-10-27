@@ -1,11 +1,11 @@
 [
-  {
-    "id": "hcl.(game|cmd)",
-    "name": "Hydra Castle Labyrinth",
-    "publisher": "E.Hashimoto",
-    "releasedate": "20070925T000000",
-    "size_mb": null,
-    "developer": "Eiji Hashimoto Aka Buster, Port By Ptitseb",
-    "genre": "Platform, Adventure"
-  }
+    {
+        "id": "hcl.(game|cmd)",
+        "name": "Hydra Castle Labyrinth",
+        "publisher": "E.Hashimoto",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20070925T000000",
+        "size_mb": 0
+    }
 ]

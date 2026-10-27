@@ -1,11 +1,11 @@
 [
-  {
-    "id": "Sonic Mania.(sman|rsdk)",
-    "name": "Sonic Mania",
-    "publisher": "SEGA",
-    "releasedate": "20170829T000000",
-    "size_mb": null,
-    "developer": "Headcannon",
-    "genre": "Platform / Run Jump Scrolling"
-  }
+    {
+        "id": "Sonic Mania.(sman|rsdk)",
+        "name": "Sonic Mania",
+        "publisher": "SEGA",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20170829T000000",
+        "size_mb": 0
+    }
 ]

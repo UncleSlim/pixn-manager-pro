@@ -635,6 +635,8 @@
 
         /* Control Panel Card - Glassmorphism */
         .controls-card {
+            position: relative;
+            z-index: 60;
             background: linear-gradient(180deg, rgba(20, 25, 38, 0.75) 0%, rgba(14, 18, 28, 0.84) 100%);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
@@ -646,6 +648,11 @@
             flex-direction: column;
             gap: 1rem;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .controls-card:has(.rich-select-trigger.open),
+        .controls-card.has-dropdown-open {
+            z-index: 9999 !important;
         }
 
         /* Mode Switcher Tabs */
@@ -828,6 +835,12 @@
             display: flex;
             align-items: center;
             width: 100%;
+            z-index: 100;
+        }
+
+        .custom-select-wrapper:has(.rich-select-trigger.open),
+        .custom-select-wrapper.open {
+            z-index: 99999;
         }
 
         .system-select {
@@ -861,6 +874,364 @@
             color: var(--text-dim);
             font-size: 0.85rem;
             transition: transform 0.2s;
+        }
+
+        /* =========================================================
+           Rich Custom Dropdown (Option 2)
+           ========================================================= */
+        .rich-select-trigger {
+            width: 100%;
+            min-height: 44px;
+            background: var(--bg-elevated);
+            color: var(--text-main);
+            border: 1px solid var(--border-subtle);
+            padding: 0 2.8rem 0 0.85rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            user-select: none;
+            outline: none;
+            position: relative;
+        }
+
+        .rich-select-trigger:hover {
+            border-color: var(--border-highlight);
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        .rich-select-trigger:focus,
+        .rich-select-trigger.open {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .rich-select-selection {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .rich-select-placeholder {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            font-weight: 400;
+        }
+
+        .rich-trigger-selected {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .rich-trigger-icon {
+            color: #38bdf8;
+            font-size: 0.92rem;
+            flex-shrink: 0;
+        }
+
+        .rich-trigger-name {
+            color: #f8fafc;
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .rich-trigger-mfg {
+            font-size: 0.74rem;
+            color: #94a3b8;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .rich-trigger-count {
+            font-size: 0.74rem;
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .rich-select-chevron {
+            position: absolute;
+            right: 1.1rem;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            transition: transform 0.25s ease;
+            pointer-events: none;
+        }
+
+        .rich-select-trigger.open .rich-select-chevron {
+            transform: rotate(180deg);
+            color: #38bdf8;
+        }
+
+        /* Floating Dropdown Panel */
+        .rich-select-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            z-index: 999999;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(10, 15, 29, 0.99) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 35px rgba(56, 189, 248, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: richDropdownFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes richDropdownFadeIn {
+            from { opacity: 0; transform: translateY(-8px) scale(0.99); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .rich-select-search-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0.65rem 0.85rem;
+            background: rgba(0, 0, 0, 0.35);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .rich-select-search-wrap i {
+            position: absolute;
+            left: 1.2rem;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            pointer-events: none;
+        }
+
+        .rich-select-search-input {
+            width: 100%;
+            background: var(--bg-editor);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            padding: 0.45rem 2rem 0.45rem 2.2rem;
+            border-radius: 8px;
+            font-size: 0.86rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .rich-select-search-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 2px var(--accent-glow);
+        }
+
+        .rich-select-clear-btn {
+            position: absolute;
+            right: 1.25rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .rich-select-clear-btn:hover {
+            color: #ffffff;
+        }
+
+        .rich-select-options-list {
+            max-height: 380px;
+            overflow-y: auto;
+            padding: 0.35rem 0;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(56, 189, 248, 0.45) rgba(15, 23, 42, 0.35);
+        }
+
+        .rich-select-options-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .rich-select-options-list::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.35);
+        }
+        .rich-select-options-list::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.45);
+            border-radius: 4px;
+        }
+
+        .rich-select-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.55rem 0.95rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+
+        .rich-select-option:last-child {
+            border-bottom: none;
+        }
+
+        .rich-select-option:hover,
+        .rich-select-option.focused {
+            background: rgba(56, 189, 248, 0.1);
+            border-left: 3px solid #38bdf8;
+            padding-left: calc(0.95rem - 3px);
+        }
+
+        .rich-select-option.selected {
+            background: rgba(56, 189, 248, 0.16);
+            border-left: 3px solid #38bdf8;
+            padding-left: calc(0.95rem - 3px);
+        }
+
+        .rich-option-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #38bdf8;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+            transition: all 0.15s;
+        }
+
+        .rich-select-option:hover .rich-option-icon,
+        .rich-select-option.selected .rich-option-icon {
+            background: rgba(56, 189, 248, 0.2);
+            color: #ffffff;
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        .rich-option-icon.global-icon {
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.3), rgba(99, 102, 241, 0.3));
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+
+        .rich-option-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.18rem;
+        }
+
+        .rich-option-title-row {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .rich-option-name {
+            color: #f8fafc;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .rich-option-mfg {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .rich-option-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.74rem;
+            color: var(--text-dim);
+        }
+
+        .rich-option-hw {
+            color: #64748b;
+            text-transform: capitalize;
+        }
+
+        .rich-option-dot {
+            color: #475569;
+            font-size: 0.6rem;
+        }
+
+        .rich-option-count {
+            color: #38bdf8;
+            font-weight: 500;
+        }
+
+        .rich-option-sub {
+            color: #94a3b8;
+            font-size: 0.74rem;
+        }
+
+        .rich-option-badges {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+
+        .rich-badge-bato {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: rgba(168, 85, 247, 0.16);
+            border: 1px solid rgba(192, 132, 252, 0.4);
+            color: #c084fc;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 999px;
+            letter-spacing: 0.02em;
+        }
+
+        .rich-badge-bato i {
+            font-size: 0.45rem;
+            color: #a855f7;
+        }
+
+        .rich-badge-global {
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 999px;
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #38bdf8;
+            letter-spacing: 0.04em;
+        }
+
+        .rich-select-empty {
+            padding: 1.5rem 1rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Filter Controls */
@@ -1288,6 +1659,8 @@
 
         /* Text File Viewer (Notepad / Code Editor Window) - Glassmorphism */
         .editor-window {
+            position: relative;
+            z-index: 10;
             background: linear-gradient(180deg, rgba(12, 15, 24, 0.88) 0%, rgba(8, 10, 16, 0.95) 100%);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
@@ -7653,11 +8026,30 @@
                                 <i class="fa-solid fa-shapes"></i> <span>System Gallery</span> <kbd class="header-kbd">S</kbd>
                             </button>
                         </div>
-                        <div class="custom-select-wrapper">
-                            <select id="systemSelect" class="system-select">
+                        <div class="custom-select-wrapper" id="customSelectWrapper">
+                            <select id="systemSelect" class="system-select" style="display: none;" aria-hidden="true" tabindex="-1">
                                 <option value="">-- Choose a system from the list --</option>
                             </select>
-                            <i class="fa-solid fa-chevron-down select-chevron"></i>
+                            
+                            <!-- Rich Custom Dropdown Trigger (Option 2) -->
+                            <div class="rich-select-trigger" id="richSelectTrigger" tabindex="0" role="combobox" aria-expanded="false" aria-haspopup="listbox" title="Select a gaming system (Enter or Click to open)">
+                                <div class="rich-select-selection" id="richSelectSelection">
+                                    <span class="rich-select-placeholder">-- Choose a system from the list --</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-down rich-select-chevron" id="richSelectChevron"></i>
+                            </div>
+
+                            <!-- Floating Rich Dropdown Menu -->
+                            <div class="rich-select-dropdown" id="richSelectDropdown" style="display: none;">
+                                <div class="rich-select-search-wrap">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    <input type="text" class="rich-select-search-input" id="richSelectSearchInput" placeholder="Quick search systems, manufacturers, categories..." autocomplete="off">
+                                    <button type="button" class="rich-select-clear-btn" id="richSelectClearBtn" style="display: none;" title="Clear filter">&times;</button>
+                                </div>
+                                <div class="rich-select-options-list" id="richSelectOptionsList" role="listbox">
+                                    <!-- Populated by renderSystemDropdown() -->
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -9054,6 +9446,14 @@
         const clearGlobalSearchBtn = document.getElementById('clearGlobalSearchBtn');
 
         const systemSelect = document.getElementById('systemSelect');
+        const customSelectWrapper = document.getElementById('customSelectWrapper');
+        const richSelectTrigger = document.getElementById('richSelectTrigger');
+        const richSelectSelection = document.getElementById('richSelectSelection');
+        const richSelectChevron = document.getElementById('richSelectChevron');
+        const richSelectDropdown = document.getElementById('richSelectDropdown');
+        const richSelectSearchInput = document.getElementById('richSelectSearchInput');
+        const richSelectClearBtn = document.getElementById('richSelectClearBtn');
+        const richSelectOptionsList = document.getElementById('richSelectOptionsList');
         const systemSearchInput = document.getElementById('systemSearchInput');
         const clearSystemSearchBtn = document.getElementById('clearSystemSearchBtn');
         const hardwareFilters = document.getElementById('hardwareFilters');
@@ -13831,6 +14231,9 @@
         function setMode(mode) {
             currentMode = mode;
             activeQuickFilter = { type: null, value: null };
+            if (typeof updateRichSelectTrigger === 'function') {
+                updateRichSelectTrigger();
+            }
             if (mode === 'browse') {
                 modeBrowseBtn.classList.add('active');
                 modeGlobalBtn.classList.remove('active');
@@ -14238,31 +14641,205 @@
             window.open(pixnUrl, '_blank', 'noopener,noreferrer');
         };
 
-        // Render Dropdown options
-        function renderSystemDropdown() {
-            const currentVal = systemSelect.value;
-            const totalGamesCount = allSystems.reduce((sum, s) => sum + (s.gameCount || 0), 0) || 71422;
-            systemSelect.innerHTML = `
-                <option value="">-- Choose a system from the list (${filteredSystems.length}) --</option>
-                <option value="__global__">🔍 Search across all ${allSystems.length || 326} systems (${totalGamesCount.toLocaleString()} games)...</option>
+        // =========================================================
+        // Option 2: Rich Custom Dropdown Logic
+        // =========================================================
+        function updateRichSelectTrigger() {
+            if (!richSelectSelection) return;
+            const val = systemSelect ? systemSelect.value : '';
+            if (!val) {
+                const totalCount = (filteredSystems && filteredSystems.length) || (allSystems && allSystems.length) || 0;
+                richSelectSelection.innerHTML = `<span class="rich-select-placeholder">-- Choose a system from the list (${totalCount}) --</span>`;
+                return;
+            }
+            if (val === '__global__') {
+                richSelectSelection.innerHTML = `
+                    <div class="rich-trigger-selected">
+                        <i class="fa-solid fa-earth-americas" style="color: #38bdf8; font-size: 0.95rem; margin-right: 2px;"></i>
+                        <span class="rich-trigger-name" style="color: #38bdf8;">Search Across All Systems (Global)</span>
+                    </div>
+                `;
+                return;
+            }
+            const sys = (allSystems || []).find(s => s.id === val);
+            if (!sys) {
+                richSelectSelection.innerHTML = `<span class="rich-select-placeholder">-- Choose a system from the list --</span>`;
+                return;
+            }
+            const hwInfo = (typeof getSystemHardwareBadge === 'function') ? getSystemHardwareBadge(sys) : { icon: 'fa-gamepad', label: sys.hardware || 'Console' };
+            const isInstalled = (typeof isSystemInstalledOnBatocera === 'function') ? isSystemInstalledOnBatocera(sys) : false;
+            const isNew = typeof recentNewSystemIds !== 'undefined' && recentNewSystemIds && recentNewSystemIds.has(sys.id);
+            const isUpdated = !isNew && typeof recentUpdatedSystemIds !== 'undefined' && recentUpdatedSystemIds && recentUpdatedSystemIds.has(sys.id);
+
+            richSelectSelection.innerHTML = `
+                <div class="rich-trigger-selected">
+                    <i class="fa-solid ${hwInfo.icon} rich-trigger-icon" title="${escapeHtml(hwInfo.label)}"></i>
+                    <span class="rich-trigger-name">${escapeHtml(sys.name)}</span>
+                    ${sys.manufacturer ? `<span class="rich-trigger-mfg">${escapeHtml(sys.manufacturer)}</span>` : ''}
+                    <span class="rich-trigger-count">${(sys.gameCount || 0).toLocaleString()} games</span>
+                    ${isInstalled ? '<span class="rich-badge-bato" title="Installed on Batocera PC"><i class="fa-solid fa-circle"></i> On PC</span>' : ''}
+                    ${isNew ? '<span class="sys-chip sys-chip-new" style="margin-left: 4px;"><i class="fa-solid fa-sparkles"></i> NEW</span>' : ''}
+                    ${isUpdated ? '<span class="sys-chip sys-chip-updated" style="margin-left: 4px;"><i class="fa-solid fa-arrows-rotate"></i> UPDATED</span>' : ''}
+                </div>
             `;
-            
-            filteredSystems.forEach(sys => {
-                const opt = document.createElement('option');
-                opt.value = sys.id;
-                const mfg = sys.manufacturer ? ` [${sys.manufacturer}]` : '';
-                let badgeSuffix = '';
-                if (typeof recentNewSystemIds !== 'undefined' && recentNewSystemIds && recentNewSystemIds.has(sys.id)) {
-                    badgeSuffix = '   — [NEW] ✨';
-                } else if (typeof recentUpdatedSystemIds !== 'undefined' && recentUpdatedSystemIds && recentUpdatedSystemIds.has(sys.id)) {
-                    badgeSuffix = '   — [UPDATED] 🔄';
-                }
-                opt.textContent = `${sys.name}${mfg} (${(sys.gameCount || 0).toLocaleString()} games)${badgeSuffix}`;
-                systemSelect.appendChild(opt);
+        }
+        window.syncRichSelectTrigger = updateRichSelectTrigger;
+
+        function renderRichSelectOptions(filterText = '') {
+            if (!richSelectOptionsList) return;
+            const q = (filterText || '').toLowerCase().trim();
+            const list = (filteredSystems || []).filter(sys => {
+                if (!q) return true;
+                const name = (sys.name || '').toLowerCase();
+                const id = (sys.id || '').toLowerCase();
+                const mfg = (sys.manufacturer || '').toLowerCase();
+                const hw = (sys.hardware || '').toLowerCase();
+                return name.includes(q) || id.includes(q) || mfg.includes(q) || hw.includes(q);
             });
 
-            if (currentVal && (currentVal === '__global__' || filteredSystems.some(s => s.id === currentVal))) {
-                systemSelect.value = currentVal;
+            let html = '';
+
+            // Global Search Row (top option)
+            if (!q || 'global search all systems'.includes(q)) {
+                const isGlobalSelected = systemSelect && systemSelect.value === '__global__';
+                html += `
+                    <div class="rich-select-option rich-select-option-global ${isGlobalSelected ? 'selected' : ''}" data-val="__global__" role="option">
+                        <div class="rich-option-icon global-icon"><i class="fa-solid fa-earth-americas"></i></div>
+                        <div class="rich-option-info">
+                            <div class="rich-option-title-row">
+                                <span class="rich-option-name" style="color: #38bdf8;">Search Across All Systems (Global)</span>
+                            </div>
+                            <div class="rich-option-meta-row">
+                                <span class="rich-option-sub">82,800+ total games across all 310 platforms</span>
+                            </div>
+                        </div>
+                        <div class="rich-option-badges">
+                            <span class="rich-badge-global">GLOBAL</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (list.length === 0) {
+                html += `
+                    <div class="rich-select-empty">
+                        <i class="fa-solid fa-ghost" style="font-size: 1.5rem; color: #64748b; margin-bottom: 6px;"></i>
+                        <div style="color: #94a3b8; font-size: 0.85rem;">No systems matching "<strong>${escapeHtml(filterText)}</strong>"</div>
+                    </div>
+                `;
+            } else {
+                const curVal = systemSelect ? systemSelect.value : '';
+                list.forEach(sys => {
+                    const isSelected = sys.id === curVal;
+                    const hwInfo = (typeof getSystemHardwareBadge === 'function') ? getSystemHardwareBadge(sys) : { icon: 'fa-gamepad', label: sys.hardware || 'Console' };
+                    const isInstalled = (typeof isSystemInstalledOnBatocera === 'function') ? isSystemInstalledOnBatocera(sys) : false;
+                    const isNew = typeof recentNewSystemIds !== 'undefined' && recentNewSystemIds && recentNewSystemIds.has(sys.id);
+                    const isUpdated = !isNew && typeof recentUpdatedSystemIds !== 'undefined' && recentUpdatedSystemIds && recentUpdatedSystemIds.has(sys.id);
+
+                    html += `
+                        <div class="rich-select-option ${isSelected ? 'selected' : ''}" data-val="${escapeHtml(sys.id)}" role="option">
+                            <div class="rich-option-icon">
+                                <i class="fa-solid ${hwInfo.icon}" title="${escapeHtml(hwInfo.label)}"></i>
+                            </div>
+                            <div class="rich-option-info">
+                                <div class="rich-option-title-row">
+                                    <span class="rich-option-name">${escapeHtml(sys.name)}</span>
+                                    ${sys.manufacturer ? `<span class="rich-option-mfg">${escapeHtml(sys.manufacturer)}</span>` : ''}
+                                </div>
+                                <div class="rich-option-meta-row">
+                                    <span class="rich-option-hw">${escapeHtml(hwInfo.label)}</span>
+                                    <span class="rich-option-dot">•</span>
+                                    <span class="rich-option-count">${(sys.gameCount || 0).toLocaleString()} games</span>
+                                </div>
+                            </div>
+                            <div class="rich-option-badges">
+                                ${isInstalled ? '<span class="rich-badge-bato" title="Installed on Batocera PC"><i class="fa-solid fa-circle"></i> On PC</span>' : ''}
+                                ${isNew ? '<span class="sys-chip sys-chip-new"><i class="fa-solid fa-sparkles"></i> NEW</span>' : ''}
+                                ${isUpdated ? '<span class="sys-chip sys-chip-updated"><i class="fa-solid fa-arrows-rotate"></i> UPDATED</span>' : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            richSelectOptionsList.innerHTML = html;
+        }
+
+        function openRichDropdown() {
+            if (!richSelectDropdown) return;
+            richSelectDropdown.style.display = 'flex';
+            if (richSelectTrigger) {
+                richSelectTrigger.classList.add('open');
+                richSelectTrigger.setAttribute('aria-expanded', 'true');
+            }
+            const controlsCard = document.querySelector('.controls-card');
+            if (controlsCard) controlsCard.classList.add('has-dropdown-open');
+            if (customSelectWrapper) customSelectWrapper.classList.add('open');
+            if (richSelectSearchInput) {
+                richSelectSearchInput.value = '';
+                if (richSelectClearBtn) richSelectClearBtn.style.display = 'none';
+            }
+            renderRichSelectOptions('');
+            if (richSelectSearchInput) {
+                setTimeout(() => richSelectSearchInput.focus(), 40);
+            }
+        }
+
+        function closeRichDropdown() {
+            if (!richSelectDropdown) return;
+            richSelectDropdown.style.display = 'none';
+            if (richSelectTrigger) {
+                richSelectTrigger.classList.remove('open');
+                richSelectTrigger.setAttribute('aria-expanded', 'false');
+            }
+            const controlsCard = document.querySelector('.controls-card');
+            if (controlsCard) controlsCard.classList.remove('has-dropdown-open');
+            if (customSelectWrapper) customSelectWrapper.classList.remove('open');
+        }
+
+        function toggleRichDropdown() {
+            if (!richSelectDropdown) return;
+            if (richSelectDropdown.style.display === 'none' || !richSelectDropdown.style.display) {
+                openRichDropdown();
+            } else {
+                closeRichDropdown();
+            }
+        }
+
+        // Render Dropdown options (syncs native select and rich select)
+        function renderSystemDropdown() {
+            const currentVal = systemSelect ? systemSelect.value : '';
+            const totalGamesCount = allSystems.reduce((sum, s) => sum + (s.gameCount || 0), 0) || 71422;
+            
+            if (systemSelect) {
+                systemSelect.innerHTML = `
+                    <option value="">-- Choose a system from the list (${filteredSystems.length}) --</option>
+                    <option value="__global__">🔍 Search across all ${allSystems.length || 326} systems (${totalGamesCount.toLocaleString()} games)...</option>
+                `;
+                
+                filteredSystems.forEach(sys => {
+                    const opt = document.createElement('option');
+                    opt.value = sys.id;
+                    const mfg = sys.manufacturer ? ` [${sys.manufacturer}]` : '';
+                    let badgeSuffix = '';
+                    if (typeof recentNewSystemIds !== 'undefined' && recentNewSystemIds && recentNewSystemIds.has(sys.id)) {
+                        badgeSuffix = '   — [NEW] ✨';
+                    } else if (typeof recentUpdatedSystemIds !== 'undefined' && recentUpdatedSystemIds && recentUpdatedSystemIds.has(sys.id)) {
+                        badgeSuffix = '   — [UPDATED] 🔄';
+                    }
+                    opt.textContent = `${sys.name}${mfg} (${(sys.gameCount || 0).toLocaleString()} games)${badgeSuffix}`;
+                    systemSelect.appendChild(opt);
+                });
+
+                if (currentVal && (currentVal === '__global__' || filteredSystems.some(s => s.id === currentVal))) {
+                    systemSelect.value = currentVal;
+                }
+            }
+
+            // Sync Rich Select
+            updateRichSelectTrigger();
+            if (richSelectDropdown && richSelectDropdown.style.display !== 'none') {
+                renderRichSelectOptions(richSelectSearchInput ? richSelectSearchInput.value : '');
             }
         }
 
@@ -14669,6 +15246,9 @@
         // Handle System Selection
         systemSelect.addEventListener('change', (e) => {
             const sysId = e.target.value;
+            if (typeof updateRichSelectTrigger === 'function') {
+                updateRichSelectTrigger();
+            }
             if (sysId === '__global__') {
                 setMode('global');
                 return;
@@ -14677,6 +15257,82 @@
                 selectSystem(sysId);
             } else {
                 clearView();
+            }
+        });
+
+        // Option 2: Rich Custom Dropdown Interactions
+        if (richSelectTrigger) {
+            richSelectTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleRichDropdown();
+            });
+            richSelectTrigger.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    openRichDropdown();
+                }
+            });
+        }
+
+        if (richSelectSearchInput) {
+            richSelectSearchInput.addEventListener('input', (e) => {
+                const val = e.target.value;
+                if (richSelectClearBtn) {
+                    richSelectClearBtn.style.display = val ? 'block' : 'none';
+                }
+                renderRichSelectOptions(val);
+            });
+            richSelectSearchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    e.stopPropagation();
+                    closeRichDropdown();
+                    if (richSelectTrigger) richSelectTrigger.focus();
+                } else if (e.key === 'Enter') {
+                    const firstOpt = richSelectOptionsList ? richSelectOptionsList.querySelector('.rich-select-option') : null;
+                    if (firstOpt) {
+                        firstOpt.click();
+                    }
+                }
+            });
+        }
+
+        if (richSelectClearBtn) {
+            richSelectClearBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (richSelectSearchInput) {
+                    richSelectSearchInput.value = '';
+                    richSelectClearBtn.style.display = 'none';
+                    renderRichSelectOptions('');
+                    richSelectSearchInput.focus();
+                }
+            });
+        }
+
+        if (richSelectOptionsList) {
+            richSelectOptionsList.addEventListener('click', (e) => {
+                const opt = e.target.closest('.rich-select-option');
+                if (!opt) return;
+                const val = opt.getAttribute('data-val');
+                if (!val) return;
+                closeRichDropdown();
+                if (systemSelect) {
+                    systemSelect.value = val;
+                    systemSelect.dispatchEvent(new Event('change'));
+                }
+                updateRichSelectTrigger();
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (customSelectWrapper && !customSelectWrapper.contains(e.target)) {
+                closeRichDropdown();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && richSelectDropdown && richSelectDropdown.style.display !== 'none') {
+                closeRichDropdown();
+                if (richSelectTrigger) richSelectTrigger.focus();
             }
         });
 
@@ -16175,6 +16831,13 @@
             url.searchParams.set('system', sysId);
             url.searchParams.delete('search');
             window.history.replaceState({}, '', url);
+
+            if (systemSelect && systemSelect.value !== sysId) {
+                systemSelect.value = sysId;
+            }
+            if (typeof updateRichSelectTrigger === 'function') {
+                updateRichSelectTrigger();
+            }
 
             // Update Info Bar
             systemInfoBar.style.display = 'flex';
@@ -20011,6 +20674,8 @@
         function clearView() {
             activeSystem = null;
             currentGames = [];
+            if (systemSelect && systemSelect.value) systemSelect.value = '';
+            if (typeof updateRichSelectTrigger === 'function') updateRichSelectTrigger();
             updateBatoceraFilterUI();
             activeQuickFilter = { type: null, value: null };
             if (quickChipsBar) quickChipsBar.style.display = 'none';

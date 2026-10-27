@@ -1,11 +1,11 @@
 [
-  {
-    "id": "Sonic 3 - Angel Island Revisited.(s3air|bin)",
-    "name": "Sonic 3 - Angel Island Revisited",
-    "publisher": "Eukaryot",
-    "releasedate": "20190406T000000",
-    "size_mb": null,
-    "developer": "Eukaryot",
-    "genre": "Action, Platform"
-  }
+    {
+        "id": "Sonic 3 - Angel Island Revisited.(s3air|bin)",
+        "name": "Sonic 3 - Angel Island Revisited",
+        "publisher": "Eukaryot",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20190406T000000",
+        "size_mb": 0
+    }
 ]
