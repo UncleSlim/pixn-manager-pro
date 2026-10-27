@@ -14251,13 +14251,13 @@
                 const opt = document.createElement('option');
                 opt.value = sys.id;
                 const mfg = sys.manufacturer ? ` [${sys.manufacturer}]` : '';
-                let prefix = '';
+                let badgeSuffix = '';
                 if (typeof recentNewSystemIds !== 'undefined' && recentNewSystemIds && recentNewSystemIds.has(sys.id)) {
-                    prefix = '✨ [NEW] ';
+                    badgeSuffix = '   — [NEW] ✨';
                 } else if (typeof recentUpdatedSystemIds !== 'undefined' && recentUpdatedSystemIds && recentUpdatedSystemIds.has(sys.id)) {
-                    prefix = '🔄 [UPDATED] ';
+                    badgeSuffix = '   — [UPDATED] 🔄';
                 }
-                opt.textContent = `${prefix}${sys.name}${mfg} (${(sys.gameCount || 0).toLocaleString()} games)`;
+                opt.textContent = `${sys.name}${mfg} (${(sys.gameCount || 0).toLocaleString()} games)${badgeSuffix}`;
                 systemSelect.appendChild(opt);
             });
 
