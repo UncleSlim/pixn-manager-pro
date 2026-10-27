@@ -1839,9 +1839,9 @@ function scanRemoteSystemsForUpdates($baseDir, $sysList) {
                 } else {
                     $loc = $sysMap[$id];
                     $verDiff = (!empty($rem['version']) && !empty($loc['version']) && $rem['version'] !== $loc['version']);
-                    $countDiff = (isset($rem['gameCount']) && isset($loc['gameCount']) && $rem['gameCount'] !== $loc['gameCount']);
                     $dateDiff = (!empty($rem['gamelistDate']) && !empty($loc['gamelistDate']) && $rem['gamelistDate'] !== $loc['gamelistDate']);
-                    if ($verDiff || $countDiff || $dateDiff) {
+                    $countDiff = (isset($rem['gameCount']) && isset($loc['gameCount']) && (int)$rem['gameCount'] > (int)$loc['gameCount']);
+                    if ($verDiff || $dateDiff || $countDiff) {
                         $detectedUpdated[] = $rem;
                     }
                 }
@@ -2488,6 +2488,8 @@ if ($action === 'check_releases_update') {
         $curStatus['updated_systems_count'] = 0;
         $curStatus['latest_catalog_release_date'] = $latestCatalogReleaseDate;
         @file_put_contents($statusFile, json_encode($curStatus, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $detectedUpdatedSystems = [];
+        $detectedNewSystems = [];
     }
 
     $outPayload = [
@@ -2501,8 +2503,8 @@ if ($action === 'check_releases_update') {
         'latest_catalog_release_date' => $latestCatalogReleaseDate,
         'remote_etag' => $remoteEtag,
         'remote_script' => $remoteScript,
-        'new_systems' => $curStatus['new_systems'] ?? [],
-        'updated_systems' => !empty($detectedUpdatedSystems) ? $detectedUpdatedSystems : ($curStatus['updated_systems'] ?? []),
+        'new_systems' => $updateReady ? ($curStatus['new_systems'] ?? []) : [],
+        'updated_systems' => $updateReady ? (!empty($detectedUpdatedSystems) ? $detectedUpdatedSystems : ($curStatus['updated_systems'] ?? [])) : [],
         'recent_updated_systems' => getRecentUpdatedSystems($baseDir, 10),
         'last_sync' => $curStatus['last_sync'] ?? '',
         'total_systems' => $curStatus['total_systems'] ?? 0,
