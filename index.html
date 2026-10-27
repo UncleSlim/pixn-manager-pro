@@ -10961,7 +10961,9 @@
         // Fuzzy Matching & Title Normalization Helpers
         function normalizeGameTitle(str) {
             if (!str) return '';
-            return String(str)
+            const s = String(str);
+            const hasDisabledPrefix = /^[_\.]/u.test(s);
+            const normalized = s
                 .toLowerCase()
                 .replace(/\s*\([^\)]*\)/g, '')   // remove (USA), (Europe), (En,Fr), etc.
                 .replace(/\s*\[[^\]]*\]/g, '')   // remove [!], [b1], etc.
@@ -10980,6 +10982,7 @@
                 .replace(/[\s\-_]x\b/g, ' 10')
                 .replace(/[^a-z0-9]/g, '')       // strip all punctuation, spaces, colons, hyphens
                 .trim();
+            return hasDisabledPrefix ? ('_' + normalized) : normalized;
         }
 
         function calculateSimilarity(str1, str2) {
@@ -11252,6 +11255,20 @@
 
             // PASS 1: Fast O(1) hash lookups on normalized names & filenames
             for (const other of batoceraOtherGames) {
+                const oFile = other.filename || other.id || '';
+                const oName = other.name || '';
+                const oStem = oFile.replace(/\.[^.]+$/, '');
+                const isOtherDisabled = (
+                    /^[_\.]/u.test(oFile) ||
+                    /^[_\.]/u.test(oName) ||
+                    /\.(bak|old|tmp|disabled|backup|orig)$/i.test(oFile) ||
+                    /[_\-\.](disabled|backup|old|bak|ignore)$/i.test(oStem)
+                );
+                if (isOtherDisabled) {
+                    remainingOtherGames.push(other);
+                    continue;
+                }
+
                 const nOtherName = normalizeGameTitle(other.name);
                 const nOtherFile = normalizeGameTitle(other.filename || other.id);
 
@@ -11288,6 +11305,20 @@
             if (remainingOtherGames.length > 0 && remainingOtherGames.length <= 1500 && unmatchedCatalog.length <= 3000) {
                 const stillRemaining = [];
                 for (const other of remainingOtherGames) {
+                    const oFile = other.filename || other.id || '';
+                    const oName = other.name || '';
+                    const oStem = oFile.replace(/\.[^.]+$/, '');
+                    const isOtherDisabled = (
+                        /^[_\.]/u.test(oFile) ||
+                        /^[_\.]/u.test(oName) ||
+                        /\.(bak|old|tmp|disabled|backup|orig)$/i.test(oFile) ||
+                        /[_\-\.](disabled|backup|old|bak|ignore)$/i.test(oStem)
+                    );
+                    if (isOtherDisabled) {
+                        stillRemaining.push(other);
+                        continue;
+                    }
+
                     const nOtherName = normalizeGameTitle(other.name);
                     const nOtherFile = normalizeGameTitle(other.filename || other.id);
                     const keyWord = (nOtherName || nOtherFile).slice(0, 4);

@@ -4190,25 +4190,6 @@ if ($action === 'check_batocera_games') {
     // Cache parameters
     $forceRefresh = !empty($_GET['force_refresh']) || !empty($_GET['refresh']);
 
-    $cacheDir = __DIR__ . '/data/cache_batocera';
-    if (!is_dir($cacheDir)) {
-        @mkdir($cacheDir, 0777, true);
-    }
-    $cacheKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $sysId . '_' . $host . '_' . $share . '_' . $fullRemoteDir);
-    $cacheFile = $cacheDir . '/' . $cacheKey . '.json';
-    $cacheTTL = 600; // 10 minutes TTL
-
-    // Fast path: if cache file exists and is fresh (< 10 minutes), stream directly without any network probe!
-    if (!$forceRefresh && file_exists($cacheFile)) {
-        $age = time() - filemtime($cacheFile);
-        if ($age < $cacheTTL && filesize($cacheFile) > 50) {
-            header('Content-Type: application/json; charset=utf-8');
-            header('X-Pixn-Cache: HIT');
-            readfile($cacheFile);
-            exit;
-        }
-    }
-
     // Determine direct filesystem base path if accessible (e.g. Windows UNC or mounted local path)
     $directBasePath = '';
     $cleanUnc = str_replace('\\', '/', $uncPath);
@@ -4220,6 +4201,34 @@ if ($action === 'check_batocera_games') {
         $winBase = '\\\\' . $targetHost . '\\' . $share . ($subDir !== '' ? '\\' . str_replace('/', '\\', $subDir) : '');
         if (@is_dir($winBase)) {
             $directBasePath = $winBase . '\\' . $batoceraFolder;
+        }
+    }
+
+    $isDirectAccess = ($directBasePath !== '' && @is_dir($directBasePath));
+    $cacheDir = __DIR__ . '/data/cache_batocera';
+    if (!is_dir($cacheDir)) {
+        @mkdir($cacheDir, 0777, true);
+    }
+    $cacheKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $sysId . '_' . $host . '_' . $share . '_' . $fullRemoteDir);
+    $cacheFile = $cacheDir . '/' . $cacheKey . '.json';
+    $cacheTTL = $isDirectAccess ? 30 : 600; // 30s TTL for direct UNC/local, 10m for remote SMB
+
+    // Fast path: if cache file exists and is fresh, stream directly without any network probe!
+    if (!$forceRefresh && file_exists($cacheFile)) {
+        $cacheMtime = @filemtime($cacheFile);
+        $age = time() - $cacheMtime;
+        $isStale = false;
+        if ($isDirectAccess) {
+            $dirMtime = @filemtime($directBasePath);
+            if ($dirMtime && $dirMtime > $cacheMtime) {
+                $isStale = true;
+            }
+        }
+        if (!$isStale && $age < $cacheTTL && filesize($cacheFile) > 50) {
+            header('Content-Type: application/json; charset=utf-8');
+            header('X-Pixn-Cache: HIT');
+            readfile($cacheFile);
+            exit;
         }
     }
 
@@ -4266,6 +4275,7 @@ if ($action === 'check_batocera_games') {
     }
 
     // 2. Host is online and folder exists! Query files via Multi-Tier Fast Scanner:
+    // TIER 0: Direct filesystem / UNC access (Ground truth: live files on disk with accurate sizes)
     // TIER 1: Batocera HTTP REST API (port 1234) - Instant (< 150ms) for huge folders like C64
     // TIER 2: Direct gamelist.xml via SMB - Fast (< 400ms) without traversing entire tree
     // TIER 3: Raw smbclient ls fallback
@@ -4282,77 +4292,218 @@ if ($action === 'check_batocera_games') {
     $gamelistGamePaths = [];
     $knownFolderGames = [];
 
-    // TIER 1: Batocera HTTP REST API
-    $batoGames = getBatoceraSystemGamesHttp($batoIp, $batoceraFolder, $baseDir, $forceRefresh);
-    if (!empty($batoGames) && is_array($batoGames)) {
-        $prefixPattern = '#^/userdata/roms/' . preg_quote($batoceraFolder, '#') . '/#i';
-        foreach ($batoGames as $bg) {
-            $fullPath = $bg['path'] ?? '';
-            if (!$fullPath) continue;
-            $cleanFull = str_replace('\\', '/', $fullPath);
-            $relPath = ltrim(preg_replace($prefixPattern, '', $cleanFull), '/');
-            $fname = basename($relPath);
-            $stem = pathinfo($fname, PATHINFO_FILENAME);
-            $lowerName = mb_strtolower($fname);
-            $lowerRel = mb_strtolower($relPath);
+    // Helper to parse gamelist.xml string into $gamelistMeta (and optionally $foundFiles if needed)
+    $parseGamelistXml = function($xmlStr, &$metaArr, &$gamePathsArr, &$filesArr, $populateFiles = false) {
+        $xmlStart = strpos($xmlStr, '<?xml');
+        if ($xmlStart === false) $xmlStart = strpos($xmlStr, '<gameList');
+        $xmlEnd = strrpos($xmlStr, '</gameList>');
+        if ($xmlStart === false || $xmlEnd === false || $xmlEnd <= $xmlStart) return;
+
+        $cleanXml = substr($xmlStr, $xmlStart, ($xmlEnd + strlen('</gameList>')) - $xmlStart);
+        $prevErrors = libxml_use_internal_errors(true);
+        $xmlObj = @simplexml_load_string($cleanXml);
+        libxml_clear_errors();
+        libxml_use_internal_errors($prevErrors);
+
+        if (!$xmlObj || !isset($xmlObj->game)) return;
+
+        foreach ($xmlObj->game as $gNode) {
+            $rawPath = trim((string)$gNode->path);
+            $cleanPath = ltrim(str_replace('\\', '/', $rawPath), './');
+            $baseName = basename($cleanPath);
+            $boxartVal = trim((string)($gNode->boxart ?: ($gNode->box2d ?: $gNode->box3d)));
+            $titleshotVal = trim((string)($gNode->titleshot ?: ($gNode->titlescreen ?: '')));
+            $marqueeVal = trim((string)$gNode->marquee);
+            $screenshotVal = trim((string)($gNode->screenshot ?: ($gNode->image ?: '')));
+            $rawThumb = ltrim(str_replace('\\', '/', trim((string)$gNode->thumbnail)), './');
+            $stem = pathinfo($baseName, PATHINFO_FILENAME);
+            
+            $thumbVal = $rawThumb;
+            if (!$thumbVal || preg_match('#/(box2d|boxart|box3d|images|screenshots)/#i', $thumbVal)) {
+                if ($thumbVal) {
+                    $thumbVal = preg_replace('#/(box2d|boxart|box3d|images|screenshots)/#i', '/thumbnails/', $thumbVal);
+                    $thumbVal = preg_replace('/\.(jpg|jpeg|webp)$/i', '.png', $thumbVal);
+                } else {
+                    $thumbVal = 'media/thumbnails/' . $stem . '.png';
+                }
+            }
+
+            $meta = [
+                'name' => trim((string)$gNode->name),
+                'desc' => trim((string)$gNode->desc),
+                'releasedate' => trim((string)$gNode->releasedate),
+                'developer' => trim((string)$gNode->developer),
+                'publisher' => trim((string)$gNode->publisher),
+                'genre' => trim((string)$gNode->genre),
+                'rating' => trim((string)$gNode->rating),
+                'players' => trim((string)$gNode->players),
+                'image' => ltrim(str_replace('\\', '/', $screenshotVal), './'),
+                'screenshot' => ltrim(str_replace('\\', '/', $screenshotVal), './'),
+                'thumbnail' => $thumbVal,
+                'boxart' => ltrim(str_replace('\\', '/', $boxartVal), './'),
+                'titleshot' => ltrim(str_replace('\\', '/', $titleshotVal), './'),
+                'titlescreen' => ltrim(str_replace('\\', '/', ($titleshotVal ?: $marqueeVal)), './'),
+                'marquee' => ltrim(str_replace('\\', '/', $marqueeVal), './'),
+                'fanart' => ltrim(str_replace('\\', '/', trim((string)$gNode->fanart)), './'),
+                'video' => ltrim(str_replace('\\', '/', trim((string)$gNode->video)), './')
+            ];
+            $lowerName = mb_strtolower($baseName);
+            $lowerRel = mb_strtolower($cleanPath);
             $baseWithoutExt = mb_strtolower($stem);
 
-            $rawMeta = [
-                'name' => trim((string)($bg['name'] ?? '')),
-                'desc' => trim((string)($bg['desc'] ?? '')),
-                'releasedate' => trim((string)($bg['releasedate'] ?? '')),
-                'developer' => trim((string)($bg['developer'] ?? '')),
-                'publisher' => trim((string)($bg['publisher'] ?? '')),
-                'genre' => trim((string)($bg['genre'] ?? '')),
-                'rating' => trim((string)($bg['rating'] ?? '')),
-                'players' => trim((string)($bg['players'] ?? '')),
-                'video' => ltrim(str_replace('\\', '/', ($bg['video'] ?? '')), './'),
-                'game_id' => $bg['id'] ?? ''
-            ];
-            $meta = array_filter($rawMeta, function($v) { return $v !== '' && $v !== null; });
-
-            $gamelistMeta[$baseWithoutExt] = $meta;
-            if ($lowerName !== $baseWithoutExt) {
-                $gamelistMeta[$lowerName] = &$gamelistMeta[$baseWithoutExt];
-            }
-            if ($lowerRel !== $lowerName && $lowerRel !== $baseWithoutExt) {
-                $gamelistMeta[$lowerRel] = &$gamelistMeta[$baseWithoutExt];
+            $metaArr[$lowerName] = $meta;
+            $metaArr[$baseWithoutExt] = $meta;
+            if ($lowerRel !== $lowerName) {
+                $metaArr[$lowerRel] = $meta;
             }
             if (!empty($meta['name'])) {
                 $metaNameLower = mb_strtolower(trim($meta['name']));
                 if ($metaNameLower !== $baseWithoutExt && $metaNameLower !== $lowerName) {
-                    $gamelistMeta[$metaNameLower] = &$gamelistMeta[$baseWithoutExt];
+                    $metaArr[$metaNameLower] = $meta;
                 }
             }
-            $gamelistGamePaths[$lowerRel] = true;
-            $gamelistGamePaths[$lowerName] = true;
+            $gamePathsArr[$lowerRel] = true;
+            $gamePathsArr[$lowerName] = true;
 
-            $foundFiles[] = [
-                'fname' => $fname,
-                'rel' => $relPath,
-                'size_bytes' => 0,
-                'size_mb' => 0
-            ];
+            if ($populateFiles) {
+                $filesArr[] = [
+                    'fname' => $baseName,
+                    'rel' => $cleanPath,
+                    'size_bytes' => 0,
+                    'size_mb' => 0
+                ];
+            }
         }
-    }
+    };
 
-    $smbShare = '//' . $targetHost . '/' . $share;
-    $escapedShare = escapeshellarg($smbShare);
+    if ($isDirectAccess) {
+        // TIER 0: Direct filesystem / UNC access (Ground truth: live files on disk with accurate sizes)
+        try {
+            $dirIt = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($directBasePath, FilesystemIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::SELF_FIRST
+            );
+            $directBaseLen = strlen(rtrim(str_replace('\\', '/', $directBasePath), '/')) + 1;
+            foreach ($dirIt as $item) {
+                $itemPath = str_replace('\\', '/', $item->getPathname());
+                $rel = substr($itemPath, $directBaseLen);
+                $fname = $item->getBasename();
+                $isDir = $item->isDir();
 
-    // TIER 2: Fast gamelist.xml retrieval via direct UNC or SMB if HTTP API returned nothing
-    if (empty($foundFiles)) {
+                // Skip media directory
+                if (preg_match('#(^|/)media(/|$)#i', $rel)) continue;
+                if ($fname === 'gamelist.xml' || preg_match('/\.keys$/i', $fname)) continue;
+
+                $lowerFname = mb_strtolower($fname);
+                $lowerRel = mb_strtolower($rel);
+
+                if ($isDir) {
+                    $isFolderGame = false;
+                    if (preg_match('/\.(ps3|ps3dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game)$/i', $fname)) {
+                        $isFolderGame = true;
+                    } elseif (isset($gamelistGamePaths[$lowerRel]) || isset($gamelistGamePaths[$lowerFname])) {
+                        $isFolderGame = true;
+                    }
+
+                    if ($isFolderGame) {
+                        $foundFiles[] = [
+                            'fname' => $fname,
+                            'rel' => $rel,
+                            'size_bytes' => 0,
+                            'size_mb' => 0
+                        ];
+                        $newIdx = count($foundFiles) - 1;
+                        $knownFolderGames[$lowerRel] = $newIdx;
+                        $knownFolderGames[$lowerFname] = $newIdx;
+                    }
+                    continue;
+                }
+
+                $sz = $item->getSize();
+                if ($sz < 0) $sz += 4294967296.0;
+
+                $foundFiles[] = [
+                    'fname' => $fname,
+                    'rel' => $rel,
+                    'size_bytes' => (float)$sz,
+                    'size_mb' => round((float)$sz / (1024 * 1024), 2)
+                ];
+            }
+        } catch (Exception $e) {}
+
+        // Load gamelist.xml purely for metadata if present on disk
+        $directXml1 = rtrim($directBasePath, '\\/') . '/gamelist.xml';
+        $directXml2 = rtrim($directBasePath, '\\/') . '\\gamelist.xml';
         $xmlStr = '';
-        if ($directBasePath !== '') {
-            $directXml1 = rtrim($directBasePath, '\\/') . '/gamelist.xml';
-            $directXml2 = rtrim($directBasePath, '\\/') . '\\gamelist.xml';
-            if (@file_exists($directXml1)) {
-                $xmlStr = @file_get_contents($directXml1) ?: '';
-            } elseif (@file_exists($directXml2)) {
-                $xmlStr = @file_get_contents($directXml2) ?: '';
+        if (@file_exists($directXml1)) {
+            $xmlStr = @file_get_contents($directXml1) ?: '';
+        } elseif (@file_exists($directXml2)) {
+            $xmlStr = @file_get_contents($directXml2) ?: '';
+        }
+        if ($xmlStr !== '') {
+            $parseGamelistXml($xmlStr, $gamelistMeta, $gamelistGamePaths, $foundFiles, false);
+        }
+    } else {
+        // TIER 1: Batocera HTTP REST API
+        $batoGames = getBatoceraSystemGamesHttp($batoIp, $batoceraFolder, $baseDir, $forceRefresh);
+        if (!empty($batoGames) && is_array($batoGames)) {
+            $prefixPattern = '#^/userdata/roms/' . preg_quote($batoceraFolder, '#') . '/#i';
+            foreach ($batoGames as $bg) {
+                $fullPath = $bg['path'] ?? '';
+                if (!$fullPath) continue;
+                $cleanFull = str_replace('\\', '/', $fullPath);
+                $relPath = ltrim(preg_replace($prefixPattern, '', $cleanFull), '/');
+                $fname = basename($relPath);
+                $stem = pathinfo($fname, PATHINFO_FILENAME);
+                $lowerName = mb_strtolower($fname);
+                $lowerRel = mb_strtolower($relPath);
+                $baseWithoutExt = mb_strtolower($stem);
+
+                $rawMeta = [
+                    'name' => trim((string)($bg['name'] ?? '')),
+                    'desc' => trim((string)($bg['desc'] ?? '')),
+                    'releasedate' => trim((string)($bg['releasedate'] ?? '')),
+                    'developer' => trim((string)($bg['developer'] ?? '')),
+                    'publisher' => trim((string)($bg['publisher'] ?? '')),
+                    'genre' => trim((string)($bg['genre'] ?? '')),
+                    'rating' => trim((string)($bg['rating'] ?? '')),
+                    'players' => trim((string)($bg['players'] ?? '')),
+                    'video' => ltrim(str_replace('\\', '/', ($bg['video'] ?? '')), './'),
+                    'game_id' => $bg['id'] ?? ''
+                ];
+                $meta = array_filter($rawMeta, function($v) { return $v !== '' && $v !== null; });
+
+                $gamelistMeta[$baseWithoutExt] = $meta;
+                if ($lowerName !== $baseWithoutExt) {
+                    $gamelistMeta[$lowerName] = &$gamelistMeta[$baseWithoutExt];
+                }
+                if ($lowerRel !== $lowerName && $lowerRel !== $baseWithoutExt) {
+                    $gamelistMeta[$lowerRel] = &$gamelistMeta[$baseWithoutExt];
+                }
+                if (!empty($meta['name'])) {
+                    $metaNameLower = mb_strtolower(trim($meta['name']));
+                    if ($metaNameLower !== $baseWithoutExt && $metaNameLower !== $lowerName) {
+                        $gamelistMeta[$metaNameLower] = &$gamelistMeta[$baseWithoutExt];
+                    }
+                }
+                $gamelistGamePaths[$lowerRel] = true;
+                $gamelistGamePaths[$lowerName] = true;
+
+                $foundFiles[] = [
+                    'fname' => $fname,
+                    'rel' => $relPath,
+                    'size_bytes' => 0,
+                    'size_mb' => 0
+                ];
             }
         }
 
-        if ($xmlStr === '') {
+        $smbShare = '//' . $targetHost . '/' . $share;
+        $escapedShare = escapeshellarg($smbShare);
+
+        // TIER 2: Fast gamelist.xml retrieval via direct UNC or SMB if HTTP API returned nothing
+        if (empty($foundFiles)) {
+            $xmlStr = '';
             $smbBin = getSmbClientBinary();
             if ($smbBin) {
                 $xmlCmd = escapeshellarg('cd "' . $fullRemoteDir . '"; get gamelist.xml -');
@@ -4365,144 +4516,11 @@ if ($action === 'check_batocera_games') {
                 }
                 $xmlStr = implode("\n", $xmlOut);
             }
-        }
-        $xmlStart = strpos($xmlStr, '<?xml');
-        if ($xmlStart === false) $xmlStart = strpos($xmlStr, '<gameList');
-        $xmlEnd = strrpos($xmlStr, '</gameList>');
-
-        if ($xmlStart !== false && $xmlEnd !== false && $xmlEnd > $xmlStart) {
-            $cleanXml = substr($xmlStr, $xmlStart, ($xmlEnd + strlen('</gameList>')) - $xmlStart);
-            $prevErrors = libxml_use_internal_errors(true);
-            $xmlObj = @simplexml_load_string($cleanXml);
-            libxml_clear_errors();
-            libxml_use_internal_errors($prevErrors);
-
-            if ($xmlObj && isset($xmlObj->game)) {
-                foreach ($xmlObj->game as $gNode) {
-                    $rawPath = trim((string)$gNode->path);
-                    $cleanPath = ltrim(str_replace('\\', '/', $rawPath), './');
-                    $baseName = basename($cleanPath);
-                    $boxartVal = trim((string)($gNode->boxart ?: ($gNode->box2d ?: $gNode->box3d)));
-                    $titleshotVal = trim((string)($gNode->titleshot ?: ($gNode->titlescreen ?: '')));
-                    $marqueeVal = trim((string)$gNode->marquee);
-                    $screenshotVal = trim((string)($gNode->screenshot ?: ($gNode->image ?: '')));
-                    $rawThumb = ltrim(str_replace('\\', '/', trim((string)$gNode->thumbnail)), './');
-                    $stem = pathinfo($baseName, PATHINFO_FILENAME);
-                    
-                    $thumbVal = $rawThumb;
-                    if (!$thumbVal || preg_match('#/(box2d|boxart|box3d|images|screenshots)/#i', $thumbVal)) {
-                        if ($thumbVal) {
-                            $thumbVal = preg_replace('#/(box2d|boxart|box3d|images|screenshots)/#i', '/thumbnails/', $thumbVal);
-                            $thumbVal = preg_replace('/\.(jpg|jpeg|webp)$/i', '.png', $thumbVal);
-                        } else {
-                            $thumbVal = 'media/thumbnails/' . $stem . '.png';
-                        }
-                    }
-
-                    $meta = [
-                        'name' => trim((string)$gNode->name),
-                        'desc' => trim((string)$gNode->desc),
-                        'releasedate' => trim((string)$gNode->releasedate),
-                        'developer' => trim((string)$gNode->developer),
-                        'publisher' => trim((string)$gNode->publisher),
-                        'genre' => trim((string)$gNode->genre),
-                        'rating' => trim((string)$gNode->rating),
-                        'players' => trim((string)$gNode->players),
-                        'image' => ltrim(str_replace('\\', '/', $screenshotVal), './'),
-                        'screenshot' => ltrim(str_replace('\\', '/', $screenshotVal), './'),
-                        'thumbnail' => $thumbVal,
-                        'boxart' => ltrim(str_replace('\\', '/', $boxartVal), './'),
-                        'titleshot' => ltrim(str_replace('\\', '/', $titleshotVal), './'),
-                        'titlescreen' => ltrim(str_replace('\\', '/', ($titleshotVal ?: $marqueeVal)), './'),
-                        'marquee' => ltrim(str_replace('\\', '/', $marqueeVal), './'),
-                        'fanart' => ltrim(str_replace('\\', '/', trim((string)$gNode->fanart)), './'),
-                        'video' => ltrim(str_replace('\\', '/', trim((string)$gNode->video)), './')
-                    ];
-                    $lowerName = mb_strtolower($baseName);
-                    $lowerRel = mb_strtolower($cleanPath);
-                    $baseWithoutExt = mb_strtolower($stem);
-
-                    $gamelistMeta[$lowerName] = $meta;
-                    $gamelistMeta[$baseWithoutExt] = $meta;
-                    if ($lowerRel !== $lowerName) {
-                        $gamelistMeta[$lowerRel] = $meta;
-                    }
-                    if (!empty($meta['name'])) {
-                        $metaNameLower = mb_strtolower(trim($meta['name']));
-                        if ($metaNameLower !== $baseWithoutExt && $metaNameLower !== $lowerName) {
-                            $gamelistMeta[$metaNameLower] = $meta;
-                        }
-                    }
-                    $gamelistGamePaths[$lowerRel] = true;
-                    $gamelistGamePaths[$lowerName] = true;
-
-                    $foundFiles[] = [
-                        'fname' => $baseName,
-                        'rel' => $cleanPath,
-                        'size_bytes' => 0,
-                        'size_mb' => 0
-                    ];
-                }
+            if ($xmlStr !== '') {
+                $parseGamelistXml($xmlStr, $gamelistMeta, $gamelistGamePaths, $foundFiles, true);
             }
         }
     }
-
-    // TIER 3: Fallback to directory walking only if neither HTTP nor gamelist.xml returned games
-    if (empty($foundFiles)) {
-        if ($directBasePath !== '' && @is_dir($directBasePath)) {
-            try {
-                $dirIt = new RecursiveIteratorIterator(
-                    new RecursiveDirectoryIterator($directBasePath, FilesystemIterator::SKIP_DOTS),
-                    RecursiveIteratorIterator::SELF_FIRST
-                );
-                $directBaseLen = strlen(rtrim(str_replace('\\', '/', $directBasePath), '/')) + 1;
-                foreach ($dirIt as $item) {
-                    $itemPath = str_replace('\\', '/', $item->getPathname());
-                    $rel = substr($itemPath, $directBaseLen);
-                    $fname = $item->getBasename();
-                    $isDir = $item->isDir();
-
-                    // Skip media directory
-                    if (preg_match('#(^|/)media(/|$)#i', $rel)) continue;
-                    if ($fname === 'gamelist.xml' || preg_match('/\.keys$/i', $fname)) continue;
-
-                    $lowerFname = mb_strtolower($fname);
-                    $lowerRel = mb_strtolower($rel);
-
-                    if ($isDir) {
-                        $isFolderGame = false;
-                        if (preg_match('/\.(ps3|ps3dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game)$/i', $fname)) {
-                            $isFolderGame = true;
-                        } elseif (isset($gamelistGamePaths[$lowerRel]) || isset($gamelistGamePaths[$lowerFname])) {
-                            $isFolderGame = true;
-                        }
-
-                        if ($isFolderGame) {
-                            $foundFiles[] = [
-                                'fname' => $fname,
-                                'rel' => $rel,
-                                'size_bytes' => 0,
-                                'size_mb' => 0
-                            ];
-                            $newIdx = count($foundFiles) - 1;
-                            $knownFolderGames[$lowerRel] = $newIdx;
-                            $knownFolderGames[$lowerFname] = $newIdx;
-                        }
-                        continue;
-                    }
-
-                    $sz = $item->getSize();
-                    if ($sz < 0) $sz += 4294967296.0;
-
-                    $foundFiles[] = [
-                        'fname' => $fname,
-                        'rel' => $rel,
-                        'size_bytes' => (float)$sz,
-                        'size_mb' => round((float)$sz / (1024 * 1024), 2)
-                    ];
-                }
-            } catch (Exception $e) {}
-        }
 
         $smbBin = empty($foundFiles) ? getSmbClientBinary() : false;
         if ($smbBin) {
@@ -4645,7 +4663,6 @@ if ($action === 'check_batocera_games') {
             }
         }
     }
-    }
 
     // Enrich found files with actual file sizes via direct access or smbclient ls
     enrichFoundFilesSizes($foundFiles, $baseDir, $uncPath, $targetHost, $share, $fullRemoteDir, $batoceraFolder);
@@ -4729,6 +4746,7 @@ if ($action === 'check_batocera_games') {
             $fileNormMap = [];
             $normalize = function($s) {
                 if (!$s) return '';
+                $hasDisabledPrefix = preg_match('/^[_\.]/u', (string)$s);
                 $clean = preg_replace('/\s*\([^)]*\)/', '', (string)$s);
                 $clean = preg_replace('/\s*\[[^\]]*\]/', '', $clean);
                 $clean = preg_replace('/\.[a-z0-9|()]+$/i', '', $clean);
@@ -4744,7 +4762,8 @@ if ($action === 'check_batocera_games') {
                 $clean = preg_replace('/[\s\-_]ii\b/i', ' 2', $clean);
                 $clean = preg_replace('/[\s\-_]ix\b/i', ' 9', $clean);
                 $clean = preg_replace('/[\s\-_]x\b/i', ' 10', $clean);
-                return preg_replace('/[^a-z0-9]/', '', mb_strtolower($clean));
+                $norm = preg_replace('/[^a-z0-9]/', '', mb_strtolower($clean));
+                return $hasDisabledPrefix ? ('_' . $norm) : $norm;
             };
             $extractRegion = function($s) {
                 if (!$s) return null;
@@ -4793,6 +4812,19 @@ if ($action === 'check_batocera_games') {
                 $ext = strtolower(pathinfo($f, PATHINFO_EXTENSION));
                 if ($ext === 'keys' || preg_match('/\.keys$/i', $f)) continue;
 
+                // Do NOT match disabled, renamed, backup, or hidden files against catalog games:
+                // Users commonly prefix files with '_' or '.' or suffix with .bak/.disabled/.old to disable or test them.
+                $baseStem = pathinfo($f, PATHINFO_FILENAME);
+                $isRenamedOrDisabled = (
+                    preg_match('/^[_\.]/u', $f) ||
+                    preg_match('/^[_\.]/u', $r) ||
+                    preg_match('/\.(bak|old|tmp|disabled|backup|orig)$/i', $f) ||
+                    preg_match('/[_\-\.](disabled|backup|old|bak|ignore)$/i', $baseStem)
+                );
+                if ($isRenamedOrDisabled) {
+                    continue; // Leave in foundFiles to become other_games, but do not match to catalog!
+                }
+
                 $lowerRel = mb_strtolower(str_replace('\\', '/', $r));
                 $lowerName = mb_strtolower($f);
                 $fileRelMap[$lowerRel][] = $idx;
@@ -4804,6 +4836,7 @@ if ($action === 'check_batocera_games') {
                 $normF = $normalize($base);
                 if ($normF) $fileNormMap[$normF][] = $idx;
                 $rawNormF = preg_replace('/[^a-z0-9]/', '', mb_strtolower(preg_replace('/\s*\([^)]*\)/', '', $base)));
+                if (preg_match('/^[_\.]/u', $base)) $rawNormF = '_' . $rawNormF;
                 if ($rawNormF && $rawNormF !== $normF) $fileNormMap[$rawNormF][] = $idx;
 
                 // Also check Batocera gamelist.xml meta for this file
@@ -4814,6 +4847,7 @@ if ($action === 'check_batocera_games') {
                     $normMeta = $normalize($meta['name']);
                     if ($normMeta) $fileNormMap[$normMeta][] = $idx;
                     $rawNormMeta = preg_replace('/[^a-z0-9]/', '', mb_strtolower(preg_replace('/\s*\([^)]*\)/', '', $meta['name'])));
+                    if (preg_match('/^[_\.]/u', $meta['name'])) $rawNormMeta = '_' . $rawNormMeta;
                     if ($rawNormMeta && $rawNormMeta !== $normMeta) $fileNormMap[$rawNormMeta][] = $idx;
                 }
             }
@@ -4940,7 +4974,9 @@ if ($action === 'check_batocera_games') {
                 $normName = $normalize($gameName);
                 $normRom = $normalize($baseRomWithoutExt);
                 $rawNormName = preg_replace('/[^a-z0-9]/', '', mb_strtolower(preg_replace('/\s*\([^)]*\)/', '', $gameName)));
+                if (preg_match('/^[_\.]/u', $gameName)) $rawNormName = '_' . $rawNormName;
                 $rawNormRom = preg_replace('/[^a-z0-9]/', '', mb_strtolower(preg_replace('/\s*\([^)]*\)/', '', $baseRomWithoutExt)));
+                if (preg_match('/^[_\.]/u', $baseRomWithoutExt)) $rawNormRom = '_' . $rawNormRom;
 
                 $candidates = [];
                 // 5. Normalized game name match
