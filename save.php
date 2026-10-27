@@ -22,6 +22,11 @@ $reqAction = $_GET['action'] ?? ($_POST['action'] ?? '');
 $baseDir = __DIR__;
 $dataDir = $baseDir . '/data';
 
+// If running in local desktop environment, ensure active requests immediately clear any stale tab_closed signal
+if ($reqAction !== 'tab_closed' && file_exists($dataDir . '/tab_closed.txt')) {
+    @unlink($dataDir . '/tab_closed.txt');
+}
+
 if ($reqAction === 'heartbeat') {
     if (!is_dir($dataDir)) @mkdir($dataDir, 0777, true);
     @file_put_contents($dataDir . '/app_heartbeat.txt', (string)time());
@@ -32,7 +37,10 @@ if ($reqAction === 'heartbeat') {
 
 if ($reqAction === 'tab_closed') {
     if (!is_dir($dataDir)) @mkdir($dataDir, 0777, true);
-    @file_put_contents($dataDir . '/tab_closed.txt', (string)time());
+    $tcFile = $dataDir . '/tab_closed.txt';
+    @file_put_contents($tcFile, (string)time());
+    // Give browser reload 3s grace buffer before watchdog treats it as permanent close
+    @touch($tcFile, time() + 3);
     echo json_encode(['status' => 'ok', 'closing' => true]);
     exit;
 }

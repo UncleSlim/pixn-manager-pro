@@ -14,6 +14,18 @@
     <link rel="icon" type="image/png" sizes="256x256" href="system-logos/pixn_256.png">
     <link rel="apple-touch-icon" href="system-logos/pixn_256.png">
     
+    <!-- Immediate Watchdog Heartbeat for Portable Desktop -->
+    <script>
+        (function() {
+            var h = window.location.hostname;
+            if (h === '127.0.0.1' || h === 'localhost') {
+                try {
+                    fetch('save.php?action=heartbeat', { method: 'POST', keepalive: true }).catch(function(){});
+                } catch(e) {}
+            }
+        })();
+    </script>
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24510,15 +24522,28 @@
             const isLocalDesktop = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
             if (!isLocalDesktop) return;
 
+            let isReloading = false;
+
+            // Detect keyboard reload shortcuts (F5, Ctrl+R, etc.)
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'F5' || (e.ctrlKey && (e.key === 'r' || e.key === 'R'))) {
+                    isReloading = true;
+                }
+            });
+
             function sendHeartbeat() {
                 fetch('save.php?action=heartbeat', { method: 'POST', keepalive: true }).catch(() => {});
             }
 
             sendHeartbeat();
-            const hbTimer = setInterval(sendHeartbeat, 3000);
+            const hbTimer = setInterval(sendHeartbeat, 2000);
 
             window.addEventListener('beforeunload', () => {
                 clearInterval(hbTimer);
+                // Do not signal tab_closed if page is reloading via keyboard
+                if (isReloading) {
+                    return;
+                }
                 if (navigator.sendBeacon) {
                     navigator.sendBeacon('save.php?action=tab_closed');
                 } else {
