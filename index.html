@@ -5710,6 +5710,87 @@
             box-shadow: 0 0 6px #ffffff;
         }
 
+        /* Dynamic Synced Notification Pill & Badges */
+        .header-sync-pill.has-recent-sync {
+            border-color: rgba(16, 185, 129, 0.65) !important;
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: #34d399 !important;
+            box-shadow: 0 0 16px rgba(16, 185, 129, 0.35) !important;
+            animation: btnRecentSyncPulse 2.8s infinite ease-in-out;
+        }
+
+        @keyframes btnRecentSyncPulse {
+            0%, 100% {
+                box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
+                border-color: rgba(16, 185, 129, 0.65);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(52, 211, 153, 0.65);
+                border-color: #34d399;
+            }
+        }
+
+        .pulse-indicator.recent-sync {
+            background: #34d399;
+            box-shadow: 0 0 10px #10b981;
+            animation: pulse-ring 1.8s infinite;
+        }
+
+        .sync-recent-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: linear-gradient(135deg, #059669, #047857);
+            border: 1px solid #34d399;
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 999px;
+            margin-left: 0.45rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+            animation: badgePopIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes badgePopIn {
+            0% { transform: scale(0.6); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .sync-recent-badge .badge-icon {
+            font-size: 0.68rem;
+            color: #a7f3d0;
+        }
+
+        /* Chips for system cards in gallery */
+        .sys-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+            vertical-align: middle;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+        .sys-chip-new {
+            background: rgba(6, 182, 212, 0.22);
+            border: 1px solid rgba(34, 211, 238, 0.55);
+            color: #22d3ee;
+            box-shadow: 0 0 8px rgba(6, 182, 212, 0.3);
+        }
+        .sys-chip-updated {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(52, 211, 153, 0.5);
+            color: #34d399;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
+        }
+
         /* Scrollable container for latest catalog updates */
         .catalog-updates-scroll {
             max-height: 240px;
@@ -7473,6 +7554,9 @@
                     <span class="sync-update-badge" id="syncUpdateBadge" style="display: none;">
                         <span class="badge-dot"></span> <span id="syncUpdateBadgeText">Update Ready</span>
                     </span>
+                    <span class="sync-recent-badge" id="syncRecentBadge" style="display: none;">
+                        <i class="fa-solid fa-sparkles badge-icon"></i> <span id="syncRecentBadgeText">+1 New</span>
+                    </span>
                 </button>
 
                 <!-- Segmented System Filters Toggle -->
@@ -8753,6 +8837,7 @@
             <div class="gallery-tabs-scroll">
                 <div class="gallery-tabs-row" id="galleryCategoryTabs">
                     <button type="button" class="gallery-tab active" data-cat="all">All <span class="tab-badge">329</span></button>
+                    <button type="button" class="gallery-tab" id="galleryTabRecent" data-cat="recent" style="display: none;"><i class="fa-solid fa-sparkles" style="color: #22d3ee; margin-right: 3px;"></i> Recently Synced <span class="tab-badge" id="galleryTabRecentCount">0</span></button>
                     <button type="button" class="gallery-tab" data-cat="nintendo">Nintendo <span class="tab-badge">40</span></button>
                     <button type="button" class="gallery-tab" data-cat="sega">Sega <span class="tab-badge">47</span></button>
                     <button type="button" class="gallery-tab" data-cat="sony">Sony <span class="tab-badge">10</span></button>
@@ -14130,7 +14215,13 @@
                 const opt = document.createElement('option');
                 opt.value = sys.id;
                 const mfg = sys.manufacturer ? ` [${sys.manufacturer}]` : '';
-                opt.textContent = `${sys.name}${mfg} (${(sys.gameCount || 0).toLocaleString()} games)`;
+                let prefix = '';
+                if (typeof recentNewSystemIds !== 'undefined' && recentNewSystemIds && recentNewSystemIds.has(sys.id)) {
+                    prefix = '✨ [NEW] ';
+                } else if (typeof recentUpdatedSystemIds !== 'undefined' && recentUpdatedSystemIds && recentUpdatedSystemIds.has(sys.id)) {
+                    prefix = '🔄 [UPDATED] ';
+                }
+                opt.textContent = `${prefix}${sys.name}${mfg} (${(sys.gameCount || 0).toLocaleString()} games)`;
                 systemSelect.appendChild(opt);
             });
 
@@ -15200,6 +15291,10 @@
             if (cat === 'portable') {
                 return hw === 'portable' || id.includes('portable') || id.includes('pocket') || id.includes('handheld') || id.startsWith('gameboy') || id.startsWith('gba') || id.startsWith('gbc') || id.startsWith('psp') || id === 'gamegear' || id === 'lynx' || id.startsWith('wonderswan') || id === 'ngp' || id === 'ngpc' || id === 'pokemonmini';
             }
+            if (cat === 'recent') {
+                return (typeof recentNewSystemIds !== 'undefined' && recentNewSystemIds && recentNewSystemIds.has(sys.id)) ||
+                       (typeof recentUpdatedSystemIds !== 'undefined' && recentUpdatedSystemIds && recentUpdatedSystemIds.has(sys.id));
+            }
             if (cat === 'other') {
                 const standardCats = ['nintendo', 'sega', 'sony', 'arcade', 'snk', 'atari', 'computer', 'portable'];
                 return !standardCats.some(c => matchesSystemCategory(sys, c));
@@ -15320,12 +15415,31 @@
 
         function updateGalleryTabCounts() {
             if (!allSystems) return;
-            const categories = ['all', 'nintendo', 'sega', 'sony', 'arcade', 'snk', 'atari', 'computer', 'portable', 'other'];
+            const categories = ['all', 'recent', 'nintendo', 'sega', 'sony', 'arcade', 'snk', 'atari', 'computer', 'portable', 'other'];
             categories.forEach(cat => {
                 const count = cat === 'all' ? allSystems.length : allSystems.filter(s => matchesSystemCategory(s, cat)).length;
                 const badge = document.querySelector(`.gallery-tab[data-cat="${cat}"] .tab-badge`);
                 if (badge) badge.textContent = count;
             });
+
+            if (galleryTabRecent) {
+                const recentCount = allSystems.filter(s => matchesSystemCategory(s, 'recent')).length;
+                if (recentCount > 0) {
+                    galleryTabRecent.style.display = 'inline-flex';
+                    if (galleryTabRecentCount) galleryTabRecentCount.textContent = recentCount;
+                } else {
+                    galleryTabRecent.style.display = 'none';
+                    if (activeGalleryCategory === 'recent') {
+                        activeGalleryCategory = 'all';
+                        if (galleryCategoryTabs) {
+                            galleryCategoryTabs.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
+                            const allTab = document.querySelector('.gallery-tab[data-cat="all"]');
+                            if (allTab) allTab.classList.add('active');
+                        }
+                    }
+                }
+            }
+
             if (gallerySystemCountBadge) {
                 if (filterBatoceraInstalledOnly) {
                     gallerySystemCountBadge.innerHTML = `${allSystems.length} Systems <span style="color: #34d399; font-weight: 600; font-size: 0.72rem;">(On PC Only)</span>`;
@@ -15411,6 +15525,9 @@
                 const cleanId = encodeURIComponent(sys.id.toLowerCase().trim());
                 const initialLogo = `system-logos/${cleanId}.png`;
 
+                const isNew = typeof recentNewSystemIds !== 'undefined' && recentNewSystemIds && recentNewSystemIds.has(sys.id);
+                const isUpdated = !isNew && typeof recentUpdatedSystemIds !== 'undefined' && recentUpdatedSystemIds && recentUpdatedSystemIds.has(sys.id);
+
                 return `
                     <div class="system-card ${isActive ? 'active' : ''}" data-sys-id="${escapeHtml(sys.id)}" data-brand="${brandKey}" tabindex="0" role="button" aria-label="${escapeHtml(sys.name)}">
                         <!-- Feature 4: Hardware Badge (Top-Left) -->
@@ -15454,6 +15571,8 @@
                         <div class="system-card-body">
                             <div class="system-card-title" title="${escapeHtml(sys.name)}">
                                 <span class="system-card-name">${escapeHtml(sys.name)}</span>
+                                ${isNew ? '<span class="sys-chip sys-chip-new" title="Newly synced system"><i class="fa-solid fa-sparkles"></i> NEW</span>' : ''}
+                                ${isUpdated ? '<span class="sys-chip sys-chip-updated" title="Updated in recent sync"><i class="fa-solid fa-arrows-rotate"></i> UPDATED</span>' : ''}
                                 ${sys.torrent_available !== false ? `
                                     <a href="save.php?action=download_torrent&system=${encodeURIComponent(sys.id)}" download="${escapeHtml(sys.id)}.torrent" class="system-card-qb" onclick="event.stopPropagation();" title="Download ${escapeHtml(sys.name)} torrent file (qBittorrent)">
                                         <img src="system-logos/qbittorrent-icon.svg" width="16" height="16" alt="qB">
@@ -22543,6 +22662,9 @@
         // Sync Modal Handling
         btnSyncModal.addEventListener('click', () => {
             syncModal.classList.add('open');
+            if (typeof acknowledgeRecentSync === 'function') {
+                acknowledgeRecentSync();
+            }
             if (lastCheckReleasesData) {
                 renderSinceLastVisitBox(lastCheckReleasesData, Boolean(lastCheckReleasesData.update_ready));
             } else {
@@ -23143,6 +23265,13 @@
         const headerSyncIcon = document.getElementById('headerSyncIcon');
         const syncUpdateBadge = document.getElementById('syncUpdateBadge');
         const syncUpdateBadgeText = document.getElementById('syncUpdateBadgeText');
+        const syncRecentBadge = document.getElementById('syncRecentBadge');
+        const syncRecentBadgeText = document.getElementById('syncRecentBadgeText');
+        const galleryTabRecent = document.getElementById('galleryTabRecent');
+        const galleryTabRecentCount = document.getElementById('galleryTabRecentCount');
+
+        let recentNewSystemIds = new Set();
+        let recentUpdatedSystemIds = new Set();
 
         const modalStatusPulse = document.getElementById('modalStatusPulse');
         const modalStatusTitle = document.getElementById('modalStatusTitle');
@@ -23239,10 +23368,98 @@
             }
         }
 
+        function updateRecentSystemsSets(data) {
+            recentNewSystemIds.clear();
+            recentUpdatedSystemIds.clear();
+
+            if (!data) return;
+
+            // 1. Explicit new systems
+            if (Array.isArray(data.new_systems)) {
+                data.new_systems.forEach(s => {
+                    const id = typeof s === 'string' ? s : (s && s.id);
+                    if (id) recentNewSystemIds.add(id);
+                });
+            }
+
+            // 2. Explicit updated systems
+            if (Array.isArray(data.updated_systems)) {
+                data.updated_systems.forEach(s => {
+                    const id = typeof s === 'string' ? s : (s && s.id);
+                    if (id && !recentNewSystemIds.has(id)) recentUpdatedSystemIds.add(id);
+                });
+            }
+
+            // 3. Synced systems from auto-sync or repair
+            if (data.sync_result && Array.isArray(data.sync_result.synced_systems)) {
+                data.sync_result.synced_systems.forEach(s => {
+                    const id = typeof s === 'string' ? s : (s && s.id);
+                    if (id && !recentNewSystemIds.has(id)) recentUpdatedSystemIds.add(id);
+                });
+            }
+
+            // 4. From recent_updated_systems (top newest/updated from catalog)
+            const topList = Array.isArray(data.recent_updated_systems) ? data.recent_updated_systems : [];
+            if (topList.length > 0) {
+                const parseD = (d) => {
+                    if (!d) return 0;
+                    const p = d.split('-');
+                    return p.length === 3 ? new Date(p[2], p[1] - 1, p[0]).getTime() : 0;
+                };
+                let maxDateTs = 0;
+                topList.forEach(s => {
+                    const ts = parseD(s.gamelistDate);
+                    if (ts > maxDateTs) maxDateTs = ts;
+                });
+
+                topList.forEach(s => {
+                    if (!s || !s.id) return;
+                    const sDateTs = parseD(s.gamelistDate);
+                    const isLatestDate = maxDateTs > 0 && sDateTs === maxDateTs;
+                    const isNewSys = s.is_new === true || s.version === 'v1';
+
+                    if (isNewSys) {
+                        recentNewSystemIds.add(s.id);
+                    } else if (isLatestDate && !recentNewSystemIds.has(s.id)) {
+                        recentUpdatedSystemIds.add(s.id);
+                    }
+                });
+            }
+        }
+
+        function acknowledgeRecentSync() {
+            if (window.latestCatalogReleaseDate) {
+                localStorage.setItem('pixn_acknowledged_catalog_date', window.latestCatalogReleaseDate);
+            }
+            localStorage.setItem('pixn_acknowledged_sync_time', Date.now().toString());
+            if (headerSyncIndicator) headerSyncIndicator.classList.remove('has-recent-sync');
+            if (syncRecentBadge) syncRecentBadge.style.display = 'none';
+            if (headerSyncDot && lastKnownSyncStatus !== 'running' && !headerSyncIndicator.classList.contains('has-update')) {
+                headerSyncDot.className = 'pulse-indicator';
+            }
+            if (headerSyncText && lastKnownSyncStatus !== 'running' && !headerSyncIndicator.classList.contains('has-update')) {
+                headerSyncText.textContent = 'Synced';
+            }
+        }
+        window.acknowledgeRecentSync = acknowledgeRecentSync;
+
         function handleReleasesUpdateResult(data) {
             if (!data || data.status !== 'ok') return;
 
+            if (data.latest_catalog_release_date) {
+                window.latestCatalogReleaseDate = data.latest_catalog_release_date;
+            }
+
+            // Populate recent system tracking sets
+            updateRecentSystemsSets(data);
+
             const isUpdateReady = Boolean(data.update_ready);
+            const totalRecentCount = recentNewSystemIds.size + recentUpdatedSystemIds.size;
+
+            // Check if user has acknowledged the latest catalog release
+            const ackCatalogDate = localStorage.getItem('pixn_acknowledged_catalog_date');
+            const isFreshAutoSync = Boolean(data.auto_synced && data.sync_result && (data.sync_result.restored_count > 0 || (data.sync_result.synced_systems && data.sync_result.synced_systems.length > 0)));
+            const isUnacknowledged = isFreshAutoSync || (!ackCatalogDate || (window.latestCatalogReleaseDate && ackCatalogDate !== window.latestCatalogReleaseDate));
 
             // Notice on the Sync Info button
             if (isUpdateReady) {
@@ -23256,21 +23473,73 @@
                 }
                 if (headerSyncIndicator && lastKnownSyncStatus !== 'running') {
                     headerSyncIndicator.classList.add('has-update');
+                    headerSyncIndicator.classList.remove('has-recent-sync');
                     if (headerSyncDot) headerSyncDot.className = 'pulse-indicator update';
                     if (headerSyncText) headerSyncText.textContent = 'Update Ready';
                 }
+                if (syncRecentBadge) syncRecentBadge.style.display = 'none';
             } else {
                 if (btnSyncModal) {
                     btnSyncModal.classList.remove('has-update');
-                    btnSyncModal.title = 'Check sync status or run updater';
                 }
                 if (syncUpdateBadge) syncUpdateBadge.style.display = 'none';
                 if (headerSyncIndicator && lastKnownSyncStatus !== 'running') {
                     headerSyncIndicator.classList.remove('has-update');
-                    if (headerSyncDot) headerSyncDot.className = 'pulse-indicator';
-                    if (headerSyncText) headerSyncText.textContent = 'Synced';
+                }
+
+                // If recent updates/synced systems exist and have not yet been acknowledged by opening sync modal
+                if (isUnacknowledged && totalRecentCount > 0) {
+                    let badgeLabel = '';
+                    const nNew = recentNewSystemIds.size;
+                    const nUpd = recentUpdatedSystemIds.size;
+                    if (nNew > 0 && nUpd > 0) {
+                        badgeLabel = `+${nNew} New • ${nUpd} Upd`;
+                    } else if (nNew > 0) {
+                        badgeLabel = `+${nNew} New`;
+                    } else if (nUpd > 0) {
+                        badgeLabel = `${nUpd} Upd`;
+                    } else {
+                        badgeLabel = `${totalRecentCount} Upd`;
+                    }
+
+                    if (headerSyncIndicator && lastKnownSyncStatus !== 'running') {
+                        headerSyncIndicator.classList.add('has-recent-sync');
+                        headerSyncIndicator.title = `Recent catalog update: ${nNew} new, ${nUpd} updated system(s). Click to view Sync Info & Updates`;
+                    }
+                    if (headerSyncDot && lastKnownSyncStatus !== 'running') {
+                        headerSyncDot.className = 'pulse-indicator recent-sync';
+                    }
+                    if (headerSyncText && lastKnownSyncStatus !== 'running') {
+                        headerSyncText.textContent = 'Synced';
+                    }
+                    if (syncRecentBadge) {
+                        syncRecentBadge.style.display = 'inline-flex';
+                        if (syncRecentBadgeText) syncRecentBadgeText.textContent = badgeLabel;
+                    }
+                    if (btnSyncModal) {
+                        btnSyncModal.title = `Recent catalog update: ${badgeLabel} — Click to view details`;
+                    }
+                } else {
+                    if (headerSyncIndicator && lastKnownSyncStatus !== 'running') {
+                        headerSyncIndicator.classList.remove('has-recent-sync');
+                        headerSyncIndicator.title = 'Catalog sync status — Click to view Sync Info & Updates';
+                    }
+                    if (headerSyncDot && lastKnownSyncStatus !== 'running') {
+                        headerSyncDot.className = 'pulse-indicator';
+                    }
+                    if (headerSyncText && lastKnownSyncStatus !== 'running') {
+                        headerSyncText.textContent = 'Synced';
+                    }
+                    if (syncRecentBadge) syncRecentBadge.style.display = 'none';
+                    if (btnSyncModal) {
+                        btnSyncModal.title = 'Check sync status or run updater';
+                    }
                 }
             }
+
+            // Keep dropdown and gallery tabs synchronized with latest tracking sets
+            if (typeof renderSystemDropdown === 'function') renderSystemDropdown();
+            if (typeof updateGalleryTabCounts === 'function') updateGalleryTabCounts();
 
             renderSinceLastVisitBox(data, isUpdateReady);
         }
@@ -23622,6 +23891,7 @@
                 searchIndex = null;
                 await ensureSearchIndexLoaded();
                 await fetchSyncStatus();
+                await checkForReleasesUpdate(false, true);
 
                 // If currently active system had its file restored or refreshed, reload it in the view
                 if (activeSystem && data.restored_files && data.restored_files.includes(activeSystem.id + '.txt')) {

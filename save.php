@@ -2096,6 +2096,7 @@ function getRecentUpdatedSystems($baseDir, $limit = 10) {
 
     $result = array_slice($sysList, 0, $limit);
     foreach ($result as &$r) {
+        $r['file_mtime'] = $r['_fileMtime'] ?? 0;
         unset($r['_fileMtime']);
     }
     unset($r);
