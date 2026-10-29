@@ -3508,7 +3508,8 @@ function areExtensionsCompatible($ext1, $ext2) {
         ['cue', 'bin', 'iso', 'img', 'chd', 'pbp', 'm3u', 'cso'],
         ['adf', 'ipf', 'dms', 'hdf', 'lha', 'm3u'],
         ['wsquashfs', 'squashfs'],
-        ['ps3', 'ps3dir', 'squashfs', 'psn', 'iso', 'm3u', 'pkg', 'bin']
+        ['ps3', 'ps3dir', 'squashfs', 'psn', 'iso', 'm3u', 'pkg', 'bin'],
+        ['ps4', 'ps4dir', 'squashfs', 'pkg', 'iso', 'bin']
     ];
     foreach ($groups as $g) {
         $has1 = false;
@@ -3895,6 +3896,7 @@ function enrichFoundFilesSizes(&$foundFiles, $baseDir, $uncPath, $targetHost, $s
     if (empty($foundFiles) || !is_array($foundFiles)) return;
 
     $isPs3 = (strtolower($batoceraFolder) === 'ps3');
+    $isPs4 = (strtolower($batoceraFolder) === 'ps4');
 
     $needsSize = false;
     foreach ($foundFiles as $f) {
@@ -3948,15 +3950,21 @@ function enrichFoundFilesSizes(&$foundFiles, $baseDir, $uncPath, $targetHost, $s
             $fullPath = $directBasePath . '/' . str_replace('\\', '/', $f['rel']);
             if (@file_exists($fullPath)) {
                 if (@is_dir($fullPath)) {
-                    $totalBytes = 0;
-                    try {
-                        $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($fullPath, FilesystemIterator::SKIP_DOTS));
-                        foreach ($it as $file) {
-                            $totalBytes += $file->getSize();
-                        }
-                    } catch (Exception $e) {}
-                    $f['size_bytes'] = $totalBytes;
-                    $f['size_mb'] = round($totalBytes / (1024 * 1024), 2);
+                    $isPkg = preg_match('/\.(ps3|ps3dir|ps4|ps4dir|switch|wiiu|wiiudir|pc|wine|dos|dosbox|dvd|cd|scummvm|app|game)$/i', $f['fname']);
+                    if (!$isPkg) {
+                        $totalBytes = 0;
+                        try {
+                            $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($fullPath, FilesystemIterator::SKIP_DOTS));
+                            foreach ($it as $file) {
+                                $totalBytes += $file->getSize();
+                            }
+                        } catch (Exception $e) {}
+                        $f['size_bytes'] = $totalBytes;
+                        $f['size_mb'] = round($totalBytes / (1024 * 1024), 2);
+                    } else {
+                        $f['size_bytes'] = 1;
+                        $f['size_mb'] = 0;
+                    }
                 } else {
                     $sz = @filesize($fullPath);
                     if ($sz !== false) {
@@ -3982,6 +3990,8 @@ function enrichFoundFilesSizes(&$foundFiles, $baseDir, $uncPath, $targetHost, $s
             if (isset($knownLower[$dLow])) continue;
             if ($isPs3) {
                 if (!preg_match('/\.(squashfs|psn|iso|m3u|pkg)$/i', $dLow)) continue;
+            } elseif ($isPs4) {
+                if (!preg_match('/\.(squashfs|pkg|iso|bin)$/i', $dLow)) continue;
             } else {
                 if ($dLow === 'gamelist.xml' || preg_match('/\.keys$/i', $dLow)) continue;
                 if (preg_match('/^([_\.]?gamelist.*\.xml|[_\.]?info.*\.txt|readme.*\.txt|\.git.*|\.ds_store|thumbs\.db|desktop\.ini)$/i', $dLow)) continue;
@@ -4069,8 +4079,8 @@ function enrichFoundFilesSizes(&$foundFiles, $baseDir, $uncPath, $targetHost, $s
             // Skip media folders and internal files of folder games
             if ($currentSubdir !== '') {
                 if (preg_match('/(^|\/)media(\/|$)/i', $currentSubdir)) continue;
-                if (preg_match('/(\.ps3|\.ps3dir|\.pc|\.wine|\.dos|\.dosbox|\.dvd|\.cd|\.scummvm|\.wiiu|\.wiiudir|\.switch|\.app|\.game)(\/|$)/i', $currentSubdir) ||
-                    preg_match('/(^|\/)(PS3_GAME|USRDIR|LICDIR|TROPDIR|SYSDIR|UPDATE|DATA|code|content|meta|romfs|exefs)(\/|$)/i', $currentSubdir)) {
+                if (preg_match('/(\.ps3|\.ps3dir|\.ps4|\.ps4dir|\.pc|\.wine|\.dos|\.dosbox|\.dvd|\.cd|\.scummvm|\.wiiu|\.wiiudir|\.switch|\.app|\.game)(\/|$)/i', $currentSubdir) ||
+                    preg_match('/(^|\/)(PS3_GAME|PS4_GAME|CUSA\d+|USRDIR|LICDIR|TROPDIR|SYSDIR|UPDATE|DATA|code|content|meta|romfs|exefs|sce_sys|sce_module)(\/|$)/i', $currentSubdir)) {
                     // Accumulate size into parent folder game, but DO NOT record this file in $smbSizesFname or $smbSizesRel
                     if (!$isDir) {
                         $subParts = explode('/', $currentSubdir);
@@ -4091,6 +4101,8 @@ function enrichFoundFilesSizes(&$foundFiles, $baseDir, $uncPath, $targetHost, $s
             if (!$isDir) {
                 if ($isPs3) {
                     if (!preg_match('/\.(squashfs|psn)$/i', $fname)) continue;
+                } elseif ($isPs4) {
+                    if (!preg_match('/\.(squashfs|pkg|iso|bin)$/i', $fname)) continue;
                 } else {
                     $ext = strtolower(pathinfo($fname, PATHINFO_EXTENSION));
                     if (in_array($ext, ['png', 'jpg', 'jpeg', 'gif', 'webp', 'mp4', 'mkv', 'avi', 'pdf', 'mp3', 'ogg', 'wav', 'old', 'bak', 'backup', 'log', 'ini', 'cfg', 'txt', 'xml', 'sfb', 'sfo', 'trp', 'dat'])) continue;
@@ -4152,6 +4164,8 @@ function enrichFoundFilesSizes(&$foundFiles, $baseDir, $uncPath, $targetHost, $s
             if (isset($knownLower[$smbFnameLower])) continue;
             if ($isPs3) {
                 if (!preg_match('/\.(squashfs|psn|iso|m3u|pkg)$/i', $smbFnameLower)) continue;
+            } elseif ($isPs4) {
+                if (!preg_match('/\.(squashfs|pkg|iso|bin)$/i', $smbFnameLower)) continue;
             } else {
                 if ($smbFnameLower === 'gamelist.xml' || preg_match('/\.keys$/i', $smbFnameLower)) continue;
                 if (preg_match('/^([_\.]?gamelist.*\.xml|[_\.]?info.*\.txt|readme.*\.txt|\.git.*|\.ds_store|thumbs\.db|desktop\.ini)$/i', $smbFnameLower)) continue;
@@ -4648,14 +4662,28 @@ if ($action === 'check_batocera_games') {
     };
 
     $isPs3 = (strtolower($sysId) === 'ps3' || strtolower($batoceraFolder) === 'ps3');
+    $isPs4 = (strtolower($sysId) === 'ps4' || strtolower($batoceraFolder) === 'ps4');
 
     if ($isDirectAccess) {
         // TIER 0: Direct filesystem / UNC access (Ground truth: live files on disk with accurate sizes)
         try {
-            $dirIt = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($directBasePath, FilesystemIterator::SKIP_DOTS),
-                RecursiveIteratorIterator::SELF_FIRST
-            );
+            $baseDirIt = new RecursiveDirectoryIterator($directBasePath, FilesystemIterator::SKIP_DOTS);
+            $filterIt = new class($baseDirIt) extends RecursiveFilterIterator {
+                public function accept(): bool {
+                    $fname = $this->current()->getFilename();
+                    if (strcasecmp($fname, 'media') === 0 || $fname[0] === '.') return false;
+                    return true;
+                }
+                public function hasChildren(): bool {
+                    $fname = $this->current()->getFilename();
+                    if (strcasecmp($fname, 'media') === 0 || $fname[0] === '.') return false;
+                    if (preg_match('/\.(ps3|ps3dir|ps4|ps4dir|switch|wiiu|wiiudir|pc|wine|dos|dosbox|dvd|cd|scummvm|app|game)$/i', $fname)) {
+                        return false;
+                    }
+                    return parent::hasChildren();
+                }
+            };
+            $dirIt = new RecursiveIteratorIterator($filterIt, RecursiveIteratorIterator::SELF_FIRST);
             $directBaseLen = strlen(rtrim(str_replace('\\', '/', $directBasePath), '/')) + 1;
             foreach ($dirIt as $item) {
                 $itemPath = str_replace('\\', '/', $item->getPathname());
@@ -4683,8 +4711,16 @@ if ($action === 'check_batocera_games') {
                             $parentFolderIdx = $knownFolderGames[$parentKey];
                         }
                     }
+                } elseif ($isPs4) {
+                    if (preg_match('/^(.*?\.ps4(dir)?)[\/\\\\]/i', $rel, $m)) {
+                        $insideFolderGame = true;
+                        $parentKey = mb_strtolower($m[1]);
+                        if (isset($knownFolderGames[$parentKey])) {
+                            $parentFolderIdx = $knownFolderGames[$parentKey];
+                        }
+                    }
                 } else {
-                    if (preg_match('/^(.*?\.(ps3|ps3dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game))[\/\\\\]/i', $rel, $m)) {
+                    if (preg_match('/^(.*?\.(ps3|ps3dir|ps4|ps4dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game))[\/\\\\]/i', $rel, $m)) {
                         $insideFolderGame = true;
                         $parentKey = mb_strtolower($m[1]);
                         if (isset($knownFolderGames[$parentKey])) {
@@ -4709,8 +4745,12 @@ if ($action === 'check_batocera_games') {
                         if (preg_match('/\.ps3(dir)?$/i', $fname)) {
                             $isFolderGame = true;
                         }
+                    } elseif ($isPs4) {
+                        if (preg_match('/\.ps4(dir)?$/i', $fname)) {
+                            $isFolderGame = true;
+                        }
                     } else {
-                        if (preg_match('/\.(ps3|ps3dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game)$/i', $fname)) {
+                        if (preg_match('/\.(ps3|ps3dir|ps4|ps4dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game)$/i', $fname)) {
                             $isFolderGame = true;
                         } elseif (isset($gamelistGamePaths[$lowerRel]) || isset($gamelistGamePaths[$lowerFname])) {
                             $isFolderGame = true;
@@ -4721,7 +4761,7 @@ if ($action === 'check_batocera_games') {
                         $foundFiles[] = [
                             'fname' => $fname,
                             'rel' => $rel,
-                            'size_bytes' => 0,
+                            'size_bytes' => 1,
                             'size_mb' => 0
                         ];
                         $newIdx = count($foundFiles) - 1;
@@ -4731,9 +4771,13 @@ if ($action === 'check_batocera_games') {
                     continue;
                 }
 
-                // If PS3, allow all recognized PS3 file types
+                // If PS3 or PS4, allow all recognized file types
                 if ($isPs3) {
                     if (!preg_match('/\.(squashfs|psn|iso|m3u|pkg)$/i', $fname)) {
+                        continue;
+                    }
+                } elseif ($isPs4) {
+                    if (!preg_match('/\.(squashfs|pkg|iso|bin)$/i', $fname)) {
                         continue;
                     }
                 }
@@ -4921,9 +4965,9 @@ if ($action === 'check_batocera_games') {
                 if (preg_match('/(^|\/)media(\/|$)/i', $currentSubdir)) {
                     continue;
                 }
-                if (preg_match('/(\.ps3|\.ps3dir|\.pc|\.wine|\.dos|\.dosbox|\.dvd|\.cd|\.scummvm|\.wiiu|\.wiiudir|\.switch|\.app|\.game)(\/|$)/i', $currentSubdir)) {
+                if (preg_match('/(\.ps3|\.ps3dir|\.ps4|\.ps4dir|\.pc|\.wine|\.dos|\.dosbox|\.dvd|\.cd|\.scummvm|\.wiiu|\.wiiudir|\.switch|\.app|\.game)(\/|$)/i', $currentSubdir)) {
                     $insideFolderGame = true;
-                } elseif (preg_match('/(^|\/)(PS3_GAME|USRDIR|LICDIR|TROPDIR|SYSDIR|UPDATE|DATA|code|content|meta|romfs|exefs)(\/|$)/i', $currentSubdir)) {
+                } elseif (preg_match('/(^|\/)(PS3_GAME|PS4_GAME|CUSA\d+|USRDIR|LICDIR|TROPDIR|SYSDIR|UPDATE|DATA|code|content|meta|romfs|exefs|sce_sys|sce_module)(\/|$)/i', $currentSubdir)) {
                     $insideFolderGame = true;
                 }
 
@@ -4959,7 +5003,7 @@ if ($action === 'check_batocera_games') {
 
                 if ($isPs3) {
                     if ($isDir) {
-                        if (preg_match('/\.ps3$/i', $fname)) {
+                        if (preg_match('/\.ps3(dir)?$/i', $fname)) {
                             $foundFiles[] = [
                                 'fname' => $fname,
                                 'rel' => $relPath,
@@ -4973,14 +5017,33 @@ if ($action === 'check_batocera_games') {
                         continue;
                     }
 
-                    // For PS3 files: strictly allow only .squashfs and .psn
-                    if (!preg_match('/\.(squashfs|psn)$/i', $fname)) {
+                    // For PS3 files: strictly allow recognized PS3 files
+                    if (!preg_match('/\.(squashfs|psn|iso|m3u|pkg)$/i', $fname)) {
+                        continue;
+                    }
+                } elseif ($isPs4) {
+                    if ($isDir) {
+                        if (preg_match('/\.ps4(dir)?$/i', $fname)) {
+                            $foundFiles[] = [
+                                'fname' => $fname,
+                                'rel' => $relPath,
+                                'size_bytes' => 0,
+                                'size_mb' => 0
+                            ];
+                            $newIdx = count($foundFiles) - 1;
+                            $knownFolderGames[$lowerRel] = $newIdx;
+                            $knownFolderGames[$lowerFname] = $newIdx;
+                        }
+                        continue;
+                    }
+
+                    if (!preg_match('/\.(squashfs|pkg|iso|bin)$/i', $fname)) {
                         continue;
                     }
                 } else {
                     if ($isDir) {
                         $isFolderGame = false;
-                        if (preg_match('/\.(ps3|ps3dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game)$/i', $fname)) {
+                        if (preg_match('/\.(ps3|ps3dir|ps4|ps4dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game)$/i', $fname)) {
                             $isFolderGame = true;
                         } elseif (isset($gamelistGamePaths[$lowerRel]) || isset($gamelistGamePaths[$lowerFname])) {
                             $isFolderGame = true;
@@ -5271,7 +5334,7 @@ if ($action === 'check_batocera_games') {
                         $sizeDiffMb = ($catalogSizeMb > 0 && $mSizeMb > 0) ? abs($catalogSizeMb - $mSizeMb) : 0;
                         $sizeRatio = ($catalogSizeMb > 0 && $mSizeMb > 0) ? ($sizeDiffMb / $catalogSizeMb) : 0;
                         $isArchive = in_array($foundExt, ['zip', '7z', 'gz', 'rar', 'tar']) || in_array($catalogExt, ['zip', '7z', 'gz', 'rar', 'tar']);
-                        $isPointer = in_array($foundExt, ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc']) || in_array($catalogExt, ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc']);
+                        $isPointer = in_array($foundExt, ['psn', 'ps3', 'ps3dir', 'ps4', 'ps4dir', 'm3u', 'cue', 'ccd', 'gdi', 'toc']) || in_array($catalogExt, ['psn', 'ps3', 'ps3dir', 'ps4', 'ps4dir', 'm3u', 'cue', 'ccd', 'gdi', 'toc']);
                         $sizeMismatch = false;
                         if (!$isPointer && $catalogSizeMb > 0 && $mSizeMb > 0) {
                             if ($isArchive) {
@@ -5388,7 +5451,7 @@ if ($action === 'check_batocera_games') {
                         $sizeDiffMb = ($catalogSizeMb > 0 && $mSizeMb > 0) ? abs($catalogSizeMb - $mSizeMb) : 0;
                         $sizeRatio = ($catalogSizeMb > 0 && $mSizeMb > 0) ? ($sizeDiffMb / $catalogSizeMb) : 0;
                         $isArchive = in_array($foundExt, ['zip', '7z', 'gz', 'rar', 'tar']) || in_array($catalogExt, ['zip', '7z', 'gz', 'rar', 'tar']);
-                        $isPointer = in_array($foundExt, ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc']) || in_array($catalogExt, ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc']);
+                        $isPointer = in_array($foundExt, ['psn', 'ps3', 'ps3dir', 'ps4', 'ps4dir', 'm3u', 'cue', 'ccd', 'gdi', 'toc']) || in_array($catalogExt, ['psn', 'ps3', 'ps3dir', 'ps4', 'ps4dir', 'm3u', 'cue', 'ccd', 'gdi', 'toc']);
                         $sizeMismatch = false;
                         if (!$isPointer && $catalogSizeMb > 0 && $mSizeMb > 0) {
                             if ($isArchive) {
@@ -5628,6 +5691,7 @@ function quickGetBatoceraSystemInfo($baseDir, $uncPath, $cleanSys, $batoceraFold
     $matchedNames = [];
     $matchedSizes = [];
     $isPs3 = (strtolower($cleanSys) === 'ps3' || strtolower($batoceraFolder) === 'ps3');
+    $isPs4 = (strtolower($cleanSys) === 'ps4' || strtolower($batoceraFolder) === 'ps4');
 
     // Determine direct filesystem base path if accessible (e.g. Windows UNC or mounted local path)
     $directBasePath = '';
@@ -5666,6 +5730,7 @@ function quickGetBatoceraSystemInfo($baseDir, $uncPath, $cleanSys, $batoceraFold
                     if ($p !== '') {
                         $cleanP = ltrim(str_replace('\\', '/', $p), './');
                         if ($isPs3 && !preg_match('/\.(ps3|ps3dir|squashfs|psn|iso|m3u|pkg)$/i', $cleanP)) continue;
+                        if ($isPs4 && !preg_match('/\.(ps4|ps4dir|squashfs|pkg|iso|bin)$/i', $cleanP)) continue;
                         $baseP = basename($cleanP);
                         $matchedIds[] = $cleanP;
                         if ($baseP !== $cleanP) $matchedIds[] = $baseP;
@@ -5691,7 +5756,7 @@ function quickGetBatoceraSystemInfo($baseDir, $uncPath, $cleanSys, $batoceraFold
 
                     if ($isPs3) {
                         if ($isDir) {
-                            if (preg_match('/\.ps3$/i', $item)) {
+                            if (preg_match('/\.ps3(dir)?$/i', $item)) {
                                 $matchedIds[] = $item;
                                 $stem = pathinfo($item, PATHINFO_FILENAME);
                                 $matchedNames[] = $stem;
@@ -5722,9 +5787,21 @@ function quickGetBatoceraSystemInfo($baseDir, $uncPath, $cleanSys, $batoceraFold
                         } else {
                             if (!preg_match('/\.(squashfs|psn|iso|m3u|pkg)$/i', $item)) continue;
                         }
+                    } elseif ($isPs4) {
+                        if ($isDir) {
+                            if (preg_match('/\.ps4(dir)?$/i', $item)) {
+                                $matchedIds[] = $item;
+                                $stem = pathinfo($item, PATHINFO_FILENAME);
+                                $matchedNames[] = $stem;
+                                $matchedIds[] = $stem;
+                            }
+                            continue;
+                        } else {
+                            if (!preg_match('/\.(squashfs|pkg|iso|bin)$/i', $item)) continue;
+                        }
                     } else {
                         if (!$isDir && in_array($ext, ['txt', 'xml', 'png', 'jpg', 'jpeg', 'keys', 'cfg', 'ini', 'log'], true)) continue;
-                        if ($isDir && !preg_match('/\.(ps3|ps3dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game)$/i', $item)) continue;
+                        if ($isDir && !preg_match('/\.(ps3|ps3dir|ps4|ps4dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game)$/i', $item)) continue;
                     }
 
                     $matchedIds[] = $item;
@@ -5768,6 +5845,7 @@ function quickGetBatoceraSystemInfo($baseDir, $uncPath, $cleanSys, $batoceraFold
                         if ($p !== '') {
                             $cleanP = ltrim(str_replace('\\', '/', $p), './');
                             if ($isPs3 && !preg_match('/\.(ps3|ps3dir|squashfs|psn|iso|m3u|pkg)$/i', $cleanP)) continue;
+                            if ($isPs4 && !preg_match('/\.(ps4|ps4dir|squashfs|pkg|iso|bin)$/i', $cleanP)) continue;
                             $baseP = basename($cleanP);
                             $matchedIds[] = $cleanP;
                             if ($baseP !== $cleanP) $matchedIds[] = $baseP;
@@ -5795,6 +5873,8 @@ function quickGetBatoceraSystemInfo($baseDir, $uncPath, $cleanSys, $batoceraFold
                     $isDir = (strpos($attrs, 'D') !== false);
                     if ($isPs3) {
                         if ($isDir || !preg_match('/\.(squashfs|psn|iso|m3u|pkg)$/i', $fname)) continue;
+                    } elseif ($isPs4) {
+                        if ($isDir || !preg_match('/\.(squashfs|pkg|iso|bin)$/i', $fname)) continue;
                     } else {
                         if ($isDir || $fname === '.' || $fname === '..' || substr($fname, 0, 1) === '.') continue;
                         $ext = strtolower(pathinfo($fname, PATHINFO_EXTENSION));

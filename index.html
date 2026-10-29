@@ -11715,7 +11715,8 @@
             ['cue', 'bin', 'iso', 'img', 'chd', 'pbp', 'm3u', 'cso'],
             ['adf', 'ipf', 'dms', 'hdf', 'lha', 'm3u'],
             ['wsquashfs', 'squashfs'],
-            ['ps3', 'ps3dir', 'squashfs', 'psn', 'iso', 'm3u', 'pkg', 'bin']
+            ['ps3', 'ps3dir', 'squashfs', 'psn', 'iso', 'm3u', 'pkg', 'bin'],
+            ['ps4', 'ps4dir', 'squashfs', 'pkg', 'iso', 'bin']
         ];
 
         function areExtensionsCompatible(ext1, ext2) {
@@ -11827,7 +11828,7 @@
                 const sizeDiffMb = (catalogSizeMb > 0 && localSizeMb > 0) ? Math.abs(catalogSizeMb - localSizeMb) : 0;
                 const sizeRatio = (catalogSizeMb > 0 && localSizeMb > 0) ? (sizeDiffMb / catalogSizeMb) : 0;
                 const isArchive = ARCHIVE_EXTENSIONS.has(localExt) || ARCHIVE_EXTENSIONS.has(catalogExt);
-                const isPointer = ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc'].includes(localExt) || ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc'].includes(catalogExt);
+                const isPointer = ['psn', 'ps3', 'ps3dir', 'ps4', 'ps4dir', 'm3u', 'cue', 'ccd', 'gdi', 'toc'].includes(localExt) || ['psn', 'ps3', 'ps3dir', 'ps4', 'ps4dir', 'm3u', 'cue', 'ccd', 'gdi', 'toc'].includes(catalogExt);
                 let sizeMismatch = false;
                 if (!isPointer && catalogSizeMb > 0 && localSizeMb > 0) {
                     if (isArchive) {
@@ -14487,7 +14488,7 @@
                         const sizeDiffMb = (catalogSizeMb > 0 && localSizeMb > 0) ? Math.abs(catalogSizeMb - localSizeMb) : 0;
                         const sizeRatio = (catalogSizeMb > 0 && localSizeMb > 0) ? (sizeDiffMb / catalogSizeMb) : 0;
                         const isArchive = ARCHIVE_EXTENSIONS.has(localExt) || ARCHIVE_EXTENSIONS.has(catalogExt);
-                        const isPointer = ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc'].includes(localExt) || ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc'].includes(catalogExt);
+                        const isPointer = ['psn', 'ps3', 'ps3dir', 'ps4', 'ps4dir', 'm3u', 'cue', 'ccd', 'gdi', 'toc'].includes(localExt) || ['psn', 'ps3', 'ps3dir', 'ps4', 'ps4dir', 'm3u', 'cue', 'ccd', 'gdi', 'toc'].includes(catalogExt);
                         let sizeMismatch = false;
                         if (!isPointer && catalogSizeMb > 0 && localSizeMb > 0) {
                             if (isArchive) {
@@ -25179,8 +25180,7 @@
                     (isSystemActive && batoceraOnline && (
                         (g.id && batoceraMatchedIds.has(g.id)) ||
                         (g.name && batoceraMatchedNames.has(g.name)) ||
-                        isFuzzyInstalled ||
-                        Boolean(gm && (gm.game_id || gm.image || gm.thumbnail || gm.filename))
+                        isFuzzyInstalled
                     )) ||
                     (currentMode === 'global' && isGlobalGameInstalled(g))
                 );
