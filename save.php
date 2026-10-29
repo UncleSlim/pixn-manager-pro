@@ -520,8 +520,8 @@ if ($action === 'get_batocera_media') {
     // Batocera PC runs a native HTTP service that serves game media in ~1-15ms without SMB overhead.
     $batoIp = $targetHost;
     if (!filter_var($batoIp, FILTER_VALIDATE_IP)) {
-        $resolvedIp = gethostbyname($batoIp);
-        if ($resolvedIp !== $batoIp && filter_var($resolvedIp, FILTER_VALIDATE_IP)) {
+        $resolvedIp = function_exists('resolveLanHostname') ? resolveLanHostname($batoIp) : gethostbyname($batoIp);
+        if ($resolvedIp && filter_var($resolvedIp, FILTER_VALIDATE_IP)) {
             $batoIp = $resolvedIp;
         }
     }
@@ -547,15 +547,93 @@ if ($action === 'get_batocera_media') {
             $httpMediaType = 'video';
         }
 
-        // Build list of candidate ROM filenames to compute Batocera game MD5
-        $candidateRoms = [];
-        if (!empty($_GET['rom'])) {
-            $candidateRoms[] = trim($_GET['rom']);
+        // Direct Fast-Track HTTP URLs (tries exact known endpoints first without scanning multi-MB JSON files)
+        $streamHeaders = [];
+        if (!empty($_SERVER['HTTP_RANGE'])) {
+            $streamHeaders[] = 'Range: ' . $_SERVER['HTTP_RANGE'];
         }
-        if (!empty($_GET['id'])) {
-            $candidateRoms[] = trim($_GET['id']);
+        $streamCtx = stream_context_create([
+            'http' => [
+                'method' => 'GET',
+                'header' => implode("\r\n", $streamHeaders),
+                'timeout' => ($httpMediaType === 'video' ? 2.5 : 0.8),
+                'ignore_errors' => true
+            ]
+        ]);
+
+        $directCandidateUrls = [];
+        if (stripos($relMedia, 'systems/') === 0 || stripos($relMedia, '/systems/') === 0) {
+            $directCandidateUrls[] = "http://{$batoIp}:1234/" . ltrim($relMedia, '/');
+        }
+        if (preg_match('#games/([a-f0-9]{32})/media/([a-z0-9_-]+)#i', $relMedia, $mPath)) {
+            $directCandidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/{$mPath[1]}/media/{$mPath[2]}";
+        }
+        if (!empty($_GET['game_id'])) {
+            $directCandidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . urlencode($_GET['game_id']) . "/media/{$httpMediaType}";
+        }
+        if (!empty($_GET['id']) && strlen($_GET['id']) === 32 && ctype_xdigit($_GET['id'])) {
+            $directCandidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . urlencode($_GET['id']) . "/media/{$httpMediaType}";
+        }
+        if (!empty($_GET['rom'])) {
+            $rFile = trim($_GET['rom']);
+            $directCandidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . md5('/userdata/roms/' . $batoceraFolder . '/' . $rFile) . "/media/{$httpMediaType}";
+            $directCandidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . md5('/userdata/roms/' . $batoceraFolder . '/' . basename($rFile)) . "/media/{$httpMediaType}";
+        }
+        if (!empty($_GET['id']) && (empty($_GET['game_id']) || $_GET['id'] !== $_GET['game_id'])) {
+            $iFile = trim($_GET['id']);
+            $directCandidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . md5('/userdata/roms/' . $batoceraFolder . '/' . $iFile) . "/media/{$httpMediaType}";
+            $directCandidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . md5('/userdata/roms/' . $batoceraFolder . '/' . basename($iFile)) . "/media/{$httpMediaType}";
+        }
+        $directCandidateUrls = array_values(array_unique(array_filter($directCandidateUrls)));
+
+        // Try direct hits immediately (takes ~4-15ms)
+        foreach ($directCandidateUrls as $directUrl) {
+            $http_response_header = [];
+            $fp = @fopen($directUrl, 'rb', false, $streamCtx);
+            if ($fp) {
+                $respHeaders = $http_response_header ?? [];
+                $statusLine = $respHeaders[0] ?? '';
+                if (strpos($statusLine, '200') !== false || strpos($statusLine, '206') !== false) {
+                    $cType = ($httpMediaType === 'video') ? 'video/mp4' : 'image/png';
+                    $cLen = null;
+                    $cRange = null;
+                    foreach ($respHeaders as $hdr) {
+                        if (stripos($hdr, 'Content-Type:') === 0) $cType = trim(substr($hdr, 13));
+                        if (stripos($hdr, 'Content-Length:') === 0) $cLen = trim(substr($hdr, 15));
+                        if (stripos($hdr, 'Content-Range:') === 0) $cRange = trim(substr($hdr, 14));
+                    }
+                    if ($httpMediaType === 'video') {
+                        while (ob_get_level() > 0) { @ob_end_clean(); }
+                    }
+                    if (strpos($statusLine, '206') !== false) {
+                        http_response_code(206);
+                    }
+                    header_remove('Pragma');
+                    header_remove('Expires');
+                    if (!empty($_GET['download_attachment'])) {
+                        header('Content-Type: application/octet-stream', true);
+                        header('Content-Disposition: attachment; filename="' . $_GET['download_attachment'] . '"');
+                    } else {
+                        header('Content-Type: ' . $cType, true);
+                    }
+                    if ($cLen) header('Content-Length: ' . $cLen);
+                    if ($cRange) header('Content-Range: ' . $cRange);
+                    header('Accept-Ranges: bytes');
+                    header('Cache-Control: ' . ($httpMediaType === 'video' ? 'no-cache, no-store, must-revalidate' : 'public, max-age=604800, immutable'), true);
+                    header('Access-Control-Allow-Origin: *');
+                    header('X-Batocera-Source: http-stream-direct');
+                    fpassthru($fp);
+                    fclose($fp);
+                    exit;
+                }
+                fclose($fp);
+            }
         }
 
+        // Secondary fallback candidates: only scan if direct hits didn't resolve
+        $candidateRoms = [];
+        if (!empty($_GET['rom'])) $candidateRoms[] = trim($_GET['rom']);
+        if (!empty($_GET['id'])) $candidateRoms[] = trim($_GET['id']);
         $mediaBase = pathinfo($relMedia, PATHINFO_FILENAME);
 
         // Check if we can find exact ROM filename from Batocera scan cache
@@ -591,20 +669,6 @@ if ($action === 'get_batocera_media') {
                                     }
                                 }
                             }
-                            if (!empty($cData['matched_ids']) && is_array($cData['matched_ids'])) {
-                                foreach ($cData['matched_ids'] as $mId) {
-                                    $mIdFile = basename($mId);
-                                    $mIdStem = pathinfo($mIdFile, PATHINFO_FILENAME);
-                                    if (strcasecmp($mIdStem, $mediaBase) === 0 || stripos($mIdStem, $mediaBase) !== false || stripos($mediaBase, $mIdStem) !== false) {
-                                        if (!in_array($mIdFile, $candidateRoms)) {
-                                            $candidateRoms[] = $mIdFile;
-                                        }
-                                        if (!in_array($mId, $candidateRoms)) {
-                                            $candidateRoms[] = $mId;
-                                        }
-                                    }
-                                }
-                            }
                         }
                     }
                 }
@@ -622,23 +686,59 @@ if ($action === 'get_batocera_media') {
         }
         $candidateRoms[] = $mediaBase;
 
-        // Try streaming via HTTP port 1234
-        $streamHeaders = [];
-        if (!empty($_SERVER['HTTP_RANGE'])) {
-            $streamHeaders[] = 'Range: ' . $_SERVER['HTTP_RANGE'];
+        $candidateHttpUrls = [];
+        if (stripos($relMedia, 'systems/') === 0 || stripos($relMedia, '/systems/') === 0) {
+            $candidateHttpUrls[] = "http://{$batoIp}:1234/" . ltrim($relMedia, '/');
         }
-        $streamCtx = stream_context_create([
-            'http' => [
-                'method' => 'GET',
-                'header' => implode("\r\n", $streamHeaders),
-                'timeout' => ($httpMediaType === 'video' ? 2.5 : 0.8),
-                'ignore_errors' => true
-            ]
-        ]);
+        if (preg_match('#games/([a-f0-9]{32})/media/([a-z0-9_-]+)#i', $relMedia, $mPath)) {
+            $candidateHttpUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/{$mPath[1]}/media/{$mPath[2]}";
+        }
+        if (!empty($_GET['game_id'])) {
+            $candidateHttpUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . urlencode($_GET['game_id']) . "/media/{$httpMediaType}";
+        }
+        if (!empty($_GET['id']) && strlen($_GET['id']) === 32 && ctype_xdigit($_GET['id'])) {
+            $candidateHttpUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . urlencode($_GET['id']) . "/media/{$httpMediaType}";
+        }
+
+        // Match against Batocera HTTP API cache
+        if (function_exists('getBatoceraSystemGamesHttp')) {
+            $batoGames = getBatoceraSystemGamesHttp($batoIp, $batoceraFolder, $baseDir);
+            if (!empty($batoGames)) {
+                $checkItems = array_filter([$_GET['game_id'] ?? '', $_GET['id'] ?? '', $_GET['rom'] ?? '', $mediaBase, trim($_GET['name'] ?? '')]);
+                foreach ($batoGames as $bg) {
+                    $bgId = $bg['id'] ?? '';
+                    $bgName = $bg['name'] ?? '';
+                    $bgPath = $bg['path'] ?? '';
+                    $bgFile = basename($bgPath);
+                    $bgStem = pathinfo($bgFile, PATHINFO_FILENAME);
+                    $matchedBg = false;
+                    foreach ($checkItems as $ci) {
+                        if (!$ci) continue;
+                        $ciBase = basename($ci);
+                        $ciStem = pathinfo($ciBase, PATHINFO_FILENAME);
+                        if ($bgId === $ci || strcasecmp($bgFile, $ciBase) === 0 || strcasecmp($bgStem, $ciStem) === 0 || strcasecmp($bgName, $ci) === 0 || strcasecmp($bgStem, $ci) === 0) {
+                            $matchedBg = true;
+                            break;
+                        }
+                    }
+                    if ($matchedBg) {
+                        if (!empty($bg[$httpMediaType])) {
+                            $candidateHttpUrls[] = "http://{$batoIp}:1234/" . ltrim($bg[$httpMediaType], '/');
+                        }
+                        $candidateHttpUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/{$bgId}/media/{$httpMediaType}";
+                        break;
+                    }
+                }
+            }
+        }
 
         foreach ($candidateRoms as $candRom) {
             $batoGameId = md5('/userdata/roms/' . $batoceraFolder . '/' . $candRom);
-            $batoHttpUrl = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/{$batoGameId}/media/{$httpMediaType}";
+            $candidateHttpUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/{$batoGameId}/media/{$httpMediaType}";
+        }
+        $candidateHttpUrls = array_values(array_unique(array_filter($candidateHttpUrls)));
+
+        foreach ($candidateHttpUrls as $batoHttpUrl) {
 
             $http_response_header = [];
             $fp = @fopen($batoHttpUrl, 'rb', false, $streamCtx);
@@ -745,10 +845,25 @@ if ($action === 'get_batocera_media') {
         }
     }
 
+    // Determine direct filesystem base path if accessible (Windows UNC or mounted local path)
+    $directBaseFolder = '';
+    $cleanUnc = str_replace('\\', '/', $uncPath);
+    if (@is_dir($uncPath . '/' . $batoceraFolder)) {
+        $directBaseFolder = rtrim($uncPath, '\\/') . DIRECTORY_SEPARATOR . $batoceraFolder;
+    } elseif (@is_dir($uncPath . '\\' . $batoceraFolder)) {
+        $directBaseFolder = rtrim($uncPath, '\\/') . DIRECTORY_SEPARATOR . $batoceraFolder;
+    } elseif (@is_dir($cleanUnc . '/' . $batoceraFolder)) {
+        $directBaseFolder = rtrim($cleanUnc, '/') . '/' . $batoceraFolder;
+    } else {
+        $winBase = '\\\\' . $targetHost . '\\' . $share . ($batoceraSubdir !== '' ? '\\' . str_replace('/', '\\', $batoceraSubdir) : '') . '\\' . $batoceraFolder;
+        if (@is_dir($winBase)) {
+            $directBaseFolder = $winBase;
+        }
+    }
+
     $escapedShare = escapeshellarg($batoceraPath);
 
     foreach ($pathsToTry as $tryRel) {
-        $remotePath = ($batoceraSubdir ? $batoceraSubdir . '/' : '') . $batoceraFolder . '/' . $tryRel;
         $currExt = strtolower(pathinfo($tryRel, PATHINFO_EXTENSION));
         $mime = 'image/png';
         if ($currExt === 'jpg' || $currExt === 'jpeg') $mime = 'image/jpeg';
@@ -758,6 +873,27 @@ if ($action === 'get_batocera_media') {
         elseif ($currExt === 'webm') $mime = 'video/webm';
         elseif ($currExt === 'mkv') $mime = 'video/x-matroska';
         elseif ($currExt === 'mov') $mime = 'video/quicktime';
+
+        // TIER 0: Direct filesystem / UNC access (Instant ~0.001s without invoking processes)
+        if ($directBaseFolder !== '') {
+            $directFilePath = rtrim($directBaseFolder, '\\/') . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $tryRel);
+            if (@file_exists($directFilePath) && @filesize($directFilePath) > 0) {
+                if (!empty($_GET['download_attachment'])) {
+                    header('Content-Type: application/octet-stream', true);
+                    header('Content-Disposition: attachment; filename="' . $_GET['download_attachment'] . '"');
+                } else {
+                    header('Content-Type: ' . $mime, true);
+                }
+                header('Content-Length: ' . filesize($directFilePath));
+                header('Cache-Control: public, max-age=604800, immutable');
+                header('Access-Control-Allow-Origin: *');
+                header('X-Batocera-Source: direct-unc');
+                readfile($directFilePath);
+                exit;
+            }
+        }
+
+        $remotePath = ($batoceraSubdir ? $batoceraSubdir . '/' : '') . $batoceraFolder . '/' . $tryRel;
 
         // For video files: Stream directly via pipe (zero disk download)
         if (in_array($currExt, ['mp4', 'webm', 'mkv', 'mov'], true)) {
@@ -801,10 +937,10 @@ if ($action === 'get_batocera_media') {
 
         $out = [];
         $ret = -1;
-        @exec("/usr/bin/smbclient {$escapedShare} -N -t 6 -c {$getCmd} 2>&1", $out, $ret);
+        @exec("/usr/bin/smbclient {$escapedShare} -N -t 2 -c {$getCmd} 2>&1", $out, $ret);
         if ($ret !== 0 && (strpos(implode("\n", $out), 'LOGON_FAILURE') !== false || strpos(implode("\n", $out), 'ACCESS_DENIED') !== false)) {
             $out = [];
-            @exec("/usr/bin/smbclient {$escapedShare} -U 'root%linux' -t 6 -c {$getCmd} 2>&1", $out, $ret);
+            @exec("/usr/bin/smbclient {$escapedShare} -U 'root%linux' -t 2 -c {$getCmd} 2>&1", $out, $ret);
         }
 
         if (file_exists($tempFile) && filesize($tempFile) > 0) {
@@ -828,6 +964,7 @@ if ($action === 'get_batocera_media') {
     }
 
     http_response_code(404);
+    header('Cache-Control: public, max-age=120', true);
     header('Content-Type: text/plain', true);
     exit('Image not found');
 }
@@ -1017,8 +1154,8 @@ if ($action === 'check_batocera_video') {
     // 1. FAST PATH: Check Batocera HTTP service (Port 1234)
     $batoIp = $targetHost;
     if (!filter_var($batoIp, FILTER_VALIDATE_IP)) {
-        $resolvedIp = gethostbyname($batoIp);
-        if ($resolvedIp !== $batoIp && filter_var($resolvedIp, FILTER_VALIDATE_IP)) {
+        $resolvedIp = function_exists('resolveLanHostname') ? resolveLanHostname($batoIp) : gethostbyname($batoIp);
+        if ($resolvedIp && filter_var($resolvedIp, FILTER_VALIDATE_IP)) {
             $batoIp = $resolvedIp;
         }
     }
@@ -1263,8 +1400,8 @@ if ($action === 'stream_batocera_video') {
     // 1. FAST PATH: Direct HTTP Stream from Batocera Web Services (Port 1234)
     $batoIp = $targetHost;
     if (!filter_var($batoIp, FILTER_VALIDATE_IP)) {
-        $resolvedIp = gethostbyname($batoIp);
-        if ($resolvedIp !== $batoIp && filter_var($resolvedIp, FILTER_VALIDATE_IP)) {
+        $resolvedIp = function_exists('resolveLanHostname') ? resolveLanHostname($batoIp) : gethostbyname($batoIp);
+        if ($resolvedIp && filter_var($resolvedIp, FILTER_VALIDATE_IP)) {
             $batoIp = $resolvedIp;
         }
     }
@@ -1283,6 +1420,41 @@ if ($action === 'stream_batocera_video') {
         if ($relMedia && preg_match('#games/([a-f0-9]{32})/media/video#i', $relMedia, $mId)) {
             $candidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/{$mId[1]}/media/video";
         }
+        if ($id && strlen($id) === 32 && ctype_xdigit($id)) {
+            $candidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/{$id}/media/video";
+        }
+
+        // Check against Batocera HTTP API cache
+        if (function_exists('getBatoceraSystemGamesHttp')) {
+            $batoGames = getBatoceraSystemGamesHttp($batoIp, $batoceraFolder, $baseDir);
+            if (!empty($batoGames)) {
+                $searchItems = array_filter([$gameId, $id, $rom, $relMedia, trim($_GET['name'] ?? '')]);
+                foreach ($batoGames as $bg) {
+                    if (empty($bg['video'])) continue;
+                    $bgId = $bg['id'] ?? '';
+                    $bgName = $bg['name'] ?? '';
+                    $bgFile = basename($bg['path'] ?? '');
+                    $bgStem = pathinfo($bgFile, PATHINFO_FILENAME);
+                    $bgMatched = false;
+                    foreach ($searchItems as $item) {
+                        $itemBase = basename($item);
+                        $itemStem = pathinfo($itemBase, PATHINFO_FILENAME);
+                        if ($bgId === $item || strcasecmp($bgFile, $itemBase) === 0 || strcasecmp($bgStem, $itemStem) === 0 || strcasecmp($bgName, $item) === 0 || strcasecmp($bgStem, $item) === 0) {
+                            $bgMatched = true;
+                            break;
+                        }
+                    }
+                    if ($bgMatched) {
+                        $candidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/{$bgId}/media/video";
+                        if (!empty($bg['video'])) {
+                            $candidateUrls[] = "http://{$batoIp}:1234/" . ltrim($bg['video'], '/');
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
         if ($rom) {
             $candidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . md5('/userdata/roms/' . $batoceraFolder . '/' . $rom) . "/media/video";
             $candidateUrls[] = "http://{$batoIp}:1234/systems/{$batoceraFolder}/games/" . md5('/userdata/roms/' . $batoceraFolder . '/' . basename($rom)) . "/media/video";
@@ -1302,12 +1474,16 @@ if ($action === 'stream_batocera_video') {
         foreach ($candidateUrls as $batoHttpUrl) {
             // High-throughput cURL streaming (if curl extension is enabled)
             if (function_exists('curl_init')) {
+                $isHead = (($_SERVER['REQUEST_METHOD'] ?? '') === 'HEAD');
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $batoHttpUrl);
                 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
                 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-                curl_setopt($ch, CURLOPT_TIMEOUT, 0);
+                curl_setopt($ch, CURLOPT_TIMEOUT, $isHead ? 6 : 0);
                 curl_setopt($ch, CURLOPT_BUFFERSIZE, 262144);
+                if ($isHead) {
+                    curl_setopt($ch, CURLOPT_NOBODY, true);
+                }
 
                 $range = $_SERVER['HTTP_RANGE'] ?? '';
                 if (!empty($range)) {
@@ -1319,7 +1495,7 @@ if ($action === 'stream_batocera_video') {
                 $statusCode = 200;
                 $headersSent = false;
 
-                curl_setopt($ch, CURLOPT_HEADERFUNCTION, function($curl, $headerLine) use (&$respHeaders, &$statusCode, &$headersSent, $videoMime) {
+                curl_setopt($ch, CURLOPT_HEADERFUNCTION, function($curl, $headerLine) use (&$respHeaders, &$statusCode, &$headersSent, $videoMime, $isHead) {
                     $len = strlen($headerLine);
                     $trimmed = trim($headerLine);
                     if (empty($trimmed)) {
@@ -1352,10 +1528,6 @@ if ($action === 'stream_batocera_video') {
                                 header('Content-Type: ' . $videoMime, true);
                             }
                             flush();
-
-                            if (($_SERVER['REQUEST_METHOD'] ?? '') === 'HEAD') {
-                                exit;
-                            }
                         }
                         return $len;
                     }
@@ -1540,7 +1712,7 @@ if ($action === 'stream_batocera_video') {
             $remotePath = ($batoceraSubdir ? $batoceraSubdir . '/' : '') . $batoceraFolder . '/' . $relMedia;
 
             $getCmd = escapeshellarg('get "' . $remotePath . '" -');
-            $cmd = "/usr/bin/smbclient {$escapedShare} -N -t 60 -c {$getCmd} 2>/dev/null";
+            $cmd = "/usr/bin/smbclient {$escapedShare} -N -t 3 -c {$getCmd} 2>/dev/null";
             $pipe = @popen($cmd, 'r');
             if ($pipe) {
                 $probe = fread($pipe, 8192);
@@ -3172,17 +3344,44 @@ function resolveLanHostname($host) {
         return $host;
     }
 
+    static $memIpCache = [];
+    $normHost = strtolower(trim($host));
+    if (isset($memIpCache[$normHost])) {
+        return $memIpCache[$normHost];
+    }
+
+    global $baseDir;
+    $cacheDir = ($baseDir ? $baseDir . '/data/cache_batocera' : sys_get_temp_dir());
+    $cacheFile = $cacheDir . '/_ip_' . preg_replace('/[^a-zA-Z0-9_\-]/', '_', $normHost) . '.txt';
+    if (@file_exists($cacheFile) && (time() - @filemtime($cacheFile) < 3600)) {
+        $cIp = trim((string)@file_get_contents($cacheFile));
+        if ($cIp && filter_var($cIp, FILTER_VALIDATE_IP)) {
+            $memIpCache[$normHost] = $cIp;
+            return $cIp;
+        }
+    }
+
+    $saveIp = function($ip) use (&$memIpCache, $normHost, $cacheDir, $cacheFile) {
+        if ($ip && filter_var($ip, FILTER_VALIDATE_IP)) {
+            $memIpCache[$normHost] = $ip;
+            if (!@is_dir($cacheDir)) @mkdir($cacheDir, 0777, true);
+            @file_put_contents($cacheFile, $ip);
+            return $ip;
+        }
+        return null;
+    };
+
     // 1. Direct standard DNS / /etc/hosts
     $ip = @gethostbyname($host);
     if ($ip && $ip !== $host && filter_var($ip, FILTER_VALIDATE_IP)) {
-        return $ip;
+        return $saveIp($ip);
     }
 
     // 2. mDNS (.local)
     if (strpos($host, '.') === false) {
         $mDnsIp = @gethostbyname($host . '.local');
         if ($mDnsIp && $mDnsIp !== ($host . '.local') && filter_var($mDnsIp, FILTER_VALIDATE_IP)) {
-            return $mDnsIp;
+            return $saveIp($mDnsIp);
         }
     }
 
@@ -3196,7 +3395,7 @@ function resolveLanHostname($host) {
         if (!empty($nmbOut)) {
             foreach ($nmbOut as $line) {
                 if (preg_match('/^(\d+\.\d+\.\d+\.\d+)\s+/i', trim($line), $m)) {
-                    return $m[1];
+                    return $saveIp($m[1]);
                 }
             }
         }
@@ -3208,11 +3407,11 @@ function resolveLanHostname($host) {
         foreach ($commonVariants as $variant) {
             $vIp = @gethostbyname($variant);
             if ($vIp && $vIp !== $variant && filter_var($vIp, FILTER_VALIDATE_IP)) {
-                return $vIp;
+                return $saveIp($vIp);
             }
             $vIpLocal = @gethostbyname($variant . '.local');
             if ($vIpLocal && $vIpLocal !== ($variant . '.local') && filter_var($vIpLocal, FILTER_VALIDATE_IP)) {
-                return $vIpLocal;
+                return $saveIp($vIpLocal);
             }
             if (DIRECTORY_SEPARATOR !== '\\' && function_exists('exec')) {
                 $vOut = [];
@@ -3220,7 +3419,7 @@ function resolveLanHostname($host) {
                 if (empty($vOut)) @exec("nmblookup " . escapeshellarg($variant) . " 2>&1", $vOut);
                 foreach ($vOut as $line) {
                     if (preg_match('/^(\d+\.\d+\.\d+\.\d+)\s+/i', trim($line), $m)) {
-                        return $m[1];
+                        return $saveIp($m[1]);
                     }
                 }
             }
@@ -3278,8 +3477,23 @@ function areExtensionsCompatible($ext1, $ext2) {
     $e1 = strtolower(ltrim($ext1, '.'));
     $e2 = strtolower(ltrim($ext2, '.'));
     if ($e1 === $e2) return true;
+
+    $opts1 = preg_split('/[|()\/]+/', $e1, -1, PREG_SPLIT_NO_EMPTY);
+    $opts2 = preg_split('/[|()\/]+/', $e2, -1, PREG_SPLIT_NO_EMPTY);
+    foreach ($opts1 as $o1) {
+        foreach ($opts2 as $o2) {
+            if ($o1 === $o2) return true;
+        }
+    }
+
     $archives = ['zip', '7z', 'gz', 'rar', 'tar'];
-    if (in_array($e1, $archives) || in_array($e2, $archives)) return true;
+    foreach ($opts1 as $o1) {
+        if (in_array($o1, $archives)) return true;
+    }
+    foreach ($opts2 as $o2) {
+        if (in_array($o2, $archives)) return true;
+    }
+
     $groups = [
         ['bin', 'a26', 'rom'],
         ['bin', 'a78'],
@@ -3293,10 +3507,15 @@ function areExtensionsCompatible($ext1, $ext2) {
         ['pce', 'bin', 'cue', 'chd', 'iso', 'sgx'],
         ['cue', 'bin', 'iso', 'img', 'chd', 'pbp', 'm3u', 'cso'],
         ['adf', 'ipf', 'dms', 'hdf', 'lha', 'm3u'],
-        ['wsquashfs', 'squashfs']
+        ['wsquashfs', 'squashfs'],
+        ['ps3', 'ps3dir', 'squashfs', 'psn', 'iso', 'm3u', 'pkg', 'bin']
     ];
     foreach ($groups as $g) {
-        if (in_array($e1, $g) && in_array($e2, $g)) return true;
+        $has1 = false;
+        $has2 = false;
+        foreach ($opts1 as $o1) { if (in_array($o1, $g)) { $has1 = true; break; } }
+        foreach ($opts2 as $o2) { if (in_array($o2, $g)) { $has2 = true; break; } }
+        if ($has1 && $has2) return true;
     }
     return false;
 }
@@ -3330,8 +3549,8 @@ function getBatoceraFoldersList($baseDir, $uncPath, $forceRefresh = false) {
         // 1. FAST PATH: Batocera HTTP REST API (Port 1234)
         $batoIp = $targetHost;
         if (!filter_var($batoIp, FILTER_VALIDATE_IP)) {
-            $resolvedIp = gethostbyname($batoIp);
-            if ($resolvedIp !== $batoIp && filter_var($resolvedIp, FILTER_VALIDATE_IP)) {
+            $resolvedIp = function_exists('resolveLanHostname') ? resolveLanHostname($batoIp) : gethostbyname($batoIp);
+            if ($resolvedIp && filter_var($resolvedIp, FILTER_VALIDATE_IP)) {
                 $batoIp = $resolvedIp;
             }
         }
@@ -3675,6 +3894,8 @@ function attachBatoceraSettingsToResponse($baseDir, $uncPath, $sysId, &$targetAr
 function enrichFoundFilesSizes(&$foundFiles, $baseDir, $uncPath, $targetHost, $share, $fullRemoteDir, $batoceraFolder) {
     if (empty($foundFiles) || !is_array($foundFiles)) return;
 
+    $isPs3 = (strtolower($batoceraFolder) === 'ps3');
+
     $needsSize = false;
     foreach ($foundFiles as $f) {
         if (empty($f['size_bytes'])) {
@@ -3759,9 +3980,14 @@ function enrichFoundFilesSizes(&$foundFiles, $baseDir, $uncPath, $targetHost, $s
         }
         foreach ($dirSizes as $dLow => $dBytes) {
             if (isset($knownLower[$dLow])) continue;
-            if ($dLow === 'gamelist.xml' || preg_match('/\.keys$/i', $dLow)) continue;
-            if (preg_match('/^(_info|info)\.txt$/i', $dLow)) continue;
-            if (preg_match('/^(system\.png|\.ds_store|thumbs\.db)$/i', $dLow)) continue;
+            if ($isPs3) {
+                if (!preg_match('/\.(squashfs|psn|iso|m3u|pkg)$/i', $dLow)) continue;
+            } else {
+                if ($dLow === 'gamelist.xml' || preg_match('/\.keys$/i', $dLow)) continue;
+                if (preg_match('/^([_\.]?gamelist.*\.xml|[_\.]?info.*\.txt|readme.*\.txt|\.git.*|\.ds_store|thumbs\.db|desktop\.ini)$/i', $dLow)) continue;
+                $dExt = strtolower(pathinfo($dLow, PATHINFO_EXTENSION));
+                if (in_array($dExt, ['png', 'jpg', 'jpeg', 'gif', 'webp', 'mp4', 'mkv', 'avi', 'pdf', 'mp3', 'ogg', 'wav', 'old', 'bak', 'backup', 'log', 'ini', 'cfg', 'txt', 'xml', 'sfo', 'sfb', 'dat', 'trp'], true)) continue;
+            }
 
             $actualName = $dirActualNames[$dLow] ?? $dLow;
             $verified[] = [
@@ -3840,7 +4066,36 @@ function enrichFoundFilesSizes(&$foundFiles, $baseDir, $uncPath, $targetHost, $s
             $lowerRel = mb_strtolower(str_replace('\\', '/', $rel));
             $lowerFname = mb_strtolower($fname);
 
+            // Skip media folders and internal files of folder games
+            if ($currentSubdir !== '') {
+                if (preg_match('/(^|\/)media(\/|$)/i', $currentSubdir)) continue;
+                if (preg_match('/(\.ps3|\.ps3dir|\.pc|\.wine|\.dos|\.dosbox|\.dvd|\.cd|\.scummvm|\.wiiu|\.wiiudir|\.switch|\.app|\.game)(\/|$)/i', $currentSubdir) ||
+                    preg_match('/(^|\/)(PS3_GAME|USRDIR|LICDIR|TROPDIR|SYSDIR|UPDATE|DATA|code|content|meta|romfs|exefs)(\/|$)/i', $currentSubdir)) {
+                    // Accumulate size into parent folder game, but DO NOT record this file in $smbSizesFname or $smbSizesRel
+                    if (!$isDir) {
+                        $subParts = explode('/', $currentSubdir);
+                        $accumDir = '';
+                        foreach ($subParts as $sp) {
+                            $accumDir = $accumDir === '' ? $sp : ($accumDir . '/' . $sp);
+                            $lowerAccum = mb_strtolower($accumDir);
+                            if (!isset($smbDirSizes[$lowerAccum])) {
+                                $smbDirSizes[$lowerAccum] = 0;
+                            }
+                            $smbDirSizes[$lowerAccum] += $bytes;
+                        }
+                    }
+                    continue;
+                }
+            }
+
             if (!$isDir) {
+                if ($isPs3) {
+                    if (!preg_match('/\.(squashfs|psn)$/i', $fname)) continue;
+                } else {
+                    $ext = strtolower(pathinfo($fname, PATHINFO_EXTENSION));
+                    if (in_array($ext, ['png', 'jpg', 'jpeg', 'gif', 'webp', 'mp4', 'mkv', 'avi', 'pdf', 'mp3', 'ogg', 'wav', 'old', 'bak', 'backup', 'log', 'ini', 'cfg', 'txt', 'xml', 'sfb', 'sfo', 'trp', 'dat'])) continue;
+                }
+
                 $smbSizesRel[$lowerRel] = $bytes;
                 if (!isset($smbSizesFname[$lowerFname])) {
                     $smbSizesFname[$lowerFname] = $bytes;
@@ -3895,9 +4150,14 @@ function enrichFoundFilesSizes(&$foundFiles, $baseDir, $uncPath, $targetHost, $s
         }
         foreach ($smbSizesFname as $smbFnameLower => $smbSizeBytes) {
             if (isset($knownLower[$smbFnameLower])) continue;
-            if ($smbFnameLower === 'gamelist.xml' || preg_match('/\.keys$/i', $smbFnameLower)) continue;
-            if (preg_match('/^(_info|info)\.txt$/i', $smbFnameLower)) continue;
-            if (preg_match('/^(system\.png|\.ds_store|thumbs\.db)$/i', $smbFnameLower)) continue;
+            if ($isPs3) {
+                if (!preg_match('/\.(squashfs|psn|iso|m3u|pkg)$/i', $smbFnameLower)) continue;
+            } else {
+                if ($smbFnameLower === 'gamelist.xml' || preg_match('/\.keys$/i', $smbFnameLower)) continue;
+                if (preg_match('/^([_\.]?gamelist.*\.xml|[_\.]?info.*\.txt|readme.*\.txt|\.git.*|\.ds_store|thumbs\.db|desktop\.ini)$/i', $smbFnameLower)) continue;
+                $smbExt = strtolower(pathinfo($smbFnameLower, PATHINFO_EXTENSION));
+                if (in_array($smbExt, ['png', 'jpg', 'jpeg', 'gif', 'webp', 'mp4', 'mkv', 'avi', 'pdf', 'mp3', 'ogg', 'wav', 'old', 'bak', 'backup', 'log', 'ini', 'cfg', 'txt', 'xml', 'sfo', 'sfb', 'dat', 'trp'], true)) continue;
+            }
 
             $verified[] = [
                 'fname' => $smbFnameLower,
@@ -4292,8 +4552,8 @@ if ($action === 'check_batocera_games') {
     // TIER 3: Raw smbclient ls fallback
     $batoIp = $targetHost;
     if (!filter_var($batoIp, FILTER_VALIDATE_IP)) {
-        $resolvedIp = gethostbyname($batoIp);
-        if ($resolvedIp !== $batoIp && filter_var($resolvedIp, FILTER_VALIDATE_IP)) {
+        $resolvedIp = function_exists('resolveLanHostname') ? resolveLanHostname($batoIp) : gethostbyname($batoIp);
+        if ($resolvedIp && filter_var($resolvedIp, FILTER_VALIDATE_IP)) {
             $batoIp = $resolvedIp;
         }
     }
@@ -4387,6 +4647,8 @@ if ($action === 'check_batocera_games') {
         }
     };
 
+    $isPs3 = (strtolower($sysId) === 'ps3' || strtolower($batoceraFolder) === 'ps3');
+
     if ($isDirectAccess) {
         // TIER 0: Direct filesystem / UNC access (Ground truth: live files on disk with accurate sizes)
         try {
@@ -4403,17 +4665,56 @@ if ($action === 'check_batocera_games') {
 
                 // Skip media directory
                 if (preg_match('#(^|/)media(/|$)#i', $rel)) continue;
-                if ($fname === 'gamelist.xml' || preg_match('/\.keys$/i', $fname)) continue;
+                if (preg_match('/^([_\.]?gamelist.*\.xml|[_\.]?info.*\.txt|readme.*\.txt|\.git.*|\.ds_store|thumbs\.db|desktop\.ini)$/i', $fname)) continue;
+                $ext = strtolower(pathinfo($fname, PATHINFO_EXTENSION));
+                if (!$isDir && in_array($ext, ['xml', 'txt', 'keys', 'ini', 'cfg', 'log', 'nfo', 'bak', 'old', 'backup', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'mp4', 'mkv', 'avi', 'pdf', 'mp3', 'ogg', 'wav', 'sfo', 'sfb', 'dat', 'trp'], true)) continue;
 
                 $lowerFname = mb_strtolower($fname);
                 $lowerRel = mb_strtolower($rel);
 
+                // Check if current item is inside an already identified or known folder game (must have slash after folder extension)
+                $insideFolderGame = false;
+                $parentFolderIdx = null;
+                if ($isPs3) {
+                    if (preg_match('/^(.*?\.ps3(dir)?)[\/\\\\]/i', $rel, $m)) {
+                        $insideFolderGame = true;
+                        $parentKey = mb_strtolower($m[1]);
+                        if (isset($knownFolderGames[$parentKey])) {
+                            $parentFolderIdx = $knownFolderGames[$parentKey];
+                        }
+                    }
+                } else {
+                    if (preg_match('/^(.*?\.(ps3|ps3dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game))[\/\\\\]/i', $rel, $m)) {
+                        $insideFolderGame = true;
+                        $parentKey = mb_strtolower($m[1]);
+                        if (isset($knownFolderGames[$parentKey])) {
+                            $parentFolderIdx = $knownFolderGames[$parentKey];
+                        }
+                    }
+                }
+
+                if ($insideFolderGame) {
+                    if (!$isDir && $parentFolderIdx !== null && isset($foundFiles[$parentFolderIdx])) {
+                        $sz = $item->getSize();
+                        if ($sz < 0) $sz += 4294967296.0;
+                        $foundFiles[$parentFolderIdx]['size_bytes'] += (float)$sz;
+                        $foundFiles[$parentFolderIdx]['size_mb'] = round($foundFiles[$parentFolderIdx]['size_bytes'] / (1024 * 1024), 2);
+                    }
+                    continue;
+                }
+
                 if ($isDir) {
                     $isFolderGame = false;
-                    if (preg_match('/\.(ps3|ps3dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game)$/i', $fname)) {
-                        $isFolderGame = true;
-                    } elseif (isset($gamelistGamePaths[$lowerRel]) || isset($gamelistGamePaths[$lowerFname])) {
-                        $isFolderGame = true;
+                    if ($isPs3) {
+                        if (preg_match('/\.ps3(dir)?$/i', $fname)) {
+                            $isFolderGame = true;
+                        }
+                    } else {
+                        if (preg_match('/\.(ps3|ps3dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game)$/i', $fname)) {
+                            $isFolderGame = true;
+                        } elseif (isset($gamelistGamePaths[$lowerRel]) || isset($gamelistGamePaths[$lowerFname])) {
+                            $isFolderGame = true;
+                        }
                     }
 
                     if ($isFolderGame) {
@@ -4428,6 +4729,13 @@ if ($action === 'check_batocera_games') {
                         $knownFolderGames[$lowerFname] = $newIdx;
                     }
                     continue;
+                }
+
+                // If PS3, allow all recognized PS3 file types
+                if ($isPs3) {
+                    if (!preg_match('/\.(squashfs|psn|iso|m3u|pkg)$/i', $fname)) {
+                        continue;
+                    }
                 }
 
                 $sz = $item->getSize();
@@ -4479,6 +4787,13 @@ if ($action === 'check_batocera_games') {
                     'genre' => trim((string)($bg['genre'] ?? '')),
                     'rating' => trim((string)($bg['rating'] ?? '')),
                     'players' => trim((string)($bg['players'] ?? '')),
+                    'thumbnail' => ltrim(str_replace('\\', '/', ($bg['thumbnail'] ?? '')), './'),
+                    'boxart' => ltrim(str_replace('\\', '/', ($bg['boxart'] ?? '')), './'),
+                    'image' => ltrim(str_replace('\\', '/', ($bg['image'] ?? '')), './'),
+                    'marquee' => ltrim(str_replace('\\', '/', ($bg['marquee'] ?? '')), './'),
+                    'titleshot' => ltrim(str_replace('\\', '/', ($bg['titleshot'] ?? '')), './'),
+                    'fanart' => ltrim(str_replace('\\', '/', ($bg['fanart'] ?? '')), './'),
+                    'cartridge' => ltrim(str_replace('\\', '/', ($bg['cartridge'] ?? '')), './'),
                     'video' => ltrim(str_replace('\\', '/', ($bg['video'] ?? '')), './'),
                     'game_id' => $bg['id'] ?? ''
                 ];
@@ -4491,10 +4806,21 @@ if ($action === 'check_batocera_games') {
                 if ($lowerRel !== $lowerName && $lowerRel !== $baseWithoutExt) {
                     $gamelistMeta[$lowerRel] = &$gamelistMeta[$baseWithoutExt];
                 }
+                if (!empty($meta['game_id'])) {
+                    $gamelistMeta[mb_strtolower($meta['game_id'])] = &$gamelistMeta[$baseWithoutExt];
+                }
+                $cleanStem = trim(preg_replace('/\s*[\(\[][^\)\]]*[\)\]]\s*/', ' ', $baseWithoutExt));
+                if ($cleanStem !== '' && $cleanStem !== $baseWithoutExt) {
+                    $gamelistMeta[$cleanStem] = &$gamelistMeta[$baseWithoutExt];
+                }
                 if (!empty($meta['name'])) {
                     $metaNameLower = mb_strtolower(trim($meta['name']));
                     if ($metaNameLower !== $baseWithoutExt && $metaNameLower !== $lowerName) {
                         $gamelistMeta[$metaNameLower] = &$gamelistMeta[$baseWithoutExt];
+                    }
+                    $cleanName = trim(preg_replace('/\s*[\(\[][^\)\]]*[\)\]]\s*/', ' ', $metaNameLower));
+                    if ($cleanName !== '' && $cleanName !== $metaNameLower && $cleanName !== $baseWithoutExt) {
+                        $gamelistMeta[$cleanName] = &$gamelistMeta[$baseWithoutExt];
                     }
                 }
                 $gamelistGamePaths[$lowerRel] = true;
@@ -4631,26 +4957,48 @@ if ($action === 'check_batocera_games') {
                 $lowerRel = mb_strtolower($relPath);
                 $lowerFname = mb_strtolower($fname);
 
-                if ($isDir) {
-                    $isFolderGame = false;
-                    if (preg_match('/\.(ps3|ps3dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game)$/i', $fname)) {
-                        $isFolderGame = true;
-                    } elseif (isset($gamelistGamePaths[$lowerRel]) || isset($gamelistGamePaths[$lowerFname])) {
-                        $isFolderGame = true;
+                if ($isPs3) {
+                    if ($isDir) {
+                        if (preg_match('/\.ps3$/i', $fname)) {
+                            $foundFiles[] = [
+                                'fname' => $fname,
+                                'rel' => $relPath,
+                                'size_bytes' => 0,
+                                'size_mb' => 0
+                            ];
+                            $newIdx = count($foundFiles) - 1;
+                            $knownFolderGames[$lowerRel] = $newIdx;
+                            $knownFolderGames[$lowerFname] = $newIdx;
+                        }
+                        continue;
                     }
 
-                    if ($isFolderGame) {
-                        $foundFiles[] = [
-                            'fname' => $fname,
-                            'rel' => $relPath,
-                            'size_bytes' => 0,
-                            'size_mb' => 0
-                        ];
-                        $newIdx = count($foundFiles) - 1;
-                        $knownFolderGames[$lowerRel] = $newIdx;
-                        $knownFolderGames[$lowerFname] = $newIdx;
+                    // For PS3 files: strictly allow only .squashfs and .psn
+                    if (!preg_match('/\.(squashfs|psn)$/i', $fname)) {
+                        continue;
                     }
-                    continue;
+                } else {
+                    if ($isDir) {
+                        $isFolderGame = false;
+                        if (preg_match('/\.(ps3|ps3dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game)$/i', $fname)) {
+                            $isFolderGame = true;
+                        } elseif (isset($gamelistGamePaths[$lowerRel]) || isset($gamelistGamePaths[$lowerFname])) {
+                            $isFolderGame = true;
+                        }
+
+                        if ($isFolderGame) {
+                            $foundFiles[] = [
+                                'fname' => $fname,
+                                'rel' => $relPath,
+                                'size_bytes' => 0,
+                                'size_mb' => 0
+                            ];
+                            $newIdx = count($foundFiles) - 1;
+                            $knownFolderGames[$lowerRel] = $newIdx;
+                            $knownFolderGames[$lowerFname] = $newIdx;
+                        }
+                        continue;
+                    }
                 }
 
                 if (preg_match('/^gamelist\.xml/i', $fname)) continue;
@@ -4923,13 +5271,14 @@ if ($action === 'check_batocera_games') {
                         $sizeDiffMb = ($catalogSizeMb > 0 && $mSizeMb > 0) ? abs($catalogSizeMb - $mSizeMb) : 0;
                         $sizeRatio = ($catalogSizeMb > 0 && $mSizeMb > 0) ? ($sizeDiffMb / $catalogSizeMb) : 0;
                         $isArchive = in_array($foundExt, ['zip', '7z', 'gz', 'rar', 'tar']) || in_array($catalogExt, ['zip', '7z', 'gz', 'rar', 'tar']);
+                        $isPointer = in_array($foundExt, ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc']) || in_array($catalogExt, ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc']);
                         $sizeMismatch = false;
-                        if ($catalogSizeMb > 0 && $mSizeMb > 0) {
+                        if (!$isPointer && $catalogSizeMb > 0 && $mSizeMb > 0) {
                             if ($isArchive) {
                                 $sizeMismatch = ($mSizeMb > $catalogSizeMb && $sizeDiffMb >= 10.0 && $sizeRatio >= 0.25) ||
                                                 ($catalogSizeMb >= 100.0 && $mSizeMb < 1.0);
                             } else {
-                                $sizeMismatch = (($sizeDiffMb >= 5.0 && $sizeRatio >= 0.15) || $sizeDiffMb >= 50.0);
+                                $sizeMismatch = (($sizeDiffMb >= 5.0 && $sizeRatio >= 0.15) || ($catalogSizeMb < 500.0 && $sizeDiffMb >= 50.0) || ($catalogSizeMb >= 500.0 && $sizeRatio >= 0.20));
                             }
                         }
 
@@ -4945,6 +5294,8 @@ if ($action === 'check_batocera_games') {
                             $catalogUpdated = true;
                         }
 
+                        $isExactFile = ($foundFiles[$mIdx]['fname'] === $romId || $foundFiles[$mIdx]['fname'] === ($g['filename'] ?? '') || $foundFiles[$mIdx]['rel'] === $romId);
+
                         $detailObj = [
                             'matched_file' => $foundFiles[$mIdx]['fname'],
                             'matched_rel' => $foundFiles[$mIdx]['rel'],
@@ -4956,7 +5307,7 @@ if ($action === 'check_batocera_games') {
                             'ext_mismatch' => $extMismatch,
                             'size_mismatch' => $sizeMismatch,
                             'is_mismatch' => ($extMismatch || $sizeMismatch),
-                            'is_fuzzy' => false
+                            'is_fuzzy' => !$isExactFile
                         ];
                         if ($romId) $matchedDetails[$romId] = $detailObj;
                         if ($gameName && $gameName !== $romId) $matchedDetails[$gameName] = $detailObj;
@@ -5037,13 +5388,14 @@ if ($action === 'check_batocera_games') {
                         $sizeDiffMb = ($catalogSizeMb > 0 && $mSizeMb > 0) ? abs($catalogSizeMb - $mSizeMb) : 0;
                         $sizeRatio = ($catalogSizeMb > 0 && $mSizeMb > 0) ? ($sizeDiffMb / $catalogSizeMb) : 0;
                         $isArchive = in_array($foundExt, ['zip', '7z', 'gz', 'rar', 'tar']) || in_array($catalogExt, ['zip', '7z', 'gz', 'rar', 'tar']);
+                        $isPointer = in_array($foundExt, ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc']) || in_array($catalogExt, ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc']);
                         $sizeMismatch = false;
-                        if ($catalogSizeMb > 0 && $mSizeMb > 0) {
+                        if (!$isPointer && $catalogSizeMb > 0 && $mSizeMb > 0) {
                             if ($isArchive) {
-                                $sizeMismatch = ($mSizeMb > $catalogSizeMb && $sizeDiffMb >= 10.0 && sizeRatio >= 0.25) ||
+                                $sizeMismatch = ($mSizeMb > $catalogSizeMb && $sizeDiffMb >= 10.0 && $sizeRatio >= 0.25) ||
                                                 ($catalogSizeMb >= 100.0 && $mSizeMb < 1.0);
                             } else {
-                                $sizeMismatch = (($sizeDiffMb >= 5.0 && $sizeRatio >= 0.15) || $sizeDiffMb >= 50.0);
+                                $sizeMismatch = (($sizeDiffMb >= 5.0 && $sizeRatio >= 0.15) || ($catalogSizeMb < 500.0 && $sizeDiffMb >= 50.0) || ($catalogSizeMb >= 500.0 && $sizeRatio >= 0.20));
                             }
                         }
 
@@ -5125,6 +5477,8 @@ if ($action === 'check_batocera_games') {
         $rel = $fItem['rel'];
         $ext = strtolower(pathinfo($fname, PATHINFO_EXTENSION));
         if ($ext === 'keys' || preg_match('/\.keys$/i', $fname) || preg_match('/\.keys$/i', $rel)) continue;
+        if (preg_match('/^([_\.]?gamelist.*\.xml|[_\.]?info.*\.txt|readme.*\.txt|\.git.*|\.ds_store|thumbs\.db|desktop\.ini)$/i', $fname)) continue;
+        if (in_array($ext, ['xml', 'txt', 'keys', 'ini', 'cfg', 'log', 'nfo', 'bak', 'old', 'backup', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'mp4', 'mkv', 'avi', 'pdf', 'mp3', 'ogg', 'wav', 'sfo', 'sfb', 'dat', 'trp'], true)) continue;
         $lowerName = mb_strtolower($fname);
         $baseWithoutExt = mb_strtolower(pathinfo($fname, PATHINFO_FILENAME));
 
@@ -5193,6 +5547,9 @@ if ($action === 'check_batocera_games') {
         if (!empty($m['boxart'])) $cm['boxart'] = $m['boxart'];
         if (!empty($m['video'])) $cm['video'] = $m['video'];
         if (!empty($m['marquee'])) $cm['marquee'] = $m['marquee'];
+        if (!empty($m['titleshot'])) $cm['titleshot'] = $m['titleshot'];
+        if (!empty($m['fanart'])) $cm['fanart'] = $m['fanart'];
+        if (!empty($m['cartridge'])) $cm['cartridge'] = $m['cartridge'];
         if (!empty($cm)) {
             $clientGamelistMeta[$k] = $cm;
         }
@@ -5267,22 +5624,36 @@ function quickGetBatoceraSystemInfo($baseDir, $uncPath, $cleanSys, $batoceraFold
     $smbShare = '//' . $targetHost . '/' . $share;
     $escapedShare = escapeshellarg($smbShare);
 
-    // Fast check: download gamelist.xml if present
-    $tmpXml = $cacheDir . '/_tmp_' . $cleanSys . '_gamelist.xml';
-    $xmlCmd = escapeshellarg('cd "' . $fullRemoteDir . '"; get gamelist.xml ' . $tmpXml);
-    $out = [];
-    $ret = -1;
-    @exec("/usr/bin/smbclient {$escapedShare} -N -t 4 -c {$xmlCmd} 2>&1", $out, $ret);
-
     $matchedIds = [];
     $matchedNames = [];
     $matchedSizes = [];
+    $isPs3 = (strtolower($cleanSys) === 'ps3' || strtolower($batoceraFolder) === 'ps3');
 
-    if (file_exists($tmpXml) && filesize($tmpXml) > 0) {
-        $xmlContent = @file_get_contents($tmpXml);
-        @unlink($tmpXml);
-        if ($xmlContent) {
-            if (preg_match_all('/<game[^>]*>(.*?)<\/game>/is', $xmlContent, $gameMatches)) {
+    // Determine direct filesystem base path if accessible (e.g. Windows UNC or mounted local path)
+    $directBasePath = '';
+    $cleanUnc = str_replace('\\', '/', $uncPath);
+    if (@is_dir($uncPath . '/' . $batoceraFolder)) {
+        $directBasePath = rtrim($uncPath, '\\/') . '/' . $batoceraFolder;
+    } elseif (@is_dir($uncPath . '\\' . $batoceraFolder)) {
+        $directBasePath = rtrim($uncPath, '\\/') . '\\' . $batoceraFolder;
+    } elseif (@is_dir($cleanUnc . '/' . $batoceraFolder)) {
+        $directBasePath = rtrim($cleanUnc, '/') . '/' . $batoceraFolder;
+    } else {
+        $winBase = '\\\\' . $targetHost . '\\' . $share . ($subDir !== '' ? '\\' . str_replace('/', '\\', $subDir) : '') . '\\' . $batoceraFolder;
+        if (@is_dir($winBase)) {
+            $directBasePath = $winBase;
+        }
+    }
+
+    if ($directBasePath !== '' && @is_dir($directBasePath)) {
+        // TIER 0: Direct filesystem / UNC access (Windows portable or local mount)
+        $directXml = rtrim($directBasePath, '\\/') . '/gamelist.xml';
+        if (!file_exists($directXml)) {
+            $directXml = rtrim($directBasePath, '\\/') . '\\gamelist.xml';
+        }
+        if (@file_exists($directXml) && @filesize($directXml) > 0) {
+            $xmlContent = @file_get_contents($directXml);
+            if ($xmlContent && preg_match_all('/<game[^>]*>(.*?)<\/game>/is', $xmlContent, $gameMatches)) {
                 foreach ($gameMatches[1] as $block) {
                     $p = '';
                     $n = '';
@@ -5294,9 +5665,12 @@ function quickGetBatoceraSystemInfo($baseDir, $uncPath, $cleanSys, $batoceraFold
                     }
                     if ($p !== '') {
                         $cleanP = ltrim(str_replace('\\', '/', $p), './');
+                        if ($isPs3 && !preg_match('/\.(ps3|ps3dir|squashfs|psn|iso|m3u|pkg)$/i', $cleanP)) continue;
                         $baseP = basename($cleanP);
                         $matchedIds[] = $cleanP;
                         if ($baseP !== $cleanP) $matchedIds[] = $baseP;
+                        $stem = pathinfo($baseP, PATHINFO_FILENAME);
+                        if ($stem !== '' && $stem !== $baseP) $matchedIds[] = $stem;
                     }
                     if ($n !== '') {
                         $matchedNames[] = $n;
@@ -5304,28 +5678,136 @@ function quickGetBatoceraSystemInfo($baseDir, $uncPath, $cleanSys, $batoceraFold
                 }
             }
         }
+
+        // Also do a fast non-recursive scan of the directory to catch files not in gamelist.xml or if no gamelist.xml exists
+        try {
+            $scanItems = @scandir($directBasePath);
+            if (is_array($scanItems)) {
+                foreach ($scanItems as $item) {
+                    if ($item === '.' || $item === '..' || substr($item, 0, 1) === '.') continue;
+                    $fullItemPath = rtrim($directBasePath, '\\/') . DIRECTORY_SEPARATOR . $item;
+                    $isDir = @is_dir($fullItemPath);
+                    $ext = strtolower(pathinfo($item, PATHINFO_EXTENSION));
+
+                    if ($isPs3) {
+                        if ($isDir) {
+                            if (preg_match('/\.ps3$/i', $item)) {
+                                $matchedIds[] = $item;
+                                $stem = pathinfo($item, PATHINFO_FILENAME);
+                                $matchedNames[] = $stem;
+                                $matchedIds[] = $stem;
+                            } elseif (strtolower($item) === 'psn') {
+                                $psnItems = @scandir($fullItemPath);
+                                if (is_array($psnItems)) {
+                                    foreach ($psnItems as $pItem) {
+                                        if ($pItem === '.' || $pItem === '..' || substr($pItem, 0, 1) === '.') continue;
+                                        if (preg_match('/\.psn$/i', $pItem)) {
+                                            $matchedIds[] = 'PSN/' . $pItem;
+                                            $matchedIds[] = $pItem;
+                                            $pStem = pathinfo($pItem, PATHINFO_FILENAME);
+                                            $matchedNames[] = $pStem;
+                                            $matchedIds[] = $pStem;
+                                            $sz = @filesize($fullItemPath . DIRECTORY_SEPARATOR . $pItem);
+                                            if ($sz !== false) {
+                                                $szMb = round((float)$sz / (1024 * 1024), 2);
+                                                $matchedSizes['PSN/' . $pItem] = $szMb;
+                                                $matchedSizes[$pItem] = $szMb;
+                                                $matchedSizes[$pStem] = $szMb;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            continue;
+                        } else {
+                            if (!preg_match('/\.(squashfs|psn|iso|m3u|pkg)$/i', $item)) continue;
+                        }
+                    } else {
+                        if (!$isDir && in_array($ext, ['txt', 'xml', 'png', 'jpg', 'jpeg', 'keys', 'cfg', 'ini', 'log'], true)) continue;
+                        if ($isDir && !preg_match('/\.(ps3|ps3dir|pc|wine|dos|dosbox|dvd|cd|scummvm|wiiu|wiiudir|switch|app|game)$/i', $item)) continue;
+                    }
+
+                    $matchedIds[] = $item;
+                    $stem = pathinfo($item, PATHINFO_FILENAME);
+                    $matchedNames[] = $stem;
+                    $matchedIds[] = $stem;
+
+                    if (!$isDir) {
+                        $sz = @filesize($fullItemPath);
+                        if ($sz !== false) {
+                            $szMb = round((float)$sz / (1024 * 1024), 2);
+                            $matchedSizes[$item] = $szMb;
+                            $matchedSizes[$stem] = $szMb;
+                        }
+                    }
+                }
+            }
+        } catch (Exception $e) {}
     } else {
-        // No gamelist.xml, fast non-recursive ls
-        $lsCmd = escapeshellarg('cd "' . $fullRemoteDir . '"; ls');
-        $lsOut = [];
-        $lsRet = -1;
-        @exec("/usr/bin/smbclient {$escapedShare} -N -t 3 -c {$lsCmd} 2>&1", $lsOut, $lsRet);
-        foreach ($lsOut as $line) {
-            $line = trim($line);
-            if (preg_match('/^(.+?)\s+([DAHNSR_]+)\s+(\d+)\s+([A-Za-z]{3}\s+[A-Za-z]{3}.*)$/', $line, $m)) {
-                $fname = trim($m[1]);
-                $attrs = $m[2];
-                $fileSizeBytes = (float)$m[3];
-                $isDir = (strpos($attrs, 'D') !== false);
-                if ($isDir || $fname === '.' || $fname === '..' || substr($fname, 0, 1) === '.') continue;
-                $ext = strtolower(pathinfo($fname, PATHINFO_EXTENSION));
-                if (in_array($ext, ['txt', 'xml', 'png', 'jpg', 'jpeg', 'keys', 'cfg', 'ini', 'log'], true)) continue;
-                $matchedIds[] = $fname;
-                $stem = pathinfo($fname, PATHINFO_FILENAME);
-                $matchedNames[] = $stem;
-                $szMb = round((float)$fileSizeBytes / (1024 * 1024), 2);
-                $matchedSizes[$fname] = $szMb;
-                $matchedSizes[$stem] = $szMb;
+        // TIER 1: Remote smbclient (Linux / NAS server environment)
+        $tmpXml = $cacheDir . '/_tmp_' . $cleanSys . '_gamelist.xml';
+        $xmlCmd = escapeshellarg('cd "' . $fullRemoteDir . '"; get gamelist.xml ' . $tmpXml);
+        $out = [];
+        $ret = -1;
+        @exec("/usr/bin/smbclient {$escapedShare} -N -t 4 -c {$xmlCmd} 2>&1", $out, $ret);
+
+        if (file_exists($tmpXml) && filesize($tmpXml) > 0) {
+            $xmlContent = @file_get_contents($tmpXml);
+            @unlink($tmpXml);
+            if ($xmlContent) {
+                if (preg_match_all('/<game[^>]*>(.*?)<\/game>/is', $xmlContent, $gameMatches)) {
+                    foreach ($gameMatches[1] as $block) {
+                        $p = '';
+                        $n = '';
+                        if (preg_match('/<path>(.*?)<\/path>/i', $block, $pm)) {
+                            $p = trim($pm[1]);
+                        }
+                        if (preg_match('/<name>(.*?)<\/name>/i', $block, $nm)) {
+                            $n = trim($nm[1]);
+                        }
+                        if ($p !== '') {
+                            $cleanP = ltrim(str_replace('\\', '/', $p), './');
+                            if ($isPs3 && !preg_match('/\.(ps3|ps3dir|squashfs|psn|iso|m3u|pkg)$/i', $cleanP)) continue;
+                            $baseP = basename($cleanP);
+                            $matchedIds[] = $cleanP;
+                            if ($baseP !== $cleanP) $matchedIds[] = $baseP;
+                            $stem = pathinfo($baseP, PATHINFO_FILENAME);
+                            if ($stem !== '' && $stem !== $baseP) $matchedIds[] = $stem;
+                        }
+                        if ($n !== '') {
+                            $matchedNames[] = $n;
+                        }
+                    }
+                }
+            }
+        } else {
+            // No gamelist.xml, fast non-recursive ls
+            $lsCmd = escapeshellarg('cd "' . $fullRemoteDir . '"; ls');
+            $lsOut = [];
+            $lsRet = -1;
+            @exec("/usr/bin/smbclient {$escapedShare} -N -t 3 -c {$lsCmd} 2>&1", $lsOut, $lsRet);
+            foreach ($lsOut as $line) {
+                $line = trim($line);
+                if (preg_match('/^(.+?)\s+([DAHNSR_]+)\s+(\d+)\s+([A-Za-z]{3}\s+[A-Za-z]{3}.*)$/', $line, $m)) {
+                    $fname = trim($m[1]);
+                    $attrs = $m[2];
+                    $fileSizeBytes = (float)$m[3];
+                    $isDir = (strpos($attrs, 'D') !== false);
+                    if ($isPs3) {
+                        if ($isDir || !preg_match('/\.(squashfs|psn|iso|m3u|pkg)$/i', $fname)) continue;
+                    } else {
+                        if ($isDir || $fname === '.' || $fname === '..' || substr($fname, 0, 1) === '.') continue;
+                        $ext = strtolower(pathinfo($fname, PATHINFO_EXTENSION));
+                        if (in_array($ext, ['txt', 'xml', 'png', 'jpg', 'jpeg', 'keys', 'cfg', 'ini', 'log'], true)) continue;
+                    }
+                    $matchedIds[] = $fname;
+                    $stem = pathinfo($fname, PATHINFO_FILENAME);
+                    $matchedNames[] = $stem;
+                    $matchedIds[] = $stem;
+                    $szMb = round((float)$fileSizeBytes / (1024 * 1024), 2);
+                    $matchedSizes[$fname] = $szMb;
+                    $matchedSizes[$stem] = $szMb;
+                }
             }
         }
     }

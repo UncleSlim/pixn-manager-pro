@@ -45,13 +45,13 @@
         "size_mb": 0
     },
     {
-        "id": "Infinos Gaiden/infinos_2.exe",
+        "id": "Infinos Gaiden/infinos_2.EXE",
         "name": "Infinos 2",
         "publisher": "Picorinne Soft",
         "developer": "",
         "genre": "",
         "releasedate": "20180119T000000",
-        "size_mb": null
+        "size_mb": 0.91
     },
     {
         "id": "Nippon Marathon/NipponMarathon.bat",

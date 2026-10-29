@@ -1059,6 +1059,7 @@
             padding: 0.35rem 0;
             scrollbar-width: thin;
             scrollbar-color: rgba(56, 189, 248, 0.45) rgba(15, 23, 42, 0.35);
+            overscroll-behavior: contain;
         }
 
         .rich-select-options-list::-webkit-scrollbar {
@@ -2654,24 +2655,52 @@
         }
 
         .game-link:hover,
-        .game-row:hover .game-link {
+        .game-row:hover .game-link,
+        .game-title[data-action="view-info"]:hover,
+        .global-search-row:hover .game-title {
             color: var(--accent-primary);
             text-decoration: underline;
             text-underline-offset: 3px;
         }
 
+        .external-link-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 5px;
+            margin-left: 0.35rem;
+            text-decoration: none !important;
+            vertical-align: middle;
+            border-radius: 4px;
+            color: var(--accent-primary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .external-link-btn:hover {
+            background: rgba(56, 189, 248, 0.18);
+            color: #38bdf8 !important;
+        }
+
         .external-icon {
             display: inline-block;
-            font-size: 0.68rem;
-            margin-left: 0.4rem;
-            opacity: 0;
+            font-size: 0.72rem;
+            margin-left: 0.35rem;
+            opacity: 0.55;
             color: var(--accent-primary);
             transition: opacity 0.15s ease, transform 0.15s ease;
             vertical-align: middle;
+            cursor: pointer;
         }
 
-        .game-row:hover .external-icon {
-            opacity: 0.75;
+        .external-link-btn .external-icon {
+            margin-left: 0;
+            opacity: 0.85;
+        }
+
+        .game-row:hover .external-icon,
+        .external-link-btn:hover .external-icon {
+            opacity: 1;
             transform: translate(1px, -1px);
         }
 
@@ -2834,8 +2863,8 @@
 
         .global-controls-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.25rem;
+            grid-template-columns: minmax(260px, 360px) 1fr;
+            gap: 1rem;
             align-items: flex-end;
         }
 
@@ -2843,16 +2872,17 @@
             display: flex;
             align-items: flex-end;
             min-height: 44px;
+            min-width: 0;
         }
 
         .global-status-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 0.75rem;
+            gap: 0.65rem;
             margin-top: 0;
             height: 44px;
-            padding: 0 0.85rem;
+            padding: 0 0.75rem;
             background: linear-gradient(135deg, rgba(24, 32, 47, 0.75) 0%, rgba(15, 23, 42, 0.88) 100%);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 10px;
@@ -2861,9 +2891,10 @@
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
             box-sizing: border-box;
             width: 100%;
+            overflow: hidden;
         }
 
-        @media (max-width: 860px) {
+        @media (max-width: 900px) {
             .global-controls-row {
                 grid-template-columns: 1fr;
                 gap: 0.65rem;
@@ -2873,38 +2904,47 @@
         .global-status-left {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.6rem;
             flex-wrap: nowrap;
             overflow: hidden;
+            min-width: 0;
+            flex-shrink: 1;
         }
 
         .global-summary-text {
-            font-size: 0.84rem;
+            font-size: 0.82rem;
             color: var(--text-main);
             font-weight: 500;
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.35rem;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .global-scan-indicator {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-            font-size: 0.76rem;
+            gap: 0.35rem;
+            font-size: 0.74rem;
             font-weight: 500;
             color: #38bdf8;
             background: rgba(56, 189, 248, 0.12);
             border: 1px solid rgba(56, 189, 248, 0.3);
             border-radius: 20px;
-            padding: 0.18rem 0.65rem;
-            letter-spacing: 0.02em;
+            padding: 0.15rem 0.55rem;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+            flex-shrink: 1;
+            min-width: 0;
             transition: all 0.25s ease;
         }
 
         .global-scan-indicator i {
-            font-size: 0.76rem;
+            font-size: 0.74rem;
         }
 
         .global-scan-indicator.done {
@@ -2917,6 +2957,22 @@
             color: #f87171;
             background: rgba(248, 113, 113, 0.12);
             border-color: rgba(248, 113, 113, 0.3);
+        }
+
+        .global-filter-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            flex-wrap: nowrap !important;
+            flex-shrink: 0 !important;
+        }
+
+        .global-filter-group .status-pill-btn {
+            padding: 0.16rem 0.48rem;
+            font-size: 0.77rem;
+            gap: 0.28rem;
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .btn-rescan-batocera {
@@ -3110,6 +3166,7 @@
             color: var(--text-muted);
             width: 100%;
             height: 100%;
+            grid-column: 1 / -1;
         }
 
         .state-icon {
@@ -5281,6 +5338,8 @@
             transform: scale(1);
         }
 
+
+
         .grid-card-placeholder {
             display: flex;
             flex-direction: column;
@@ -6964,6 +7023,11 @@
             display: none !important;
         }
 
+        .editor-content:has(.arcade-welcome-screen) {
+            display: block !important;
+            padding: 0 !important;
+        }
+
         /* Arcade Cabinet Welcome Screen */
         .arcade-welcome-screen {
             display: flex;
@@ -6977,6 +7041,12 @@
             animation: arcadeFadeIn 0.35s ease-out;
             width: 100%;
             box-sizing: border-box;
+            grid-column: 1 / -1;
+        }
+
+        .matrix-window-bg {
+            grid-column: 1 / -1;
+            width: 100%;
         }
 
         @keyframes arcadeFadeIn {
@@ -9077,7 +9147,7 @@
                                     </button>
                                 </div>
                                 <div class="game-video-wrapper">
-                                    <video id="gameGameplayVideo" controls preload="none" controlslist="nodownload" playsinline></video>
+                                    <video id="gameGameplayVideo" controls preload="none" controlslist="nodownload nopictureinpicture" disablePictureInPicture playsinline></video>
                                     <div class="video-loading-indicator" id="gameVideoLoading" style="display: none;">
                                         <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem;"></i>
                                         <span>Buffering video from Batocera...</span>
@@ -9702,6 +9772,7 @@
         const otherSubPills = document.getElementById('otherSubPills');
         let currentBatoceraSystemSettings = {};
         let currentBatoceraGameSettings = {};
+        let batoceraGamelistMeta = {};
         let lastRenderedGames = [];
         let currentViewMode = localStorage.getItem('pixn_view_mode') || 'list'; // 'list' | 'grid'
         let currentGridSize = localStorage.getItem('pixn_grid_size') || 'normal'; // 'compact' | 'normal' | 'large'
@@ -9807,6 +9878,7 @@
         const gameMetaSize = document.getElementById('gameMetaSize');
         const gameMetaStatus = document.getElementById('gameMetaStatus');
         const gameDetailDesc = document.getElementById('gameDetailDesc');
+        const gameArtPlaceholderText = document.getElementById('gameArtPlaceholderText');
 
         // Batocera Video Streaming DOM Elements & State
         const ingameSubPills = document.getElementById('ingameSubPills');
@@ -9818,6 +9890,9 @@
         const gameMetadataGrid = document.getElementById('gameMetadataGrid');
         const gameVideoContainer = document.getElementById('gameVideoContainer');
         const gameGameplayVideo = document.getElementById('gameGameplayVideo');
+        if (gameGameplayVideo) {
+            gameGameplayVideo.disablePictureInPicture = true;
+        }
         const gameVideoLoading = document.getElementById('gameVideoLoading');
         const gameVideoError = document.getElementById('gameVideoError');
         const btnCloseGameVideo = document.getElementById('btnCloseGameVideo');
@@ -9903,8 +9978,8 @@
             const isError = type === 'error' || strMsg.startsWith('❌') || strMsg.toLowerCase().startsWith('error') || strMsg.toLowerCase().startsWith('failed');
             const isWarning = type === 'warning' || strMsg.startsWith('⚠️') || strMsg.startsWith('💡') || strMsg.startsWith('⚪');
             
-            // Clean up leading decorative emojis so we don't display both FontAwesome icon AND emoji
-            let cleanMsg = strMsg.replace(/^[❌✨⚠️💡🟢⚪📋🌟⚡]\s*/, '');
+            // Clean up leading decorative emojis so we don't display both FontAwesome icon AND emoji (or broken replacement characters)
+            let cleanMsg = strMsg.replace(/^([\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]|[❌✨⚠️💡🟢⚪📋🌟⚡🔑\uFFFD\?])\s*/u, '');
 
             if (icon) {
                 if (isError) {
@@ -10080,8 +10155,6 @@
 
             isGameplayVideoStreaming = true;
 
-            // Ensure "In-game" tab is active & sub-pills visible
-            currentDetailMediaType = 'screenshot';
             if (gameMediaTabs) {
                 gameMediaTabs.querySelectorAll('.media-tab-btn').forEach(btn => {
                     btn.classList.toggle('active', btn.dataset.type === 'screenshot');
@@ -10161,6 +10234,11 @@
             if (btnSubPillVideo) btnSubPillVideo.classList.remove('active');
             if (btnSubPillScreenshot) {
                 if (currentDetailMediaType === 'screenshot') btnSubPillScreenshot.classList.add('active');
+            }
+            if (gameMediaTabs) {
+                gameMediaTabs.querySelectorAll('.media-tab-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.type === (currentDetailMediaType || 'boxart'));
+                });
             }
         }
 
@@ -11636,7 +11714,8 @@
             ['pce', 'bin', 'cue', 'chd', 'iso', 'sgx'],
             ['cue', 'bin', 'iso', 'img', 'chd', 'pbp', 'm3u', 'cso'],
             ['adf', 'ipf', 'dms', 'hdf', 'lha', 'm3u'],
-            ['wsquashfs', 'squashfs']
+            ['wsquashfs', 'squashfs'],
+            ['ps3', 'ps3dir', 'squashfs', 'psn', 'iso', 'm3u', 'pkg', 'bin']
         ];
 
         function areExtensionsCompatible(ext1, ext2) {
@@ -11644,9 +11723,18 @@
             const e1 = ext1.toLowerCase().replace(/^\./, '');
             const e2 = ext2.toLowerCase().replace(/^\./, '');
             if (e1 === e2) return true;
-            if (ARCHIVE_EXTENSIONS.has(e1) || ARCHIVE_EXTENSIONS.has(e2)) return true;
+            const opts1 = e1.split(/[|()\/]+/).filter(Boolean);
+            const opts2 = e2.split(/[|()\/]+/).filter(Boolean);
+            for (const o1 of opts1) {
+                for (const o2 of opts2) {
+                    if (o1 === o2) return true;
+                }
+            }
+            if (opts1.some(o => ARCHIVE_EXTENSIONS.has(o)) || opts2.some(o => ARCHIVE_EXTENSIONS.has(o))) return true;
             for (const group of COMPATIBLE_EXT_GROUPS) {
-                if (group.includes(e1) && group.includes(e2)) return true;
+                const has1 = opts1.some(o => group.includes(o));
+                const has2 = opts2.some(o => group.includes(o));
+                if (has1 && has2) return true;
             }
             return false;
         }
@@ -11654,10 +11742,6 @@
         // Smart match other ROMs to catalog games:
         // Titles that match are moved to Installed (rendered with other/purple theme) and removed from Other.
         function processBatoceraFuzzyMatches() {
-            batoceraFuzzyMatches.clear();
-            batoceraFuzzyMatchedIds.clear();
-            batoceraFuzzyMatchedNames.clear();
-
             if (!batoceraOnline || !currentGames || currentGames.length === 0 || !batoceraOtherGames || batoceraOtherGames.length === 0) {
                 return;
             }
@@ -11674,6 +11758,10 @@
                 const s = normalizeGameTitle(mName);
                 if (s) matchedStems.add(s);
             }
+            for (const fId of batoceraFuzzyMatchedIds) {
+                const s = normalizeGameTitle(fId);
+                if (s) matchedStems.add(s);
+            }
 
             for (const og of batoceraOtherGames) {
                 const fn = (og.filename || og.id || '').toLowerCase();
@@ -11686,10 +11774,10 @@
             }
             batoceraOtherGames = cleanOtherGames;
 
-            // Catalog games that do not have an exact match yet
+            // Catalog games that do not have an exact or server-side fuzzy match yet
             const unmatchedCatalog = currentGames.filter(cg => {
-                const hasId = cg.id && batoceraMatchedIds.has(cg.id);
-                const hasName = cg.name && batoceraMatchedNames.has(cg.name);
+                const hasId = cg.id && (batoceraMatchedIds.has(cg.id) || batoceraFuzzyMatchedIds.has(cg.id) || batoceraMatchedDetails[cg.id]);
+                const hasName = cg.name && (batoceraMatchedNames.has(cg.name) || batoceraFuzzyMatchedNames.has(cg.name) || batoceraMatchedDetails[cg.name]);
                 return !hasId && !hasName;
             });
 
@@ -11739,12 +11827,13 @@
                 const sizeDiffMb = (catalogSizeMb > 0 && localSizeMb > 0) ? Math.abs(catalogSizeMb - localSizeMb) : 0;
                 const sizeRatio = (catalogSizeMb > 0 && localSizeMb > 0) ? (sizeDiffMb / catalogSizeMb) : 0;
                 const isArchive = ARCHIVE_EXTENSIONS.has(localExt) || ARCHIVE_EXTENSIONS.has(catalogExt);
+                const isPointer = ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc'].includes(localExt) || ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc'].includes(catalogExt);
                 let sizeMismatch = false;
-                if (catalogSizeMb > 0 && localSizeMb > 0) {
+                if (!isPointer && catalogSizeMb > 0 && localSizeMb > 0) {
                     if (isArchive) {
                         sizeMismatch = (localSizeMb > catalogSizeMb && sizeDiffMb >= 10.0 && sizeRatio >= 0.25) || (catalogSizeMb >= 100.0 && localSizeMb < 1.0);
                     } else {
-                        sizeMismatch = ((sizeDiffMb >= 5.0 && sizeRatio >= 0.15) || sizeDiffMb >= 50.0);
+                        sizeMismatch = ((sizeDiffMb >= 5.0 && sizeRatio >= 0.15) || (catalogSizeMb < 500.0 && sizeDiffMb >= 50.0) || (catalogSizeMb >= 500.0 && sizeRatio >= 0.20));
                     }
                 }
                 const fuzzyDetail = {
@@ -12055,7 +12144,7 @@
         // Grid Card Media & HTML Builders
         function getGridCardCandidateUrls(sysId, g) {
             if (!sysId || !g) return [];
-            const isOther = Boolean(g.is_other || (!activeSystem ? false : activeBatoceraFilter === 'other'));
+            const isOther = Boolean(g.is_other || (!activeSystem ? false : (activeBatoceraFilter === 'other' && !g.id)));
             const bSys = getBatoceraFolderName(sysId) || sysId;
             const urls = [];
             const seen = new Set();
@@ -12112,6 +12201,8 @@
             const idParam = (g.id || '').replace(/^.*[\\\/]/, '');
             let romSuffix = romParam ? '&rom=' + encodeURIComponent(romParam) : '';
             if (idParam && idParam !== romParam) romSuffix += '&id=' + encodeURIComponent(idParam);
+            const gmGameId = gm.game_id || (g.game_id || '');
+            if (gmGameId) romSuffix += '&game_id=' + encodeURIComponent(gmGameId);
 
             const hasBatoceraFolder = (isOther || g.is_other) || ((activeSystem && activeSystem.id === sysId) ? (batoceraOnline && batoceraFolderExists) : isGlobalSystemFolderExists(sysId));
 
@@ -12129,20 +12220,19 @@
             }
 
             if (batoceraOnline && hasBatoceraFolder) {
-                // If direct thumbnail is in /thumbnails/
-                if (bThumb && bThumb.includes('/thumbnails/')) {
+                if (bThumb) {
                     addBThumb(bThumb);
+                    if (!bThumb.includes('/thumbnails/') && !bThumb.includes('/media/thumbnail')) {
+                        const dThumb = bThumb.replace(/\/(box2d|boxart|box3d|images|screenshots)\//, '/thumbnails/').replace(/\.(jpe?g|webp)$/i, '.png');
+                        addBThumb(dThumb);
+                    }
                 }
-                // If thumbnail points to boxart or screenshot, derive /thumbnails/
-                if (bThumb && !bThumb.includes('/thumbnails/')) {
-                    const dThumb = bThumb.replace(/\/(box2d|boxart|box3d|images|screenshots)\//, '/thumbnails/').replace(/\.(jpe?g|webp)$/i, '.png');
-                    addBThumb(dThumb);
-                }
-                // Derived from boxart or image
                 if (bBox) {
+                    addBThumb(bBox);
                     addBThumb(bBox.replace(/\/(box2d|boxart|box3d)\//, '/thumbnails/').replace(/\.(jpe?g|webp)$/i, '.png'));
                 }
                 if (bImg) {
+                    addBThumb(bImg);
                     addBThumb(bImg.replace(/\/(images|screenshots)\//, '/thumbnails/').replace(/\.(jpe?g|webp)$/i, '.png'));
                 }
                 // Named thumbnails on Batocera
@@ -12283,9 +12373,13 @@
         };
 
         function getGameStatusBadgeHtml(g, sysId, isGlobal = false) {
-            const isOther = Boolean(g.is_other || (!isGlobal && activeBatoceraFilter === 'other'));
+            const isOther = Boolean(g.is_other || (!isGlobal && activeBatoceraFilter === 'other' && !g.id));
             const isDirectInstalled = !isGlobal && batoceraOnline && batoceraFolderExists && ((g.id && batoceraMatchedIds.has(g.id)) || (g.name && batoceraMatchedNames.has(g.name)));
-            const isFuzzyInstalled = !isGlobal && batoceraOnline && batoceraFolderExists && ((g.id && batoceraFuzzyMatchedIds.has(g.id)) || (g.name && batoceraFuzzyMatchedNames.has(g.name)));
+            const isFuzzyInstalled = !isGlobal && batoceraOnline && batoceraFolderExists && (
+                (g.id && (batoceraFuzzyMatchedIds.has(g.id) || batoceraFuzzyMatchedIds.has(String(g.id).toLowerCase()))) ||
+                (g.name && (batoceraFuzzyMatchedNames.has(g.name) || batoceraFuzzyMatchedNames.has(String(g.name).toLowerCase()) || batoceraFuzzyMatchedIds.has(g.name) || batoceraFuzzyMatchedIds.has(String(g.name).toLowerCase()))) ||
+                Boolean(batoceraMatchedDetails[g.id]?.is_fuzzy || batoceraMatchedDetails[g.name]?.is_fuzzy || (g.id && batoceraMatchedDetails[String(g.id).toLowerCase()]?.is_fuzzy))
+            );
 
             if (isGlobal) {
                 if (batoceraOnline) {
@@ -12348,7 +12442,17 @@
             const isGlobal = (currentMode === 'global');
             cards.forEach(card => {
                 const idx = parseInt(card.dataset.idx, 10);
-                const g = isGlobal ? (globalResults ? globalResults[idx] : null) : (currentGames ? currentGames[idx] : null);
+                let g = isGlobal
+                    ? (globalResults ? globalResults[idx] : null)
+                    : (currentFilteredGridList ? currentFilteredGridList[idx] : (lastRenderedGames ? lastRenderedGames[idx] : (currentGames ? currentGames[idx] : null)));
+                const cardGameName = card.dataset.gamename;
+                if (cardGameName && g && (g.name || g.filename || g.id) !== cardGameName) {
+                    const pool = isGlobal ? globalResults : (currentFilteredGridList || lastRenderedGames || currentGames);
+                    if (Array.isArray(pool)) {
+                        const found = pool.find(item => (item.name || item.filename || item.id) === cardGameName);
+                        if (found) g = found;
+                    }
+                }
                 if (!g) return;
                 const sysId = isGlobal ? (g.system || card.dataset.system) : (activeSystem ? activeSystem.id : '');
                 const newBadge = getGameStatusBadgeHtml(g, sysId, isGlobal);
@@ -12383,7 +12487,7 @@
                     ratingBadge = `<span class="grid-badge-rating" title="Rating: ${pct}%">★ ${pct}%</span>`;
                 }
             } else if (g.releasedate) {
-                const yr = g.releasedate.slice(0, 4);
+                const yr = String(g.releasedate).slice(0, 4);
                 if (yr) ratingBadge = `<span class="grid-badge-year">${escapeHtml(yr)}</span>`;
             }
 
@@ -12433,8 +12537,13 @@
                 subMeta = `<span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; color: #94a3b8; font-weight: 500;" title="${escapeHtml(devPub)}">${escapeHtml(devPub)}</span>`;
             }
 
+            const isOtherRom = Boolean(g.is_other || (currentMode !== 'global' && activeBatoceraFilter === 'other' && !g.id));
+            const pixnUrl = !isOtherRom ? buildPixnSearchUrl(sysId, gameTitle) : '';
+            const extTitle = `Search & open on Pixn Retro in new tab: ${escapeHtml(gameTitle)}`;
+            const extSubBtn = pixnUrl ? `<a class="external-link-btn" href="${escapeHtml(pixnUrl)}" target="_blank" rel="noopener noreferrer" data-action="open-external" data-href="${escapeHtml(pixnUrl)}" title="${extTitle}" style="margin-left: auto; flex-shrink: 0; padding: 1px 4px;"><i class="fa-solid fa-arrow-up-right-from-square external-icon"></i></a>` : '';
+
             return `
-                <div class="game-grid-card" data-idx="${idx}" data-system="${escapeHtml(sysId)}" tabindex="0" role="button" aria-label="${escapeHtml(gameTitle)}">
+                <div class="game-grid-card" data-idx="${idx}" data-system="${escapeHtml(sysId)}" data-gamename="${escapeHtml(gameTitle)}" data-href="${escapeHtml(pixnUrl)}" data-action="view-info" tabindex="0" role="button" aria-label="${escapeHtml(gameTitle)}">
                     <div class="grid-card-sheen"></div>
                     <div class="grid-card-art">
                         <div class="grid-card-badges">
@@ -12458,6 +12567,7 @@
                         <div class="grid-card-title">${isGlobal && globalSearchInput && globalSearchInput.value.trim() ? highlightSearchTerms(gameTitle, globalSearchInput.value) : escapeHtml(gameTitle)}</div>
                         <div class="grid-card-sub">
                             ${subMeta}
+                            ${extSubBtn}
                         </div>
                     </div>
                 </div>
@@ -12484,45 +12594,50 @@
 
         function openGameDetail(g, idx) {
             if (!g) return;
-            stopSynopsisAutoScroll();
-            if (boxartSubPills) boxartSubPills.style.display = 'flex';
-            if (otherSubPills) otherSubPills.style.display = 'none';
-            currentOtherSubtype = 'marquee';
-            if (idx !== undefined && idx !== null && !isNaN(idx)) {
-                currentGameModalIndex = idx;
-            } else if (lastRenderedGames && lastRenderedGames.length > 0) {
-                const found = lastRenderedGames.findIndex(item => item === g || ((item.id || item.filename || item.name) === (g.id || g.filename || g.name)));
-                currentGameModalIndex = (found !== -1) ? found : 0;
-            } else {
-                currentGameModalIndex = 0;
-            }
-            selectedGameIndex = currentGameModalIndex;
-            updateGameDetailNavUI();
+            try {
+                stopSynopsisAutoScroll();
+                if (boxartSubPills) boxartSubPills.style.display = 'flex';
+                if (otherSubPills) otherSubPills.style.display = 'none';
+                currentOtherSubtype = 'marquee';
+                if (idx !== undefined && idx !== null && !isNaN(idx)) {
+                    currentGameModalIndex = idx;
+                } else if (lastRenderedGames && lastRenderedGames.length > 0) {
+                    const found = lastRenderedGames.findIndex(item => item === g || ((item.id || item.filename || item.name) === (g.id || g.filename || g.name)));
+                    currentGameModalIndex = (found !== -1) ? found : 0;
+                } else {
+                    currentGameModalIndex = 0;
+                }
+                selectedGameIndex = currentGameModalIndex;
+                updateGameDetailNavUI();
 
-            const detailToken = ++detailLoadSeq;
-            const cleanTitle = g.name || g.filename || g.id || '';
-            const sysId = g.system || (activeSystem ? activeSystem.id : '');
-            const sysObj = systemsMap[sysId] || (allSystems && allSystems.find(s => s.id === sysId)) || activeSystem;
-            if (sysObj) {
-                applySystemTheme(sysObj);
-            }
-            const sysName = sysObj ? sysObj.name : sysId;
-            const isOther = Boolean(g.is_other || (currentMode !== 'global' && activeBatoceraFilter === 'other'));
-            const isSystemActive = Boolean(activeSystem && activeSystem.id === sysId);
+                const detailToken = ++detailLoadSeq;
+                const cleanTitle = g.name || g.filename || g.id || '';
+                const sysId = g.system || (activeSystem ? activeSystem.id : '');
+                const sysObj = systemsMap[sysId] || (allSystems && allSystems.find(s => s.id === sysId)) || activeSystem;
+                if (sysObj) {
+                    applySystemTheme(sysObj);
+                }
+                const sysName = sysObj ? sysObj.name : sysId;
+                const isOther = Boolean(g.is_other || (currentMode !== 'global' && activeBatoceraFilter === 'other'));
+                const isSystemActive = Boolean(activeSystem && activeSystem.id === sysId);
 
-            const isFuzzyInstalled = Boolean(isSystemActive && batoceraOnline && (batoceraFuzzyMatchedIds.has(g.id) || batoceraFuzzyMatchedNames.has(g.name)));
-            const fuzzyMatchedOther = isFuzzyInstalled ? batoceraFuzzyMatches.get(g.id) : null;
-            const isInstalledGame = (isOther || (isSystemActive && batoceraOnline && ((g.id && batoceraMatchedIds.has(g.id)) || (g.name && batoceraMatchedNames.has(g.name)) || isFuzzyInstalled)) || (currentMode === 'global' && isGlobalGameInstalled(g)));
-            const mismatchInfo = (!isOther && isInstalledGame) ? getGameMismatchInfo(g, sysId) : null;
-            const isMismatch = Boolean(mismatchInfo && mismatchInfo.is_mismatch);
+                const isFuzzyInstalled = Boolean(isSystemActive && batoceraOnline && (
+                    (g.id && (batoceraFuzzyMatchedIds.has(g.id) || batoceraFuzzyMatchedIds.has(String(g.id).toLowerCase()))) ||
+                    (g.name && (batoceraFuzzyMatchedNames.has(g.name) || batoceraFuzzyMatchedNames.has(String(g.name).toLowerCase()) || batoceraFuzzyMatchedIds.has(g.name) || batoceraFuzzyMatchedIds.has(String(g.name).toLowerCase()))) ||
+                    Boolean(batoceraMatchedDetails[g.id]?.is_fuzzy || batoceraMatchedDetails[g.name]?.is_fuzzy || (g.id && batoceraMatchedDetails[String(g.id).toLowerCase()]?.is_fuzzy))
+                ));
+                const fuzzyMatchedOther = isFuzzyInstalled ? (batoceraFuzzyMatches.get(g.id) || batoceraFuzzyMatches.get(g.name) || (batoceraMatchedDetails[g.id] ? { id: batoceraMatchedDetails[g.id].matched_rel, filename: batoceraMatchedDetails[g.id].matched_file, size_mb: batoceraMatchedDetails[g.id].found_size_mb } : null)) : null;
+                const isInstalledGame = (isOther || (isSystemActive && batoceraOnline && ((g.id && batoceraMatchedIds.has(g.id)) || (g.name && batoceraMatchedNames.has(g.name)) || isFuzzyInstalled)) || (currentMode === 'global' && isGlobalGameInstalled(g)));
+                const mismatchInfo = (!isOther && isInstalledGame) ? getGameMismatchInfo(g, sysId) : null;
+                const isMismatch = Boolean(mismatchInfo && mismatchInfo.is_mismatch);
 
-            // Check if we have richer metadata from fuzzy matched other ROM or batoceraGamelistMeta
-            let meta = Object.assign({}, g);
-            if (fuzzyMatchedOther) {
-                meta = Object.assign({}, meta, fuzzyMatchedOther);
-                meta.name = g.name || meta.name;
-                meta.id = g.id || meta.id;
-            } else if (isSystemActive && batoceraGamelistMeta && typeof batoceraGamelistMeta === 'object') {
+                // Check if we have richer metadata from fuzzy matched other ROM or batoceraGamelistMeta
+                let meta = Object.assign({}, g);
+                if (fuzzyMatchedOther) {
+                    meta = Object.assign({}, meta, fuzzyMatchedOther);
+                    meta.name = g.name || meta.name;
+                    meta.id = g.id || meta.id;
+                } else if (isSystemActive && typeof batoceraGamelistMeta === 'object' && batoceraGamelistMeta !== null) {
                 const lowerName = mbLower(cleanTitle);
                 const baseName = mbLower(g.id || cleanTitle);
                 const baseWithoutExt = baseName.replace(/\.[^.]+$/, '');
@@ -12628,9 +12743,10 @@
                                             gameMetaGenre.title = matched.genre;
                                         }
                                         if (matched.releasedate && gameMetaDate.textContent === '-') {
-                                            const yr = matched.releasedate.slice(0, 4);
-                                            const mo = matched.releasedate.slice(4, 6);
-                                            const da = matched.releasedate.slice(6, 8);
+                                            const rdStr = String(matched.releasedate);
+                                            const yr = rdStr.slice(0, 4);
+                                            const mo = rdStr.slice(4, 6);
+                                            const da = rdStr.slice(6, 8);
                                             if (yr && mo && da) gameMetaDate.textContent = `${yr}-${mo}-${da}`;
                                             else if (yr) gameMetaDate.textContent = yr;
                                         }
@@ -12681,9 +12797,10 @@
 
             let dateStr = '-';
             if (meta.releasedate) {
-                const yr = meta.releasedate.slice(0, 4);
-                const mo = meta.releasedate.slice(4, 6);
-                const da = meta.releasedate.slice(6, 8);
+                const rdStr = String(meta.releasedate);
+                const yr = rdStr.slice(0, 4);
+                const mo = rdStr.slice(4, 6);
+                const da = rdStr.slice(6, 8);
                 if (yr && mo && da) dateStr = `${yr}-${mo}-${da}`;
                 else if (yr) dateStr = yr;
             }
@@ -12922,9 +13039,10 @@
                             }
                             if (m.releasedate && (!g.releasedate || gameMetaDate.textContent === '-')) {
                                 g.releasedate = m.releasedate;
-                                const yr = m.releasedate.slice(0, 4);
-                                const mo = m.releasedate.slice(4, 6);
-                                const da = m.releasedate.slice(6, 8);
+                                const rdStr = String(m.releasedate);
+                                const yr = rdStr.slice(0, 4);
+                                const mo = rdStr.slice(4, 6);
+                                const da = rdStr.slice(6, 8);
                                 if (yr && mo && da) gameMetaDate.textContent = `${yr}-${mo}-${da}`;
                                 else if (yr) gameMetaDate.textContent = yr;
                             }
@@ -12999,26 +13117,34 @@
             currentBatoceraVideoUrl = null;
             if (btnSubPillVideo) btnSubPillVideo.style.display = 'none';
 
+            function enableVideoControls(vUrl, vLabel) {
+                currentBatoceraVideoUrl = vUrl;
+                if (btnSubPillVideo) {
+                    btnSubPillVideo.style.display = 'inline-flex';
+                    btnSubPillVideo.title = `Stream gameplay video from Batocera PC` + (vLabel ? ` (${vLabel})` : '');
+                }
+                if (ingameSubPills && currentDetailMediaType === 'screenshot') {
+                    ingameSubPills.style.display = 'flex';
+                }
+            }
+
             // Check if game already has video in metadata (from port 1234 or gamelist)
             const cleanSysName = (sysId || '').replace(/(_batocera|_retrobat)$/i, '');
             const lowerCleanTitle = mbLower(cleanTitle);
             const baseRomName = mbLower(g.id || cleanTitle);
             const baseWithoutExt = baseRomName.replace(/\.[^.]+$/, '');
-            const gm = (batoceraGamelistMeta && typeof batoceraGamelistMeta === 'object') ? (batoceraGamelistMeta[baseRomName] || batoceraGamelistMeta[baseWithoutExt] || batoceraGamelistMeta[lowerCleanTitle]) : null;
+            const cleanStem = baseWithoutExt.replace(/\s*[\(\[][^\)\]]*[\)\]]\s*/g, ' ').replace(/\s+/g, ' ').trim();
+            const gmMeta = (typeof batoceraGamelistMeta === 'object' && batoceraGamelistMeta !== null) ? batoceraGamelistMeta : {};
+            const gm = gmMeta[baseRomName] || gmMeta[baseWithoutExt] || gmMeta[cleanStem] || gmMeta[lowerCleanTitle] || null;
             const romFile = g.filename || g.id || '';
-            const gameRomId = g.id || '';
+            const gameRomId = g.id || (gm && gm.game_id) || '';
             const gName = cleanTitle || g.name || '';
             const uncParam = (typeof batoceraUncPath === 'string' && batoceraUncPath) ? `&unc_path=${encodeURIComponent(batoceraUncPath)}` : '';
 
-            if (gm && gm.video) {
-                currentBatoceraVideoUrl = `save.php?action=stream_batocera_video&src=http&system=${encodeURIComponent(cleanSysName)}&game_id=${encodeURIComponent(gm.game_id || '')}&path=${encodeURIComponent(gm.video)}&rom=${encodeURIComponent(romFile)}&id=${encodeURIComponent(gameRomId)}&name=${encodeURIComponent(gName)}${uncParam}`;
-                if (btnSubPillVideo) {
-                    btnSubPillVideo.style.display = 'inline-flex';
-                    btnSubPillVideo.title = `Stream gameplay video from Batocera PC`;
-                }
-                if (ingameSubPills && currentDetailMediaType === 'screenshot') {
-                    ingameSubPills.style.display = 'flex';
-                }
+            const videoPath = (gm && gm.video) || g.video || g.video_url || '';
+            if (videoPath) {
+                const vUrl = `save.php?action=stream_batocera_video&src=http&system=${encodeURIComponent(cleanSysName)}&game_id=${encodeURIComponent((gm && gm.game_id) || gameRomId)}&path=${encodeURIComponent(videoPath)}&rom=${encodeURIComponent(romFile)}&id=${encodeURIComponent(gameRomId)}&name=${encodeURIComponent(gName)}${uncParam}`;
+                enableVideoControls(vUrl, gName);
             } else if (batoceraOnline && sysId) {
                 const checkUrl = `save.php?action=check_batocera_video&system=${encodeURIComponent(sysId)}&rom=${encodeURIComponent(romFile)}&id=${encodeURIComponent(gameRomId)}&name=${encodeURIComponent(gName)}${uncParam}`;
                 fetch(checkUrl)
@@ -13026,22 +13152,23 @@
                     .then(vData => {
                         if (detailToken !== detailLoadSeq) return;
                         if (vData && vData.status === 'ok' && vData.has_video && vData.video_url) {
-                            currentBatoceraVideoUrl = vData.video_url;
-                            if (btnSubPillVideo) {
-                                btnSubPillVideo.style.display = 'inline-flex';
-                                btnSubPillVideo.title = `Stream gameplay video from Batocera PC (${vData.matched_name || cleanTitle})`;
-                            }
-                            if (ingameSubPills && currentDetailMediaType === 'screenshot') {
-                                ingameSubPills.style.display = 'flex';
-                            }
+                            enableVideoControls(vData.video_url, vData.matched_name || cleanTitle);
                         }
                     })
                     .catch(() => {});
             }
 
             // Open Modal
-            gameDetailModal.classList.add('open');
+            if (gameDetailModal) {
+                gameDetailModal.classList.add('open');
+            }
+        } catch (err) {
+            console.error('Error opening game detail:', err);
+            if (gameDetailModal) {
+                gameDetailModal.classList.add('open');
+            }
         }
+    }
 
         // Ambient Fanart Backdrop Loader (PS5 / Steam Style)
         function loadModalFanart(sysId, g, meta, token) {
@@ -13052,7 +13179,7 @@
             fanartBg.classList.remove('loaded');
             fanartImg.src = '';
 
-            const isOther = Boolean(g.is_other || (currentMode !== 'global' && activeBatoceraFilter === 'other'));
+            const isOther = Boolean(g.is_other || (currentMode !== 'global' && activeBatoceraFilter === 'other' && !g.id));
             const bSys = (g.system || (activeSystem ? activeSystem.id : '')).toLowerCase();
             const sysVer = (activeSystem && activeSystem.id === sysId && activeSystem.version) ? activeSystem.version : 'latest';
             const candidateNames = [];
@@ -13194,7 +13321,7 @@
             const sysId = currentDetailSysId;
             const bSys = getBatoceraFolderName(sysId) || sysId;
             const meta = currentDetailMeta || {};
-            const isOther = Boolean(g.is_other || (currentMode !== 'global' && activeBatoceraFilter === 'other'));
+            const isOther = Boolean(g.is_other || (currentMode !== 'global' && activeBatoceraFilter === 'other' && !g.id));
 
             const sysObj = systemsMap[sysId] || activeSystem;
             const sysVer = (sysObj && sysObj.version) ? sysObj.version : 'v1';
@@ -13594,7 +13721,8 @@
             gameArtImg.style.display = 'none';
             gameArtImg.classList.remove('loaded');
             gameArtPlaceholder.style.display = 'flex';
-            if (gameArtPlaceholderText) {
+            const pTextEl = (typeof gameArtPlaceholderText !== 'undefined' && gameArtPlaceholderText) || document.getElementById('gameArtPlaceholderText');
+            if (pTextEl) {
                 const labels = {
                     boxart: (currentBoxartSubtype === 'boxback' ? 'No Back Box Art' : (currentBoxartSubtype === 'box2d' ? 'No Front Box Art' : 'No 3D Box Art')),
                     screenshot: 'No In-Game Screenshot',
@@ -13602,7 +13730,7 @@
                     marquee: 'No Marquee',
                     titlescreen: 'No Title Screen'
                 };
-                gameArtPlaceholderText.textContent = labels[mediaType] || 'No Media';
+                pTextEl.textContent = labels[mediaType] || 'No Media';
             }
 
             const artToken = ++artLoadSeq;
@@ -14177,12 +14305,12 @@
         // Lazy load search index with Persistent IndexedDB Caching (Eliminates repeated 1.85MB downloads)
         async function ensureSearchIndexLoaded() {
             if (searchIndex) return searchIndex;
-            const ver = getCatalogVersion();
+            const ver = (getCatalogVersion() || '1') + '_v2';
             const cacheKey = `search_index_${ver}`;
             try {
                 // 1. Try instant retrieval from IndexedDB
                 const cached = await getCachedData(cacheKey);
-                if (cached && Array.isArray(cached) && cached.length > 0) {
+                if (cached && typeof cached === 'object' && !Array.isArray(cached) && Object.keys(cached).length > 0) {
                     searchIndex = cached;
                     return searchIndex;
                 }
@@ -14359,12 +14487,13 @@
                         const sizeDiffMb = (catalogSizeMb > 0 && localSizeMb > 0) ? Math.abs(catalogSizeMb - localSizeMb) : 0;
                         const sizeRatio = (catalogSizeMb > 0 && localSizeMb > 0) ? (sizeDiffMb / catalogSizeMb) : 0;
                         const isArchive = ARCHIVE_EXTENSIONS.has(localExt) || ARCHIVE_EXTENSIONS.has(catalogExt);
+                        const isPointer = ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc'].includes(localExt) || ['psn', 'm3u', 'cue', 'ccd', 'gdi', 'toc'].includes(catalogExt);
                         let sizeMismatch = false;
-                        if (catalogSizeMb > 0 && localSizeMb > 0) {
+                        if (!isPointer && catalogSizeMb > 0 && localSizeMb > 0) {
                             if (isArchive) {
                                 sizeMismatch = (localSizeMb > catalogSizeMb && sizeDiffMb >= 10.0 && sizeRatio >= 0.25) || (catalogSizeMb >= 100.0 && localSizeMb < 1.0);
                             } else {
-                                sizeMismatch = ((sizeDiffMb >= 5.0 && sizeRatio >= 0.15) || sizeDiffMb >= 50.0);
+                                sizeMismatch = ((sizeDiffMb >= 5.0 && sizeRatio >= 0.15) || (catalogSizeMb < 500.0 && sizeDiffMb >= 50.0) || (catalogSizeMb >= 500.0 && sizeRatio >= 0.20));
                             }
                         }
                         return {
@@ -14942,7 +15071,9 @@
                 updateBatoceraFilterUI();
                 if (quickChipsBar) quickChipsBar.style.display = 'none';
                 const totalCountStr = statGames ? statGames.textContent : '71,422';
-                const sysCountStr = statSystems ? statSystems.textContent : '326';
+                if (editorContentEl) {
+                    editorContentEl.classList.remove('grid-view', 'grid-compact', 'grid-normal', 'grid-large');
+                }
                 editorContentEl.innerHTML = `
                     <div class="state-container">
                         <i class="fa-solid fa-earth-americas state-icon"></i>
@@ -15321,6 +15452,21 @@
                 }
                 updateRichSelectTrigger();
             });
+            // Stop scroll wheel events inside options list from bubbling to window
+            richSelectOptionsList.addEventListener('wheel', (e) => {
+                e.stopPropagation();
+            }, { passive: true });
+        }
+
+        if (richSelectDropdown) {
+            // Forward mouse wheel scrolling from anywhere inside dropdown (search bar, header, padding) to the options list
+            richSelectDropdown.addEventListener('wheel', (e) => {
+                e.stopPropagation();
+                if (richSelectOptionsList && !richSelectOptionsList.contains(e.target)) {
+                    richSelectOptionsList.scrollTop += e.deltaY;
+                    if (e.cancelable) e.preventDefault();
+                }
+            }, { passive: false });
         }
 
         document.addEventListener('click', (e) => {
@@ -15459,19 +15605,28 @@
             if (filterRow) filterRow.style.display = 'flex';
             let actualMatchedCount = 0;
             let actualMismatchCount = 0;
+            let actualFuzzyCount = 0;
             if (Array.isArray(currentGames)) {
                 for (const g of currentGames) {
                     const isDirect = (g.id && batoceraMatchedIds.has(g.id)) || (g.name && batoceraMatchedNames.has(g.name));
-                    const isFuzzy = (g.id && batoceraFuzzyMatchedIds.has(g.id)) || (g.name && batoceraFuzzyMatchedNames.has(g.name));
+                    const isFuzzy = Boolean(
+                        (g.id && (batoceraFuzzyMatchedIds.has(g.id) || batoceraFuzzyMatchedIds.has(String(g.id).toLowerCase()))) ||
+                        (g.name && (batoceraFuzzyMatchedNames.has(g.name) || batoceraFuzzyMatchedNames.has(String(g.name).toLowerCase()) || batoceraFuzzyMatchedIds.has(g.name) || batoceraFuzzyMatchedIds.has(String(g.name).toLowerCase()))) ||
+                        batoceraMatchedDetails[g.id]?.is_fuzzy ||
+                        batoceraMatchedDetails[g.name]?.is_fuzzy ||
+                        (g.id && batoceraMatchedDetails[String(g.id).toLowerCase()]?.is_fuzzy)
+                    );
                     if (isDirect || isFuzzy) {
                         actualMatchedCount++;
                         const mInfo = getGameMismatchInfo(g);
                         if (mInfo && mInfo.is_mismatch) actualMismatchCount++;
+                        if (isFuzzy) actualFuzzyCount++;
                     }
                 }
             }
             batoceraMatchedCount = actualMatchedCount;
             batoceraMismatchCount = actualMismatchCount;
+            batoceraOtherCount = Array.isArray(batoceraOtherGames) ? batoceraOtherGames.length : 0;
 
             batoceraFilterGroup.style.display = 'inline-flex';
             if (countFilterAll) countFilterAll.textContent = currentGames.length.toLocaleString();
@@ -15488,7 +15643,10 @@
                 filterBtnMismatch.style.display = (batoceraMismatchCount > 0) ? 'inline-flex' : 'none';
             }
             if (filterBtnMissing) filterBtnMissing.classList.toggle('active', activeBatoceraFilter === 'missing');
-            if (filterBtnOther) filterBtnOther.classList.toggle('active', activeBatoceraFilter === 'other');
+            if (filterBtnOther) {
+                filterBtnOther.classList.toggle('active', activeBatoceraFilter === 'other');
+                filterBtnOther.style.display = (batoceraOtherCount > 0) ? 'inline-flex' : 'none';
+            }
 
             // If mismatch is zero and was selected, fall back to all
             if (batoceraMismatchCount === 0 && activeBatoceraFilter === 'mismatch') {
@@ -15497,16 +15655,13 @@
                 if (filterBtnAll) filterBtnAll.classList.add('active');
             }
 
-            // If missing is zero (every game is installed), do not show Other
-            if (missing === 0 && activeBatoceraFilter === 'other') {
+            // If other is zero and was selected, fall back to all
+            if (batoceraOtherCount === 0 && activeBatoceraFilter === 'other') {
                 activeBatoceraFilter = 'all';
                 document.querySelectorAll('.status-pill-btn').forEach(b => b.classList.remove('active'));
                 if (filterBtnAll) filterBtnAll.classList.add('active');
             }
 
-            if (filterBtnOther) {
-                filterBtnOther.style.display = (missing > 0 && batoceraOtherCount > 0) ? 'inline-flex' : 'none';
-            }
             if (btnRescanBatocera && activeSystem) {
                 btnRescanBatocera.style.display = 'inline-flex';
             }
@@ -15752,14 +15907,42 @@
                     batoceraMatchedDetails = (data.matched_details && typeof data.matched_details === 'object') ? data.matched_details : {};
                     batoceraMatchedSizes = (data.matched_sizes && typeof data.matched_sizes === 'object') ? data.matched_sizes : {};
                     batoceraMismatchCount = parseInt(data.mismatch_count || 0, 10);
+                    const nonGameExts = new Set(['xml', 'txt', 'keys', 'ini', 'cfg', 'log', 'nfo', 'bak', 'old', 'backup', 'png', 'jpg', 'jpeg', 'sfo', 'sfb', 'dat', 'trp']);
                     batoceraOtherGames = (Array.isArray(data.other_games) ? data.other_games : []).filter(g => {
                         const fn = (g.filename || g.id || '').toLowerCase();
-                        return !fn.endsWith('.keys');
+                        if (fn.endsWith('.keys') || /^([_\.]?gamelist.*\.xml|[_\.]?info.*\.txt|readme.*\.txt|\.git.*|\.ds_store|thumbs\.db|desktop\.ini)$/i.test(fn)) return false;
+                        const ext = fn.includes('.') ? fn.split('.').pop() : '';
+                        if (nonGameExts.has(ext)) return false;
+                        return true;
                     });
                     batoceraGamelistMeta = (data.gamelist_meta && typeof data.gamelist_meta === 'object') ? data.gamelist_meta : {};
                     currentBatoceraSystemSettings = (data.system_settings && typeof data.system_settings === 'object') ? data.system_settings : {};
                     currentBatoceraGameSettings = (data.game_settings && typeof data.game_settings === 'object') ? data.game_settings : {};
                     updateBatoceraSystemConfigUI();
+
+                    // Populate server-side fuzzy matches from matched_details
+                    for (const [key, detail] of Object.entries(batoceraMatchedDetails)) {
+                        if (detail && detail.is_fuzzy) {
+                            batoceraFuzzyMatchedIds.add(key);
+                            batoceraFuzzyMatchedIds.add(String(key).toLowerCase());
+                            if (detail.matched_file) {
+                                batoceraFuzzyMatchedNames.add(detail.matched_file);
+                                batoceraFuzzyMatchedNames.add(String(detail.matched_file).toLowerCase());
+                            }
+                            if (detail.matched_rel) {
+                                batoceraFuzzyMatchedNames.add(detail.matched_rel);
+                                batoceraFuzzyMatchedNames.add(String(detail.matched_rel).toLowerCase());
+                            }
+                            if (!batoceraFuzzyMatches.has(key)) {
+                                batoceraFuzzyMatches.set(key, {
+                                    id: detail.matched_rel || detail.matched_file,
+                                    filename: detail.matched_file,
+                                    name: detail.matched_file ? detail.matched_file.replace(/\.[^.]+$/, '') : key,
+                                    size_mb: detail.found_size_mb || 0
+                                });
+                            }
+                        }
+                    }
 
                     // Smart match other ROMs against catalog games:
                     // Matched titles are moved to Installed (shown with purple theme) and removed from Other
@@ -17064,8 +17247,16 @@
                 const isShowingPlaceholder = ph && ph.style.display !== 'none';
                 const isImgNotLoaded = img && (!img.classList.contains('loaded') || img.style.display === 'none');
 
-                if (isShowingPlaceholder || isImgNotLoaded || (updatedIndices && updatedIndices.includes(idx))) {
-                    const g = currentGames[idx];
+                if (isShowingPlaceholder || isImgNotLoaded) {
+                    let g = (currentFilteredGridList && currentFilteredGridList[idx]) ? currentFilteredGridList[idx] : (lastRenderedGames ? lastRenderedGames[idx] : (currentGames ? currentGames[idx] : null));
+                    const cardGameName = card.dataset.gamename;
+                    if (cardGameName && g && (g.name || g.filename || g.id) !== cardGameName) {
+                        const pool = currentFilteredGridList || lastRenderedGames || currentGames;
+                        if (Array.isArray(pool)) {
+                            const found = pool.find(item => (item.name || item.filename || item.id) === cardGameName);
+                            if (found) g = found;
+                        }
+                    }
                     if (!g) return;
                     const gameKey = `${sysId}:${g.id || g.name || idx}`;
                     deleteCachedArt(gameKey);
@@ -20440,6 +20631,7 @@
 
         function renderArcadeWelcomeScreen() {
             if (!editorContentEl) return;
+            editorContentEl.classList.remove('grid-view', 'grid-compact', 'grid-normal', 'grid-large', 'hide-line-numbers');
             if (arcadeQuoteTimer) {
                 clearInterval(arcadeQuoteTimer);
                 arcadeQuoteTimer = null;
@@ -20674,6 +20866,9 @@
         function clearView() {
             activeSystem = null;
             currentGames = [];
+            if (editorContentEl) {
+                editorContentEl.classList.remove('grid-view', 'grid-compact', 'grid-normal', 'grid-large', 'hide-line-numbers');
+            }
             if (systemSelect && systemSelect.value) systemSelect.value = '';
             if (typeof updateRichSelectTrigger === 'function') updateRichSelectTrigger();
             updateBatoceraFilterUI();
@@ -21265,7 +21460,10 @@
                 return;
             }
 
-            const sourceList = (activeBatoceraFilter === 'other') ? batoceraOtherGames : currentGames;
+            let sourceList = currentGames;
+            if (activeBatoceraFilter === 'other') {
+                sourceList = Array.isArray(batoceraOtherGames) ? batoceraOtherGames : [];
+            }
 
             if (!sourceList || sourceList.length === 0) {
                 if (activeBatoceraFilter === 'other') {
@@ -21299,7 +21497,13 @@
             let filtered = sourceList.filter(g => {
                 if (batoceraOnline && activeBatoceraFilter !== 'all' && activeBatoceraFilter !== 'other') {
                     const isDirect = (g.id && batoceraMatchedIds.has(g.id)) || (g.name && batoceraMatchedNames.has(g.name));
-                    const isFuzzy = (g.id && batoceraFuzzyMatchedIds.has(g.id)) || (g.name && batoceraFuzzyMatchedNames.has(g.name));
+                    const isFuzzy = Boolean(
+                        (g.id && (batoceraFuzzyMatchedIds.has(g.id) || batoceraFuzzyMatchedIds.has(String(g.id).toLowerCase()))) ||
+                        (g.name && (batoceraFuzzyMatchedNames.has(g.name) || batoceraFuzzyMatchedNames.has(String(g.name).toLowerCase()) || batoceraFuzzyMatchedIds.has(g.name) || batoceraFuzzyMatchedIds.has(String(g.name).toLowerCase()))) ||
+                        batoceraMatchedDetails[g.id]?.is_fuzzy ||
+                        batoceraMatchedDetails[g.name]?.is_fuzzy ||
+                        (g.id && batoceraMatchedDetails[String(g.id).toLowerCase()]?.is_fuzzy)
+                    );
                     const isInstalled = isDirect || isFuzzy;
                     if (activeBatoceraFilter === 'installed' && !isInstalled) return false;
                     if (activeBatoceraFilter === 'missing' && isInstalled) return false;
@@ -21714,7 +21918,8 @@
                     }
 
                     const pixnUrl = buildPixnSearchUrl(r.system, r.name);
-                    return `<div class="game-row global-search-row" data-href="${escapeHtml(pixnUrl)}" data-idx="${idx}" data-system="${escapeHtml(r.system)}" data-gamename="${escapeHtml(r.name)}"><span class="line-num">${idx + 1}</span><span class="game-text">${sysTag}<a class="game-link" href="${escapeHtml(pixnUrl)}" target="_blank" rel="noopener noreferrer" title="Search & open on Pixn Retro: ${escapeHtml(r.name)}">${checkBadge}${htmlText}${devPubBadge}${sizeBadge}<i class="fa-solid fa-arrow-up-right-from-square external-icon"></i></a>${otherBadge} ${infoBtn}</span></div>`;
+                    const extTitle = `Search & open on Pixn Retro in new tab: ${escapeHtml(r.name)}`;
+                    return `<div class="game-row global-search-row" data-href="${escapeHtml(pixnUrl)}" data-idx="${idx}" data-system="${escapeHtml(r.system)}" data-gamename="${escapeHtml(r.name)}"><span class="line-num">${idx + 1}</span><span class="game-text">${sysTag}<span class="game-title" style="cursor: pointer;" data-action="view-info" data-idx="${idx}" title="Click to view gamecard & details: ${escapeHtml(r.name)}">${checkBadge}${htmlText}${devPubBadge}${sizeBadge}</span><a class="external-link-btn" href="${escapeHtml(pixnUrl)}" target="_blank" rel="noopener noreferrer" data-action="open-external" data-href="${escapeHtml(pixnUrl)}" title="${extTitle}"><i class="fa-solid fa-arrow-up-right-from-square external-icon"></i></a>${otherBadge} ${infoBtn}</span></div>`;
                 });
 
                 editorContentEl.innerHTML = rows.join('');
@@ -22032,27 +22237,31 @@
             });
         }
 
+        // Expose openGameDetail and closeGameDetailModal globally
+        window.openGameDetail = openGameDetail;
+        window.closeGameDetailModal = closeGameDetailModal;
+
         // Clicking on a game row or info button
         editorContentEl.addEventListener('click', (e) => {
-            const selection = window.getSelection();
-            if (selection && selection.toString().trim().length > 0) return;
-
-            // Check if clicking info button or matched ROM badge
-            const actionTarget = e.target.closest('[data-action="view-info"]');
-            if (actionTarget) {
+            // Check if clicking external link icon/button
+            const extTarget = e.target.closest('[data-action="open-external"], .external-link-btn, .external-icon, .grid-card-external-cue');
+            if (extTarget) {
                 e.preventDefault();
                 e.stopPropagation();
-                if (window.hideQuickPreview) window.hideQuickPreview();
-                const idx = parseInt(actionTarget.dataset.idx, 10);
-                let targetGame = null;
-                if (!isNaN(idx) && lastRenderedGames && lastRenderedGames[idx]) {
-                    targetGame = lastRenderedGames[idx];
-                } else if (!isNaN(idx) && typeof currentFilteredList !== 'undefined' && currentFilteredList && currentFilteredList[idx]) {
-                    targetGame = currentFilteredList[idx];
+                const row = extTarget.closest('.game-row, .game-grid-card');
+                const link = extTarget.closest('a') || (extTarget.tagName === 'A' ? extTarget : null);
+                let href = (link && link.href) || extTarget.dataset.href || (row && row.dataset.href);
+                if (!href && row && row.dataset.system && row.dataset.gamename) {
+                    href = buildPixnSearchUrl(row.dataset.system, row.dataset.gamename);
                 }
-                if (targetGame) {
-                    openGameDetail(targetGame, idx);
+                if (href && href !== '#' && !href.startsWith('javascript:')) {
+                    window.open(href, '_blank', 'noopener,noreferrer');
                 }
+                return;
+            }
+
+            const selection = window.getSelection();
+            if (selection && selection.toString().trim().length > 0 && !e.target.closest('button, [data-action], .game-link, .game-info-btn, .game-grid-card, .game-row')) {
                 return;
             }
 
@@ -22068,9 +22277,56 @@
                 return;
             }
 
+            // Check if clicking system tag to filter (in Global Search) or switch to system
+            const sysPill = e.target.closest('.fancy-sys-pill, .sys-tag, .grid-card-system, [data-sys-id]');
+            if (sysPill) {
+                const sysId = sysPill.getAttribute('data-sys-id');
+                if (sysId) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if (currentMode === 'global') {
+                        activeGlobalSystemFilter = (activeGlobalSystemFilter === sysId) ? 'all' : sysId;
+                        renderGlobalSystemFacets(globalResults);
+                        renderGlobalResultsList();
+                    } else if (window.switchToSystem) {
+                        window.switchToSystem(sysId);
+                    }
+                    return;
+                }
+            }
+
+            // Check if clicking info button or matched ROM badge
+            const actionTarget = e.target.closest('[data-action="view-info"]');
+            if (actionTarget) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (window.hideQuickPreview) window.hideQuickPreview();
+                const idx = parseInt(actionTarget.dataset.idx, 10);
+                let targetGame = null;
+                if (!isNaN(idx) && lastRenderedGames && lastRenderedGames[idx]) {
+                    targetGame = lastRenderedGames[idx];
+                } else if (!isNaN(idx) && typeof currentFilteredList !== 'undefined' && currentFilteredList && currentFilteredList[idx]) {
+                    targetGame = currentFilteredList[idx];
+                } else if (!isNaN(idx) && typeof currentFilteredGridList !== 'undefined' && currentFilteredGridList && currentFilteredGridList[idx]) {
+                    targetGame = currentFilteredGridList[idx];
+                } else if (!isNaN(idx) && typeof globalResults !== 'undefined' && globalResults && globalResults[idx]) {
+                    targetGame = globalResults[idx];
+                }
+                if (!targetGame) {
+                    const rowOrCard = actionTarget.closest('.game-row, .game-grid-card');
+                    if (rowOrCard && rowOrCard.dataset.system && rowOrCard.dataset.gamename) {
+                        targetGame = { system: rowOrCard.dataset.system, name: rowOrCard.dataset.gamename };
+                    }
+                }
+                if (targetGame) {
+                    openGameDetail(targetGame, idx);
+                }
+                return;
+            }
+
             const gridCard = e.target.closest('.game-grid-card');
             if (gridCard) {
-                if (e.target.closest('a')) return;
+                if (e.target.closest('a') && !e.target.closest('.game-link')) return;
                 e.preventDefault();
                 e.stopPropagation();
                 if (window.hideQuickPreview) window.hideQuickPreview();
@@ -22082,6 +22338,11 @@
                     targetGame = currentFilteredGridList[idx];
                 } else if (!isNaN(idx) && typeof currentFilteredList !== 'undefined' && currentFilteredList && currentFilteredList[idx]) {
                     targetGame = currentFilteredList[idx];
+                } else if (!isNaN(idx) && typeof globalResults !== 'undefined' && globalResults && globalResults[idx]) {
+                    targetGame = globalResults[idx];
+                }
+                if (!targetGame && gridCard.dataset.system && gridCard.dataset.gamename) {
+                    targetGame = { system: gridCard.dataset.system, name: gridCard.dataset.gamename };
                 }
                 if (targetGame) {
                     openGameDetail(targetGame, idx);
@@ -22089,7 +22350,44 @@
                 return;
             }
 
+            const row = e.target.closest('.game-row');
             const isInspectorActiveInList = Boolean(isInspectorOpen && currentViewMode === 'list');
+            const isExternalIcon = Boolean(e.target.closest('.external-icon'));
+
+            if (row) {
+                const isGlobalRow = Boolean(row.classList.contains('global-search-row') || currentMode === 'global');
+                const idx = parseInt(row.dataset.idx, 10);
+
+                if (!isNaN(idx)) {
+                    selectGameByIndex(idx, false);
+                }
+
+                if (isGlobalRow) {
+                    if (isExternalIcon) {
+                        return; // Allow user to explicitly open external Pixn Retro tab if clicking the external link icon
+                    }
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (window.hideQuickPreview) window.hideQuickPreview();
+                    let targetGame = null;
+                    if (!isNaN(idx) && lastRenderedGames && lastRenderedGames[idx]) {
+                        targetGame = lastRenderedGames[idx];
+                    } else if (!isNaN(idx) && typeof globalResults !== 'undefined' && globalResults && globalResults[idx]) {
+                        targetGame = globalResults[idx];
+                    } else {
+                        const sysId = row.dataset.system;
+                        const gameName = row.dataset.gamename;
+                        if (sysId && gameName) {
+                            targetGame = { system: sysId, name: gameName };
+                        }
+                    }
+                    if (targetGame) {
+                        openGameDetail(targetGame, idx);
+                    }
+                    return;
+                }
+            }
+
             const linkEl = e.target.closest('a');
             if (linkEl) {
                 if (isInspectorActiveInList) {
@@ -22099,40 +22397,11 @@
                 }
             }
 
-            const sysPill = e.target.closest('.fancy-sys-pill') || e.target.closest('.sys-tag') || e.target.closest('.grid-card-system');
-            if (sysPill) {
-                const sysId = sysPill.getAttribute('data-sys-id');
-                if (sysId && currentMode === 'global') {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    activeGlobalSystemFilter = (activeGlobalSystemFilter === sysId) ? 'all' : sysId;
-                    renderGlobalSystemFacets(globalResults);
-                    renderGlobalResultsList();
-                }
-                return;
-            }
             if (e.target.closest('button') && !isInspectorActiveInList) return;
 
-            const row = e.target.closest('.game-row');
-            if (!row) return;
-
-            const idx = parseInt(row.dataset.idx, 10);
-            if (!isNaN(idx)) {
-                selectGameByIndex(idx, false);
-            }
-
-            if (!isInspectorActiveInList) {
-                if (row.classList.contains('global-search-row')) {
-                    if (!isNaN(idx) && lastRenderedGames && lastRenderedGames[idx]) {
-                        openGameDetail(lastRenderedGames[idx], idx);
-                    } else {
-                        const sysId = row.dataset.system;
-                        const gameName = row.dataset.gamename;
-                        if (sysId && gameName) {
-                            openGameDetail({ system: sysId, name: gameName });
-                        }
-                    }
-                } else if (row.classList.contains('no-link')) {
+            if (row && !isInspectorActiveInList) {
+                const idx = parseInt(row.dataset.idx, 10);
+                if (row.classList.contains('no-link')) {
                     // Clicking on an unlinked "Other" game row opens the game detail modal!
                     if (!isNaN(idx) && lastRenderedGames && lastRenderedGames[idx]) {
                         openGameDetail(lastRenderedGames[idx], idx);
@@ -22199,8 +22468,12 @@
             const gameTitle = g.name || g.filename || g.id;
             const isOther = Boolean(g.is_other || isOtherView);
             const isDirectInstalled = batoceraOnline && batoceraFolderExists && ((g.id && batoceraMatchedIds.has(g.id)) || (g.name && batoceraMatchedNames.has(g.name)));
-            const isFuzzyInstalled = batoceraOnline && batoceraFolderExists && ((g.id && batoceraFuzzyMatchedIds.has(g.id)) || (g.name && batoceraFuzzyMatchedNames.has(g.name)));
-            const fuzzyMatchedOther = isFuzzyInstalled ? batoceraFuzzyMatches.get(g.id) : null;
+            const isFuzzyInstalled = batoceraOnline && batoceraFolderExists && (
+                (g.id && (batoceraFuzzyMatchedIds.has(g.id) || batoceraFuzzyMatchedIds.has(String(g.id).toLowerCase()))) ||
+                (g.name && (batoceraFuzzyMatchedNames.has(g.name) || batoceraFuzzyMatchedNames.has(String(g.name).toLowerCase()) || batoceraFuzzyMatchedIds.has(g.name) || batoceraFuzzyMatchedIds.has(String(g.name).toLowerCase()))) ||
+                Boolean(batoceraMatchedDetails[g.id]?.is_fuzzy || batoceraMatchedDetails[g.name]?.is_fuzzy || (g.id && batoceraMatchedDetails[String(g.id).toLowerCase()]?.is_fuzzy))
+            );
+            const fuzzyMatchedOther = isFuzzyInstalled ? (batoceraFuzzyMatches.get(g.id) || batoceraFuzzyMatches.get(g.name) || (batoceraMatchedDetails[g.id] ? { id: batoceraMatchedDetails[g.id].matched_rel, filename: batoceraMatchedDetails[g.id].matched_file, size_mb: batoceraMatchedDetails[g.id].found_size_mb } : null)) : null;
             const mismatchInfo = (!isOther && (isDirectInstalled || isFuzzyInstalled)) ? getGameMismatchInfo(g) : null;
             const isMismatch = Boolean(mismatchInfo && mismatchInfo.is_mismatch);
             let checkBadge = '';
@@ -22399,11 +22672,15 @@
             }
 
             // Batocera Status Badge
+            const isOther = Boolean(g.is_other || (currentMode !== 'global' && activeBatoceraFilter === 'other'));
             const statusBadgeEl = document.getElementById('inspectorStatusBadge');
             if (statusBadgeEl) {
-                const isOther = Boolean(g.is_other || (currentMode !== 'global' && activeBatoceraFilter === 'other'));
                 const isDirectInstalled = (currentMode === 'global' ? isGlobalGameInstalled(g) : (batoceraOnline && batoceraFolderExists && ((g.id && batoceraMatchedIds.has(g.id)) || (g.name && batoceraMatchedNames.has(g.name)))));
-                const isFuzzyInstalled = (currentMode !== 'global') && batoceraOnline && batoceraFolderExists && ((g.id && batoceraFuzzyMatchedIds.has(g.id)) || (g.name && batoceraFuzzyMatchedNames.has(g.name)));
+                const isFuzzyInstalled = (currentMode !== 'global') && batoceraOnline && batoceraFolderExists && (
+                    (g.id && (batoceraFuzzyMatchedIds.has(g.id) || batoceraFuzzyMatchedIds.has(String(g.id).toLowerCase()))) ||
+                    (g.name && (batoceraFuzzyMatchedNames.has(g.name) || batoceraFuzzyMatchedNames.has(String(g.name).toLowerCase()) || batoceraFuzzyMatchedIds.has(g.name) || batoceraFuzzyMatchedIds.has(String(g.name).toLowerCase()))) ||
+                    Boolean(batoceraMatchedDetails[g.id]?.is_fuzzy || batoceraMatchedDetails[g.name]?.is_fuzzy || (g.id && batoceraMatchedDetails[String(g.id).toLowerCase()]?.is_fuzzy))
+                );
                 if (isOther) {
                     statusBadgeEl.innerHTML = '<span class="inspector-status-pill matched"><i class="fa-solid fa-check"></i> Other ROM</span>';
                 } else if (isDirectInstalled || isFuzzyInstalled) {
@@ -22531,8 +22808,13 @@
             }
             const btnLink = document.getElementById('btnInspectorPixnLink');
             if (btnLink) {
-                const pixnUrl = buildPixnSearchUrl(sysId, gameTitle);
-                btnLink.href = pixnUrl;
+                if (isOther) {
+                    btnLink.style.display = 'none';
+                } else {
+                    btnLink.style.display = 'inline-flex';
+                    const pixnUrl = buildPixnSearchUrl(sysId, gameTitle);
+                    btnLink.href = pixnUrl;
+                }
             }
         }
 
@@ -23564,7 +23846,7 @@
                     }
                 }
                 if (!oldCookie && newCookie) {
-                    showToast('🔑 Pixn Retro session cookie captured and auto-filled!', 3500, 'success');
+                    showToast('Pixn Retro session cookie captured and auto-filled!', 3500, 'success');
                 }
 
                 if (cfgCookieStatusBadge) {
@@ -24792,6 +25074,18 @@
             let currentCard = null;
             let previewSeq = 0;
             const quickScreenshotCache = new Map();
+            let activeProbeImgs = [];
+
+            function abortActiveProbes() {
+                if (activeProbeImgs.length > 0) {
+                    for (const img of activeProbeImgs) {
+                        img.onload = null;
+                        img.onerror = null;
+                        img.src = '';
+                    }
+                    activeProbeImgs = [];
+                }
+            }
 
             // Scroll & Wheel Interaction Manager
             let isScrollActive = false;
@@ -24802,6 +25096,7 @@
                     clearTimeout(hoverTimer);
                     hoverTimer = null;
                 }
+                abortActiveProbes();
                 currentCard = null;
                 previewSeq++;
                 previewEl.classList.remove('active');
@@ -24857,14 +25152,40 @@
                 if (isNaN(idx) || !lastRenderedGames || !lastRenderedGames[idx]) return;
                 const g = lastRenderedGames[idx];
                 const token = ++previewSeq;
+                abortActiveProbes();
 
                 const sysId = g.system || (activeSystem ? activeSystem.id : '');
                 const sysObj = systemsMap[sysId] || activeSystem;
                 const sysName = sysObj ? sysObj.name : sysId;
-                const isOther = Boolean(g.is_other || (currentMode !== 'global' && activeBatoceraFilter === 'other'));
+                const isOther = Boolean(g.is_other || (currentMode !== 'global' && activeBatoceraFilter === 'other' && !g.id));
                 const isSystemActive = Boolean(activeSystem && activeSystem.id === sysId);
-                const isFuzzyInstalled = Boolean(isSystemActive && batoceraOnline && ((g.id && batoceraFuzzyMatchedIds.has(g.id)) || (g.name && batoceraFuzzyMatchedNames.has(g.name))));
-                const cleanTitle = g.name || g.filename || g.id || '';
+                const isFuzzyInstalled = Boolean(isSystemActive && batoceraOnline && (
+                    (g.id && (batoceraFuzzyMatchedIds.has(g.id) || batoceraFuzzyMatchedIds.has(String(g.id).toLowerCase()))) ||
+                    (g.name && (batoceraFuzzyMatchedNames.has(g.name) || batoceraFuzzyMatchedNames.has(String(g.name).toLowerCase()) || batoceraFuzzyMatchedIds.has(g.name) || batoceraFuzzyMatchedIds.has(String(g.name).toLowerCase()))) ||
+                    Boolean(batoceraMatchedDetails[g.id]?.is_fuzzy || batoceraMatchedDetails[g.name]?.is_fuzzy || (g.id && batoceraMatchedDetails[String(g.id).toLowerCase()]?.is_fuzzy))
+                ));
+                const cleanTitle = (g.name || g.filename || g.id || '').trim();
+
+                const lowerName = mbLower(cleanTitle);
+                const baseName = mbLower(g.id || cleanTitle);
+                const baseWithoutExt = baseName.replace(/\.[^.]+$/, '');
+                const cleanStem = baseWithoutExt.replace(/\s*[\(\[][^\)\]]*[\)\]]\s*/g, ' ').replace(/\s+/g, ' ').trim();
+                const gmMeta = (typeof batoceraGamelistMeta === 'object' && batoceraGamelistMeta !== null) ? batoceraGamelistMeta : {};
+                const gm = gmMeta[baseName] || gmMeta[baseWithoutExt] || gmMeta[cleanStem] || gmMeta[lowerName] || (g.id ? gmMeta[mbLower(g.id)] : null) || {};
+
+                const isInstalled = Boolean(
+                    isOther ||
+                    g.is_other ||
+                    (isSystemActive && batoceraOnline && (
+                        (g.id && batoceraMatchedIds.has(g.id)) ||
+                        (g.name && batoceraMatchedNames.has(g.name)) ||
+                        isFuzzyInstalled ||
+                        Boolean(gm && (gm.game_id || gm.image || gm.thumbnail || gm.filename))
+                    )) ||
+                    (currentMode === 'global' && isGlobalGameInstalled(g))
+                );
+                const mismatchInfo = (!isOther && isInstalled) ? getGameMismatchInfo(g, sysId) : null;
+                const isMismatch = Boolean(mismatchInfo && mismatchInfo.is_mismatch);
 
                 // Title
                 if (previewTitle) previewTitle.textContent = cleanTitle;
@@ -24884,9 +25205,6 @@
                             metaTags += `<span class="quick-preview-tag rating">★ ${pct}%</span>`;
                         }
                     }
-                    const isInstalled = (isOther || (isSystemActive && batoceraOnline && ((g.id && batoceraMatchedIds.has(g.id)) || (g.name && batoceraMatchedNames.has(g.name)) || isFuzzyInstalled)) || (currentMode === 'global' && isGlobalGameInstalled(g)));
-                    const mismatchInfo = (!isOther && isInstalled) ? getGameMismatchInfo(g, sysId) : null;
-                    const isMismatch = Boolean(mismatchInfo && mismatchInfo.is_mismatch);
 
                     if (isOther) {
                         metaTags += `<span class="quick-preview-tag status" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.4); background: rgba(192, 132, 252, 0.15);">Other Batocera</span>`;
@@ -24915,88 +25233,7 @@
                     }
                 }
 
-                // Screenshot / Media
-                const gameKey = (sysId || '') + ':' + (g.id || g.filename || g.name || '');
-                const cacheKey = `${sysId}:${g.id || g.name || cleanTitle}:screenshot`;
-                if (previewImg && previewPlaceholder) {
-                    const badge = document.getElementById('quickPreviewBadge');
-
-                    const cachedUrl = quickScreenshotCache.get(gameKey) ||
-                        (resolvedArtCache.has(cacheKey) ? resolvedArtCache.get(cacheKey) : null) ||
-                        (resolvedArtCache.has(gameKey + ':screenshot') ? resolvedArtCache.get(gameKey + ':screenshot') : null);
-
-                    if (cachedUrl) {
-                        previewImg.style.objectFit = 'contain';
-                        previewImg.src = cachedUrl;
-                        previewImg.classList.add('loaded');
-                        previewPlaceholder.style.display = 'none';
-                        if (badge) badge.innerHTML = '<i class="fa-solid fa-gamepad"></i> Screenshot';
-                    } else {
-                        previewImg.classList.remove('loaded');
-                        previewImg.src = '';
-                        previewPlaceholder.style.display = 'flex';
-                        previewPlaceholder.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #38bdf8; font-size: 1.6rem; opacity: 0.7;"></i>';
-                        if (badge) badge.innerHTML = '<i class="fa-solid fa-gamepad"></i> Screenshot';
-
-                        const candidates = getQuickScreenshotCandidates(sysId, g);
-                        if (!candidates || candidates.length === 0) {
-                            previewPlaceholder.style.display = 'flex';
-                            previewPlaceholder.innerHTML = '<i class="fa-solid fa-gamepad" style="opacity: 0.35; font-size: 2.2rem;"></i>';
-                            if (badge) badge.innerHTML = '<i class="fa-solid fa-gamepad"></i> Game Info';
-                            return;
-                        }
-
-                        let resolved = false;
-                        let cIdx = 0;
-                        const CONCURRENCY = 4;
-                        let activeCount = 0;
-
-                        function launchNext() {
-                            if (resolved || token !== previewSeq) return;
-                            if (cIdx >= candidates.length) {
-                                if (activeCount === 0 && !resolved) {
-                                    previewPlaceholder.style.display = 'flex';
-                                    previewPlaceholder.innerHTML = '<i class="fa-solid fa-gamepad" style="opacity: 0.35; font-size: 2.2rem;"></i>';
-                                    if (badge) badge.innerHTML = '<i class="fa-solid fa-gamepad"></i> Game Info';
-                                }
-                                return;
-                            }
-
-                            const nextUrl = candidates[cIdx++];
-                            activeCount++;
-                            const testImg = new Image();
-
-                            testImg.onload = () => {
-                                activeCount--;
-                                if (resolved || token !== previewSeq) return;
-                                resolved = true;
-                                quickScreenshotCache.set(gameKey, nextUrl);
-                                if (typeof setCachedArt === 'function') {
-                                    setCachedArt(cacheKey, nextUrl);
-                                }
-                                previewImg.style.objectFit = 'contain';
-                                previewImg.src = nextUrl;
-                                previewImg.classList.add('loaded');
-                                previewPlaceholder.style.display = 'none';
-                                if (badge) badge.innerHTML = '<i class="fa-solid fa-gamepad"></i> Screenshot';
-                            };
-
-                            testImg.onerror = () => {
-                                activeCount--;
-                                if (resolved || token !== previewSeq) return;
-                                launchNext();
-                            };
-
-                            testImg.src = nextUrl;
-                        }
-
-                        for (let i = 0; i < CONCURRENCY && i < candidates.length; i++) {
-                            launchNext();
-                        }
-                    }
-                }
-
-                // Position preview card adjacent to the hovered card
+                // Position preview card adjacent to the hovered card immediately so UI pops up smoothly
                 const rect = card.getBoundingClientRect();
                 const previewWidth = 330;
                 const previewHeight = 310;
@@ -25017,10 +25254,144 @@
                 previewEl.style.left = `${Math.round(left)}px`;
                 previewEl.style.top = `${Math.round(top)}px`;
                 previewEl.classList.add('active');
+
+                // Screenshot / Media
+                const gameKey = (sysId || '') + ':' + (g.id || g.filename || g.name || '');
+                const cacheKey = `${sysId}:${g.id || g.name || cleanTitle}:screenshot`;
+                if (previewImg && previewPlaceholder) {
+                    const badge = document.getElementById('quickPreviewBadge');
+
+                    // Check if card already has a loaded thumbnail/boxart image on screen
+                    const cardImg = card.querySelector('.grid-card-img');
+                    const cardCurrentSrc = (cardImg && cardImg.src && !cardImg.src.includes('undefined')) ? cardImg.src : '';
+
+                    const cachedUrl = quickScreenshotCache.get(gameKey) ||
+                        (resolvedArtCache.has(cacheKey) ? resolvedArtCache.get(cacheKey) : null) ||
+                        (resolvedArtCache.has(gameKey + ':screenshot') ? resolvedArtCache.get(gameKey + ':screenshot') : null);
+
+                    if (cachedUrl) {
+                        previewImg.style.objectFit = 'contain';
+                        previewImg.style.filter = '';
+                        previewImg.style.opacity = '1';
+                        previewImg.src = cachedUrl;
+                        previewImg.classList.add('loaded');
+                        previewPlaceholder.style.display = 'none';
+                        if (badge) badge.innerHTML = '<i class="fa-solid fa-gamepad"></i> Screenshot';
+                    } else {
+                        // Instant Visual Fallback: show the card's existing thumbnail/boxart immediately so there is zero empty lag
+                        if (cardCurrentSrc) {
+                            previewImg.style.objectFit = 'contain';
+                            previewImg.style.filter = 'contrast(0.95) brightness(0.92)';
+                            previewImg.style.opacity = '0.85';
+                            previewImg.src = cardCurrentSrc;
+                            previewImg.classList.add('loaded');
+                            previewPlaceholder.style.display = 'none';
+                            if (badge) badge.innerHTML = '<i class="fa-solid fa-image"></i> Preview';
+                        } else {
+                            previewImg.classList.remove('loaded');
+                            previewImg.src = '';
+                            previewPlaceholder.style.display = 'flex';
+                            previewPlaceholder.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color: #38bdf8; font-size: 1.6rem; opacity: 0.7;"></i>';
+                            if (badge) badge.innerHTML = '<i class="fa-solid fa-gamepad"></i> Screenshot';
+                        }
+
+                        const candidates = getQuickScreenshotCandidates(sysId, g, isInstalled, gm);
+                        if (!candidates || candidates.length === 0) {
+                            if (!cardCurrentSrc) {
+                                previewPlaceholder.style.display = 'flex';
+                                previewPlaceholder.innerHTML = '<i class="fa-solid fa-gamepad" style="opacity: 0.35; font-size: 2.2rem;"></i>';
+                                if (badge) badge.innerHTML = '<i class="fa-solid fa-gamepad"></i> Game Info';
+                            }
+                            return;
+                        }
+
+                        // Background prefetch adjacent games (next and previous) so moving cursor across grid is instantaneous
+                        setTimeout(() => {
+                            if (token !== previewSeq) return;
+                            if (!Array.isArray(lastRenderedGames)) return;
+                            const neighborIndices = [idx + 1, idx - 1, idx + 2].filter(i => i >= 0 && i < lastRenderedGames.length);
+                            for (const nIdx of neighborIndices) {
+                                const nG = lastRenderedGames[nIdx];
+                                if (!nG) continue;
+                                const nSys = nG.system || sysId;
+                                const nKey = (nSys || '') + ':' + (nG.id || nG.filename || nG.name || '');
+                                if (quickScreenshotCache.has(nKey)) continue;
+                                const nCands = getQuickScreenshotCandidates(nSys, nG, isInstalled);
+                                if (nCands && nCands.length > 0) {
+                                    const pfImg = new Image();
+                                    pfImg.onload = () => { quickScreenshotCache.set(nKey, nCands[0]); };
+                                    pfImg.src = nCands[0];
+                                }
+                            }
+                        }, 80);
+
+                        let resolved = false;
+                        let cIdx = 0;
+                        const CONCURRENCY = 3;
+                        let activeCount = 0;
+
+                        function launchNext() {
+                            if (resolved || token !== previewSeq) return;
+                            if (cIdx >= candidates.length) {
+                                if (activeCount === 0 && !resolved) {
+                                    if (cardCurrentSrc) {
+                                        previewImg.style.filter = '';
+                                        previewImg.style.opacity = '1';
+                                        if (badge) badge.innerHTML = '<i class="fa-solid fa-image"></i> Boxart';
+                                    } else {
+                                        previewPlaceholder.style.display = 'flex';
+                                        previewPlaceholder.innerHTML = '<i class="fa-solid fa-gamepad" style="opacity: 0.35; font-size: 2.2rem;"></i>';
+                                        if (badge) badge.innerHTML = '<i class="fa-solid fa-gamepad"></i> Game Info';
+                                    }
+                                }
+                                return;
+                            }
+
+                            const nextUrl = candidates[cIdx++];
+                            activeCount++;
+                            const testImg = new Image();
+                            activeProbeImgs.push(testImg);
+
+                            testImg.onload = () => {
+                                activeCount--;
+                                const pIdx = activeProbeImgs.indexOf(testImg);
+                                if (pIdx !== -1) activeProbeImgs.splice(pIdx, 1);
+                                if (resolved || token !== previewSeq) return;
+                                resolved = true;
+                                abortActiveProbes();
+                                quickScreenshotCache.set(gameKey, nextUrl);
+                                if (typeof setCachedArt === 'function') {
+                                    setCachedArt(cacheKey, nextUrl);
+                                }
+                                previewImg.style.objectFit = 'contain';
+                                previewImg.style.filter = '';
+                                previewImg.style.opacity = '1';
+                                previewImg.src = nextUrl;
+                                previewImg.classList.add('loaded');
+                                previewPlaceholder.style.display = 'none';
+                                if (badge) badge.innerHTML = '<i class="fa-solid fa-gamepad"></i> Screenshot';
+                            };
+
+                            testImg.onerror = () => {
+                                activeCount--;
+                                const pIdx = activeProbeImgs.indexOf(testImg);
+                                if (pIdx !== -1) activeProbeImgs.splice(pIdx, 1);
+                                if (resolved || token !== previewSeq) return;
+                                launchNext();
+                            };
+
+                            testImg.src = nextUrl;
+                        }
+
+                        for (let i = 0; i < CONCURRENCY && i < candidates.length; i++) {
+                            launchNext();
+                        }
+                    }
+                }
             }
 
-            function getQuickScreenshotCandidates(sysId, g) {
-                const isOther = Boolean(g.is_other || (currentMode !== 'global' && activeBatoceraFilter === 'other'));
+            function getQuickScreenshotCandidates(sysId, g, isInstalled = false, gmPassed = null) {
+                const isOther = Boolean(g.is_other || (currentMode !== 'global' && activeBatoceraFilter === 'other' && !g.id));
                 const isSystemActive = Boolean(activeSystem && activeSystem.id === sysId);
                 const bSys = (typeof getBatoceraFolderName === 'function' ? getBatoceraFolderName(sysId) : null) || (g.system || (activeSystem ? activeSystem.id : '')).toLowerCase();
                 const sysObj = systemsMap[sysId] || activeSystem;
@@ -25030,7 +25401,9 @@
                 const lowerName = mbLower(cleanTitle);
                 const baseName = mbLower(g.id || cleanTitle);
                 const baseWithoutExt = baseName.replace(/\.[^.]+$/, '');
-                const gm = (window.batoceraGamelistMeta && (batoceraGamelistMeta[baseName] || batoceraGamelistMeta[baseWithoutExt] || batoceraGamelistMeta[lowerName])) || {};
+                const cleanStem = baseWithoutExt.replace(/\s*[\(\[][^\)\]]*[\)\]]\s*/g, ' ').replace(/\s+/g, ' ').trim();
+                const gmMeta = (typeof batoceraGamelistMeta === 'object' && batoceraGamelistMeta !== null) ? batoceraGamelistMeta : {};
+                const gm = gmPassed || gmMeta[baseName] || gmMeta[baseWithoutExt] || gmMeta[cleanStem] || gmMeta[lowerName] || (g.id ? gmMeta[mbLower(g.id)] : null) || {};
                 const fuzzy = (isSystemActive && batoceraOnline && g.id && window.batoceraFuzzyMatches) ? batoceraFuzzyMatches.get(g.id) : null;
 
                 const candidates = [];
@@ -25042,23 +25415,32 @@
                     }
                 }
 
+                // Check if Batocera should be probed: if online AND (game installed/matched OR system folder exists on Batocera)
                 const hasBatoceraFolder = (isOther || g.is_other) || ((activeSystem && activeSystem.id === sysId) ? (batoceraOnline && batoceraFolderExists) : isGlobalSystemFolderExists(sysId));
+                const canCheckBatocera = batoceraOnline && (isInstalled || isOther || g.is_other || hasBatoceraFolder || Boolean(gm && (gm.image || gm.screenshot || gm.game_id)) || Boolean(fuzzy));
 
                 // Helper for Batocera URLs
                 const romParam = (g.filename || g.id || '').replace(/^.*[\\\/]/, '');
                 const idParam = (g.id || '').replace(/^.*[\\\/]/, '');
                 let romSuffix = romParam ? '&rom=' + encodeURIComponent(romParam) : '';
                 if (idParam && idParam !== romParam) romSuffix += '&id=' + encodeURIComponent(idParam);
+                const gmGameId = gm.game_id || (g.game_id || '');
+                if (gmGameId) romSuffix += '&game_id=' + encodeURIComponent(gmGameId);
                 function getBatoUrl(p) {
                     return `save.php?action=get_batocera_media&system=${encodeURIComponent(bSys)}&path=${encodeURIComponent(p)}${romSuffix}`;
                 }
 
                 // 1. DIRECT HIT: Exact screenshot or image path from metadata (instant ~1-15ms)
-                if (batoceraOnline && hasBatoceraFolder) {
+                if (canCheckBatocera) {
+                    if (gmGameId) {
+                        addCand(getBatoUrl(`systems/${encodeURIComponent(bSys)}/games/${encodeURIComponent(gmGameId)}/media/image`));
+                    }
                     const directShots = [g.screenshot, gm.screenshot, fuzzy && fuzzy.screenshot, g.image, gm.image, fuzzy && fuzzy.image].filter(Boolean);
                     directShots.forEach(p => {
                         const cleanP = String(p).replace(/^\.?\//, '').replace(/\\/g, '/');
-                        addCand(getBatoUrl(cleanP));
+                        if (!cleanP.startsWith('http://') && !cleanP.startsWith('https://')) {
+                            addCand(getBatoUrl(cleanP));
+                        }
                     });
                 }
 
@@ -25073,33 +25455,34 @@
                     }
                 });
 
-                // 3. Candidate names
+                // 3. Candidate names (clean stems only, NEVER append .png to a rom filename like foo.sfc.png)
                 const candidateNames = [];
                 function addName(n) {
                     if (!n) return;
                     const clean = String(n).replace(/^[\\\/]/, '').replace(/^.*[\\\/]/, '').trim();
                     const cleanExt = clean.replace(/\.[^.]+$/, '');
-                    if (clean && !candidateNames.includes(clean)) candidateNames.push(clean);
                     if (cleanExt && !candidateNames.includes(cleanExt)) candidateNames.push(cleanExt);
                     const cleanTags = cleanExt.replace(/\s*[\(\[][^\)\]]*[\)\]]\s*/g, ' ').replace(/\s+/g, ' ').trim();
                     if (cleanTags && !candidateNames.includes(cleanTags)) candidateNames.push(cleanTags);
                 }
-                if (g.filename) addName(g.filename);
                 if (g.id) addName(g.id);
+                if (g.filename) addName(g.filename);
                 if (g.name) addName(g.name);
 
-                // 4. Batocera standard media/images/ paths
-                if (batoceraOnline && hasBatoceraFolder) {
+                // 4. Batocera standard media/images/ paths (prioritize .png over .jpg)
+                if (canCheckBatocera) {
                     for (const n of candidateNames) {
                         addCand(getBatoUrl('media/images/' + n + '.png'));
+                    }
+                    for (const n of candidateNames) {
                         addCand(getBatoUrl('media/images/' + n + '.jpg'));
-                        addCand(getBatoUrl('media/screenshots/' + n + '.png'));
-                        addCand(getBatoUrl('media/screenshots/' + n + '.jpg'));
                     }
                     const baseP = gm.thumbnail || g.thumbnail || gm.boxart || g.boxart;
                     if (baseP) {
                         const cleanP = String(baseP).replace(/^\.?\//, '').replace(/\\/g, '/');
-                        addCand(getBatoUrl(cleanP.replace(/\/(thumbnails|boxart|box2d|box3d)\//, '/images/')));
+                        if (!cleanP.startsWith('http://') && !cleanP.startsWith('https://')) {
+                            addCand(getBatoUrl(cleanP.replace(/\/(thumbnails|boxart|box2d|box3d)\//, '/images/')));
+                        }
                     }
                 }
 
@@ -25146,11 +25529,20 @@
                 // If any modal dialog is currently open, let it handle its own scrolling
                 if (document.querySelector('.modal-backdrop.open')) return;
 
+                // If rich select dropdown is open or cursor is inside any dropdown / select / options list
+                if (document.querySelector('.rich-select-dropdown:not([style*="display: none"])')) {
+                    if (e.target && e.target.closest('.rich-select-dropdown, .custom-select-wrapper, .controls-card')) {
+                        return;
+                    }
+                }
+
+                // Don't intercept native interactions on select dropdowns, text inputs, or rich select elements
+                if (e.target && e.target.closest('select, textarea, input, .rich-select-dropdown, .rich-select-options-list, .rich-select-trigger, .custom-select-wrapper, [role="listbox"], [role="combobox"], [role="menu"]')) {
+                    return;
+                }
+
                 const container = editorContainerEl || document.getElementById('editorContainer');
                 if (!container || container.scrollHeight <= container.clientHeight) return;
-
-                // Don't intercept native interactions on select dropdowns or text inputs
-                if (e.target && e.target.closest('select, textarea, input')) return;
 
                 // If cursor is inside inspector drawer and inspector is visible, let inspector scroll
                 const inspector = document.getElementById('editorInspector');
@@ -25162,6 +25554,18 @@
                 const chipsScroll = document.getElementById('quickChipsScroll');
                 if (chipsScroll && chipsScroll.contains(e.target) && Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
                     return;
+                }
+
+                // If cursor is inside any scrollable container (other than body/html), let it scroll natively
+                let parent = e.target;
+                while (parent && parent !== container && parent !== document.body && parent !== document.documentElement) {
+                    if (parent.scrollHeight > parent.clientHeight) {
+                        const style = window.getComputedStyle(parent);
+                        if (style.overflowY === 'auto' || style.overflowY === 'scroll') {
+                            return;
+                        }
+                    }
+                    parent = parent.parentElement;
                 }
 
                 // If cursor is inside editorContainer, browser handles scroll natively, but mark scroll active
