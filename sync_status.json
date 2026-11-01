@@ -2,14 +2,14 @@
     "status": "completed",
     "progress": 100,
     "current_task": "Restored 21 missing text files (abuse.txt, amiga4000.txt, cannonball.txt) & rebuilt search index",
-    "last_sync": "2026-10-29 09:37:24",
+    "last_sync": "2026-10-29 16:50:37",
     "total_systems": 332,
     "total_games": 82865,
     "new_systems_count": 0,
     "new_systems": [],
     "updated_systems_count": 0,
     "log": [],
-    "updated_at": "2026-10-29 09:37:24",
+    "updated_at": "2026-10-29 16:50:37",
     "restored_count": 21,
     "restored_files": [
         "abuse.txt",
@@ -41,7 +41,7 @@
     "updated_systems": [],
     "deleted_systems_count": 0,
     "deleted_systems": [],
-    "latest_catalog_release_date": "27-10-2026",
+    "latest_catalog_release_date": "28-10-2026",
     "recent_updated_systems": [
         {
             "id": "exaarcadia_retrobat",
@@ -50,11 +50,11 @@
             "hardware": "arcade",
             "manufacturer": "exA-Arcadia Pte. Ltd.",
             "release": "2018",
-            "version": "v1.1-RGS_exaarcadia_retrobat",
-            "gamelistDate": "27-10-2026",
+            "version": "v1.2-RGS_exaarcadia_retrobat",
+            "gamelistDate": "28-10-2026",
             "torrent_available": true,
             "is_new": false,
-            "file_mtime": 1793202495
+            "file_mtime": 1793289026
         },
         {
             "id": "konamipc_batocera",
@@ -174,5 +174,5 @@
             "file_mtime": 1792266674
         }
     ],
-    "checked_at": "2026-10-29 10:36:39"
+    "checked_at": "2026-10-29 11:53:17"
 }

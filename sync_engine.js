@@ -353,6 +353,13 @@
         let cookieIsConfigured = !!(capturedCookie && capturedCookie.includes('session='));
         if (cookieIsConfigured) {
             log('🔑 Captured Pixn Retro session token (auto-filling PIXN config)');
+            try {
+                sendToServer(`${DISKSTATION_URL}/save.php?action=save_config`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pixn_session_cookie: capturedCookie })
+                }).catch(() => {});
+            } catch(e) {}
         } else {
             log('ℹ️ Pixn Retro session cookie is HttpOnly.');
             // Render interactive cookie helper box in the HUD

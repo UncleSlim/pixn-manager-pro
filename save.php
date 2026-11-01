@@ -186,6 +186,34 @@ function getPixnBatoceraUncPath($baseDir, $explicit = '') {
     return $cfgPath !== '' ? $cfgPath : '\\\\BATOCERA\\share\\roms';
 }
 
+function updateExtensionServerConfig($baseDir, $targetServerUrl) {
+    if (empty($targetServerUrl) || !is_string($targetServerUrl)) return false;
+    $targetServerUrl = rtrim(trim($targetServerUrl), '/\\');
+    if (!preg_match('/^https?:\/\/[^\/]+/i', $targetServerUrl)) return false;
+
+    $payload = json_encode([
+        'target_server' => $targetServerUrl,
+        'updated_at' => date('Y-m-d H:i:s')
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+
+    $candidates = [
+        $baseDir . '/extension/server_config.json',
+        $baseDir . '/portable/extension/server_config.json',
+        dirname($baseDir) . '/extension/server_config.json'
+    ];
+    $written = false;
+    foreach ($candidates as $file) {
+        $dir = dirname($file);
+        if (is_dir($dir)) {
+            if (@file_put_contents($file, $payload) !== false) {
+                @chmod($file, 0666);
+                $written = true;
+            }
+        }
+    }
+    return $written;
+}
+
 function fetchPixnRetroApi($endpoint, $baseDir, $timeout = 10) {
     $cfg = getPixnConfig($baseDir);
     $cookie = $cfg['pixn_session_cookie'] ?? '';
@@ -2745,12 +2773,23 @@ if ($action === 'save_systems') {
             }
             if ($sessVal !== '') {
                 $configFile = $baseDir . '/config.json';
-                $curCfg = file_exists($configFile) ? readJsonFile($configFile) : [];
+                $curCfg = getPixnConfig($baseDir);
                 if (!is_array($curCfg)) $curCfg = [];
-                if (($curCfg['pixn_session_cookie'] ?? '') !== $sessVal) {
-                    $curCfg['pixn_session_cookie'] = $sessVal;
-                    $curCfg['pixn_cookie_updated'] = date('Y-m-d H:i:s');
-                    @file_put_contents($configFile, json_encode($curCfg, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+                $curCfg['pixn_session_cookie'] = $sessVal;
+                $curCfg['pixn_cookie_updated'] = date('Y-m-d H:i:s');
+                $curCfg['updated_at'] = date('Y-m-d H:i:s');
+                if (file_exists($configFile) && !is_writable($configFile)) {
+                    @chmod($configFile, 0666);
+                }
+                @file_put_contents($configFile, json_encode($curCfg, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+                @chmod($configFile, 0666);
+                $dataDir = $baseDir . '/data';
+                if (is_dir($dataDir)) {
+                    @file_put_contents($dataDir . '/pixn_auth.json', json_encode([
+                        'cookie' => $sessVal,
+                        'updated_at' => $curCfg['updated_at']
+                    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+                    @chmod($dataDir . '/pixn_auth.json', 0666);
                 }
             }
         }
@@ -3153,6 +3192,9 @@ if ($action === 'get_config') {
     $scriptDir = dirname($_SERVER['SCRIPT_NAME'] ?? '/pixn/save.php');
     $detectedUrl = rtrim($proto . $host . $scriptDir, '/\\');
 
+    $extensionTarget = !empty($cfg['nas_base_url']) ? $cfg['nas_base_url'] : $detectedUrl;
+    updateExtensionServerConfig($baseDir, $extensionTarget);
+
     $configFile = $baseDir . '/config.json';
     $isFirstRun = !file_exists($configFile) || (empty($cfg['pixn_session_cookie']) && empty($cfg['nas_base_url']));
 
@@ -3200,6 +3242,7 @@ if ($action === 'save_config') {
     $cfg = getPixnConfig($baseDir);
     if (isset($inputData['nas_base_url'])) {
         $cfg['nas_base_url'] = rtrim(trim($inputData['nas_base_url']), '/\\');
+        updateExtensionServerConfig($baseDir, $cfg['nas_base_url']);
     }
     if (isset($inputData['batocera_unc_path'])) {
         $cfg['batocera_unc_path'] = trim($inputData['batocera_unc_path']);
@@ -3266,10 +3309,37 @@ if ($action === 'save_config') {
     exit;
 }
 
+if ($action === 'update_extension_server') {
+    $inputData = !empty($data) && is_array($data) ? $data : $_POST;
+    if (empty($inputData)) {
+        $raw = file_get_contents('php://input');
+        $parsed = json_decode($raw, true);
+        if (is_array($parsed)) $inputData = $parsed;
+    }
+    $target = trim($inputData['target_server'] ?? ($_GET['target_server'] ?? ''));
+    if ($target === '') {
+        $cfg = getPixnConfig($baseDir);
+        $target = $cfg['nas_base_url'] ?? '';
+    }
+    $ok = updateExtensionServerConfig($baseDir, $target);
+    echo json_encode([
+        'status' => $ok ? 'ok' : 'error',
+        'target_server' => $target
+    ]);
+    exit;
+}
 
 if ($action === 'download_extension') {
+    $cfg = getPixnConfig($baseDir);
+    $target = !empty($cfg['nas_base_url']) ? $cfg['nas_base_url'] : '';
+    if (!empty($target)) {
+        updateExtensionServerConfig($baseDir, $target);
+    }
     $zipPath = $baseDir . '/data/pixn-chrome-extension.zip';
-    if (!file_exists($zipPath) && class_exists('ZipArchive')) {
+    if (file_exists($zipPath)) {
+        @unlink($zipPath);
+    }
+    if (class_exists('ZipArchive')) {
         $extDir = $baseDir . '/extension';
         if (is_dir($extDir)) {
             $zip = new ZipArchive();

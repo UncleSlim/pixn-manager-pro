@@ -216,13 +216,16 @@
             <img src="icons/icon-48.png" alt="PIXN Logo">
             <span>PIXN Sync Pro</span>
         </div>
-        <span class="badge">v1.0</span>
+        <span class="badge">v1.2</span>
     </div>
 
     <!-- Target Server Configuration -->
     <div class="card">
         <div class="card-label">
             <span>Target PIXN Web Server</span>
+            <span id="serverImportBadge" style="display: none; font-size: 9.5px; color: #38bdf8; text-transform: none; background: rgba(56, 189, 248, 0.15); padding: 1px 5px; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.3);">
+                Auto-Configured
+            </span>
         </div>
         <div class="input-group">
             <input type="text" id="targetServerInput" placeholder="http://127.0.0.1:8989" spellcheck="false">
@@ -251,6 +254,9 @@
 
     <!-- Quick Actions -->
     <div class="actions">
+        <button id="btnSyncCookie" class="btn-action btn-outline" style="display: none; color: #34d399; border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.08); font-weight: 600;">
+            🔑 Sync Cookie to PIXN
+        </button>
         <button id="btnOpenAndSync" class="btn-action btn-sync">
             ⚡ Open Pix'n Retro &amp; Sync
         </button>

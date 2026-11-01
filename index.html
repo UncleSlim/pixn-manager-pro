@@ -6259,7 +6259,7 @@
 
         /* Scrollable container for latest catalog updates */
         .catalog-updates-scroll {
-            max-height: 240px;
+            max-height: 120px;
             overflow-y: auto;
             padding-right: 6px;
             scrollbar-width: thin;
@@ -8558,77 +8558,78 @@
 
     <!-- Sync Info Modal -->
     <div class="modal-backdrop" id="syncModal">
-        <div class="modal-box" style="max-width: 660px; max-height: 92vh; overflow-y: auto;">
-            <div class="modal-header">
-                <h3><i class="fa-solid fa-rotate" style="color: var(--accent-primary);"></i> Catalog Synchronization & Auto-Updater</h3>
-                <button class="modal-close" id="btnCloseModal">&times;</button>
+        <div class="modal-box" style="width: 95%; max-width: 760px; max-height: 90vh; display: flex; flex-direction: column; padding: 0.75rem 1rem; gap: 0.35rem;">
+            <div class="modal-header" style="margin-bottom: 0; padding-bottom: 0.25rem; flex-shrink: 0; border-bottom: 1px solid var(--border-subtle);">
+                <h3 style="margin: 0; font-size: 1rem; display: flex; align-items: center; gap: 0.45rem;"><i class="fa-solid fa-rotate" style="color: var(--accent-primary);"></i> Catalog Synchronization &amp; Auto-Updater</h3>
+                <button class="modal-close" id="btnCloseModal" title="Close modal">&times;</button>
             </div>
 
-            <!-- Latest Catalog Updates & Releases -->
-            <div class="since-last-visit-box" id="modalSinceLastVisitBox" style="display: none; margin-bottom: 0.45rem; border-radius: 8px; padding: 0.65rem 0.85rem; border: 1px solid rgba(56, 189, 248, 0.35); background: linear-gradient(180deg, rgba(56, 189, 248, 0.08) 0%, rgba(15, 23, 42, 0.85) 100%);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 0.4rem;">
-                    <div style="display: flex; align-items: center; gap: 0.45rem;">
-                        <i class="fa-solid fa-sparkles" style="color: #38bdf8; font-size: 0.9rem;"></i>
-                        <strong id="modalSinceLastVisitTitle" style="font-size: 0.88rem; color: #38bdf8;">Catalog Releases &amp; Update Status</strong>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <span id="modalSinceLastVisitTime" style="font-size: 0.72rem; color: #94a3b8;">Checked: Just now</span>
-                        <button type="button" id="btnRefreshCatalogReleases" class="btn btn-outline" title="Check for latest catalog releases now" style="font-size: 0.7rem; padding: 2px 8px; height: 22px; display: inline-flex; align-items: center; gap: 4px; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8; background: rgba(56, 189, 248, 0.08); border-radius: 5px; cursor: pointer; transition: all 0.2s ease;">
-                            <i class="fa-solid fa-arrows-rotate" id="iconRefreshCatalogReleases"></i> Refresh
-                        </button>
-                    </div>
-                </div>
-                <div id="modalSinceLastVisitBody" style="font-size: 0.78rem; color: #e2e8f0; line-height: 1.45;"></div>
-            </div>
-
-            <!-- Live Status Monitor -->
-            <div class="sync-monitor-card" id="syncMonitorCard" style="padding: 0.75rem 0.95rem; gap: 0.35rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; flex-wrap: wrap; gap: 0.4rem;">
-                    <div style="display: flex; align-items: center; gap: 0.55rem;">
-                        <span class="pulse-indicator" id="modalStatusPulse"></span>
-                        <strong id="modalStatusTitle" style="font-size: 0.9rem; color: var(--text-main);">Status: Up to date</strong>
-                    </div>
-                    <span id="modalLastSyncText" style="font-size: 0.74rem; color: var(--text-dim);">Last synced: Just now</span>
-                </div>
-
-                <!-- Progress Bar -->
-                <div class="sync-progress-track">
-                    <div class="sync-progress-fill" id="modalProgressBar" style="width: 100%;"></div>
-                </div>
-
-                <div style="display: flex; justify-content: space-between; font-size: 0.76rem; color: var(--text-muted); margin-top: 0.3rem;">
-                    <span id="modalCurrentTask">All 329 systems &amp; 72,004 games indexed</span>
-                    <span id="modalProgressPct">100%</span>
-                </div>
-
-                <!-- New Systems Banner -->
-                <div class="new-systems-alert" id="modalNewSystemsAlert" style="display: none; margin-top: 0.45rem;">
-                    <div style="display: flex; align-items: center; gap: 0.45rem; font-weight: 600; font-size: 0.8rem;">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="modalNewSystemsTitle">New Systems Discovered!</span>
-                    </div>
-                    <div id="modalNewSystemsList" style="margin-top: 0.3rem; font-size: 0.76rem; color: #e2e8f0; line-height: 1.35;"></div>
-                </div>
-            </div>
-
-            <!-- Sync & Repair Controls -->
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                <div class="bookmarklet-card" style="padding: 0.85rem 1rem;">
-                    <!-- Single Sync & Repair Button -->
-                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
-                        <div style="display: flex; flex-direction: column; gap: 0.15rem;">
-                            <strong style="font-size: 0.86rem; color: #38bdf8;">🔄 Webserver Sync &amp; Repair</strong>
-                            <span style="font-size: 0.74rem; color: var(--text-dim);">Verify all systems, restore missing .txt files &amp; rebuild search index:</span>
+            <!-- Scrollable Content Body (if viewport is constrained) -->
+            <div style="overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 0.35rem; padding-right: 2px;">
+                <!-- Latest Catalog Updates & Releases -->
+                <div class="since-last-visit-box" id="modalSinceLastVisitBox" style="display: none; border-radius: 8px; padding: 0.45rem 0.75rem; border: 1px solid rgba(56, 189, 248, 0.35); background: linear-gradient(180deg, rgba(56, 189, 248, 0.08) 0%, rgba(15, 23, 42, 0.85) 100%);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem; flex-wrap: wrap; gap: 0.35rem;">
+                        <div style="display: flex; align-items: center; gap: 0.4rem;">
+                            <i class="fa-solid fa-sparkles" style="color: #38bdf8; font-size: 0.85rem;"></i>
+                            <strong id="modalSinceLastVisitTitle" style="font-size: 0.84rem; color: #38bdf8;">Catalog Releases &amp; Update Status</strong>
                         </div>
-                        <button class="btn btn-primary" id="btnSyncRepairNow" style="font-size: 0.82rem; padding: 0.42rem 0.95rem; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);">
+                        <div style="display: flex; align-items: center; gap: 0.45rem;">
+                            <span id="modalSinceLastVisitTime" style="font-size: 0.7rem; color: #94a3b8;">Checked: Just now</span>
+                            <button type="button" id="btnRefreshCatalogReleases" class="btn btn-outline" title="Check for latest catalog releases now" style="font-size: 0.68rem; padding: 1px 7px; height: 20px; display: inline-flex; align-items: center; gap: 4px; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8; background: rgba(56, 189, 248, 0.08); border-radius: 5px; cursor: pointer; transition: all 0.2s ease;">
+                                <i class="fa-solid fa-arrows-rotate" id="iconRefreshCatalogReleases"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div id="modalSinceLastVisitBody" style="font-size: 0.76rem; color: #e2e8f0; line-height: 1.4;"></div>
+                </div>
+
+                <!-- Live Status Monitor -->
+                <div class="sync-monitor-card" id="syncMonitorCard" style="padding: 0.45rem 0.75rem; gap: 0.25rem; border-radius: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.15rem; flex-wrap: wrap; gap: 0.35rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span class="pulse-indicator" id="modalStatusPulse" style="width: 8px; height: 8px;"></span>
+                            <strong id="modalStatusTitle" style="font-size: 0.84rem; color: var(--text-main);">Status: Up to date</strong>
+                        </div>
+                        <span id="modalLastSyncText" style="font-size: 0.7rem; color: var(--text-dim);">Last synced: Just now</span>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="sync-progress-track" style="height: 6px;">
+                        <div class="sync-progress-fill" id="modalProgressBar" style="width: 100%;"></div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem;">
+                        <span id="modalCurrentTask">All 329 systems &amp; 72,004 games indexed</span>
+                        <span id="modalProgressPct">100%</span>
+                    </div>
+
+                    <!-- New Systems Banner -->
+                    <div class="new-systems-alert" id="modalNewSystemsAlert" style="display: none; margin-top: 0.3rem;">
+                        <div style="display: flex; align-items: center; gap: 0.4rem; font-weight: 600; font-size: 0.76rem;">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="modalNewSystemsTitle">New Systems Discovered!</span>
+                        </div>
+                        <div id="modalNewSystemsList" style="margin-top: 0.2rem; font-size: 0.73rem; color: #e2e8f0; line-height: 1.3;"></div>
+                    </div>
+                </div>
+
+                <!-- Sync & Repair Controls -->
+                <div class="bookmarklet-card" style="padding: 0.45rem 0.75rem; border-radius: 8px;">
+                    <!-- Single Sync & Repair Button -->
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap;">
+                        <div style="display: flex; flex-direction: column; gap: 0.05rem;">
+                            <strong style="font-size: 0.82rem; color: #38bdf8;">🔄 Webserver Sync &amp; Repair</strong>
+                            <span style="font-size: 0.71rem; color: var(--text-dim);">Verify all systems, restore missing .txt files &amp; rebuild search index:</span>
+                        </div>
+                        <button class="btn btn-primary" id="btnSyncRepairNow" style="font-size: 0.78rem; padding: 0.32rem 0.85rem; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35); white-space: nowrap;">
                             <i class="fa-solid fa-arrows-rotate"></i> Sync &amp; Repair Files Now
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Footer Tools -->
-            <div style="display: flex; justify-content: flex-end; align-items: center; padding-top: 0.45rem; border-top: 1px solid var(--border-subtle); gap: 0.5rem;">
-                <button class="btn btn-primary" id="btnModalOk" style="font-size: 0.8rem; padding: 0.35rem 0.95rem;">Done</button>
+            <!-- Footer Tools (Always visible, never cut off) -->
+            <div style="display: flex; justify-content: flex-end; align-items: center; padding-top: 0.35rem; margin-top: 0.1rem; border-top: 1px solid var(--border-subtle); gap: 0.5rem; flex-shrink: 0;">
+                <button class="btn btn-primary" id="btnModalOk" style="font-size: 0.78rem; padding: 0.3rem 1.15rem; border-radius: 6px;">Done</button>
             </div>
         </div>
     </div>
@@ -8735,12 +8736,27 @@
                             </div>
 
                             <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.35); border-radius: 6px; padding: 0.45rem 0.65rem; font-size: 0.68rem; color: #cbd5e1; line-height: 1.45;">
-                                <div style="font-weight: 600; color: #38bdf8; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem;">
-                                    <i class="fa-solid fa-puzzle-piece"></i> How to Load:
+                                <div style="font-weight: 600; color: #38bdf8; margin-bottom: 0.25rem; display: flex; align-items: center; justify-content: space-between;">
+                                    <span style="display: flex; align-items: center; gap: 0.35rem;"><i class="fa-solid fa-puzzle-piece"></i> How to Install:</span>
+                                    <span id="extConfigSyncStatus" style="font-size: 0.65rem; color: #34d399;"><i class="fa-solid fa-check"></i> Pre-Configured</span>
                                 </div>
-                                <div style="margin-bottom: 0.15rem;"><strong>1.</strong> Open <code>chrome://extensions</code> (or <code>edge://extensions</code>) and toggle <strong>Developer mode</strong> ON (top-right).</div>
-                                <div style="margin-bottom: 0.15rem;"><strong>2.</strong> Click <strong>Load unpacked</strong> (top-left) and select the <code>extension</code> folder in your PIXN directory.</div>
-                                <div><strong>3.</strong> Go to <a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">pixn-retro.dedyn.io/releases</a> and click the floating <strong>⚡ Sync to PIXN Pro</strong> button.</div>
+
+                                <div style="margin-bottom: 0.35rem; background: rgba(245, 158, 11, 0.14); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 5px; padding: 5px 8px; color: #fef08a; font-size: 0.68rem; line-height: 1.4; display: flex; align-items: flex-start; gap: 6px;">
+                                    <i class="fa-solid fa-circle-exclamation" style="color: #f59e0b; margin-top: 1px; font-size: 0.82rem; flex-shrink: 0;"></i>
+                                    <div>
+                                        <strong style="color: #fff;">Important:</strong> Click <strong style="color: #38bdf8;">Save &amp; Apply</strong> below <em>before</em> loading the extension into your browser. This generates <code>server_config.json</code> with your server address!
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 0.15rem;"><strong>1.</strong> Click <strong style="color: #38bdf8;">Save &amp; Apply</strong> below to write your server address to <code>server_config.json</code>.</div>
+                                <div style="margin-bottom: 0.15rem;"><strong>2.</strong> Open <code>chrome://extensions</code> (or <code>edge://extensions</code>) and toggle <strong>Developer mode</strong> ON (top-right).</div>
+                                <div style="margin-bottom: 0.15rem;"><strong>3.</strong> Click <strong>Load unpacked</strong> (top-left) and select the <code>extension</code> folder in your PIXN directory.</div>
+                                <div><strong>4.</strong> Go to <a id="linkOpenPixnPortalSetup" href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color: #38bdf8; text-decoration: underline;">pixn-retro.dedyn.io/releases</a> and click the floating <strong>⚡ Sync to PIXN Pro</strong> button.</div>
+
+                                <div style="margin-top: 0.35rem; padding-top: 0.3rem; border-top: 1px dashed rgba(56,189,248,0.25); display: flex; align-items: center; justify-content: space-between; font-size: 0.66rem;">
+                                    <span>Target Server: <code id="extTargetServerDisplay" style="color: #38bdf8; font-weight: 600;">...</code></span>
+                                    <span style="color: #94a3b8;">Written to <code>server_config.json</code></span>
+                                </div>
                             </div>
                         </div>
 
@@ -9551,6 +9567,7 @@
         const btnRawLink = document.getElementById('btnRawLink');
 
         const editorContentEl = document.getElementById('editorContent');
+        const gameGrid = document.getElementById('gameGrid');
         const statusMessage = document.getElementById('statusMessage');
         const statusFilteredCount = document.getElementById('statusFilteredCount');
 
@@ -9559,7 +9576,8 @@
         const toast = document.getElementById('toast');
         const toastMessage = document.getElementById('toastMessage');
         const syncModal = document.getElementById('syncModal');
-        const btnSyncModal = document.getElementById('btnSyncModal') || document.getElementById('headerSyncIndicator');
+        const headerSyncIndicator = document.getElementById('headerSyncIndicator');
+        const btnSyncModal = document.getElementById('btnSyncModal') || headerSyncIndicator;
         const headerBatoceraPill = document.getElementById('headerBatoceraPill');
         const btnBackToTop = document.getElementById('btnBackToTop');
         const btnCloseModal = document.getElementById('btnCloseModal');
@@ -11159,7 +11177,11 @@
                     return;
                 }
                 if (settingsModal && settingsModal.classList.contains('open')) {
-                    settingsModal.classList.remove('open');
+                    if (typeof saveServerConfiguration === 'function') {
+                        saveServerConfiguration(true);
+                    } else {
+                        settingsModal.classList.remove('open');
+                    }
                     return;
                 }
                 if (syncModal && syncModal.classList.contains('open')) {
@@ -23644,7 +23666,7 @@
         }).catch(() => {});
 
         // Sync Modal Handling
-        btnSyncModal.addEventListener('click', () => {
+        function openSyncModal() {
             syncModal.classList.add('open');
             if (typeof acknowledgeRecentSync === 'function') {
                 acknowledgeRecentSync();
@@ -23659,18 +23681,34 @@
             }
             fetchSyncStatus();
             checkForReleasesUpdate();
-        });
-        btnCloseModal.addEventListener('click', () => {
+        }
+
+        function closeSyncModal() {
             syncModal.classList.remove('open');
-        });
-        btnModalOk.addEventListener('click', () => {
-            syncModal.classList.remove('open');
-        });
-        syncModal.addEventListener('click', (e) => {
-            if (e.target === syncModal) {
-                syncModal.classList.remove('open');
+            if (typeof acknowledgeRecentSync === 'function') {
+                acknowledgeRecentSync();
             }
-        });
+        }
+
+        if (btnSyncModal) {
+            btnSyncModal.addEventListener('click', openSyncModal);
+        }
+        if (headerSyncIndicator && headerSyncIndicator !== btnSyncModal) {
+            headerSyncIndicator.addEventListener('click', openSyncModal);
+        }
+        if (btnCloseModal) {
+            btnCloseModal.addEventListener('click', closeSyncModal);
+        }
+        if (btnModalOk) {
+            btnModalOk.addEventListener('click', closeSyncModal);
+        }
+        if (syncModal) {
+            syncModal.addEventListener('click', (e) => {
+                if (e.target === syncModal) {
+                    closeSyncModal();
+                }
+            });
+        }
 
         function getActiveWebServerUrl() {
             let path = window.location.pathname;
@@ -23699,6 +23737,8 @@
         const btnTestBatoceraConnSettings = document.getElementById('btnTestBatoceraConnSettings');
         const btnSaveConfigNow = document.getElementById('btnSaveConfigNow');
         const detectedNasBadge = document.getElementById('detectedNasBadge');
+        const extTargetServerDisplay = document.getElementById('extTargetServerDisplay');
+        const linkOpenPixnPortalSetup = document.getElementById('linkOpenPixnPortalSetup');
 
         const cfgFirstRunBanner = document.getElementById('cfgFirstRunBanner');
         const cfgPermissionBanner = document.getElementById('cfgPermissionBanner');
@@ -23722,9 +23762,19 @@
             cfgNasUrlInput.addEventListener('input', () => {
                 cfgNasUrlUserModified = true;
                 updateDynamicSyncTools(cfgNasUrlInput.value.trim() || getActiveWebServerUrl());
+                const syncStatus = document.getElementById('extConfigSyncStatus');
+                if (syncStatus) {
+                    syncStatus.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Save &amp; Apply Needed';
+                    syncStatus.style.color = '#f59e0b';
+                }
             });
             cfgNasUrlInput.addEventListener('change', () => {
                 cfgNasUrlUserModified = true;
+                const syncStatus = document.getElementById('extConfigSyncStatus');
+                if (syncStatus) {
+                    syncStatus.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Save &amp; Apply Needed';
+                    syncStatus.style.color = '#f59e0b';
+                }
             });
         }
 
@@ -23813,6 +23863,15 @@
                 if (detectedNasBadge) {
                     detectedNasBadge.innerHTML = `<i class="fa-solid fa-check"></i> Auto-Detected`;
                     detectedNasBadge.title = `Auto-detected server: ${detectedNas}`;
+                }
+                if (extTargetServerDisplay) {
+                    extTargetServerDisplay.textContent = currentNasUrl;
+                }
+                if (linkOpenPixnPortalSetup && currentNasUrl) {
+                    linkOpenPixnPortalSetup.href = `https://pixn-retro.dedyn.io/releases#server=${encodeURIComponent(currentNasUrl)}`;
+                }
+                if (!isBackgroundPoll && currentNasUrl) {
+                    fetch(`save.php?action=update_extension_server&target_server=${encodeURIComponent(currentNasUrl)}`).catch(() => {});
                 }
 
                 // Sync Batocera UNC Path with server config:
@@ -24168,82 +24227,124 @@
             });
         }
 
-        if (btnSaveConfigNow) {
-            btnSaveConfigNow.addEventListener('click', async () => {
-                const nasUrl = cfgNasUrlInput ? cfgNasUrlInput.value.trim() : '';
-                const uncPath = cfgBatoceraUncInput ? cfgBatoceraUncInput.value.trim() : '';
-                const cookie = cfgCookieInput ? cfgCookieInput.value.trim() : '';
+        async function saveServerConfiguration(closeOnSuccess = false) {
+            const nasUrl = cfgNasUrlInput ? cfgNasUrlInput.value.trim() : '';
+            const uncPath = cfgBatoceraUncInput ? cfgBatoceraUncInput.value.trim() : '';
+            const cookie = cfgCookieInput ? cfgCookieInput.value.trim() : '';
 
+            if (btnSaveConfigNow) {
                 btnSaveConfigNow.disabled = true;
                 btnSaveConfigNow.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+            }
+            if (btnCancelSettingsModal && closeOnSuccess) {
+                btnCancelSettingsModal.disabled = true;
+                btnCancelSettingsModal.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+            }
+            let saveSuccess = false;
 
+            try {
+                const res = await fetch('save.php?action=save_config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nas_base_url: nasUrl,
+                        batocera_unc_path: uncPath,
+                        pixn_session_cookie: cookie
+                    })
+                });
+
+                const text = await res.text();
+                let data = null;
                 try {
-                    const res = await fetch('save.php?action=save_config', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            nas_base_url: nasUrl,
-                            batocera_unc_path: uncPath,
-                            pixn_session_cookie: cookie
-                        })
-                    });
-
-                    const text = await res.text();
-                    let data = null;
-                    try {
-                        data = JSON.parse(text);
-                    } catch (parseErr) {
-                        throw new Error(`Server returned unexpected response (${res.status} ${res.statusText}): ${text.slice(0, 160)}`);
-                    }
-
-                    if (data && (data.status === 'ok' || data.status === 'success')) {
-                        cfgBatoceraUncUserModified = false;
-                        cfgNasUrlUserModified = false;
-                        cfgCookieUserModified = false;
-                        showToast('Configuration saved successfully to config.json!', 3000, 'success');
-                        sessionStorage.setItem('pixn_first_run_dismissed', '1');
-                        if (cfgFirstRunBanner) cfgFirstRunBanner.style.display = 'none';
-                        if (cfgPermissionBanner) cfgPermissionBanner.style.display = 'none';
-                        settingsModal.classList.remove('open');
-                        updateDynamicSyncTools(nasUrl);
-
-                        if (uncPath) {
-                            batoceraUncPath = uncPath;
-                            localStorage.setItem('batocera_roms_unc_path', batoceraUncPath);
-                            updateBatoceraPreview();
-                            if (activeSystem) checkBatoceraForCurrentSystem(activeSystem.id);
-                        }
-
-                        // Refresh cookie status badge
-                        if (cfgCookieStatusBadge) {
-                            if (cookie) {
-                                cfgCookieStatusBadge.style.color = '#34d399';
-                                cfgCookieStatusBadge.style.backgroundColor = 'rgba(16, 185, 129, 0.12)';
-                                cfgCookieStatusBadge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
-                                cfgCookieStatusBadge.innerHTML = '<i class="fa-solid fa-check"></i> Configured';
-                            }
-                        }
-                    } else {
-                        const errMsg = (data && data.message) ? data.message : 'Server could not save configuration';
-                        showToast(errMsg, 8000, 'error');
-                        if (cfgPermissionBanner && (errMsg.toLowerCase().includes('permission') || errMsg.toLowerCase().includes('cannot write'))) {
-                            cfgPermissionBanner.style.display = 'block';
-                            if (cfgPermissionText) cfgPermissionText.innerHTML = `<strong>Error:</strong> ${errMsg}`;
-                        }
-                    }
-                } catch (e) {
-                    console.error('Error saving configuration:', e);
-                    showToast(`Error saving configuration: ${e.message}`, 8000, 'error');
-                } finally {
-                    btnSaveConfigNow.disabled = false;
-                    btnSaveConfigNow.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save &amp; Apply';
+                    data = JSON.parse(text);
+                } catch (parseErr) {
+                    throw new Error(`Server returned unexpected response (${res.status} ${res.statusText}): ${text.slice(0, 160)}`);
                 }
+
+                if (data && (data.status === 'ok' || data.status === 'success')) {
+                    saveSuccess = true;
+                    cfgBatoceraUncUserModified = false;
+                    cfgNasUrlUserModified = false;
+                    cfgCookieUserModified = false;
+                    showToast('Configuration saved successfully to config.json!', 3000, 'success');
+                    sessionStorage.setItem('pixn_first_run_dismissed', '1');
+                    if (cfgFirstRunBanner) cfgFirstRunBanner.style.display = 'none';
+                    if (cfgPermissionBanner) cfgPermissionBanner.style.display = 'none';
+                    // Keep setup modal open if clicked "Save & Apply", or close it if clicked "Close"
+                    updateDynamicSyncTools(nasUrl);
+                    if (nasUrl) {
+                        fetch(`save.php?action=update_extension_server&target_server=${encodeURIComponent(nasUrl)}`).catch(() => {});
+                        if (extTargetServerDisplay) extTargetServerDisplay.textContent = nasUrl;
+                        if (linkOpenPixnPortalSetup) linkOpenPixnPortalSetup.href = `https://pixn-retro.dedyn.io/releases#server=${encodeURIComponent(nasUrl)}`;
+                        const syncStatus = document.getElementById('extConfigSyncStatus');
+                        if (syncStatus) {
+                            syncStatus.innerHTML = '<i class="fa-solid fa-check"></i> Saved &amp; Ready to Load';
+                            syncStatus.style.color = '#34d399';
+                        }
+                    }
+
+                    if (uncPath) {
+                        batoceraUncPath = uncPath;
+                        localStorage.setItem('batocera_roms_unc_path', batoceraUncPath);
+                        updateBatoceraPreview();
+                        if (activeSystem) checkBatoceraForCurrentSystem(activeSystem.id);
+                    }
+
+                    // Refresh cookie status badge
+                    if (cfgCookieStatusBadge) {
+                        if (cookie) {
+                            cfgCookieStatusBadge.style.color = '#34d399';
+                            cfgCookieStatusBadge.style.backgroundColor = 'rgba(16, 185, 129, 0.12)';
+                            cfgCookieStatusBadge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                            cfgCookieStatusBadge.innerHTML = '<i class="fa-solid fa-check"></i> Configured';
+                        }
+                    }
+
+                    if (closeOnSuccess) {
+                        closeSettingsModal();
+                    }
+                } else {
+                    const errMsg = (data && data.message) ? data.message : 'Server could not save configuration';
+                    showToast(errMsg, 8000, 'error');
+                    if (cfgPermissionBanner && (errMsg.toLowerCase().includes('permission') || errMsg.toLowerCase().includes('cannot write'))) {
+                        cfgPermissionBanner.style.display = 'block';
+                        if (cfgPermissionText) cfgPermissionText.innerHTML = `<strong>Error:</strong> ${errMsg}`;
+                    }
+                }
+            } catch (e) {
+                console.error('Error saving configuration:', e);
+                showToast(`Error saving configuration: ${e.message}`, 8000, 'error');
+            } finally {
+                if (btnSaveConfigNow) {
+                    btnSaveConfigNow.disabled = false;
+                    if (saveSuccess) {
+                        btnSaveConfigNow.innerHTML = '<i class="fa-solid fa-check"></i> Saved &amp; Applied!';
+                        btnSaveConfigNow.style.backgroundColor = '#059669';
+                        setTimeout(() => {
+                            btnSaveConfigNow.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save &amp; Apply';
+                            btnSaveConfigNow.style.backgroundColor = '';
+                        }, 3000);
+                    } else {
+                        btnSaveConfigNow.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save &amp; Apply';
+                        btnSaveConfigNow.style.backgroundColor = '';
+                    }
+                }
+                if (btnCancelSettingsModal) {
+                    btnCancelSettingsModal.disabled = false;
+                    btnCancelSettingsModal.innerHTML = 'Close';
+                }
+            }
+            return saveSuccess;
+        }
+
+        if (btnSaveConfigNow) {
+            btnSaveConfigNow.addEventListener('click', () => {
+                saveServerConfiguration(false);
             });
         }
 
 
         // Sync Status Monitoring & Polling
-        const headerSyncIndicator = document.getElementById('headerSyncIndicator');
         const headerSyncDot = document.getElementById('headerSyncDot');
         const headerSyncText = document.getElementById('headerSyncText');
         const headerSyncIcon = document.getElementById('headerSyncIcon');
@@ -24416,9 +24517,14 @@
         }
 
         function acknowledgeRecentSync() {
-            const relDate = window.latestCatalogReleaseDate || (lastCheckReleasesData && lastCheckReleasesData.latest_catalog_release_date) || '';
+            const relDate = window.latestCatalogReleaseDate || (lastCheckReleasesData && lastCheckReleasesData.latest_catalog_release_date) || '28-10-2026';
             if (relDate) {
                 localStorage.setItem('pixn_acknowledged_catalog_date', relDate);
+            }
+            // Record all currently known recent systems as acknowledged
+            const ackList = Array.from(new Set([...recentNewSystemIds, ...recentUpdatedSystemIds])).filter(Boolean);
+            if (ackList.length > 0) {
+                localStorage.setItem('pixn_acknowledged_recent_systems', JSON.stringify(ackList));
             }
             localStorage.setItem('pixn_acknowledged_sync_time', Date.now().toString());
             window.isCatalogSyncAcknowledged = true;
@@ -24455,16 +24561,44 @@
             // Check if user has acknowledged the latest catalog release
             const ackCatalogDate = localStorage.getItem('pixn_acknowledged_catalog_date');
             const ackSyncTime = parseInt(localStorage.getItem('pixn_acknowledged_sync_time') || '0', 10);
+            let ackSystems = [];
+            try {
+                ackSystems = JSON.parse(localStorage.getItem('pixn_acknowledged_recent_systems') || '[]');
+            } catch (e) {}
 
-            // If catalog release date is newer than what was acknowledged, reset acknowledgment
-            if (window.latestCatalogReleaseDate && ackCatalogDate && ackCatalogDate !== window.latestCatalogReleaseDate) {
+            const parseDateTs = (d) => {
+                if (!d) return 0;
+                const p = String(d).split('-');
+                return p.length === 3 ? new Date(p[2], p[1] - 1, p[0]).getTime() : 0;
+            };
+
+            // Check if there are newly added or updated systems that have NOT yet been acknowledged
+            const allCurrentRecent = Array.from(new Set([...recentNewSystemIds, ...recentUpdatedSystemIds])).filter(Boolean);
+            const unacknowledgedSystems = allCurrentRecent.filter(id => !ackSystems.includes(id));
+
+            // Has a newer catalog release date than what was acknowledged
+            const hasNewerCatalogRelease = Boolean(
+                window.latestCatalogReleaseDate && 
+                (!ackCatalogDate || parseDateTs(window.latestCatalogReleaseDate) > parseDateTs(ackCatalogDate))
+            );
+
+            // Has background auto-sync occurred after the last acknowledgment
+            const hasNewAutoSync = Boolean(
+                data.auto_synced && data.sync_result && 
+                (data.sync_result.restored_count > 0 || (data.sync_result.synced_systems && data.sync_result.synced_systems.length > 0)) && 
+                (!ackSyncTime || (Date.now() - ackSyncTime > 30000))
+            );
+
+            // If catalog release date is newer than what was acknowledged, reset acknowledgment flag
+            if (hasNewerCatalogRelease && unacknowledgedSystems.length > 0) {
                 window.isCatalogSyncAcknowledged = false;
             }
 
-            const hasNewCatalogRelease = Boolean(window.latestCatalogReleaseDate && (!ackCatalogDate || ackCatalogDate !== window.latestCatalogReleaseDate));
-            const hasNewAutoSync = Boolean(data.auto_synced && data.sync_result && (data.sync_result.restored_count > 0 || (data.sync_result.synced_systems && data.sync_result.synced_systems.length > 0)) && (!ackSyncTime || (Date.now() - ackSyncTime > 30000)));
-
-            const isUnacknowledged = !window.isCatalogSyncAcknowledged && (hasNewCatalogRelease || hasNewAutoSync);
+            const isUnacknowledged = !window.isCatalogSyncAcknowledged && (
+                (hasNewerCatalogRelease && unacknowledgedSystems.length > 0) ||
+                hasNewAutoSync ||
+                (!ackCatalogDate && ackSystems.length === 0 && totalRecentCount > 0)
+            );
 
             // Notice on the Sync Info button
             if (isUpdateReady) {
@@ -24607,12 +24741,12 @@
                 const statusIcon = isAuthed || isFreshlySynced ? 'fa-circle-check' : 'fa-triangle-exclamation';
 
                 items.push(`
-                    <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; margin-bottom:0.55rem; font-size:0.78rem; color:#94a3b8; background:rgba(255,255,255,0.03); padding:6px 10px; border-radius:6px; border:1px solid var(--border-subtle); flex-wrap:wrap;">
-                        <div style="display:flex; align-items:center; gap:0.5rem;">
-                            <i class="fa-solid ${statusIcon}" style="color:${statusColor};"></i>
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; margin-bottom:0.3rem; font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.03); padding:4px 8px; border-radius:6px; border:1px solid var(--border-subtle); flex-wrap:wrap;">
+                        <div style="display:flex; align-items:center; gap:0.45rem;">
+                            <i class="fa-solid ${statusIcon}" style="color:${statusColor}; font-size:0.85rem;"></i>
                             <span>Checked <a href="https://pixn-retro.dedyn.io/releases" target="_blank" style="color:#e2e8f0; text-decoration:underline;">pixn-retro.dedyn.io</a>: <strong style="color:${statusColor};">${statusLabel}</strong></span>
                         </div>
-                        <div style="color:#38bdf8; font-size:0.75rem;">
+                        <div style="color:#38bdf8; font-size:0.72rem;">
                             Latest Catalog Release: <strong style="color:#38bdf8;">${escapeHtml(releaseDate)}</strong>
                         </div>
                     </div>
@@ -24621,11 +24755,11 @@
                 // If not authenticated on server background and NOT already freshly synced, show helpful tip
                 if (!isAuthed && !isFreshlySynced) {
                     items.push(`
-                        <div style="display:flex; align-items:flex-start; gap:0.6rem; margin-bottom:0.55rem; background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.35); border-radius:6px; padding:0.5rem 0.75rem; font-size:0.8rem; color:#fcd34d;">
-                            <i class="fa-solid fa-circle-info" style="font-size:1.05rem; margin-top:2px; color:#f59e0b;"></i>
+                        <div style="display:flex; align-items:flex-start; gap:0.5rem; margin-bottom:0.3rem; background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.35); border-radius:6px; padding:0.35rem 0.6rem; font-size:0.73rem; color:#fcd34d;">
+                            <i class="fa-solid fa-circle-info" style="font-size:0.95rem; margin-top:1px; color:#f59e0b; flex-shrink:0;"></i>
                             <div style="flex:1;">
-                                <strong style="color:#fef08a;">Unattended Server Updater Note:</strong>
-                                <div style="margin-top:2px; color:#e2e8f0; font-size:0.77rem; line-height:1.4;">
+                                <strong style="color:#fef08a; font-size:0.75rem;">Unattended Server Updater Note:</strong>
+                                <div style="margin-top:1px; color:#e2e8f0; font-size:0.71rem; line-height:1.35;">
                                     Browser sync and cookie capture run directly via the <strong>PIXN Sync Pro</strong> browser extension. To also enable background auto-checks on your server, paste your session cookie in <strong>Setup</strong>.
                                 </div>
                             </div>
@@ -24658,11 +24792,11 @@
                 }
 
                 items.push(`
-                    <div style="display:flex; align-items:flex-start; gap:0.6rem; margin-bottom:0.55rem; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.35); border-radius:6px; padding:0.5rem 0.75rem;">
-                        <i class="fa-solid fa-cloud-arrow-down" style="color:#34d399; font-size:1.1rem; margin-top:2px;"></i>
+                    <div style="display:flex; align-items:flex-start; gap:0.5rem; margin-bottom:0.3rem; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.35); border-radius:6px; padding:0.35rem 0.6rem;">
+                        <i class="fa-solid fa-cloud-arrow-down" style="color:#34d399; font-size:1rem; margin-top:2px; flex-shrink:0;"></i>
                         <div style="flex:1;">
-                            <strong style="color:#34d399;">✨ Synced with Pixn Retro:</strong>
-                            <div style="margin-top:3px; font-size:0.8rem; line-height:1.45;">${listHtmlParts.join('<br>')}</div>
+                            <strong style="color:#34d399; font-size:0.76rem;">✨ Synced with Pixn Retro:</strong>
+                            <div style="margin-top:2px; font-size:0.72rem; line-height:1.35;">${listHtmlParts.join('<br>')}</div>
                         </div>
                     </div>
                 `);
@@ -24676,32 +24810,32 @@
                     const isNewest = idx === 0 && !isNew;
                     let badgeHtml = '';
                     if (isNew) {
-                        badgeHtml = `<span style="background:rgba(56,189,248,0.22); color:#38bdf8; border:1px solid rgba(56,189,248,0.45); font-size:0.68rem; font-weight:600; padding:1px 6px; border-radius:4px; margin-left:6px;"><i class="fa-solid fa-sparkles"></i> Newly Added</span>`;
+                        badgeHtml = `<span style="background:rgba(56,189,248,0.22); color:#38bdf8; border:1px solid rgba(56,189,248,0.45); font-size:0.65rem; font-weight:600; padding:1px 5px; border-radius:4px; margin-left:5px;"><i class="fa-solid fa-sparkles"></i> Newly Added</span>`;
                     } else if (isNewest) {
-                        badgeHtml = `<span style="background:rgba(16,185,129,0.22); color:#34d399; border:1px solid rgba(16,185,129,0.45); font-size:0.68rem; font-weight:600; padding:1px 6px; border-radius:4px; margin-left:6px;"><i class="fa-solid fa-star"></i> Latest Release</span>`;
+                        badgeHtml = `<span style="background:rgba(16,185,129,0.22); color:#34d399; border:1px solid rgba(16,185,129,0.45); font-size:0.65rem; font-weight:600; padding:1px 5px; border-radius:4px; margin-left:5px;"><i class="fa-solid fa-star"></i> Latest Release</span>`;
                     } else {
-                        badgeHtml = `<span style="background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.3); font-size:0.68rem; font-weight:500; padding:1px 6px; border-radius:4px; margin-left:6px;"><i class="fa-solid fa-arrows-rotate"></i> Updated</span>`;
+                        badgeHtml = `<span style="background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.3); font-size:0.65rem; font-weight:500; padding:1px 5px; border-radius:4px; margin-left:5px;"><i class="fa-solid fa-arrows-rotate"></i> Updated</span>`;
                     }
                     const iconColor = isNew ? '#38bdf8' : (isNewest ? '#34d399' : '#38bdf8');
                     return `
-                        <div style="display:flex; align-items:center; justify-content:space-between; gap:0.6rem; padding:0.45rem 0.65rem; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:6px; flex-wrap:wrap;">
-                            <div style="display:flex; align-items:center; gap:0.5rem; flex:1; min-width:200px;">
-                                <i class="fa-solid fa-gamepad" style="color:${iconColor}; font-size:0.95rem;"></i>
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; padding:0.25rem 0.5rem; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:5px; flex-wrap:wrap;">
+                            <div style="display:flex; align-items:center; gap:0.45rem; flex:1; min-width:180px;">
+                                <i class="fa-solid fa-gamepad" style="color:${iconColor}; font-size:0.85rem; flex-shrink:0;"></i>
                                 <div>
                                     <div style="display:flex; align-items:center;">
-                                        <strong style="color:#f8fafc; font-size:0.84rem;">${escapeHtml(s.name || s.id)}</strong>
+                                        <strong style="color:#f8fafc; font-size:0.79rem;">${escapeHtml(s.name || s.id)}</strong>
                                         ${badgeHtml}
                                     </div>
-                                    <div style="font-size:0.75rem; color:#94a3b8; margin-top:1px;">
+                                    <div style="font-size:0.7rem; color:#94a3b8; margin-top:1px;">
                                         <span style="color:#38bdf8; font-weight:500;">${escapeHtml(s.version || 'v1')}</span> &bull; ${(s.gameCount || 0).toLocaleString()} games &bull; <span style="color:#cbd5e1;">${escapeHtml(s.gamelistDate || '')}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div style="display:flex; align-items:center; gap:0.4rem;">
-                                <a href="save.php?action=download_torrent&system=${escapeHtml(s.id)}" download="${escapeHtml(s.id)}.torrent" class="btn btn-outline btn-table-qb" title="Download ${escapeHtml(s.name || s.id)} torrent file (qBittorrent)">
-                                    <img src="system-logos/qbittorrent-icon.svg" width="14" height="14" alt="qB">
+                            <div style="display:flex; align-items:center; gap:0.35rem;">
+                                <a href="save.php?action=download_torrent&system=${escapeHtml(s.id)}" download="${escapeHtml(s.id)}.torrent" class="btn btn-outline btn-table-qb" style="padding:2px 5px; height:22px; width:22px; display:inline-flex; align-items:center; justify-content:center;" title="Download ${escapeHtml(s.name || s.id)} torrent file (qBittorrent)">
+                                    <img src="system-logos/qbittorrent-icon.svg" width="13" height="13" alt="qB">
                                 </a>
-                                <button type="button" class="btn btn-outline" onclick="selectSystem('${escapeHtml(s.id)}'); document.getElementById('syncModal').classList.remove('open');" style="font-size:0.75rem; padding:0.25rem 0.65rem; border-color:rgba(56,189,248,0.4); color:#38bdf8; background:rgba(56,189,248,0.08); border-radius:5px; cursor:pointer;" title="View games for ${escapeHtml(s.name || s.id)}">
+                                <button type="button" class="btn btn-outline" onclick="selectSystem('${escapeHtml(s.id)}'); document.getElementById('syncModal').classList.remove('open');" style="font-size:0.7rem; padding:0.18rem 0.55rem; border-color:rgba(56,189,248,0.4); color:#38bdf8; background:rgba(56,189,248,0.08); border-radius:5px; cursor:pointer;" title="View games for ${escapeHtml(s.name || s.id)}">
                                     <i class="fa-solid fa-arrow-right"></i> View
                                 </button>
                             </div>
@@ -24710,14 +24844,14 @@
                 }).join('');
 
                 items.push(`
-                    <div style="margin-bottom:0.4rem; background:rgba(15,23,42,0.65); border:1px solid rgba(56,189,248,0.25); border-radius:8px; padding:0.65rem 0.75rem;">
-                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.5rem;">
-                            <strong style="font-size:0.83rem; color:#38bdf8; display:flex; align-items:center; gap:0.4rem;">
+                    <div style="margin-bottom:0.15rem; background:rgba(15,23,42,0.65); border:1px solid rgba(56,189,248,0.25); border-radius:8px; padding:0.4rem 0.6rem;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.3rem;">
+                            <strong style="font-size:0.78rem; color:#38bdf8; display:flex; align-items:center; gap:0.35rem;">
                                 <i class="fa-solid fa-fire" style="color:#f59e0b;"></i> Latest Catalog Updates &amp; Newly Added Systems:
                             </strong>
-                            <span style="font-size:0.72rem; color:#94a3b8;">${topSystems.length} systems &bull; Scroll to view</span>
+                            <span style="font-size:0.68rem; color:#94a3b8;">${topSystems.length} systems &bull; Scroll to view</span>
                         </div>
-                        <div class="catalog-updates-scroll" style="display:flex; flex-direction:column; gap:0.4rem;">
+                        <div class="catalog-updates-scroll" style="display:flex; flex-direction:column; gap:0.3rem;">
                             ${sysCards}
                         </div>
                     </div>

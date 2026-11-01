@@ -1,7 +1,7 @@
 /**
  * PIXN Sync Pro - Content Script (Manifest V3)
  * Runs on https://pixn-retro.dedyn.io/*
- * Provides floating 1-click sync button and direct communication with PIXN Manager Pro.
+ * Provides floating 1-click sync button, automatic session cookie capture, and direct communication with PIXN Manager Pro.
  */
 
 (function() {
@@ -11,8 +11,47 @@
     window.__PIXN_EXTENSION_INITIALIZED__ = true;
 
     let targetServer = 'http://127.0.0.1:8989';
+    let currentCapturedCookie = null;
 
-    // Retrieve initial server configuration from background service worker
+    // Helper: inject variables and credentials into the Main World execution context
+    function injectMainWorldBridge(server, cookie) {
+        try {
+            const bridge = document.createElement('script');
+            bridge.id = 'pixn-cookie-bridge-script';
+            bridge.textContent = `
+                (function() {
+                    window.__PIXN_SERVER__ = ${JSON.stringify(server)};
+                    ${cookie ? `window.__PIXN_CAPTURED_COOKIE__ = ${JSON.stringify(cookie)};` : ''}
+                    try {
+                        if (${JSON.stringify(server)}) localStorage.setItem('pixn_target_server', ${JSON.stringify(server)});
+                        ${cookie ? `localStorage.setItem('pixn_captured_cookie', ${JSON.stringify(cookie)});` : ''}
+                    } catch(e) {}
+                })();
+            `;
+            (document.head || document.documentElement).appendChild(bridge);
+            bridge.remove();
+        } catch(e) {
+            console.warn('PIXN bridge injection error:', e);
+        }
+    }
+
+    // Capture and sync cookie to configured server
+    async function syncCookieToServerNow(server, cookie) {
+        if (!cookie) return;
+        try {
+            chrome.runtime.sendMessage({
+                action: 'save_session_cookie',
+                server: server,
+                cookie: cookie
+            }, (res) => {
+                if (res && res.success) {
+                    console.log('✅ PIXN Sync Pro: Session cookie successfully saved to server:', server);
+                }
+            });
+        } catch (e) {}
+    }
+
+    // Retrieve initial server configuration & cookie
     chrome.runtime.sendMessage({ action: 'get_target_server' }, (resp) => {
         if (resp && resp.server) {
             targetServer = resp.server.replace(/\/+$/, '');
@@ -29,8 +68,27 @@
                     chrome.runtime.sendMessage({ action: 'set_target_server', server: s });
                 }
             }
-            setTimeout(() => launchSync(), 800);
         }
+
+        // Proactively capture cookie and forward to server upon visiting Pix'n Retro
+        chrome.runtime.sendMessage({ action: 'get_session_cookie' }, (cookieResp) => {
+            let cookie = (cookieResp && cookieResp.cookie) ? cookieResp.cookie : null;
+            if (!cookie && document.cookie && document.cookie.includes('session=')) {
+                const m = document.cookie.match(/session=([^;]+)/);
+                if (m) cookie = 'session=' + m[1];
+            }
+            if (cookie) {
+                currentCapturedCookie = cookie;
+                injectMainWorldBridge(targetServer, cookie);
+                syncCookieToServerNow(targetServer, cookie);
+            } else {
+                injectMainWorldBridge(targetServer, null);
+            }
+
+            if (hash.includes('autosync')) {
+                setTimeout(() => launchSync(), 800);
+            }
+        });
     });
 
     // Create and inject the floating sync button
@@ -71,7 +129,7 @@
             outline: 'none'
         });
 
-        btn.title = `Click to synchronize Pix'n Retro catalog to PIXN (${targetServer})`;
+        btn.title = `Click to synchronize Pix'n Retro catalog and session cookie to PIXN (${targetServer})`;
 
         btn.onmouseenter = () => {
             btn.style.transform = 'translateY(-3px) scale(1.03)';
@@ -126,9 +184,13 @@
         }
 
         // Fallback to document.cookie if extension cookie was empty
-        if (!capturedCookie && document.cookie.includes('session=')) {
+        if (!capturedCookie && document.cookie && document.cookie.includes('session=')) {
             const m = document.cookie.match(/session=([^;]+)/);
             if (m) capturedCookie = 'session=' + m[1];
+        }
+
+        if (!capturedCookie && currentCapturedCookie) {
+            capturedCookie = currentCapturedCookie;
         }
 
         // 2. Fetch authoritative target server from storage
@@ -141,14 +203,20 @@
             }
         } catch(e) {}
 
-        window.__PIXN_SERVER__ = targetServer;
+        // 3. Immediately save cookie to server backend via background worker to guarantee persistence!
         if (capturedCookie) {
-            window.__PIXN_CAPTURED_COOKIE__ = capturedCookie;
+            currentCapturedCookie = capturedCookie;
+            syncCookieToServerNow(targetServer, capturedCookie);
         }
 
-        // 3. Inject and run sync engine
+        // 4. Inject into Main World DOM execution context (sets window.__PIXN_CAPTURED_COOKIE__ and localStorage)
+        injectMainWorldBridge(targetServer, capturedCookie);
+
+        // 5. Inject and run sync engine
         const existingScript = document.getElementById('pixn-sync-engine-script');
         if (existingScript) existingScript.remove();
+        const existingFallback = document.getElementById('pixn-sync-engine-script-fallback');
+        if (existingFallback) existingFallback.remove();
 
         window.__PIXN_SYNCING__ = true;
 
@@ -161,15 +229,24 @@
             }
         }, 30000);
 
+        let scriptUrl = `https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?server=${encodeURIComponent(targetServer)}&t=${Date.now()}`;
+        if (capturedCookie) {
+            scriptUrl += `&cookie=${encodeURIComponent(capturedCookie)}`;
+        }
+
         const s = document.createElement('script');
         s.id = 'pixn-sync-engine-script';
-        s.src = `https://cdn.jsdelivr.net/gh/UncleSlim/pixn-manager-pro@main/sync_engine.js?server=${encodeURIComponent(targetServer)}&t=${Date.now()}`;
+        s.src = scriptUrl;
 
         s.onerror = () => {
             // Fallback to local server if CDN is unreachable
+            let fallbackUrl = `${targetServer}/sync_engine.js?server=${encodeURIComponent(targetServer)}&t=${Date.now()}`;
+            if (capturedCookie) {
+                fallbackUrl += `&cookie=${encodeURIComponent(capturedCookie)}`;
+            }
             const fallbackScript = document.createElement('script');
             fallbackScript.id = 'pixn-sync-engine-script-fallback';
-            fallbackScript.src = `${targetServer}/sync_engine.js?server=${encodeURIComponent(targetServer)}&t=${Date.now()}`;
+            fallbackScript.src = fallbackUrl;
             fallbackScript.onerror = () => {
                 window.__PIXN_SYNCING__ = false;
                 resetButton(false, 'Script Blocked');
@@ -193,7 +270,7 @@
                 <svg style="width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.5;" viewBox="0 0 24 24">
                     <path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <span>${message || 'Sync Complete!'}</span>
+                <span>${message || (currentCapturedCookie ? 'Sync Complete (Cookie Saved)!' : 'Sync Complete!')}</span>
             `;
             setTimeout(() => {
                 btn.style.backgroundImage = 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)';
@@ -232,7 +309,8 @@
         window.__PIXN_SYNCING__ = false;
         clearTimeout(window.__PIXN_SYNC_TIMEOUT__);
         const isOk = !e.detail || e.detail.status !== 'error';
-        resetButton(isOk, isOk ? 'Sync Complete!' : (e.detail && e.detail.error ? 'Sync Failed' : 'Sync Error'));
+        const msg = isOk ? (currentCapturedCookie ? 'Sync Complete (Cookie Saved)!' : 'Sync Complete!') : (e.detail && e.detail.error ? 'Sync Failed' : 'Sync Error');
+        resetButton(isOk, msg);
     });
 
     if (document.readyState === 'loading') {
