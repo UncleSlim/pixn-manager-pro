@@ -81,18 +81,27 @@ Browse over **331 gaming systems** (310 active console platforms with RetroBat p
 ## 📁 Repository Structure
 
 ```text
-pixn/
+PIXN-Portable/
+├── PIXN.exe                             # Windows desktop launcher & notification tray watchdog
+├── php/                                 # Bundled zero-install PHP 8 runtime (CLI engine & extensions)
+│   ├── php.exe                          # Background PHP engine
+│   ├── php.ini                          # Pre-configured runtime settings
+│   └── ext/                             # Required extensions (curl, mbstring, openssl, fileinfo)
 ├── index.html                           # Main frontend application (Single-Page App)
-├── save.php                             # Backend API engine (API sync, Batocera proxy, video streaming, repair)
+├── save.php                             # Backend API engine (sync, Batocera proxy, video streaming, repair)
 ├── sync_engine.js                       # Client-side sync script for Pixn Retro bookmarklet
 ├── extension/                           # [Chrome/Edge/Brave] Dedicated Manifest V3 browser extension
+│   ├── manifest.json                    # Extension manifest
+│   ├── background.js                    # Background service worker & cookie sync
+│   ├── content.js                       # DOM injection & floating sync HUD
+│   ├── popup.html / popup.js            # Extension popup controller
+│   └── server_config.json               # Auto-detected server configuration
 ├── systems.json                         # Primary metadata index for all 331 gaming systems
 ├── search_index.json                    # Compact lookup index for instant global searching
 ├── config.sample.json                   # Configuration template for first-time setups
-├── batocera_config.json                 # Batocera connection configuration (legacy compatibility)
 ├── README.md                            # Documentation and setup guide
-├── sync_status.json                     # Synchronization status and update change log
-├── data/                                # Backend cache and state directory
+├── sync_status.json                     # Synchronization status and catalog change log
+├── data/                                # Local cache and runtime data directory
 │   ├── cache_batocera/                  # Cached Batocera scan results (auto-generated)
 │   ├── cache_gamelist/                  # Cached system gamelist XML/JSON (auto-generated)
 │   ├── cache_releases_check.json        # Release metadata cache
@@ -101,19 +110,12 @@ pixn/
 │   └── batocera_folder_map.json         # System folder alias overrides
 ├── games/                               # Detailed individual {system}.json metadata files (331 systems)
 ├── games_txt/                           # Plain-text {system}.txt export lists
-├── system-logos/                        # Official system logos (SVG/PNG) & application icons
-└── portable/                            # [Portable Edition] Standalone zero-install Windows desktop package
-    ├── PIXN.exe                         # Windows desktop launcher & tray watchdog app
-    ├── php/                             # Embedded zero-install PHP 8 runtime
-    ├── index.html                       # Portable frontend application
-    ├── save.php                         # Portable backend engine
-    ├── README-PORTABLE.txt              # Portable edition technical guide
-    └── PORTABLE_DISTRIBUTION_CLEANUP_GUIDE.md # Distribution packaging guide
+└── system-logos/                        # Official system logos (SVG/PNG) & application icons
 ```
 
 > [!TIP]
 > **Can I use the Portable release files for NAS / Web Server hosting?**  
-> **Yes!** The Portable package contains the exact same web application files. If you copy files to a NAS or web server (Method 2), your NAS uses its own built-in web server (Synology Web Station, Apache, Nginx) and native PHP engine, so you do not need `PIXN.exe` or the `php/` folder.
+> **Yes!** The Portable package contains the exact same web application files. If you copy these files to a NAS or web server (Method 2), your NAS uses its own built-in web server (Synology Web Station, Apache, Nginx) and native PHP engine, so you can safely delete `PIXN.exe` and the `php/` folder.
 
 ## 🔄 Browser Synchronization (PIXN Sync Pro Extension)
 
