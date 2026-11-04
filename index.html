@@ -15853,8 +15853,7 @@
             if (!forceRefresh && batoceraInstalledFolders !== null && batoceraInstalledFolders.size > 0) {
                 const isInstalled = isSystemInstalledOnBatocera(sysId);
                 if (!isInstalled) {
-                    // System does not exist on online Batocera - DO NOT SCAN!
-                    batoceraOnline = true;
+                    // System does not exist on Batocera - DO NOT SCAN!
                     batoceraFolderExists = false;
                     if (infoBatoceraFolder) {
                         infoBatoceraFolder.innerHTML = `${folder} <span style="color: #64748b; font-weight: 500; font-size: 0.76rem; margin-left: 4px;" title="Folder '${folder}' does not exist on Batocera PC"><i class="fa-solid fa-ban"></i> Not installed</span>`;
@@ -15910,7 +15909,6 @@
                         const isInstalled = isSystemInstalledOnBatocera(sysId);
                         if (!isInstalled) {
                             if (currentSeq !== batoceraCheckSeq || !activeSystem || activeSystem.id !== sysId) return;
-                            batoceraOnline = true;
                             batoceraFolderExists = false;
                             if (infoBatoceraFolder) {
                                 infoBatoceraFolder.innerHTML = `${folder} <span style="color: #64748b; font-weight: 500; font-size: 0.76rem; margin-left: 4px;" title="Folder '${folder}' does not exist on Batocera PC"><i class="fa-solid fa-ban"></i> Not installed</span>`;

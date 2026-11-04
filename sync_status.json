@@ -1,21 +1,20 @@
 {
     "status": "completed",
     "progress": 100,
-    "current_task": "Restored 21 missing text files (abuse.txt, amiga4000.txt, cannonball.txt) & rebuilt search index",
-    "last_sync": "2026-11-04 09:42:54",
-    "total_systems": 333,
-    "total_games": 82870,
+    "current_task": "Restored 20 missing text files (abuse.txt, amiga4000.txt, cannonball.txt) & rebuilt search index",
+    "last_sync": "2026-11-04 21:35:50",
+    "total_systems": 335,
+    "total_games": 82914,
     "new_systems_count": 0,
     "new_systems": [],
     "updated_systems_count": 0,
     "log": [],
-    "updated_at": "2026-11-04 09:42:54",
-    "restored_count": 21,
+    "updated_at": "2026-11-04 21:35:50",
+    "restored_count": 20,
     "restored_files": [
         "abuse.txt",
         "amiga4000.txt",
         "cannonball.txt",
-        "cavestory.txt",
         "cdogs.txt",
         "corsixth.txt",
         "dinothawr.txt",
@@ -41,8 +40,34 @@
     "updated_systems": [],
     "deleted_systems_count": 0,
     "deleted_systems": [],
-    "latest_catalog_release_date": "30-10-2026",
+    "latest_catalog_release_date": "03-11-2026",
     "recent_updated_systems": [
+        {
+            "id": "globalvr_batocera",
+            "name": "Global VR (Batocera)",
+            "gameCount": 26,
+            "hardware": "arcade",
+            "manufacturer": "Global VR Inc.",
+            "release": "1998",
+            "version": "v1.1-RGS_globalvr_batocera",
+            "gamelistDate": "03-11-2026",
+            "torrent_available": true,
+            "is_new": false,
+            "file_mtime": 1793824535
+        },
+        {
+            "id": "konamipc_retrobat",
+            "name": "Konami PC (RetroBat)",
+            "gameCount": 11,
+            "hardware": "arcade",
+            "manufacturer": "Konami",
+            "release": "2004",
+            "version": "v1-RGS_konamipc_retrobat",
+            "gamelistDate": "03-11-2026",
+            "torrent_available": true,
+            "is_new": false,
+            "file_mtime": 1793824535
+        },
         {
             "id": "globalvr_retrobat",
             "name": "Global VR (Retrobat)",
@@ -81,6 +106,19 @@
             "torrent_available": true,
             "is_new": false,
             "file_mtime": 1793227536
+        },
+        {
+            "id": "chihiro",
+            "name": "Chihiro",
+            "gameCount": 10,
+            "hardware": "arcade",
+            "manufacturer": "Sega",
+            "release": "2002",
+            "version": "v1-RGS_chihiro",
+            "gamelistDate": "25-10-2026",
+            "torrent_available": true,
+            "is_new": false,
+            "file_mtime": 1793824534
         },
         {
             "id": "segarw_batocera",
@@ -133,46 +171,7 @@
             "torrent_available": true,
             "is_new": false,
             "file_mtime": 1792825343
-        },
-        {
-            "id": "amiga_ransom",
-            "name": "Amiga (Ransom)",
-            "gameCount": 9482,
-            "hardware": "computer",
-            "manufacturer": "Commodore",
-            "release": "1987",
-            "version": "v1.1-RGS_amiga_ransom",
-            "gamelistDate": "22-10-2026",
-            "torrent_available": true,
-            "is_new": false,
-            "file_mtime": 1792692545
-        },
-        {
-            "id": "psvita",
-            "name": "PlayStation Vita",
-            "gameCount": 100,
-            "hardware": "portable",
-            "manufacturer": "Sony",
-            "release": "2012",
-            "version": "v1.1-RGS_psvita",
-            "gamelistDate": "21-10-2026",
-            "torrent_available": true,
-            "is_new": false,
-            "file_mtime": 1792616357
-        },
-        {
-            "id": "chihiro_batocera",
-            "name": "Chihiro (Batocera)",
-            "gameCount": 10,
-            "hardware": "arcade",
-            "manufacturer": "Sega",
-            "release": "2002",
-            "version": "v2-RGS_chihiro_batocera",
-            "gamelistDate": "18-10-2026",
-            "torrent_available": true,
-            "is_new": false,
-            "file_mtime": 1792350330
         }
     ],
-    "checked_at": "2026-11-04 09:42:37"
+    "checked_at": "2026-11-04 09:49:35"
 }

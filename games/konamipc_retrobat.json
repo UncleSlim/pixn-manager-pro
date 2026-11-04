@@ -1,0 +1,101 @@
+[
+    {
+        "id": "ActionDeka.teknoparrot",
+        "name": "Action Deka",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20080101T000000",
+        "size_mb": 714.2
+    },
+    {
+        "id": "Castlevania.teknoparrot",
+        "name": "Castlevania: The Arcade",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20091002T000000",
+        "size_mb": 5950.97
+    },
+    {
+        "id": "Contra.teknoparrot",
+        "name": "Contra: Evolution",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20110101T000000",
+        "size_mb": 1659.12
+    },
+    {
+        "id": "Coopers9.teknoparrot",
+        "name": "Cooper's 9",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20060101T000000",
+        "size_mb": 508.7
+    },
+    {
+        "id": "Gashaaaan.teknoparrot",
+        "name": "Gashaaaan",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20060101T000000",
+        "size_mb": 363.07
+    },
+    {
+        "id": "GtiClub3.teknoparrot",
+        "name": "GTI Club: Syupermini Festa!",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20081203T000000",
+        "size_mb": 3221.09
+    },
+    {
+        "id": "LethalEnforcers3.teknoparrot",
+        "name": "Lethal Enforcers 3",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20041101T010000",
+        "size_mb": 489.7
+    },
+    {
+        "id": "SilentHill.teknoparrot",
+        "name": "Silent Hill: The Arcade",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20090101T000000",
+        "size_mb": 2509.93
+    },
+    {
+        "id": "WartranTroopers.teknoparrot",
+        "name": "Wartran Troopers",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20041231T010000",
+        "size_mb": 508.13
+    },
+    {
+        "id": "WinningEleven08.teknoparrot",
+        "name": "Winning Eleven 08",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20041203T000000",
+        "size_mb": 2071.75
+    },
+    {
+        "id": "YugiohDT6U.teknoparrot",
+        "name": "Yugioh 5DS Duel Terminal 6",
+        "publisher": "Konami",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20120203T000000",
+        "size_mb": 6264.49
+    }
+]

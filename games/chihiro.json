@@ -1,1 +1,92 @@
-[{"id":"Ghost Squad.iso","name":"Ghost Squad","publisher":"SEGA","releasedate":"20040101T000000","size_mb":467.38,"developer":"Sega","genre":"Shooter"},{"id":"Outrun 2 Beta.iso","name":"Outrun 2 Beta","releasedate":"","size_mb":310.56,"developer":"Sega AM2","publisher":"Sega","genre":"Racing"},{"id":"Virtua Cop 3.iso","name":"Virtua Cop 3","publisher":"SEGA","releasedate":"20030101T000000","size_mb":466.38,"developer":"Sega","genre":"Shooter"}]
+[
+    {
+        "id": "crtaxihr.bin",
+        "name": "Crazy Taxi  - High Roller",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20030325T000000",
+        "size_mb": 397.55
+    },
+    {
+        "id": "ghostsqu.bin",
+        "name": "Ghost Squad",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20071023T000000",
+        "size_mb": 473.24
+    },
+    {
+        "id": "gundamos.bin",
+        "name": "Gundam Battle Operating Simulator",
+        "publisher": "Banpresto",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20050301T000000",
+        "size_mb": 575.43
+    },
+    {
+        "id": "ollie.bin",
+        "name": "Ollie King",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20040301T000000",
+        "size_mb": 473.71
+    },
+    {
+        "id": "outr2.bin",
+        "name": "Outrun 2",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20031201T000000",
+        "size_mb": 359.88
+    },
+    {
+        "id": "outr2st.bin",
+        "name": "Outrun 2 Special Tours",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20060101T000000",
+        "size_mb": 481.5
+    },
+    {
+        "id": "hotd3.bin",
+        "name": "The House Of the Dead 3",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20020901T000000",
+        "size_mb": 356.49
+    },
+    {
+        "id": "vcop3.bin",
+        "name": "Virtua Cop 3",
+        "publisher": "Sega",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20050423T000000",
+        "size_mb": 460.5
+    },
+    {
+        "id": "wangmid.bin",
+        "name": "Wangan Midnight: Maximum Tune",
+        "publisher": "Namco",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20040701T000000",
+        "size_mb": 448.5
+    },
+    {
+        "id": "wangmid2.bin",
+        "name": "Wangan Midnight: Maximum Tune 2",
+        "publisher": "Namco",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20050321T000000",
+        "size_mb": 483.44
+    }
+]
