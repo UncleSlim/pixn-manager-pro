@@ -3650,5 +3650,16 @@
         "version": "v1.2-RGS_exaarcadia_retrobat",
         "gamelistDate": "28-10-2026",
         "torrent_available": true
+    },
+    {
+        "id": "globalvr_retrobat",
+        "name": "Global VR (Retrobat)",
+        "gameCount": 5,
+        "hardware": "arcade",
+        "manufacturer": "Global VR Inc.",
+        "release": "1998",
+        "version": "v1-RGS_globalvr_retrobat",
+        "gamelistDate": "30-10-2026",
+        "torrent_available": true
     }
 ]

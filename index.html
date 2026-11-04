@@ -9599,6 +9599,21 @@
         let batoceraIp = '';
         let batoceraFolderExists = false;
         let batoceraInstalledFolders = null; // Set of lowercase installed folder names on Batocera
+        try {
+            const _cachedBato = localStorage.getItem('pixn_batocera_folders');
+            if (_cachedBato) {
+                const _arr = JSON.parse(_cachedBato);
+                // Batocera has ~180 systems with games. Lists with >= 250 items were polluted by empty skeleton directories.
+                if (Array.isArray(_arr) && _arr.length > 0 && _arr.length < 250) {
+                    batoceraInstalledFolders = new Set(_arr.map(f => String(f).toLowerCase().trim()));
+                    if (batoceraInstalledFolders.has('cave3rd')) {
+                        batoceraInstalledFolders.add('cave');
+                    }
+                } else {
+                    localStorage.removeItem('pixn_batocera_folders');
+                }
+            }
+        } catch (e) {}
         let batoceraFoldersLoadingPromise = null;
         let batoceraMatchedIds = new Set();
         let batoceraMatchedNames = new Set();
@@ -13949,6 +13964,59 @@
             return sysId.toLowerCase().includes('batocera');
         }
 
+        function getBatoceraFolderName(sysId) {
+            if (!sysId) return '';
+            const lower = sysId.toLowerCase().trim();
+            if (lower === 'cave' || lower === 'cave_batocera' || lower === 'cave_retrobat') return 'cave3rd';
+            const sys = (allSystems || []).find(s => s.id === sysId) || (typeof rawAllSystems !== 'undefined' && rawAllSystems ? rawAllSystems.find(s => s.id === sysId) : null);
+            if (sys && sys.folder) return sys.folder.toLowerCase().trim();
+            if (lower.endsWith('_batocera')) return lower.slice(0, -9);
+            if (lower.endsWith('_retrobat')) return lower.slice(0, -9);
+            return lower;
+        }
+        window.getBatoceraFolderName = getBatoceraFolderName;
+
+        function isSystemInstalledOnBatocera(sys) {
+            if (!sys || !batoceraInstalledFolders || batoceraInstalledFolders.size === 0) return false;
+            const sId = (typeof sys === 'string' ? sys : (sys.id || '')).toLowerCase().trim();
+            if (!sId) return false;
+            const sFolder = (typeof sys === 'object' && sys.folder ? sys.folder : '').toLowerCase().trim();
+            const cleanBato = sId.replace(/_batocera$/, '');
+            const cleanRetro = sId.replace(/_retrobat$/, '');
+            const bFolder = getBatoceraFolderName(sId);
+
+            return batoceraInstalledFolders.has(sId) ||
+                   (sFolder && batoceraInstalledFolders.has(sFolder)) ||
+                   batoceraInstalledFolders.has(cleanBato) ||
+                   batoceraInstalledFolders.has(cleanRetro) ||
+                   (bFolder && batoceraInstalledFolders.has(bFolder));
+        }
+        window.isSystemInstalledOnBatocera = isSystemInstalledOnBatocera;
+
+        function setBatoceraInstalledFolders(folders) {
+            if (!folders) {
+                batoceraInstalledFolders = null;
+                try { localStorage.removeItem('pixn_batocera_folders'); } catch (e) {}
+                return;
+            }
+            const arr = Array.isArray(folders) ? folders : Array.from(folders);
+            batoceraInstalledFolders = new Set(arr.map(f => String(f).toLowerCase().trim()));
+            if (batoceraInstalledFolders.has('cave3rd')) {
+                batoceraInstalledFolders.add('cave');
+            }
+            try {
+                localStorage.setItem('pixn_batocera_folders', JSON.stringify(Array.from(batoceraInstalledFolders)));
+            } catch (e) {}
+
+            if (typeof updateRichSelectTrigger === 'function') updateRichSelectTrigger();
+            if (typeof renderRichSelectOptions === 'function') renderRichSelectOptions(richSelectSearchInput ? richSelectSearchInput.value : '');
+            if (typeof updateBatoceraFilterIndicators === 'function') updateBatoceraFilterIndicators();
+            if (filterBatoceraInstalledOnly && typeof applyRetrobatFilter === 'function') applyRetrobatFilter();
+            if (typeof renderVisualGallery === 'function' && typeof galleryModal !== 'undefined' && galleryModal && galleryModal.classList.contains('open')) {
+                renderVisualGallery();
+            }
+        }
+
         function updateBatoceraToggleUI() {
             if (!btnToggleBatocera) return;
             const totalBatoceraCount = rawAllSystems.filter(isBatoceraSystem).length || 27;
@@ -14053,13 +14121,8 @@
             allSystems = rawAllSystems.filter(s => {
                 if (hideRetrobat && isRetrobatSystem(s)) return false;
                 if (hideBatocera && isBatoceraSystem(s)) return false;
-                if (filterBatoceraInstalledOnly && batoceraInstalledFolders && batoceraInstalledFolders.size > 0) {
-                    const sId = (s.id || '').toLowerCase();
-                    const sFolder = (s.folder || s.id || '').toLowerCase();
-                    const cleanFolder = sId.replace(/_batocera$/, '');
-                    if (!batoceraInstalledFolders.has(sId) && !batoceraInstalledFolders.has(sFolder) && !batoceraInstalledFolders.has(cleanFolder)) {
-                        return false;
-                    }
+                if (filterBatoceraInstalledOnly && !isSystemInstalledOnBatocera(s)) {
+                    return false;
                 }
                 return true;
             });
@@ -14153,11 +14216,7 @@
                 installedCount = rawAllSystems.filter(s => {
                     if (hideRetrobat && isRetrobatSystem(s)) return false;
                     if (hideBatocera && isBatoceraSystem(s)) return false;
-                    if (!batoceraInstalledFolders) return false;
-                    const sId = (s.id || '').toLowerCase().trim();
-                    const sFolder = (s.folder || s.id || '').toLowerCase().trim();
-                    const cleanFolder = sId.replace(/_batocera$/, '');
-                    return batoceraInstalledFolders.has(sId) || batoceraInstalledFolders.has(sFolder) || batoceraInstalledFolders.has(cleanFolder);
+                    return isSystemInstalledOnBatocera(s);
                 }).length;
             } else if (typeof batoceraOverviewData !== 'undefined' && batoceraOverviewData && batoceraOverviewData.installed_folders_count) {
                 installedCount = batoceraOverviewData.installed_folders_count;
@@ -15518,13 +15577,13 @@
 
         function getBatoceraFolderName(sysId) {
             if (!sysId) return '';
-            const lower = sysId.toLowerCase();
+            const lower = sysId.toLowerCase().trim();
             if (lower === 'cave' || lower === 'cave_batocera' || lower === 'cave_retrobat') return 'cave3rd';
-            const sys = (allSystems || []).find(s => s.id === sysId);
-            if (sys && sys.folder) return sys.folder;
-            if (sysId.endsWith('_batocera')) return sysId.slice(0, -9);
-            if (sysId.endsWith('_retrobat')) return sysId.slice(0, -9);
-            return sysId;
+            const sys = (allSystems || []).find(s => s.id === sysId) || (typeof rawAllSystems !== 'undefined' && rawAllSystems ? rawAllSystems.find(s => s.id === sysId) : null);
+            if (sys && sys.folder) return sys.folder.toLowerCase().trim();
+            if (lower.endsWith('_batocera')) return lower.slice(0, -9);
+            if (lower.endsWith('_retrobat')) return lower.slice(0, -9);
+            return lower;
         }
 
         function getBatoceraSystemPath(sysId) {
@@ -15715,9 +15774,6 @@
         }
 
         async function getOrFetchBatoceraFolders(forceRefresh = false) {
-            if (!forceRefresh && batoceraInstalledFolders !== null) {
-                return batoceraInstalledFolders;
-            }
             if (batoceraFoldersLoadingPromise) return batoceraFoldersLoadingPromise;
 
             batoceraFoldersLoadingPromise = (async () => {
@@ -15726,14 +15782,11 @@
                     const res = await fetch(`save.php?action=get_batocera_folders${forceRefresh ? '&force_refresh=1' : ''}${uncParam}&v=${Date.now()}`);
                     if (!res.ok) {
                         updateHeaderBatoceraStatus(false);
-                        return null;
+                        return batoceraInstalledFolders;
                     }
                     const data = await res.json();
                     if (data && data.online && Array.isArray(data.folders)) {
-                        batoceraInstalledFolders = new Set(data.folders.map(f => f.toLowerCase()));
-                        if (batoceraInstalledFolders.has('cave3rd')) {
-                            batoceraInstalledFolders.add('cave');
-                        }
+                        setBatoceraInstalledFolders(data.folders);
                         batoceraOnline = true;
                         batoceraIp = data.ip || (data.resolved_target && /^\d+\.\d+\.\d+\.\d+$/.test(data.resolved_target) ? data.resolved_target : '') || '';
                         updateHeaderBatoceraStatus(true, data.host, data.folders.length, batoceraIp);
@@ -15745,7 +15798,7 @@
                         }
                         return batoceraInstalledFolders;
                     } else {
-                        batoceraInstalledFolders = null;
+                        setBatoceraInstalledFolders(null);
                         batoceraOnline = false;
                         batoceraIp = '';
                         updateHeaderBatoceraStatus(false, data && data.host, 0, '');
@@ -15757,7 +15810,7 @@
                 } catch (e) {
                     console.warn('Could not fetch Batocera folders:', e);
                     updateHeaderBatoceraStatus(false);
-                    return null;
+                    return batoceraInstalledFolders;
                 } finally {
                     batoceraFoldersLoadingPromise = null;
                 }
@@ -15798,7 +15851,7 @@
 
             // Step 1: Pre-check if folder exists in Batocera ROMs folder before starting any scan (only if cached and not force refreshing)
             if (!forceRefresh && batoceraInstalledFolders !== null && batoceraInstalledFolders.size > 0) {
-                const isInstalled = batoceraInstalledFolders.has(cleanFolder) || batoceraInstalledFolders.has(lowerSysId);
+                const isInstalled = isSystemInstalledOnBatocera(sysId);
                 if (!isInstalled) {
                     // System does not exist on online Batocera - DO NOT SCAN!
                     batoceraOnline = true;
@@ -15854,7 +15907,7 @@
                     await getOrFetchBatoceraFolders(false);
                     // Check again with freshly fetched folders list (only if not force refreshing)
                     if (batoceraInstalledFolders !== null && batoceraInstalledFolders.size > 0) {
-                        const isInstalled = batoceraInstalledFolders.has(cleanFolder) || batoceraInstalledFolders.has(lowerSysId);
+                        const isInstalled = isSystemInstalledOnBatocera(sysId);
                         if (!isInstalled) {
                             if (currentSeq !== batoceraCheckSeq || !activeSystem || activeSystem.id !== sysId) return;
                             batoceraOnline = true;
@@ -16207,12 +16260,7 @@
         let gallerySearchQuery = '';
         let gallerySortMode = 'name_asc';
 
-        function isSystemInstalledOnBatocera(sys) {
-            if (!sys || !batoceraInstalledFolders) return false;
-            const cleanFolder = (sys.folder || sys.id || '').toLowerCase().trim();
-            const lowerSysId = (sys.id || '').toLowerCase().trim();
-            return batoceraInstalledFolders.has(cleanFolder) || batoceraInstalledFolders.has(lowerSysId);
-        }
+
 
         function getSystemBrand(sys) {
             if (!sys) return 'retro';
@@ -16419,7 +16467,7 @@
                 const brandKey = getSystemBrand(sys);
                 const hwInfo = getSystemHardwareBadge(sys);
                 const txtFileName = getSystemTxtFilename(sys.id);
-                const folderName = sys.folder || sys.id;
+                const folderName = getBatoceraFolderName(sys.id) || sys.folder || sys.id;
                 const cleanId = encodeURIComponent(sys.id.toLowerCase().trim());
                 const initialLogo = `system-logos/${cleanId}.png`;
 
@@ -22956,10 +23004,7 @@
                     activeCatalogInstalled = rawAllSystems.filter(s => {
                         if (hideRetrobat && isRetrobatSystem(s)) return false;
                         if (hideBatocera && isBatoceraSystem(s)) return false;
-                        const sId = (s.id || '').toLowerCase().trim();
-                        const sFolder = (s.folder || s.id || '').toLowerCase().trim();
-                        const cleanFolder = sId.replace(/_batocera$/, '');
-                        return batoceraInstalledFolders.has(sId) || batoceraInstalledFolders.has(sFolder) || batoceraInstalledFolders.has(cleanFolder);
+                        return isSystemInstalledOnBatocera(s);
                     }).length;
                 }
                 const displayCount = activeCatalogInstalled > 0 ? activeCatalogInstalled : (systemsCount > 0 ? systemsCount : rawFoldersCount);
@@ -22984,10 +23029,7 @@
                     activeCatalogInstalled = rawAllSystems.filter(s => {
                         if (hideRetrobat && isRetrobatSystem(s)) return false;
                         if (hideBatocera && isBatoceraSystem(s)) return false;
-                        const sId = (s.id || '').toLowerCase().trim();
-                        const sFolder = (s.folder || s.id || '').toLowerCase().trim();
-                        const cleanFolder = sId.replace(/_batocera$/, '');
-                        return batoceraInstalledFolders.has(sId) || batoceraInstalledFolders.has(sFolder) || batoceraInstalledFolders.has(cleanFolder);
+                        return isSystemInstalledOnBatocera(s);
                     }).length;
                 }
                 const displayCount = activeCatalogInstalled > 0 ? activeCatalogInstalled : batoceraInstalledFolders.size;
@@ -23636,7 +23678,7 @@
                     const data = await res.json();
                     if (data.online) {
                         batoceraOnline = true;
-                        batoceraInstalledFolders = new Set((data.folders || []).map(f => f.toLowerCase()));
+                        setBatoceraInstalledFolders(data.folders || []);
                         updateHeaderBatoceraStatus(true, data.host, (data.folders || []).length);
                         updateHudNetworkBar(true, data.host, (data.folders || []).length);
                         showToast(`🟢 Batocera PC (${data.host}) is ONLINE! (${(data.folders || []).length} systems found)`);
@@ -23655,7 +23697,9 @@
             });
         }
 
-        // Fetch Batocera config from server and pre-fetch installed folders in background
+        if (batoceraUncPath) {
+            getOrFetchBatoceraFolders();
+        }
         fetch('save.php?action=get_batocera_config').then(r => r.json()).then(data => {
             if (data.status === 'ok' && data.unc_path) {
                 batoceraUncPath = data.unc_path;
@@ -24010,7 +24054,7 @@
                     if (data && data.online) {
                         batoceraOnline = true;
                         batoceraIp = data.ip || (data.resolved_target && /^\d+\.\d+\.\d+\.\d+$/.test(data.resolved_target) ? data.resolved_target : '') || '';
-                        batoceraInstalledFolders = new Set((data.folders || []).map(f => f.toLowerCase()));
+                        setBatoceraInstalledFolders(data.folders || []);
                         updateHeaderBatoceraStatus(true, data.host, (data.folders || []).length, batoceraIp);
                         updateBatoceraFilterIndicators();
                         showToast(`🟢 Batocera (${data.host}${batoceraIp ? ' • ' + batoceraIp : ''}) is Online!`);
@@ -24180,12 +24224,7 @@
                         batoceraUncPath = rawVal;
                         localStorage.setItem('batocera_roms_unc_path', batoceraUncPath);
                         batoceraOnline = true;
-                        if (Array.isArray(data.folders)) {
-                            batoceraInstalledFolders = new Set(data.folders.map(f => f.toLowerCase()));
-                            if (batoceraInstalledFolders.has('cave3rd')) {
-                                batoceraInstalledFolders.add('cave');
-                            }
-                        }
+                        setBatoceraInstalledFolders(data.folders || []);
                         updateBatoceraPreview();
                         updateHeaderBatoceraStatus(true, data.host, count);
                         showToast(`🟢 Batocera PC (${data.host}) is ONLINE! (${count} systems found)`);

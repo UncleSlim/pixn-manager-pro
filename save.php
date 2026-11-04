@@ -3617,7 +3617,7 @@ function getBatoceraFoldersList($baseDir, $uncPath, $forceRefresh = false) {
             }
         }
 
-        // 1. FAST PATH: Batocera HTTP REST API (Port 1234)
+        // 1. Batocera HTTP REST API (Port 1234) - systems loaded into EmulationStation with games
         $batoIp = $targetHost;
         if (!filter_var($batoIp, FILTER_VALIDATE_IP)) {
             $resolvedIp = function_exists('resolveLanHostname') ? resolveLanHostname($batoIp) : gethostbyname($batoIp);
@@ -3626,45 +3626,132 @@ function getBatoceraFoldersList($baseDir, $uncPath, $forceRefresh = false) {
             }
         }
         $detectedIp = filter_var($targetHost, FILTER_VALIDATE_IP) ? $targetHost : (filter_var($batoIp, FILTER_VALIDATE_IP) ? $batoIp : '');
+        $httpFolders = [];
+        $httpApiSucceeded = false;
         if (filter_var($batoIp, FILTER_VALIDATE_IP)) {
             $httpCtx = stream_context_create([
-                'http' => ['method' => 'GET', 'timeout' => 0.6, 'ignore_errors' => true]
+                'http' => ['method' => 'GET', 'timeout' => 0.8, 'ignore_errors' => true]
             ]);
             $rawSys = @file_get_contents("http://{$batoIp}:1234/systems", false, $httpCtx);
             if ($rawSys) {
                 $sysList = @json_decode($rawSys, true);
                 if (is_array($sysList) && !empty($sysList)) {
-                    $httpFolders = [];
+                    $httpApiSucceeded = true;
                     foreach ($sysList as $sItem) {
-                        $sName = is_array($sItem) ? ($sItem['name'] ?? '') : $sItem;
-                        if ($sName && is_string($sName)) {
-                            $httpFolders[] = strtolower(trim($sName));
+                        if (is_array($sItem)) {
+                            $sName = $sItem['name'] ?? '';
+                            $totalGames = (int)($sItem['totalGames'] ?? $sItem['visibleGames'] ?? 0);
+                            // ONLY include systems that actually have games installed!
+                            if ($sName && $totalGames > 0) {
+                                $httpFolders[] = strtolower(trim($sName));
+                            }
+                        } else if (is_string($sItem) && $sItem) {
+                            $httpFolders[] = strtolower(trim($sItem));
                         }
-                    }
-                    if (!empty($httpFolders)) {
-                        if (in_array('cave3rd', $httpFolders) && !in_array('cave', $httpFolders)) {
-                            $httpFolders[] = 'cave';
-                        }
-                        sort($httpFolders);
-                        $res = [
-                            'status' => 'ok',
-                            'online' => true,
-                            'host' => $host,
-                            'ip' => $detectedIp,
-                            'resolved_target' => $targetHost,
-                            'folders' => $httpFolders,
-                            'count' => count($httpFolders),
-                            'cached_at' => time(),
-                            'source' => 'http-fast'
-                        ];
-                        @file_put_contents($cacheFile, json_encode($res, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-                        return $res;
                     }
                 }
             }
         }
 
-        // 2. SMB Fallback: Socket check with 1.5s timeout on port 445
+        // 2. Local scan cache check: include any systems confirmed to have games (>0)
+        // (e.g. cps1 which has 41 games but might not be in default ES carousel)
+        $cachedWithGames = [];
+        $cachedFiles = @glob($cacheDir . '/*.json');
+        if (is_array($cachedFiles)) {
+            foreach ($cachedFiles as $cf) {
+                $cBase = basename($cf);
+                if ($cBase[0] === '_') continue;
+                $cData = readJsonFile($cf);
+                if (is_array($cData) && !empty($cData['folder'])) {
+                    $cCount = (int)($cData['matched_count'] ?? $cData['found_files_count'] ?? (isset($cData['matched_ids']) ? count($cData['matched_ids']) : 0));
+                    if ($cCount > 0) {
+                        $cachedWithGames[] = strtolower(trim($cData['folder']));
+                    }
+                }
+            }
+        }
+
+        // 3. Physical ROM folder discovery on SMB share (only if HTTP API didn't return games)
+        // If HTTP API succeeded, we already have the exact list of systems with games; do NOT add empty skeleton folders!
+        $smbFolders = [];
+        if (!$httpApiSucceeded) {
+            $nonRomFiles = ['_info.txt' => true, 'gamelist.xml' => true, 'gamelist.zip' => true, 'padtokey.xml' => true, '.gitkeep' => true, 'autorun.cmd' => true, 'media' => true];
+            if (PHP_OS_FAMILY === 'Windows') {
+                $winPath = '\\\\' . $targetHost . '\\' . $share . ($subDir !== '' ? '\\' . str_replace('/', '\\', $subDir) : '');
+                if (@is_dir($winPath)) {
+                    $entries = @scandir($winPath);
+                    if (is_array($entries)) {
+                        foreach ($entries as $e) {
+                            if ($e !== '.' && $e !== '..' && @is_dir($winPath . '\\' . $e)) {
+                                $subFiles = @scandir($winPath . '\\' . $e);
+                                if (is_array($subFiles)) {
+                                    $hasRoms = false;
+                                    foreach ($subFiles as $sf) {
+                                        if ($sf === '.' || $sf === '..') continue;
+                                        if (!isset($nonRomFiles[strtolower($sf)])) {
+                                            $hasRoms = true;
+                                            break;
+                                        }
+                                    }
+                                    if ($hasRoms) {
+                                        $smbFolders[] = strtolower($e);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                $smbBin = getSmbClientBinary();
+                if ($smbBin) {
+                    $smbShare = '//' . $targetHost . '/' . $share;
+                    $smbCmd = $subDir !== '' ? ('cd "' . $subDir . '"; ls') : 'ls';
+                    $escapedShare = escapeshellarg($smbShare);
+                    $escapedCmd = escapeshellarg($smbCmd);
+                    $out = [];
+                    $ret = -1;
+                    @exec("{$smbBin} {$escapedShare} -N -t 5 -c {$escapedCmd} 2>&1", $out, $ret);
+                    if ($ret !== 0 && (strpos(implode("\n", $out), 'NT_STATUS_LOGON_FAILURE') !== false || strpos(implode("\n", $out), 'NT_STATUS_ACCESS_DENIED') !== false)) {
+                        $out = [];
+                        @exec("{$smbBin} {$escapedShare} -U 'root%linux' -t 5 -c {$escapedCmd} 2>&1", $out, $ret);
+                    }
+                    foreach ($out as $line) {
+                        $line = trim($line);
+                        if (!$line) continue;
+                        if (preg_match('/^(.+?)\s+([DAHNSR_]+)\s+(\d+)\s+([A-Za-z]{3}\s+[A-Za-z]{3}.*)$/', $line, $m)) {
+                            $fname = trim($m[1]);
+                            $attrs = $m[2];
+                            if (strpos($attrs, 'D') !== false && $fname !== '.' && $fname !== '..') {
+                                $smbFolders[] = strtolower($fname);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $combinedFolders = array_values(array_unique(array_merge($httpFolders, $cachedWithGames, $smbFolders)));
+        if (!empty($combinedFolders)) {
+            if (in_array('cave3rd', $combinedFolders) && !in_array('cave', $combinedFolders)) {
+                $combinedFolders[] = 'cave';
+            }
+            sort($combinedFolders);
+            $res = [
+                'status' => 'ok',
+                'online' => true,
+                'host' => $host,
+                'ip' => $detectedIp,
+                'resolved_target' => $targetHost,
+                'folders' => $combinedFolders,
+                'count' => count($combinedFolders),
+                'cached_at' => time(),
+                'source' => $httpApiSucceeded ? 'http-games-verified' : 'smb-direct'
+            ];
+            @file_put_contents($cacheFile, json_encode($res, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+            return $res;
+        }
+
+        // 3. SMB Socket Fallback Check (if both HTTP and SMB directory listings yielded nothing)
         $port = testHostSmbPort($targetHost, 1.5);
         if (!$port) {
             $diag = (!filter_var($targetHost, FILTER_VALIDATE_IP) && $targetHost === $host)
@@ -3681,107 +3768,14 @@ function getBatoceraFoldersList($baseDir, $uncPath, $forceRefresh = false) {
             ];
         }
 
-        // Check Windows native SMB support
-        if (PHP_OS_FAMILY === 'Windows') {
-            $winPath = '\\\\' . $targetHost . '\\' . $share . ($subDir !== '' ? '\\' . str_replace('/', '\\', $subDir) : '');
-            if (@is_dir($winPath)) {
-                $entries = @scandir($winPath);
-                $folders = [];
-                if (is_array($entries)) {
-                    foreach ($entries as $e) {
-                        if ($e !== '.' && $e !== '..' && @is_dir($winPath . '\\' . $e)) {
-                            $folders[] = strtolower($e);
-                        }
-                    }
-                }
-                if (in_array('cave3rd', $folders) && !in_array('cave', $folders)) {
-                    $folders[] = 'cave';
-                }
-                sort($folders);
-                $res = [
-                    'status' => 'ok',
-                    'online' => true,
-                    'host' => $host,
-                    'ip' => $detectedIp,
-                    'resolved_target' => $targetHost,
-                    'folders' => $folders,
-                    'count' => count($folders),
-                    'cached_at' => time()
-                ];
-                @file_put_contents($cacheFile, json_encode($res, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-                return $res;
-            }
-        }
-
-        // Unix/Linux: Query via smbclient
-        $smbBin = getSmbClientBinary();
-        if (!$smbBin) {
-            return [
-                'status' => 'error',
-                'online' => false,
-                'host' => $host,
-                'resolved_target' => $targetHost,
-                'message' => 'smbclient binary not found on this web server. Please install smbclient (apt install smbclient or enable in NAS Web Station) to browse network shares.',
-                'folders' => []
-            ];
-        }
-
-        $smbShare = '//' . $targetHost . '/' . $share;
-        $smbCmd = $subDir !== '' ? ('cd "' . $subDir . '"; ls') : 'ls';
-        
-        $escapedShare = escapeshellarg($smbShare);
-        $escapedCmd = escapeshellarg($smbCmd);
-        
-        $out = [];
-        $ret = -1;
-        @exec("{$smbBin} {$escapedShare} -N -t 8 -c {$escapedCmd} 2>&1", $out, $ret);
-        $outputStr = implode("\n", $out);
-        if ($ret !== 0 && (strpos($outputStr, 'NT_STATUS_LOGON_FAILURE') !== false || strpos($outputStr, 'NT_STATUS_ACCESS_DENIED') !== false)) {
-            $out = [];
-            @exec("{$smbBin} {$escapedShare} -U 'root%linux' -t 8 -c {$escapedCmd} 2>&1", $out, $ret);
-        }
-
-        $folders = [];
-        foreach ($out as $line) {
-            $line = trim($line);
-            if (!$line) continue;
-            if (preg_match('/^(.+?)\s+([DAHNSR_]+)\s+(\d+)\s+([A-Za-z]{3}\s+[A-Za-z]{3}.*)$/', $line, $m)) {
-                $fname = trim($m[1]);
-                $attrs = $m[2];
-                if (strpos($attrs, 'D') !== false && $fname !== '.' && $fname !== '..') {
-                    $folders[] = strtolower($fname);
-                }
-            }
-        }
-        if (in_array('cave3rd', $folders) && !in_array('cave', $folders)) {
-            $folders[] = 'cave';
-        }
-        sort($folders);
-
-        if ($ret !== 0 && empty($folders)) {
-            $cleanErr = trim(implode(' ', array_slice($out, 0, 3)));
-            return [
-                'status' => 'error',
-                'online' => false,
-                'host' => $host,
-                'resolved_target' => $targetHost,
-                'message' => 'smbclient error: ' . ($cleanErr ?: "exit code {$ret}"),
-                'folders' => []
-            ];
-        }
-
-        $res = [
-            'status' => 'ok',
-            'online' => true,
+        return [
+            'status' => 'error',
+            'online' => false,
             'host' => $host,
-            'ip' => $detectedIp,
             'resolved_target' => $targetHost,
-            'folders' => $folders,
-            'count' => count($folders),
-            'cached_at' => time()
+            'message' => 'No ROM folders discovered on Batocera share.',
+            'folders' => []
         ];
-        @file_put_contents($cacheFile, json_encode($res, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-        return $res;
     } catch (Throwable $t) {
         return [
             'status' => 'error',
@@ -4604,8 +4598,34 @@ if ($action === 'check_batocera_games') {
     $cleanSys = strtolower($sysId);
     $cleanFolder = strtolower($batoceraFolder);
 
-    // CRITICAL: If system folder is NOT in Batocera ROMs share, DO NOT attempt to scan it!
+    // CRITICAL: If system folder is NOT in Batocera ROMs share, check directly before declaring missing
     $folderExistsOnBatocera = in_array($cleanFolder, $existingFolders) || in_array($cleanSys, $existingFolders);
+    if (!$folderExistsOnBatocera) {
+        if ($isDirectAccess) {
+            $folderExistsOnBatocera = true;
+        } else {
+            $smbBin = getSmbClientBinary();
+            if ($smbBin) {
+                $smbShare = '//' . $targetHost . '/' . $share;
+                $escapedShare = escapeshellarg($smbShare);
+                $checkCmd = escapeshellarg('cd "' . $fullRemoteDir . '"; ls');
+                $checkOut = [];
+                $checkRet = -1;
+                @exec("{$smbBin} {$escapedShare} -N -t 3 -c {$checkCmd} 2>&1", $checkOut, $checkRet);
+                if ($checkRet === 0 && strpos(implode("\n", $checkOut), 'NT_STATUS_') === false) {
+                    $folderExistsOnBatocera = true;
+                }
+            }
+        }
+        if ($folderExistsOnBatocera) {
+            if (!in_array($cleanFolder, $existingFolders)) {
+                $existingFolders[] = $cleanFolder;
+                $foldersInfo['folders'] = $existingFolders;
+                $foldersInfo['count'] = count($existingFolders);
+                @file_put_contents($cacheDir . '/_folders_list_' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $targetHost ?: $host) . '.json', json_encode($foldersInfo, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+            }
+        }
+    }
     if (!$folderExistsOnBatocera) {
         $notInstalledData = [
             'status' => 'ok',

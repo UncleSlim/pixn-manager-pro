@@ -1,0 +1,47 @@
+[
+    {
+        "id": "AliensExtermination.teknoparrot",
+        "name": "Aliens Extermination",
+        "publisher": "Global VR",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20060628T000000",
+        "size_mb": 832.86
+    },
+    {
+        "id": "AAA.teknoparrot",
+        "name": "America's Army Arcade",
+        "publisher": "Global VR",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20070101T000000",
+        "size_mb": 2498.99
+    },
+    {
+        "id": "BlazingAngels.teknoparrot",
+        "name": "Blazing Angels Squadrons of WWII",
+        "publisher": "Global VR",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20060323T000000",
+        "size_mb": 4355.31
+    },
+    {
+        "id": "FarCryParadiseLost.teknoparrot",
+        "name": "Far Cry Paradise Lost",
+        "publisher": "Ubisoft",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20070101T000000",
+        "size_mb": 3197.4
+    },
+    {
+        "id": "JusticeLeague.teknoparrot",
+        "name": "Justice League - Heroes United",
+        "publisher": "Global VR",
+        "developer": "",
+        "genre": "",
+        "releasedate": "20090101T000000",
+        "size_mb": 1286.03
+    }
+]
