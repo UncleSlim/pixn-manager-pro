@@ -223,8 +223,11 @@ function fetchPixnRetroApi($endpoint, $baseDir, $timeout = 10) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, min(4, $timeout));
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, min(3, $timeout));
+        curl_setopt($ch, CURLOPT_TIMEOUT, min(6, $timeout));
+        if (defined('CURLOPT_IPRESOLVE') && defined('CURL_IPRESOLVE_V4')) {
+            curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        }
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
@@ -2260,12 +2263,28 @@ function getRecentUpdatedSystems($baseDir, $limit = 10) {
     
     $gamesDir = $baseDir . '/games';
 
-    foreach ($sysList as &$sys) {
+    // Fast preliminary sort by gamelistDate descending
+    usort($sysList, function($a, $b) {
+        $da = $a['gamelistDate'] ?? '';
+        $db = $b['gamelistDate'] ?? '';
+        $ta = 0; $tb = 0;
+        if ($da && preg_match('/^(\d{2})-(\d{2})-(\d{4})$/', $da, $m)) {
+            $ta = (int)("{$m[3]}{$m[2]}{$m[1]}");
+        }
+        if ($db && preg_match('/^(\d{2})-(\d{2})-(\d{4})$/', $db, $m)) {
+            $tb = (int)("{$m[3]}{$m[2]}{$m[1]}");
+        }
+        return $tb <=> $ta;
+    });
+
+    // Only inspect filemtime for top candidate systems (up to 25) instead of all 335 files
+    $candidateSlice = array_slice($sysList, 0, max(25, $limit * 2));
+    foreach ($candidateSlice as &$sys) {
         $id = $sys['id'] ?? '';
         $mtime = 0;
         if ($id) {
             $f = $gamesDir . '/' . $id . '.json';
-            if (file_exists($f)) $mtime = filemtime($f);
+            if (@file_exists($f)) $mtime = @filemtime($f);
         }
         $sys['_fileMtime'] = $mtime;
         // Mark as new if version is v1 or not an updated port
@@ -2274,15 +2293,15 @@ function getRecentUpdatedSystems($baseDir, $limit = 10) {
     }
     unset($sys);
 
-    usort($sysList, function($a, $b) {
+    usort($candidateSlice, function($a, $b) {
         $da = $a['gamelistDate'] ?? '';
         $db = $b['gamelistDate'] ?? '';
         $ta = 0; $tb = 0;
         if ($da && preg_match('/^(\d{2})-(\d{2})-(\d{4})$/', $da, $m)) {
-            $ta = strtotime("{$m[3]}-{$m[2]}-{$m[1]}");
+            $ta = (int)("{$m[3]}{$m[2]}{$m[1]}");
         }
         if ($db && preg_match('/^(\d{2})-(\d{2})-(\d{4})$/', $db, $m)) {
-            $tb = strtotime("{$m[3]}-{$m[2]}-{$m[1]}");
+            $tb = (int)("{$m[3]}{$m[2]}{$m[1]}");
         }
         if ($tb !== $ta) {
             return $tb <=> $ta;
@@ -2302,7 +2321,7 @@ function getRecentUpdatedSystems($baseDir, $limit = 10) {
         return strcmp($a['name'] ?? '', $b['name'] ?? '');
     });
 
-    $result = array_slice($sysList, 0, $limit);
+    $result = array_slice($candidateSlice, 0, $limit);
     foreach ($result as &$r) {
         $r['file_mtime'] = $r['_fileMtime'] ?? 0;
         unset($r['_fileMtime']);
@@ -2537,7 +2556,7 @@ if ($action === 'check_releases_update') {
     $autoSyncRequested = !empty($_GET['auto_sync']) || !empty($_GET['autosync']);
 
     $checkCacheFile = $baseDir . '/data/cache_releases_check.json';
-    if (!$forceRefresh && file_exists($checkCacheFile) && (time() - filemtime($checkCacheFile) < 60)) {
+    if (!$forceRefresh && file_exists($checkCacheFile) && (time() - filemtime($checkCacheFile) < 180)) {
         $cachedCheck = readJsonFile($checkCacheFile);
         if (is_array($cachedCheck) && !empty($cachedCheck['status']) && $cachedCheck['status'] === 'ok') {
             if (!$autoSyncRequested || empty($cachedCheck['update_ready'])) {
@@ -2561,8 +2580,11 @@ if ($action === 'check_releases_update') {
         curl_setopt($ch, CURLOPT_URL, $remoteUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 4);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+        if (defined('CURLOPT_IPRESOLVE') && defined('CURL_IPRESOLVE_V4')) {
+            curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        }
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
@@ -3431,11 +3453,19 @@ function resolveLanHostname($host) {
         }
     }
 
-    $saveIp = function($ip) use (&$memIpCache, $normHost, $cacheDir, $cacheFile) {
+    // Negative resolution cache: avoid repeated 5+ second blocking gethostbyname calls on offline hosts
+    $failFile = $cacheDir . '/_dns_fail_' . preg_replace('/[^a-zA-Z0-9_\-]/', '_', $normHost) . '.txt';
+    if (@file_exists($failFile) && (time() - @filemtime($failFile) < 30)) {
+        $memIpCache[$normHost] = null;
+        return null;
+    }
+
+    $saveIp = function($ip) use (&$memIpCache, $normHost, $cacheDir, $cacheFile, $failFile) {
         if ($ip && filter_var($ip, FILTER_VALIDATE_IP)) {
             $memIpCache[$normHost] = $ip;
             if (!@is_dir($cacheDir)) @mkdir($cacheDir, 0777, true);
             @file_put_contents($cacheFile, $ip);
+            if (@file_exists($failFile)) @unlink($failFile);
             return $ip;
         }
         return null;
@@ -3496,6 +3526,10 @@ function resolveLanHostname($host) {
         }
     }
 
+    // Record failure in negative resolution cache for 30 seconds
+    if (!@is_dir($cacheDir)) @mkdir($cacheDir, 0777, true);
+    @file_put_contents($failFile, (string)time());
+    $memIpCache[$normHost] = null;
     return null;
 }
 
@@ -3537,14 +3571,6 @@ function isBatoceraHostAlive($targetHost, $host = '', $share = '', $timeout = 0.
             if ($cIp && filter_var($cIp, FILTER_VALIDATE_IP) && !in_array($cIp, $candidates)) {
                 $candidates[] = $cIp;
             }
-        }
-    }
-
-    // If targetHost is a hostname and not an IP, only check if gethostbyname resolves it quickly
-    if ($targetHost && !filter_var($targetHost, FILTER_VALIDATE_IP)) {
-        $dnsIp = @gethostbyname($targetHost);
-        if ($dnsIp && $dnsIp !== $targetHost && filter_var($dnsIp, FILTER_VALIDATE_IP) && !in_array($dnsIp, $candidates)) {
-            $candidates[] = $dnsIp;
         }
     }
 
@@ -3692,13 +3718,26 @@ function getBatoceraFoldersList($baseDir, $uncPath, $forceRefresh = false) {
         $cacheFile = $cacheDir . '/_folders_list_' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $targetHost ?: $host) . '.json';
         $cacheTTL = 600; // 10 minutes cache TTL
 
+        // Check cache first to avoid blocking single-threaded PHP server on repeat requests
+        if (!$forceRefresh && file_exists($cacheFile)) {
+            $cAge = time() - filemtime($cacheFile);
+            $cached = readJsonFile($cacheFile);
+            if (is_array($cached)) {
+                // If previously offline, return cached offline status for 15 seconds
+                if (empty($cached['online']) && $cAge < 15) {
+                    return $cached;
+                }
+                // If previously online, return cached folders if fresh (< 30s)
+                if (!empty($cached['online']) && isset($cached['folders']) && $cAge < 30) {
+                    return $cached;
+                }
+            }
+        }
+
         // Verify if host is actually reachable before returning any cached or live online status
         $isHostAlive = isBatoceraHostAlive($targetHost, $host, $share, 0.3, $forceRefresh);
         if (!$isHostAlive) {
-            if (file_exists($cacheFile)) {
-                @unlink($cacheFile);
-            }
-            return [
+            $offlinePayload = [
                 'status' => 'offline',
                 'online' => false,
                 'host' => $host,
@@ -3706,6 +3745,10 @@ function getBatoceraFoldersList($baseDir, $uncPath, $forceRefresh = false) {
                 'message' => "Batocera PC ({$host}) is offline or unreachable.",
                 'folders' => []
             ];
+            if (!$forceRefresh) {
+                @file_put_contents($cacheFile, json_encode($offlinePayload));
+            }
+            return $offlinePayload;
         }
 
         if (!$forceRefresh && file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTTL)) {
@@ -3925,16 +3968,28 @@ function getBatoceraSettingsData($baseDir, $uncPath, $forceRefresh = false) {
         @mkdir($cacheDir, 0777, true);
     }
     $cacheFile = $cacheDir . '/_batocera_conf.json';
-    $isAlive = isBatoceraHostAlive($targetHost, $host, $share, 0.8);
-    if (!$isAlive) {
-        return ['status' => 'offline', 'online' => false, 'host' => $host, 'message' => 'Batocera PC is offline'];
+    $cacheTTL = 300;
+
+    if (!$forceRefresh && file_exists($cacheFile)) {
+        $cAge = time() - filemtime($cacheFile);
+        $cached = readJsonFile($cacheFile);
+        if (is_array($cached)) {
+            if (empty($cached['online']) && $cAge < 15) {
+                return $cached;
+            }
+            if (!empty($cached['online']) && $cAge < $cacheTTL) {
+                return $cached;
+            }
+        }
     }
 
-    if (!$forceRefresh && file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTTL)) {
-        $cached = readJsonFile($cacheFile);
-        if (is_array($cached) && !empty($cached['online'])) {
-            return $cached;
+    $isAlive = isBatoceraHostAlive($targetHost, $host, $share, 0.3, $forceRefresh);
+    if (!$isAlive) {
+        $offRes = ['status' => 'offline', 'online' => false, 'host' => $host, 'message' => 'Batocera PC is offline'];
+        if (!$forceRefresh) {
+            @file_put_contents($cacheFile, json_encode($offRes));
         }
+        return $offRes;
     }
 
     $rawConf = null;

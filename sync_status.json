@@ -1,20 +1,21 @@
 {
     "status": "completed",
     "progress": 100,
-    "current_task": "Restored 20 missing text files (abuse.txt, amiga4000.txt, cannonball.txt) & rebuilt search index",
-    "last_sync": "2026-11-04 21:35:50",
+    "current_task": "Restored 21 missing text files (abuse.txt, amiga4000.txt, cannonball.txt) & rebuilt search index",
+    "last_sync": "2026-11-04 22:13:40",
     "total_systems": 335,
     "total_games": 82914,
     "new_systems_count": 0,
     "new_systems": [],
     "updated_systems_count": 0,
     "log": [],
-    "updated_at": "2026-11-04 21:35:50",
-    "restored_count": 20,
+    "updated_at": "2026-11-04 22:13:40",
+    "restored_count": 21,
     "restored_files": [
         "abuse.txt",
         "amiga4000.txt",
         "cannonball.txt",
+        "cavestory.txt",
         "cdogs.txt",
         "corsixth.txt",
         "dinothawr.txt",
@@ -173,5 +174,5 @@
             "file_mtime": 1792825343
         }
     ],
-    "checked_at": "2026-11-04 09:49:35"
+    "checked_at": "2026-11-04 22:12:44"
 }

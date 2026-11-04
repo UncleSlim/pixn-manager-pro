@@ -23718,11 +23718,16 @@
         }
         fetch('save.php?action=get_batocera_config').then(r => r.json()).then(data => {
             if (data.status === 'ok' && data.unc_path) {
+                const hadPath = batoceraUncPath;
                 batoceraUncPath = data.unc_path;
                 localStorage.setItem('batocera_roms_unc_path', batoceraUncPath);
                 updateBatoceraPreview();
+                if (!hadPath || hadPath !== data.unc_path) {
+                    getOrFetchBatoceraFolders();
+                }
+            } else if (!batoceraUncPath) {
+                getOrFetchBatoceraFolders();
             }
-            getOrFetchBatoceraFolders();
         }).catch(() => {});
 
         // Sync Modal Handling
@@ -24508,6 +24513,9 @@
                 return data;
             } catch (e) {
                 console.warn('Could not check releases update:', e);
+                if (headerSyncIndicator) headerSyncIndicator.classList.remove('running');
+                if (headerSyncDot) headerSyncDot.className = 'pulse-indicator';
+                if (headerSyncText) headerSyncText.textContent = 'Synced';
                 return null;
             }
         }
