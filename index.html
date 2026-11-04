@@ -13995,7 +13995,7 @@
 
         function setBatoceraInstalledFolders(folders) {
             if (!folders) {
-                batoceraInstalledFolders = null;
+                batoceraInstalledFolders = new Set();
                 try { localStorage.removeItem('pixn_batocera_folders'); } catch (e) {}
                 return;
             }
@@ -15848,6 +15848,24 @@
             const folder = getBatoceraFolderName(sysId);
             const cleanFolder = folder.toLowerCase();
             const lowerSysId = sysId.toLowerCase();
+
+            // If Batocera is offline and not force refreshing, do NOT send blocking network probes!
+            if (!batoceraOnline && !forceRefresh) {
+                batoceraFolderExists = false;
+                if (infoBatoceraFolder) {
+                    infoBatoceraFolder.textContent = folder || '-';
+                }
+                if (batoceraFilterGroup) batoceraFilterGroup.style.display = 'none';
+                if (filterRow) filterRow.style.display = 'none';
+                if (btnRescanBatocera) {
+                    btnRescanBatocera.style.display = 'inline-flex';
+                    btnRescanBatocera.classList.remove('spinning');
+                    btnRescanBatocera.title = 'Batocera PC is offline. Click to test connection.';
+                }
+                updateBatoceraFilterUI();
+                renderGameList();
+                return;
+            }
 
             // Step 1: Pre-check if folder exists in Batocera ROMs folder before starting any scan (only if cached and not force refreshing)
             if (!forceRefresh && batoceraInstalledFolders !== null && batoceraInstalledFolders.size > 0) {

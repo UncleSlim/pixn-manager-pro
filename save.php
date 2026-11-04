@@ -3423,7 +3423,7 @@ function resolveLanHostname($host) {
     global $baseDir;
     $cacheDir = ($baseDir ? $baseDir . '/data/cache_batocera' : sys_get_temp_dir());
     $cacheFile = $cacheDir . '/_ip_' . preg_replace('/[^a-zA-Z0-9_\-]/', '_', $normHost) . '.txt';
-    if (@file_exists($cacheFile) && (time() - @filemtime($cacheFile) < 3600)) {
+    if (@file_exists($cacheFile)) {
         $cIp = trim((string)@file_get_contents($cacheFile));
         if ($cIp && filter_var($cIp, FILTER_VALIDATE_IP)) {
             $memIpCache[$normHost] = $cIp;
@@ -3499,15 +3499,36 @@ function resolveLanHostname($host) {
     return null;
 }
 
-function isBatoceraHostAlive($targetHost, $host = '', $share = '', $timeout = 0.8) {
+function isBatoceraHostAlive($targetHost, $host = '', $share = '', $timeout = 0.3, $forceProbe = false) {
     global $baseDir;
+    static $memAliveCache = [];
+
+    $cacheKey = ($targetHost ?: '') . '_' . ($host ?: '');
+    if (!$forceProbe && isset($memAliveCache[$cacheKey])) {
+        return $memAliveCache[$cacheKey];
+    }
+
+    $cacheDir = ($baseDir ? $baseDir . '/data/cache_batocera' : __DIR__ . '/data/cache_batocera');
+    if (!@is_dir($cacheDir)) @mkdir($cacheDir, 0777, true);
+    $aliveFile = $cacheDir . '/_host_alive.json';
+
+    // 15 seconds TTL cache so repeated calls within UI browsing never block the single-threaded server
+    if (!$forceProbe && @file_exists($aliveFile) && (time() - @filemtime($aliveFile) < 15)) {
+        $cData = @json_decode(@file_get_contents($aliveFile), true);
+        if (is_array($cData) && isset($cData['is_alive'])) {
+            $memAliveCache[$cacheKey] = (bool)$cData['is_alive'];
+            return $memAliveCache[$cacheKey];
+        }
+    }
+
     $candidates = [];
 
+    // Prioritize direct valid IP
     if ($targetHost && filter_var($targetHost, FILTER_VALIDATE_IP)) {
         $candidates[] = $targetHost;
     }
 
-    $cacheDir = ($baseDir ? $baseDir . '/data/cache_batocera' : __DIR__ . '/data/cache_batocera');
+    // Check last known resolved IP from _ip_*.txt
     foreach (array_unique(array_filter([$host, $targetHost])) as $h) {
         $norm = strtolower(trim($h));
         $ipFile = $cacheDir . '/_ip_' . preg_replace('/[^a-zA-Z0-9_\-]/', '_', $norm) . '.txt';
@@ -3519,56 +3540,64 @@ function isBatoceraHostAlive($targetHost, $host = '', $share = '', $timeout = 0.
         }
     }
 
-    if ($targetHost && !in_array($targetHost, $candidates)) {
-        $candidates[] = $targetHost;
-    }
-    if ($host && !in_array($host, $candidates)) {
-        $candidates[] = $host;
-    }
-
-    if ($share !== '') {
-        foreach ($candidates as $cand) {
-            $winPath = '\\\\' . $cand . '\\' . $share;
-            if (@is_dir($winPath)) {
-                return true;
-            }
+    // If targetHost is a hostname and not an IP, only check if gethostbyname resolves it quickly
+    if ($targetHost && !filter_var($targetHost, FILTER_VALIDATE_IP)) {
+        $dnsIp = @gethostbyname($targetHost);
+        if ($dnsIp && $dnsIp !== $targetHost && filter_var($dnsIp, FILTER_VALIDATE_IP) && !in_array($dnsIp, $candidates)) {
+            $candidates[] = $dnsIp;
         }
     }
 
-    foreach ($candidates as $cand) {
-        if (!$cand) continue;
+    // If we have NO IP candidates at all, host cannot be reached
+    if (empty($candidates)) {
+        $memAliveCache[$cacheKey] = false;
+        @file_put_contents($aliveFile, json_encode(['is_alive' => false, 'time' => time()]));
+        return false;
+    }
+
+    $alive = false;
+    // Fast TCP probe only on valid IPs (timeout 0.3s) - NEVER call is_dir on dead UNC paths on Windows!
+    foreach ($candidates as $candIp) {
+        if (!filter_var($candIp, FILTER_VALIDATE_IP)) continue;
+
         if (function_exists('fsockopen')) {
-            $fp = @fsockopen($cand, 445, $errno, $errstr, (float)$timeout);
+            $fp = @fsockopen($candIp, 445, $errno, $errstr, (float)$timeout);
             if ($fp) {
                 @fclose($fp);
-                return true;
+                $alive = true;
+                break;
             }
-            $fp = @fsockopen($cand, 1234, $errno, $errstr, (float)$timeout);
+            $fp = @fsockopen($candIp, 1234, $errno, $errstr, (float)$timeout);
             if ($fp) {
                 @fclose($fp);
-                return true;
+                $alive = true;
+                break;
             }
         } elseif (function_exists('stream_socket_client')) {
             $ctx = stream_context_create();
-            $fp = @stream_socket_client("tcp://{$cand}:445", $errno, $errstr, (float)$timeout, STREAM_CLIENT_CONNECT, $ctx);
+            $fp = @stream_socket_client("tcp://{$candIp}:445", $errno, $errstr, (float)$timeout, STREAM_CLIENT_CONNECT, $ctx);
             if ($fp) {
                 @fclose($fp);
-                return true;
+                $alive = true;
+                break;
             }
-            $fp = @stream_socket_client("tcp://{$cand}:1234", $errno, $errstr, (float)$timeout, STREAM_CLIENT_CONNECT, $ctx);
+            $fp = @stream_socket_client("tcp://{$candIp}:1234", $errno, $errstr, (float)$timeout, STREAM_CLIENT_CONNECT, $ctx);
             if ($fp) {
                 @fclose($fp);
-                return true;
+                $alive = true;
+                break;
             }
         }
     }
 
-    return false;
+    $memAliveCache[$cacheKey] = $alive;
+    @file_put_contents($aliveFile, json_encode(['is_alive' => $alive, 'time' => time()]));
+    return $alive;
 }
 
-function testHostSmbPort($hostOrIp, $timeout = 1.0) {
+function testHostSmbPort($hostOrIp, $timeout = 0.5) {
     if (!$hostOrIp) return false;
-    return isBatoceraHostAlive($hostOrIp, '', '', $timeout) ? 445 : false;
+    return isBatoceraHostAlive($hostOrIp, '', '', $timeout, true) ? 445 : false;
 }
 
 function getBatoceraHostAndShare($uncPath) {
@@ -3664,7 +3693,7 @@ function getBatoceraFoldersList($baseDir, $uncPath, $forceRefresh = false) {
         $cacheTTL = 600; // 10 minutes cache TTL
 
         // Verify if host is actually reachable before returning any cached or live online status
-        $isHostAlive = isBatoceraHostAlive($targetHost, $host, $share, 0.8);
+        $isHostAlive = isBatoceraHostAlive($targetHost, $host, $share, 0.3, $forceRefresh);
         if (!$isHostAlive) {
             if (file_exists($cacheFile)) {
                 @unlink($cacheFile);
@@ -3801,7 +3830,7 @@ function getBatoceraFoldersList($baseDir, $uncPath, $forceRefresh = false) {
 
         $hasLiveDiscovery = $httpApiSucceeded || !empty($smbFolders);
         if (!$hasLiveDiscovery) {
-            $isAlive = isBatoceraHostAlive($targetHost, $host, $share, 0.8);
+            $isAlive = isBatoceraHostAlive($targetHost, $host, $share, 0.3, $forceRefresh);
             if (!$isAlive) {
                 if (file_exists($cacheFile)) @unlink($cacheFile);
                 return [
@@ -3816,7 +3845,7 @@ function getBatoceraFoldersList($baseDir, $uncPath, $forceRefresh = false) {
         }
 
         $combinedFolders = array_values(array_unique(array_merge($httpFolders, $cachedWithGames, $smbFolders)));
-        if (!empty($combinedFolders) && ($hasLiveDiscovery || isBatoceraHostAlive($targetHost, $host, $share, 0.8))) {
+        if (!empty($combinedFolders) && ($hasLiveDiscovery || isBatoceraHostAlive($targetHost, $host, $share, 0.3, $forceRefresh))) {
             if (in_array('cave3rd', $combinedFolders) && !in_array('cave', $combinedFolders)) {
                 $combinedFolders[] = 'cave';
             }
@@ -4648,7 +4677,7 @@ if ($action === 'check_batocera_games') {
     }
     $cacheKey = preg_replace('/[^a-zA-Z0-9_-]/', '_', $sysId . '_' . $host . '_' . $share . '_' . $fullRemoteDir);
     // Check host reachability before returning any cached or live scan
-    $isHostAlive = isBatoceraHostAlive($targetHost, $host, $share, 0.8);
+    $isHostAlive = isBatoceraHostAlive($targetHost, $host, $share, 0.3, $forceRefresh);
     if (!$isHostAlive) {
         echo json_encode([
             'status' => 'offline',
